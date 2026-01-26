@@ -127,7 +127,7 @@ Hurst Exponent:
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_prices(ticker, start_date, end_date)` - OHLCV 데이터
 
 필요 계산:

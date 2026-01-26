@@ -78,7 +78,7 @@ CapEx 강도 분석:
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_financial_metrics(ticker, end_date, period="annual", limit=8)` - 마진, 부채비율
 - `search_line_items(ticker, [...], end_date, period="annual", limit=8)` - FCF, 자산/부채
 - `get_market_cap(ticker, end_date)` - 밸류에이션

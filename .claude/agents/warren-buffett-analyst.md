@@ -70,7 +70,7 @@ MOS < 0%: 과대평가
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - ROE, 마진, 부채비율
 - `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 순이익, FCF, CapEx, D&A
 - `get_market_cap(ticker, end_date)` - 현재 시가총액

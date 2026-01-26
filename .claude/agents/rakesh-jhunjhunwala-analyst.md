@@ -89,7 +89,7 @@ MOS > 0%: +1점
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - 성장률, ROE, 마진
 - `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 매출, 수익
 - `get_market_cap(ticker, end_date)` - 밸류에이션

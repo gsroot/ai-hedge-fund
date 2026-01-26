@@ -88,7 +88,7 @@ MOS 해석:
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - 마진, 성장률, 베타
 - `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - EBIT, FCF 계산 요소
 - `get_market_cap(ticker, end_date)` - 현재 밸류에이션

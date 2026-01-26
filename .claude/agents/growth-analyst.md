@@ -132,7 +132,7 @@ Operating Leverage:
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - 성장률 지표
 - `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 상세 재무 항목
 - `get_insider_trades(ticker, end_date)` - 내부자 거래

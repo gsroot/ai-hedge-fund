@@ -83,7 +83,7 @@ model: sonnet
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_prices(ticker, start_date, end_date)` - 가격, 거래량, 이평선 계산
 - `get_financial_metrics(ticker, end_date, period="ttm", limit=4)` - 분기별 성과
 - `search_line_items(ticker, [...], end_date, period="ttm", limit=4)` - 수익 추세

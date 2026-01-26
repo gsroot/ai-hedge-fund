@@ -6,11 +6,54 @@ description: |
   Mohnish Pabrai, Rakesh Jhunjhunwala 등 12명의 투자자 페르소나와 5개의 전문 분석가 제공.
   사용 시점: 투자 분석 요청, "버핏 스타일로 분석", 앙상블 분석, 특정 투자자 관점 분석,
   "AAPL을 분석해줘", "모든 투자자 관점에서 분석"
+  단일 종목 심층 분석: "AAPL 분석해줘", "테슬라 주식 어때?", "NVDA 살까 말까?"
 ---
 
 # Investor Analysis Skill
 
 전설적인 투자자 페르소나와 전문 분석가를 활용한 종합 주식 분석 시스템.
+단일 종목 심층 분석부터 앙상블 분석까지 지원합니다.
+
+## 분석 모드
+
+### 모드 1: 빠른 분석 (기본)
+
+"AAPL 분석해줘", "테슬라 주식 어때?" 같은 일반 분석 요청 시:
+
+```
+5개 전문 분석가 자동 호출 (병렬):
+- fundamentals-analyst: 수익성, 성장, 건전성, 밸류에이션
+- technical-analyst: 추세, 모멘텀, 변동성, 평균회귀
+- growth-analyst: 매출/수익 성장, 마진 확대
+- sentiment-analyst: 내부자 거래 + 뉴스 심리
+- news-sentiment-analyst: LLM 기반 뉴스 분석
+```
+
+### 모드 2: 투자자 관점 분석
+
+"버핏 스타일로 분석해줘" 같은 특정 투자자 요청 시:
+
+```
+해당 투자자 에이전트 호출 (예: warren-buffett-analyst)
+```
+
+### 모드 3: 앙상블 분석
+
+"모든 투자자 관점에서 분석해줘" 요청 시:
+
+```
+17개 서브에이전트 병렬 호출 → 가중 평균 계산 → 종합 신호
+```
+
+### 모드 4: 리포트 모드
+
+"종합 리포트 만들어줘", "투자 리포트" 요청 시:
+
+```
+5개 분석가 + 선택적 투자자 관점 → 구조화된 리포트 생성
+```
+
+---
 
 ## 워크플로우
 
@@ -69,7 +112,7 @@ Task(
 
 ## 데이터 수집
 
-모든 에이전트는 `src/tools/api.py`의 함수 사용:
+모든 에이전트는 `scripts/data_fetcher.py`의 함수 사용 (Yahoo Finance 기반, API 키 불필요):
 
 | 함수 | 용도 |
 |------|------|
@@ -80,13 +123,21 @@ Task(
 | `get_insider_trades()` | 내부자 거래 |
 | `get_company_news()` | 회사 뉴스 |
 
-사용 예시는 [scripts/data_fetcher.py](scripts/data_fetcher.py) 참조.
+사용 예시: [scripts/data_fetcher.py](scripts/data_fetcher.py) 참조. 무료이며 rate limit이 관대합니다.
 
-## 투자자 프로필
+## 참고 자료
 
-12명의 투자자와 5개의 분석가 프로필:
+### 투자자/분석가 프로필
 - **투자자 상세**: [references/investor_personas.md](references/investor_personas.md)
 - **분석가 상세**: [references/analyst_personas.md](references/analyst_personas.md)
+
+### 분석 프레임워크
+- **종목 분석 방법론**: [references/analysis_frameworks.md](references/analysis_frameworks.md)
+  - 펀더멘털 분석 (수익성, 성장성, 건전성, 밸류에이션)
+  - 기술적 분석 (추세, 모멘텀, 변동성)
+  - 성장 분석 (매출 품질, 마진 확대)
+  - 센티먼트 분석 (내부자 거래, 뉴스 심리)
+  - 밸류에이션 프레임워크 (DCF, 상대가치, 안전마진)
 
 ## 신호 출력 형식
 
@@ -119,20 +170,104 @@ Task(
 
 ## 사용 예시
 
-### 예시 1: 버핏 스타일 분석
+### 예시 1: 빠른 분석 (기본)
+```
+"AAPL 분석해줘"
+"테슬라 주식 어때?"
+"NVDA 살까 말까?"
+→ 5개 전문 분석가 병렬 호출 후 종합 결과 반환
+```
+
+### 예시 2: 버핏 스타일 분석
 ```
 "AAPL을 Warren Buffett 관점으로 분석해줘"
 → warren-buffett-analyst 서브에이전트 호출
 ```
 
-### 예시 2: 앙상블 분석
+### 예시 3: 앙상블 분석
 ```
 "테슬라를 모든 투자자 관점에서 분석해줘"
 → 17개 서브에이전트 병렬 호출 후 앙상블 결과 반환
 ```
 
-### 예시 3: 특정 그룹 분석
+### 예시 4: 특정 그룹 분석
 ```
 "NVDA를 가치 투자자들 관점에서 분석해줘"
 → buffett, munger, graham, pabrai 에이전트 호출
+```
+
+### 예시 5: 투자 리포트 생성
+```
+"AAPL 종합 투자 리포트 만들어줘"
+"마이크로소프트 버핏, 린치 관점 포함해서 리포트"
+→ 구조화된 리포트 형식으로 반환
+```
+
+---
+
+## 리포트 출력 형식
+
+리포트 모드 또는 상세 분석 요청 시 아래 형식으로 반환:
+
+### 기본 분석 리포트
+
+```json
+{
+  "ticker": "AAPL",
+  "analysis_date": "2024-01-15",
+  "summary": {
+    "overall_signal": "bullish",
+    "confidence": 75,
+    "key_strengths": ["강한 수익성", "안정적 현금흐름"],
+    "key_risks": ["높은 밸류에이션"],
+    "recommendation": "장기 보유 적합"
+  },
+  "analysis": {
+    "fundamentals": {
+      "signal": "bullish",
+      "confidence": 80,
+      "highlights": ["ROE 45%", "FCF Margin 25%"]
+    },
+    "technical": {
+      "signal": "neutral",
+      "confidence": 60,
+      "highlights": ["50일선 위", "RSI 55"]
+    },
+    "growth": {
+      "signal": "bullish",
+      "confidence": 70,
+      "highlights": ["매출 성장 8%", "마진 확대 중"]
+    },
+    "sentiment": {
+      "signal": "neutral",
+      "confidence": 55,
+      "highlights": ["내부자 활동 적음", "뉴스 중립"]
+    }
+  },
+  "valuation": {
+    "current_price": 185.50,
+    "fair_value_estimate": 200.00,
+    "margin_of_safety": "8%"
+  }
+}
+```
+
+### 투자자 관점 포함 리포트
+
+```json
+{
+  "ticker": "AAPL",
+  "investor_perspectives": {
+    "warren-buffett-analyst": {
+      "signal": "bullish",
+      "confidence": 85,
+      "reasoning": "강한 moat, 높은 ROE, 적정 안전마진"
+    },
+    "peter-lynch-analyst": {
+      "signal": "neutral",
+      "confidence": 65,
+      "reasoning": "PEG 2.1로 다소 고평가"
+    }
+  }
+}
 ```

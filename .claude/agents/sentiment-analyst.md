@@ -88,7 +88,7 @@ confidence = max(bullish_signals, bearish_signals) / total_weighted × 100
 
 ## 데이터 수집
 
-src/tools/api.py 함수 사용:
+.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
 - `get_insider_trades(ticker, end_date, limit=1000)` - 내부자 거래
 - `get_company_news(ticker, end_date, limit=100)` - 회사 뉴스
 
