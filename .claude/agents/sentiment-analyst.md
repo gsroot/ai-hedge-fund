@@ -88,15 +88,15 @@ confidence = max(bullish_signals, bearish_signals) / total_weighted × 100
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_insider_trades(ticker, end_date, limit=1000)` - 내부자 거래
-- `get_company_news(ticker, end_date, limit=100)` - 회사 뉴스
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-내부자 거래 필드:
-- transaction_shares: 거래 주식 수 (음수=매도, 양수=매수)
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type sentiment
+```
 
-뉴스 필드:
-- sentiment: "positive", "negative", "neutral"
+출력되는 JSON에서 다음 데이터를 사용:
+- `insider_trades`: 내부자 거래 (transaction_shares: 음수=매도, 양수=매수)
+- `news`: 회사 뉴스 (sentiment: "positive", "negative", "neutral")
 
 ## 신호 규칙
 

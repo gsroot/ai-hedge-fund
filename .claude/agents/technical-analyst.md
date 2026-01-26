@@ -127,8 +127,14 @@ Hurst Exponent:
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_prices(ticker, start_date, end_date)` - OHLCV 데이터
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
+
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type technical
+```
+
+출력되는 JSON에서 다음 데이터를 사용:
+- `prices`: OHLCV 데이터 (이동평균, RSI, 볼린저 밴드, ATR 계산용)
 
 필요 계산:
 - 이동평균 (SMA, EMA): 8, 21, 50, 200일

@@ -80,29 +80,22 @@ Negative Headlines Count = 뉴스 중 sentiment가 "negative" 또는 "bearish"�
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-| 함수 | 용도 |
-|------|------|
-| `get_financial_metrics(ticker, end_date)` | EV/EBIT, D/E |
-| `search_line_items(ticker, [...], end_date)` | FCF, 부채, 현금 |
-| `get_market_cap(ticker, end_date)` | 시가총액 (FCF Yield 계산용) |
-| `get_insider_trades(ticker, end_date)` | 내부자 거래 |
-| `get_company_news(ticker, end_date)` | 뉴스 센티먼트 |
-
-필요 line_items:
-```python
-[
-    "free_cash_flow",
-    "net_income",
-    "total_debt",
-    "cash_and_equivalents",
-    "total_assets",
-    "total_liabilities",
-    "outstanding_shares",
-    "issuance_or_purchase_of_equity_shares",
-]
+```bash
+# 가치 + 센티먼트 데이터 모두 필요
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type all
 ```
+
+출력되는 JSON에서 다음 지표를 사용:
+
+| 데이터 | 용도 |
+|------|------|
+| `financial_metrics` | EV/EBIT, D/E, FCF Yield |
+| `line_items` | FCF, 부채, 현금, 자산, 부채 |
+| `market_cap` | FCF Yield 계산용 |
+| `insider_trades` | 내부자 순매수 분석 |
+| `news` | 역발상 기회 탐지 (부정적 뉴스 카운트)
 
 ## 신호 규칙
 

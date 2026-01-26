@@ -1759,7 +1759,7 @@ INVESTOR_WEIGHTS = {
 }
 
 
-def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fundamental"):
+def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fundamental", skip_news=False):
     """
     단일 종목 종합 분석 (앙상블 투자자 점수 포함)
 
@@ -1768,6 +1768,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         end_date: 분석 기준일
         prefetched_prices: 미리 배치로 가져온 가격 데이터 (선택사항)
         strategy: 분석 전략 (fundamental, momentum, hybrid)
+        skip_news: True이면 뉴스/내부자 거래 조회 건너뜀 (대량 백테스트 시 401 오류 방지)
     """
     try:
         # 1. 재무 지표 수집
@@ -1785,10 +1786,14 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
             prices = get_prices(ticker, start_dt.strftime("%Y-%m-%d"), end_date)
 
         # 3. 내부자 거래 데이터 (Peter Lynch 스타일)
-        insider_trades = get_insider_trades(ticker, end_date, limit=50)
-
         # 4. 뉴스 데이터 (Sentiment 분석)
-        company_news = get_company_news(ticker, end_date, limit=20)
+        # skip_news=True이면 API 호출 건너뜀 (대량 백테스트 시 rate limiting 방지)
+        if skip_news:
+            insider_trades = []
+            company_news = []
+        else:
+            insider_trades = get_insider_trades(ticker, end_date, limit=50)
+            company_news = get_company_news(ticker, end_date, limit=20)
 
         # 시가총액 (metrics에서 추출)
         market_cap = metrics[0].get('market_cap')

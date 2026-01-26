@@ -96,13 +96,17 @@ else:
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_company_news(ticker, end_date, limit=100)` - 회사 뉴스
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-뉴스 필드:
-- title: 기사 제목
-- sentiment: "positive", "negative", "neutral" 또는 None
-- published_at: 발행일
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type sentiment
+```
+
+출력되는 JSON에서 다음 데이터를 사용:
+- `news`: 회사 뉴스 목록
+  - title: 기사 제목
+  - sentiment: "positive", "negative", "neutral" 또는 None
+  - published_at: 발행일
 
 ## 신호 규칙
 

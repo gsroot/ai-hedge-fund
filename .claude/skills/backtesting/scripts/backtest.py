@@ -403,6 +403,7 @@ def generate_signals_from_predictor(
     top_pct: float = 0.4,  # 상위 40% 매수
     bottom_pct: float = 0.2,  # 하위 20% 매도
     max_workers: int = 10,  # 병렬 처리 워커 수
+    skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (401 오류 방지)
 ) -> Dict[str, Dict]:
     """profit-predictor 분석 결과에서 거래 신호 생성 (상대적 순위 기반, 병렬 처리)"""
     try:
@@ -416,7 +417,7 @@ def generate_signals_from_predictor(
         # 단일 티커 분석 래퍼 함수
         def analyze_ticker(ticker: str) -> Tuple[str, float, Dict]:
             try:
-                result = analyze_single_ticker(ticker, analysis_date)
+                result = analyze_single_ticker(ticker, analysis_date, skip_news=skip_news)
                 if result:
                     return (ticker, result.get("total_score", 0), result)
                 return (ticker, 0, {})
@@ -551,6 +552,7 @@ def generate_hybrid_signals(
     top_pct: float = 0.3,  # 상위 30% 매수
     bottom_pct: float = 0.2,  # 하위 20% 매도
     max_workers: int = 10,
+    skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (401 오류 방지)
 ) -> Dict[str, Dict]:
     """하이브리드 전략: 펀더멘털 + 모멘텀 결합 (상대적 순위 기반)"""
     momentum_weight = 1.0 - fundamental_weight
@@ -566,7 +568,7 @@ def generate_hybrid_signals(
         # 펀더멘털 분석 (병렬)
         def analyze_ticker(ticker: str) -> Tuple[str, float, Dict]:
             try:
-                result = analyze_single_ticker(ticker, analysis_date)
+                result = analyze_single_ticker(ticker, analysis_date, skip_news=skip_news)
                 if result:
                     return (ticker, result.get("total_score", 0), result)
                 return (ticker, 0, {})
@@ -702,6 +704,7 @@ class BacktestEngine:
         strategy: str = "momentum",  # momentum, predictor
         benchmark: str = "SPY",
         workers: int = 10,  # 병렬 처리 워커 수
+        skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (대량 백테스트 시 401 오류 방지)
     ):
         self.tickers = tickers
         self.start_date = start_date
@@ -712,6 +715,7 @@ class BacktestEngine:
         self.strategy = strategy
         self.benchmark = benchmark
         self.workers = workers
+        self.skip_news = skip_news
 
         self.portfolio = Portfolio(
             cash=initial_capital,
@@ -826,11 +830,11 @@ class BacktestEngine:
 
                 if self.strategy == "predictor":
                     signals = generate_signals_from_predictor(
-                        available_tickers, current_date_str, max_workers=self.workers
+                        available_tickers, current_date_str, max_workers=self.workers, skip_news=self.skip_news
                     )
                 elif self.strategy == "hybrid":
                     signals = generate_hybrid_signals(
-                        available_tickers, current_date_str, price_df, max_workers=self.workers
+                        available_tickers, current_date_str, price_df, max_workers=self.workers, skip_news=self.skip_news
                     )
                 else:  # momentum
                     signals = generate_momentum_signals(available_tickers, current_date_str)
@@ -1024,6 +1028,8 @@ def main():
     parser.add_argument("--margin", type=float, default=0.5, help="마진 요구율 (기본: 0.5)")
     parser.add_argument("--workers", type=int, default=10, help="병렬 처리 워커 수 (기본: 10)")
     parser.add_argument("--output", type=str, help="결과 JSON 저장 경로")
+    parser.add_argument("--skip-news", action="store_true",
+                       help="뉴스/내부자 거래 조회 건너뜀 (대량 백테스트 시 Yahoo Finance 401 오류 방지)")
 
     args = parser.parse_args()
 
@@ -1078,6 +1084,7 @@ def main():
         strategy=args.strategy,
         benchmark=args.benchmark,
         workers=args.workers,
+        skip_news=args.skip_news,
     )
 
     results = engine.run()

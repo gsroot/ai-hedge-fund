@@ -89,17 +89,17 @@ MOS > 0%: +1점
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - 성장률, ROE, 마진
-- `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 매출, 수익
-- `get_market_cap(ticker, end_date)` - 밸류에이션
-- `get_insider_trades(ticker, end_date)` - 내부자 거래
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- revenue, net_income, earnings_per_share
-- operating_income, free_cash_flow
-- total_debt, shareholders_equity
-- outstanding_shares
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type all
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `financial_metrics`: 성장률, ROE, 마진, PEG
+- `line_items`: 매출, 순이익, EPS, 영업이익, FCF, 부채
+- `insider_trades`: 내부자 순매수 분석
+- `market_cap`: 밸류에이션
 
 ## 신호 규칙
 

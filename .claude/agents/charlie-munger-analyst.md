@@ -67,15 +67,16 @@ Owner Earnings Power Value = Owner Earnings / Required Return (10%)
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - ROIC, ROE, 마진
-- `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 수익, FCF 히스토리
-- `get_market_cap(ticker, end_date)` - 밸류에이션
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- revenue, operating_income, net_income
-- free_cash_flow, operating_cash_flow
-- total_debt, shareholders_equity, current_assets, current_liabilities
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type value
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `financial_metrics`: ROIC, ROE, 영업마진, 부채비율
+- `line_items`: 매출, 영업이익, 순이익, FCF, 부채, 자기자본
+- `market_cap`: 밸류에이션 계산용
 
 ## 신호 규칙
 

@@ -70,15 +70,16 @@ MOS < 0%: 과대평가
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - ROE, 마진, 부채비율
-- `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 순이익, FCF, CapEx, D&A
-- `get_market_cap(ticker, end_date)` - 현재 시가총액
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- free_cash_flow, net_income, depreciation_and_amortization
-- capital_expenditure, operating_cash_flow
-- total_debt, shareholders_equity, revenue
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type value
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `financial_metrics`: ROE, 마진, 부채비율, ROIC
+- `line_items`: 순이익, FCF, CapEx, D&A, 부채, 자기자본
+- `market_cap`: 현재 시가총액
 
 ## 신호 규칙
 

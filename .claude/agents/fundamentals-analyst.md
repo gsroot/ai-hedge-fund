@@ -158,17 +158,16 @@ FCF Yield:
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - 핵심 재무 지표
-- `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 상세 재무 항목
-- `get_market_cap(ticker, end_date)` - 시가총액
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- revenue, gross_profit, operating_income, net_income
-- total_assets, total_liabilities, shareholders_equity
-- current_assets, current_liabilities, total_debt
-- free_cash_flow, operating_cash_flow, capital_expenditure
-- earnings_per_share, outstanding_shares
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type all
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `financial_metrics`: 수익성, 성장성, 건전성, 밸류에이션 전체 지표
+- `line_items`: 매출, 이익, 자산, 부채, 현금흐름 전체 항목
+- `market_cap`: 시가총액
 
 ## 신호 규칙
 

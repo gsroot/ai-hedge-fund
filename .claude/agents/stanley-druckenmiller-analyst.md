@@ -83,16 +83,17 @@ model: sonnet
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_prices(ticker, start_date, end_date)` - 가격, 거래량, 이평선 계산
-- `get_financial_metrics(ticker, end_date, period="ttm", limit=4)` - 분기별 성과
-- `search_line_items(ticker, [...], end_date, period="ttm", limit=4)` - 수익 추세
-- `get_market_cap(ticker, end_date)` - 시가총액
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- revenue, operating_income, net_income
-- earnings_per_share, free_cash_flow
-- gross_margin, operating_margin
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type technical
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `prices`: 가격, 거래량 (이평선, RSI, 모멘텀 계산용)
+- `financial_metrics`: 매출 성장률, 마진 추세
+- `line_items`: 매출, 영업이익, EPS, FCF
+- `market_cap`: 시가총액
 
 ## 신호 규칙
 

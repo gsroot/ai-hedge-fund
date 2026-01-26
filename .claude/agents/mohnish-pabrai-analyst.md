@@ -78,16 +78,16 @@ CapEx 강도 분석:
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_financial_metrics(ticker, end_date, period="annual", limit=8)` - 마진, 부채비율
-- `search_line_items(ticker, [...], end_date, period="annual", limit=8)` - FCF, 자산/부채
-- `get_market_cap(ticker, end_date)` - 밸류에이션
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- revenue, gross_profit, operating_income, net_income
-- free_cash_flow, capital_expenditure
-- total_debt, cash_and_equivalents
-- current_assets, current_liabilities, shareholders_equity
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type value
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `financial_metrics`: 마진, 부채비율, 유동비율
+- `line_items`: FCF (5년 평균), CapEx, 부채, 현금, 유동자산/부채
+- `market_cap`: FCF Yield 계산용
 
 ## 신호 규칙
 

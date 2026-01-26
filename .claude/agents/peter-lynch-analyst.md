@@ -86,15 +86,16 @@ Lynch Fair Value = EPS × (8.5 + 2 × 성장률) × 조정계수
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - PER, EPS 성장률, PEG
-- `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - 수익, 부채
-- `get_market_cap(ticker, end_date)` - 시가총액
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- earnings_per_share, net_income, revenue
-- free_cash_flow, total_debt, shareholders_equity
-- dividends_per_share, outstanding_shares
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type growth
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `financial_metrics`: PER, EPS 성장률, PEG, ROE
+- `line_items`: EPS, 순이익, 매출, FCF, 부채, 자기자본
+- `market_cap`: 시가총액 (10배주 잠재력 판단용)
 
 ## 신호 규칙
 

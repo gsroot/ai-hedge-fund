@@ -88,17 +88,16 @@ MOS 해석:
 
 ## 데이터 수집
 
-.claude/skills/investor-analysis/scripts/data_fetcher.py 함수 사용 (Yahoo Finance 기반):
-- `get_financial_metrics(ticker, end_date, period="annual", limit=5)` - 마진, 성장률, 베타
-- `search_line_items(ticker, [...], end_date, period="annual", limit=5)` - EBIT, FCF 계산 요소
-- `get_market_cap(ticker, end_date)` - 현재 밸류에이션
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
 
-필요 line_items:
-- operating_income, net_income, revenue
-- depreciation_and_amortization, capital_expenditure
-- total_debt, cash_and_equivalents, shareholders_equity
-- outstanding_shares, free_cash_flow
-- working_capital 또는 (current_assets, current_liabilities)
+```bash
+uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type value
+```
+
+출력되는 JSON에서 다음 지표를 사용:
+- `financial_metrics`: 마진, 성장률, 베타, WACC 계산 요소
+- `line_items`: EBIT, D&A, CapEx, 부채, 현금, 자기자본, FCF
+- `market_cap`: 현재 밸류에이션 및 DCF 비교용
 
 ## 신호 규칙
 
