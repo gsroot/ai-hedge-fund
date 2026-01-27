@@ -27,6 +27,8 @@ import json
 import argparse
 import hashlib
 import shutil
+import time
+import random
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
@@ -130,6 +132,157 @@ def get_cache_stats():
 
 
 # ============================================================================
+# Yahoo Finance Rate Limiting 대응 (재시도 로직)
+# ============================================================================
+
+# Rate limiting 설정
+YF_REQUEST_DELAY = 0  # 요청 간 딜레이 (워커 수 축소로 비활성화)
+YF_MAX_RETRIES = 3  # 최대 재시도 횟수
+YF_RETRY_BASE_DELAY = 2.0  # 재시도 시 기본 대기 시간 (초)
+YF_JITTER_MAX = 0  # 랜덤 지터 (워커 수 축소로 비활성화)
+
+# 전역 락 (동시 요청 제어)
+_yf_request_lock = threading.Lock()
+_yf_last_request_time = 0.0
+
+
+def _rate_limit_delay():
+    """요청 간 딜레이 적용 (rate limiting 방지)"""
+    global _yf_last_request_time
+    with _yf_request_lock:
+        now = time.time()
+        elapsed = now - _yf_last_request_time
+        if elapsed < YF_REQUEST_DELAY:
+            sleep_time = YF_REQUEST_DELAY - elapsed + random.uniform(0, YF_JITTER_MAX)
+            time.sleep(sleep_time)
+        _yf_last_request_time = time.time()
+
+
+def _retry_on_rate_limit(func, *args, max_retries=YF_MAX_RETRIES, **kwargs):
+    """
+    Yahoo Finance API 호출에 대한 재시도 로직
+
+    401/429 오류 발생 시 지수 백오프로 재시도합니다.
+    """
+    last_exception = None
+
+    for attempt in range(max_retries + 1):
+        try:
+            _rate_limit_delay()
+            return func(*args, **kwargs)
+        except Exception as e:
+            error_str = str(e).lower()
+            # 401 Unauthorized 또는 429 Too Many Requests
+            if '401' in error_str or '429' in error_str or 'unauthorized' in error_str or 'rate' in error_str:
+                last_exception = e
+                if attempt < max_retries:
+                    # 지수 백오프: 2초, 4초, 8초...
+                    delay = YF_RETRY_BASE_DELAY * (2 ** attempt) + random.uniform(0, YF_JITTER_MAX)
+                    # print(f"    ⏳ Rate limit 감지, {delay:.1f}초 후 재시도 ({attempt + 1}/{max_retries})...")
+                    time.sleep(delay)
+                    continue
+            # 다른 종류의 오류는 바로 raise
+            raise e
+
+    # 모든 재시도 실패
+    if last_exception:
+        raise last_exception
+    return None
+
+
+def _safe_get_ticker_info(ticker: str) -> dict:
+    """안전하게 티커 정보 가져오기 (재시도 로직 포함)"""
+    def _fetch():
+        stock = yf.Ticker(ticker)
+        return stock.info
+
+    try:
+        return _retry_on_rate_limit(_fetch)
+    except Exception:
+        return {}
+
+
+def _safe_get_ticker_news(ticker: str) -> list:
+    """안전하게 티커 뉴스 가져오기 (재시도 로직 포함)"""
+    def _fetch():
+        stock = yf.Ticker(ticker)
+        return stock.news or []
+
+    try:
+        return _retry_on_rate_limit(_fetch)
+    except Exception:
+        return []
+
+
+def _safe_get_insider_transactions(ticker: str):
+    """안전하게 내부자 거래 가져오기 (재시도 로직 포함)"""
+    def _fetch():
+        stock = yf.Ticker(ticker)
+        return stock.insider_transactions
+
+    try:
+        return _retry_on_rate_limit(_fetch)
+    except Exception:
+        return None
+
+
+def _safe_get_ticker_history(ticker: str, start: str, end: str) -> pd.DataFrame:
+    """안전하게 가격 히스토리 가져오기 (재시도 로직 포함)"""
+    def _fetch():
+        stock = yf.Ticker(ticker)
+        return stock.history(start=start, end=end)
+
+    try:
+        result = _retry_on_rate_limit(_fetch)
+        return result if result is not None else pd.DataFrame()
+    except Exception:
+        return pd.DataFrame()
+
+
+def _safe_get_financials(ticker: str):
+    """안전하게 재무제표 가져오기 (재시도 로직 포함)"""
+    def _fetch():
+        stock = yf.Ticker(ticker)
+        return stock.financials
+
+    try:
+        return _retry_on_rate_limit(_fetch)
+    except Exception:
+        return None
+
+
+def _safe_get_balance_sheet(ticker: str):
+    """안전하게 대차대조표 가져오기 (재시도 로직 포함)"""
+    def _fetch():
+        stock = yf.Ticker(ticker)
+        return stock.balance_sheet
+
+    try:
+        return _retry_on_rate_limit(_fetch)
+    except Exception:
+        return None
+
+
+def _safe_batch_download(tickers: list, start: str, end: str, **kwargs) -> pd.DataFrame:
+    """안전하게 배치 다운로드 (재시도 로직 포함)"""
+    def _fetch():
+        return yf.download(
+            tickers=tickers,
+            start=start,
+            end=end,
+            threads=True,
+            progress=False,
+            **kwargs
+        )
+
+    try:
+        result = _retry_on_rate_limit(_fetch)
+        return result if result is not None else pd.DataFrame()
+    except Exception:
+        return pd.DataFrame()
+
+
+# ============================================================================
 # Yahoo Finance 데이터 조회 함수 (캐시 포함)
 # ============================================================================
 
@@ -141,12 +294,13 @@ def _fetch_insider_trades_yf(ticker: str, limit: int = 100) -> list:
     - limit 50 → 100으로 증가
     - transaction_price_per_share 계산 추가
     - transaction_date, ownership_type, filing_url 필드 추가
+    - Rate limiting 재시도 로직 적용
     """
     try:
-        stock = yf.Ticker(ticker)
-        insider_df = stock.insider_transactions
+        # 안전한 API 호출 (재시도 로직 포함)
+        insider_df = _safe_get_insider_transactions(ticker)
 
-        if insider_df is None or insider_df.empty:
+        if insider_df is None or (hasattr(insider_df, 'empty') and insider_df.empty):
             return []
 
         trades = []
@@ -187,10 +341,11 @@ def _fetch_company_news_yf(ticker: str, limit: int = 50) -> list:
     - limit 20 → 50으로 증가
     - summary 필드 추가 (content.summary에서 추출)
     - content_type, thumbnail_url 필드 추가
+    - Rate limiting 재시도 로직 적용
     """
     try:
-        stock = yf.Ticker(ticker)
-        news = stock.news
+        # 안전한 API 호출 (재시도 로직 포함)
+        news = _safe_get_ticker_news(ticker)
 
         if not news:
             return []
@@ -275,12 +430,14 @@ def get_company_news(ticker: str, end_date: str, limit: int = 50) -> list:
     return result
 
 
-def _calculate_derived_metrics(stock, info: dict) -> dict:
+def _calculate_derived_metrics(ticker: str, info: dict) -> dict:
     """
     재무제표 기반 파생 지표 계산
 
     ROIC, Interest Coverage, Cash Ratio 등 Yahoo Finance info에서
     직접 제공하지 않는 지표들을 재무제표에서 계산합니다.
+
+    Rate limiting 재시도 로직이 적용된 안전한 API 호출을 사용합니다.
     """
     derived = {
         "return_on_invested_capital": None,
@@ -291,12 +448,13 @@ def _calculate_derived_metrics(stock, info: dict) -> dict:
     }
 
     try:
-        income_stmt = stock.financials
-        balance_sheet = stock.balance_sheet
+        # 안전한 API 호출 (재시도 로직 포함)
+        income_stmt = _safe_get_financials(ticker)
+        balance_sheet = _safe_get_balance_sheet(ticker)
 
-        if income_stmt is None or income_stmt.empty:
+        if income_stmt is None or (hasattr(income_stmt, 'empty') and income_stmt.empty):
             return derived
-        if balance_sheet is None or balance_sheet.empty:
+        if balance_sheet is None or (hasattr(balance_sheet, 'empty') and balance_sheet.empty):
             return derived
 
         # 최신 기간의 데이터 사용
@@ -415,13 +573,17 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
     - ROIC, Interest Coverage, Cash Ratio 등 파생 지표 계산
     - 소유권/공매도 지표 추가
     - 기술적 지표 추가 (52주 고/저, 이동평균 등)
+    - Rate limiting 재시도 로직 적용
     """
     try:
-        stock = yf.Ticker(ticker)
-        info = stock.info
+        # 안전한 API 호출 (재시도 로직 포함)
+        info = _safe_get_ticker_info(ticker)
+
+        if not info:
+            return None
 
         # 파생 지표 계산 (ROIC, Interest Coverage 등)
-        derived = _calculate_derived_metrics(stock, info)
+        derived = _calculate_derived_metrics(ticker, info)
 
         # 시가총액과 FCF 미리 추출
         market_cap = info.get("marketCap")
@@ -515,12 +677,12 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
 
 
 def _fetch_prices_yf(ticker: str, start_date: str, end_date: str) -> list:
-    """Yahoo Finance에서 가격 데이터 가져오기 (단일 티커)"""
+    """Yahoo Finance에서 가격 데이터 가져오기 (단일 티커, 재시도 로직 포함)"""
     try:
-        stock = yf.Ticker(ticker)
-        df = stock.history(start=start_date, end=end_date)
+        # 안전한 API 호출 (재시도 로직 포함)
+        df = _safe_get_ticker_history(ticker, start_date, end_date)
 
-        if df.empty:
+        if df is None or df.empty:
             return []
 
         prices = []
@@ -554,19 +716,16 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
     try:
         print(f"📊 가격 데이터 배치 다운로드 중... ({len(tickers)}개 종목)")
 
-        # yf.download()로 모든 티커의 가격을 한 번에 가져옴
-        # threads=True: 자동 병렬 처리
-        # group_by='ticker': 티커별로 그룹화
-        df = yf.download(
+        # 안전한 배치 다운로드 (재시도 로직 포함)
+        # yf.download()는 멀티 티커를 지원하며 내부적으로 스레딩을 사용
+        df = _safe_batch_download(
             tickers=tickers,
             start=start_date,
             end=end_date,
-            threads=True,
             group_by='ticker',
-            progress=False,  # 진행 표시 비활성화 (자체 진행률 사용)
         )
 
-        if df.empty:
+        if df is None or df.empty:
             print("   ⚠️  가격 데이터를 가져오지 못했습니다.")
             return {}
 
@@ -802,7 +961,7 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
 # 설정
 # ============================================================================
 
-MAX_WORKERS = 10
+MAX_WORKERS = 3  # Yahoo Finance rate limiting 대응을 위해 기본값 축소 (10 → 3)
 DEFAULT_PERIOD = "1Y"
 
 # 팩터별 가중치 (앙상블 분석)
@@ -1193,9 +1352,9 @@ def sort_tickers_by_market_cap(tickers, top_n=0):
         batch = tickers[i:i+batch_size]
         for ticker in batch:
             try:
-                stock = yf.Ticker(ticker)
-                info = stock.info
-                market_cap = info.get("marketCap", 0) or 0
+                # 안전한 API 호출 (재시도 로직 포함)
+                info = _safe_get_ticker_info(ticker)
+                market_cap = info.get("marketCap", 0) or 0 if info else 0
                 market_caps[ticker] = market_cap
             except Exception:
                 market_caps[ticker] = 0
@@ -1637,10 +1796,17 @@ def calculate_graham_score(metrics) -> float:
     return min(10, score)
 
 
-def calculate_munger_score(metrics, quality_score) -> float:
+def calculate_fisher_score(metrics, growth_score, quality_score) -> float:
     """
-    Charlie Munger 스타일 점수 (Quality + ROIC)
-    - ROIC > 15% + 이해 가능한 비즈니스
+    Phil Fisher 스타일 점수 (Growth + Quality Management)
+
+    Fisher의 "Common Stocks and Uncommon Profits" 핵심 기준:
+    - 매출 성장 잠재력
+    - 높은 이익률 (경영 효율성)
+    - R&D 투자 (미래 성장동력)
+    - 경영진 품질 (ROE, ROIC로 대리)
+
+    Buffett: "나는 85% Graham, 15% Fisher다"
     """
     if not metrics:
         return 0
@@ -1648,53 +1814,49 @@ def calculate_munger_score(metrics, quality_score) -> float:
     m = metrics[0]
     score = 0
 
-    # ROE > 20% (Munger는 높은 기준)
+    # 1. 매출 성장 (Fisher: "성장 잠재력이 있는 회사")
+    rev_growth = m.get('revenue_growth')
+    if rev_growth:
+        if rev_growth > 0.20:
+            score += 2.5
+        elif rev_growth > 0.10:
+            score += 1.5
+        elif rev_growth > 0.05:
+            score += 0.5
+
+    # 2. 높은 이익률 (Fisher: "평균 이상의 이익률")
+    net_margin = m.get('net_margin')
+    if net_margin:
+        if net_margin > 0.20:
+            score += 2.5
+        elif net_margin > 0.15:
+            score += 2.0
+        elif net_margin > 0.10:
+            score += 1.0
+
+    # 3. ROE (경영진 자본 활용 능력)
     roe = m.get('return_on_equity')
     if roe:
         if roe > 0.20:
-            score += 4
+            score += 2.0
         elif roe > 0.15:
-            score += 2
+            score += 1.5
+        elif roe > 0.10:
+            score += 0.5
 
-    # 영업 마진 > 20%
-    op_margin = m.get('operating_margin')
-    if op_margin and op_margin > 0.20:
-        score += 2
+    # 4. 성장 점수 반영 (Fisher는 성장 중시)
+    score += growth_score * 0.2
 
-    # 품질 점수 반영
-    score += quality_score * 0.4
+    # 5. 품질 점수 반영 (경영진 품질 대리)
+    score += quality_score * 0.1
 
-    return min(10, score)
-
-
-def calculate_wood_score(metrics, growth_score) -> float:
-    """
-    Cathie Wood 스타일 점수 (Disruptive Innovation)
-    - 고성장 + 혁신 잠재력
-    """
-    if not metrics:
-        return 0
-
-    m = metrics[0]
-    score = 0
-
-    # 매출 성장 > 25%
-    rev_growth = m.get('revenue_growth')
-    if rev_growth:
-        if rev_growth > 0.40:
-            score += 4
-        elif rev_growth > 0.25:
-            score += 3
-        elif rev_growth > 0.15:
-            score += 1
-
-    # 성장 점수 강하게 반영
-    score += growth_score * 0.5
-
-    # 고 P/E도 허용 (성장주 특성)
-    pe = m.get('price_to_earnings_ratio')
-    if pe and pe > 50:
-        score -= 1  # 너무 비싸면 약간 감점
+    # 6. 부채 수준 (Fisher: "건전한 재무구조")
+    debt_to_equity = m.get('debt_to_equity')
+    if debt_to_equity is not None:
+        if debt_to_equity < 0.3:
+            score += 1.0
+        elif debt_to_equity > 1.0:
+            score -= 1.0
 
     return min(10, max(0, score))
 
@@ -1709,53 +1871,14 @@ def calculate_druckenmiller_score(momentum_score, growth_score) -> float:
     return min(10, score)
 
 
-def calculate_burry_score(metrics, value_score) -> float:
-    """
-    Michael Burry 스타일 점수 (Deep Value + Contrarian)
-    - 극단적 저평가 + 자산 기반 가치
-    """
-    if not metrics:
-        return 0
-
-    m = metrics[0]
-    score = 0
-
-    # 매우 낮은 P/E (역발상 관점)
-    pe = m.get('price_to_earnings_ratio')
-    if pe:
-        if 0 < pe < 8:
-            score += 4
-        elif 0 < pe < 12:
-            score += 2
-
-    # 낮은 P/B (자산 가치)
-    pb = m.get('price_to_book_ratio')
-    if pb:
-        if 0 < pb < 0.8:
-            score += 3
-        elif 0 < pb < 1.2:
-            score += 1
-
-    # 가치 점수 반영
-    score += value_score * 0.3
-
-    return min(10, score)
-
-
-# 투자자별 가중치 (원본 ensemble_analyzer.py 참조)
+# 투자자별 가중치 (5명 최적화 앙상블)
+# 선정 기준: 장기 검증된 수익률(15년+), 독특한 투자 철학, 정량화 가능성
 INVESTOR_WEIGHTS = {
-    "buffett": 1.0,
-    "munger": 0.95,
-    "damodaran": 0.90,
-    "lynch": 0.85,
-    "graham": 0.85,
-    "fisher": 0.82,
-    "druckenmiller": 0.80,
-    "pabrai": 0.78,
-    "burry": 0.75,
-    "ackman": 0.75,
-    "jhunjhunwala": 0.72,
-    "wood": 0.70,
+    "buffett": 1.00,       # 50년+ 검증, 연평균 ~20%, 품질+가치+moat
+    "lynch": 0.95,         # 13년 연평균 29%, GARP/PEG (독특한 관점)
+    "graham": 0.90,        # 가치투자 원조, 딥밸류+안전마진
+    "druckenmiller": 0.85, # 30년+ 연평균 30%, 유일한 모멘텀/매크로 관점
+    "fisher": 0.80,        # 성장주 투자 원조, 경영진/R&D 품질
 }
 
 
@@ -1816,16 +1939,19 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         size_bonus, size_factors = calculate_size_bonus(market_cap, growth_score)
 
         # ========================================
-        # 투자자 스타일별 점수 계산 (앙상블)
+        # 투자자 스타일별 점수 계산 (5명 최적화 앙상블)
+        # - Buffett: 품질+가치+moat (50년+ 검증)
+        # - Lynch: GARP/PEG (13년 연평균 29%)
+        # - Graham: 딥밸류+안전마진 (가치투자 원조)
+        # - Druckenmiller: 모멘텀+매크로 (30년+ 연평균 30%)
+        # - Fisher: 성장+경영진 품질 (Buffett 스승)
         # ========================================
         investor_scores = {
             "buffett": calculate_buffett_score(metrics, growth_score, quality_score, safety_score),
-            "munger": calculate_munger_score(metrics, quality_score),
-            "graham": calculate_graham_score(metrics),
             "lynch": calculate_lynch_score(metrics, growth_score, sentiment_score, insider_score),
-            "wood": calculate_wood_score(metrics, growth_score),
+            "graham": calculate_graham_score(metrics),
             "druckenmiller": calculate_druckenmiller_score(momentum_score, growth_score),
-            "burry": calculate_burry_score(metrics, value_score),
+            "fisher": calculate_fisher_score(metrics, growth_score, quality_score),
         }
 
         # ========================================
@@ -2088,12 +2214,10 @@ def print_results(results, top_n=30, strategy="fundamental"):
 
     investor_names = {
         "buffett": "Warren Buffett",
-        "munger": "Charlie Munger",
-        "graham": "Ben Graham",
         "lynch": "Peter Lynch",
-        "wood": "Cathie Wood",
+        "graham": "Ben Graham",
         "druckenmiller": "Druckenmiller",
-        "burry": "Michael Burry",
+        "fisher": "Phil Fisher",
     }
 
     for inv_key, inv_name in investor_names.items():

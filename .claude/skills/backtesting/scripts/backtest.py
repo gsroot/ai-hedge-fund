@@ -11,6 +11,9 @@ import argparse
 import json
 import os
 import sys
+import time
+import random
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -26,6 +29,65 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirna
 
 from dotenv import load_dotenv
 load_dotenv()
+
+
+# ============================================================================
+# Yahoo Finance Rate Limiting 대응 (재시도 로직)
+# ============================================================================
+
+YF_REQUEST_DELAY = 0  # 요청 간 딜레이 (워커 수 축소로 비활성화)
+YF_MAX_RETRIES = 3  # 최대 재시도 횟수
+YF_RETRY_BASE_DELAY = 2.0  # 재시도 시 기본 대기 시간 (초)
+YF_JITTER_MAX = 0  # 랜덤 지터 (워커 수 축소로 비활성화)
+
+_yf_request_lock = threading.Lock()
+_yf_last_request_time = 0.0
+
+
+def _rate_limit_delay():
+    """요청 간 딜레이 적용"""
+    global _yf_last_request_time
+    with _yf_request_lock:
+        now = time.time()
+        elapsed = now - _yf_last_request_time
+        if elapsed < YF_REQUEST_DELAY:
+            sleep_time = YF_REQUEST_DELAY - elapsed + random.uniform(0, YF_JITTER_MAX)
+            time.sleep(sleep_time)
+        _yf_last_request_time = time.time()
+
+
+def _retry_yf_call(func, *args, max_retries=YF_MAX_RETRIES, **kwargs):
+    """Yahoo Finance API 호출에 대한 재시도 로직"""
+    last_exception = None
+
+    for attempt in range(max_retries + 1):
+        try:
+            _rate_limit_delay()
+            return func(*args, **kwargs)
+        except Exception as e:
+            error_str = str(e).lower()
+            if '401' in error_str or '429' in error_str or 'unauthorized' in error_str or 'rate' in error_str:
+                last_exception = e
+                if attempt < max_retries:
+                    delay = YF_RETRY_BASE_DELAY * (2 ** attempt) + random.uniform(0, YF_JITTER_MAX)
+                    time.sleep(delay)
+                    continue
+            raise e
+
+    if last_exception:
+        raise last_exception
+    return None
+
+
+def _safe_get_ticker_info(ticker: str) -> dict:
+    """안전하게 티커 정보 가져오기"""
+    def _fetch():
+        stock = yf.Ticker(ticker)
+        return stock.info
+    try:
+        return _retry_yf_call(_fetch)
+    except Exception:
+        return {}
 
 
 class Action(str, Enum):
@@ -289,7 +351,7 @@ def get_index_tickers_from_predictor(index_name: str) -> List[str]:
 
 
 def sort_tickers_by_market_cap(tickers: List[str], top_n: int = 0) -> List[str]:
-    """티커를 시가총액 기준으로 정렬"""
+    """티커를 시가총액 기준으로 정렬 (재시도 로직 포함)"""
     print(f"📊 {len(tickers)}개 종목을 시가총액 기준으로 정렬 중...")
 
     market_caps = {}
@@ -299,9 +361,9 @@ def sort_tickers_by_market_cap(tickers: List[str], top_n: int = 0) -> List[str]:
         batch = tickers[i:i+batch_size]
         for ticker in batch:
             try:
-                stock = yf.Ticker(ticker)
-                info = stock.info
-                market_cap = info.get("marketCap", 0) or 0
+                # 안전한 API 호출 (재시도 로직 포함)
+                info = _safe_get_ticker_info(ticker)
+                market_cap = info.get("marketCap", 0) or 0 if info else 0
                 market_caps[ticker] = market_cap
             except Exception:
                 market_caps[ticker] = 0
@@ -402,7 +464,7 @@ def generate_signals_from_predictor(
     analysis_date: str,
     top_pct: float = 0.4,  # 상위 40% 매수
     bottom_pct: float = 0.2,  # 하위 20% 매도
-    max_workers: int = 10,  # 병렬 처리 워커 수
+    max_workers: int = 3,  # 병렬 처리 워커 수 (rate limiting 대응)
     skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (401 오류 방지)
 ) -> Dict[str, Dict]:
     """profit-predictor 분석 결과에서 거래 신호 생성 (상대적 순위 기반, 병렬 처리)"""
@@ -551,7 +613,7 @@ def generate_hybrid_signals(
     fundamental_weight: float = 0.5,  # 펀더멘털 가중치 (나머지는 모멘텀)
     top_pct: float = 0.3,  # 상위 30% 매수
     bottom_pct: float = 0.2,  # 하위 20% 매도
-    max_workers: int = 10,
+    max_workers: int = 3,  # 병렬 처리 워커 수 (rate limiting 대응)
     skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (401 오류 방지)
 ) -> Dict[str, Dict]:
     """하이브리드 전략: 펀더멘털 + 모멘텀 결합 (상대적 순위 기반)"""
@@ -703,7 +765,7 @@ class BacktestEngine:
         rebalance_frequency: str = "weekly",  # daily, weekly, monthly
         strategy: str = "momentum",  # momentum, predictor
         benchmark: str = "SPY",
-        workers: int = 10,  # 병렬 처리 워커 수
+        workers: int = 3,  # 병렬 처리 워커 수 (rate limiting 대응)
         skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (대량 백테스트 시 401 오류 방지)
     ):
         self.tickers = tickers
@@ -841,47 +903,57 @@ class BacktestEngine:
 
                 print(" 완료", flush=True)
 
-                # 거래 실행 (가격이 유효한 종목만)
+                # 거래 실행 - 점수 순으로 정렬하여 처리 (현금 한도 내에서 최적 배분)
+                # 1. 먼저 SELL 처리 (현금 확보)
+                # 2. 그 다음 BUY를 점수 순으로 처리 (점수 높은 종목 우선 매수)
+
+                # SELL 신호 먼저 처리
                 for ticker in available_tickers:
                     signal = signals.get(ticker, {})
                     action = signal.get("action", Action.HOLD)
+                    if action != Action.SELL:
+                        continue
+
                     confidence = signal.get("confidence", 0.0)
-
-                    if action == Action.HOLD:
-                        continue
-
                     quantity = calculate_position_size(
-                        self.portfolio,
-                        current_prices,
-                        ticker,
-                        action,
-                        confidence,
+                        self.portfolio, current_prices, ticker, action, confidence,
                     )
-
-                    if quantity <= 0:
-                        continue
-
-                    price = current_prices[ticker]
-                    executed_qty = 0
-
-                    if action == Action.BUY:
-                        executed_qty = self.portfolio.buy(ticker, quantity, price)
-                    elif action == Action.SELL:
+                    if quantity > 0:
+                        price = current_prices[ticker]
                         executed_qty = self.portfolio.sell(ticker, quantity, price)
-                    elif action == Action.SHORT:
-                        executed_qty = self.portfolio.short_open(ticker, quantity, price)
-                    elif action == Action.COVER:
-                        executed_qty = self.portfolio.short_cover(ticker, quantity, price)
+                        if executed_qty > 0:
+                            self.trade_history.append({
+                                "date": current_date_str, "ticker": ticker,
+                                "action": action.value, "quantity": executed_qty,
+                                "price": price, "confidence": confidence,
+                            })
 
-                    if executed_qty > 0:
-                        self.trade_history.append({
-                            "date": current_date_str,
-                            "ticker": ticker,
-                            "action": action.value,
-                            "quantity": executed_qty,
-                            "price": price,
-                            "confidence": confidence,
-                        })
+                # BUY 신호를 점수 순으로 정렬하여 처리 (점수 높은 종목 우선)
+                buy_signals = []
+                for ticker in available_tickers:
+                    signal = signals.get(ticker, {})
+                    if signal.get("action") == Action.BUY:
+                        # hybrid_score 또는 score 또는 confidence로 정렬
+                        score = signal.get("hybrid_score") or signal.get("score") or signal.get("confidence", 0)
+                        buy_signals.append((ticker, signal, score))
+
+                # 점수 내림차순 정렬
+                buy_signals.sort(key=lambda x: x[2], reverse=True)
+
+                for ticker, signal, _ in buy_signals:
+                    confidence = signal.get("confidence", 0.0)
+                    quantity = calculate_position_size(
+                        self.portfolio, current_prices, ticker, Action.BUY, confidence,
+                    )
+                    if quantity > 0:
+                        price = current_prices[ticker]
+                        executed_qty = self.portfolio.buy(ticker, quantity, price)
+                        if executed_qty > 0:
+                            self.trade_history.append({
+                                "date": current_date_str, "ticker": ticker,
+                                "action": Action.BUY.value, "quantity": executed_qty,
+                                "price": price, "confidence": confidence,
+                            })
 
             # 포트폴리오 가치 기록
             total_value = self.portfolio.get_total_value(current_prices)
@@ -1026,7 +1098,7 @@ def main():
                        help="리밸런싱 주기 (기본: weekly)")
     parser.add_argument("--benchmark", type=str, default="SPY", help="벤치마크 티커 (기본: SPY)")
     parser.add_argument("--margin", type=float, default=0.5, help="마진 요구율 (기본: 0.5)")
-    parser.add_argument("--workers", type=int, default=10, help="병렬 처리 워커 수 (기본: 10)")
+    parser.add_argument("--workers", type=int, default=3, help="병렬 처리 워커 수 (기본: 3, rate limiting 대응)")
     parser.add_argument("--output", type=str, help="결과 JSON 저장 경로")
     parser.add_argument("--skip-news", action="store_true",
                        help="뉴스/내부자 거래 조회 건너뜀 (대량 백테스트 시 Yahoo Finance 401 오류 방지)")
