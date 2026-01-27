@@ -204,7 +204,15 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 
 | 파일 | 용도 |
 |------|------|
-| `analyze_stocks.py` | **메인 분석 스크립트** - 종목 분석 및 순위 산정 |
+| `analyze_stocks.py` | **CLI 진입점** - 명령줄 인터페이스 및 실행 흐름 |
+| `config.py` | 공유 상수 및 설정 (팩터/투자자 가중치, 키워드 등) |
+| `cache.py` | 파일 기반 캐시 시스템 (날짜별 디렉토리 구조) |
+| `rate_limiter.py` | Yahoo Finance rate limiting 대응 (재시도, 안전 래퍼) |
+| `data_fetcher.py` | 데이터 수집 (재무지표, 가격, 뉴스, 내부자거래, 인덱스 티커) |
+| `factor_scoring.py` | 7가지 팩터 점수 계산 (가치/성장/품질/모멘텀/안전성/센티먼트/내부자) |
+| `investor_scoring.py` | 5명 투자자 스타일 점수 (Buffett/Lynch/Graham/Fisher/Druckenmiller) + 섹터통계 + 경고 |
+| `analysis.py` | 분석 파이프라인 (단일 티커 분석 + 배치 분석) |
+| `reporting.py` | 결과 출력 포맷팅 (전략별 테이블, 요약, 경고) |
 | `ranking_algorithm.py` | 앙상블 점수 계산 알고리즘 (내부 사용) |
 
 ## 데이터 소스
