@@ -671,6 +671,10 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
             "52_week_change": info.get("52WeekChange"),
             "50_day_average": info.get("fiftyDayAverage"),
             "200_day_average": info.get("twoHundredDayAverage"),
+
+            # ===== 섹터/인더스트리 정보 (상대적 밸류에이션용) =====
+            "sector": info.get("sector"),
+            "industry": info.get("industry"),
         }
     except Exception as e:
         return None
@@ -1693,19 +1697,113 @@ def calculate_insider_activity_score(insider_trades: list) -> tuple:
 
 
 # ============================================================================
+# 섹터별 통계 계산 (상대적 밸류에이션용)
+# ============================================================================
+
+def calculate_sector_stats(all_metrics: list) -> dict:
+    """
+    모든 종목의 섹터별 평균/중간값 계산
+
+    Returns:
+        dict: {
+            'Technology': {'pe_median': 25, 'pe_avg': 28, 'pb_median': 5, 'peg_median': 1.5, ...},
+            'Healthcare': {...},
+            ...
+            '_market': {...}  # 전체 시장 통계
+        }
+    """
+    from collections import defaultdict
+    import statistics
+
+    sector_data = defaultdict(lambda: {'pe': [], 'pb': [], 'peg': [], 'roe': [], 'growth': [], 'momentum': []})
+
+    for m in all_metrics:
+        if not m:
+            continue
+        sector = m.get('sector') or '_unknown'
+
+        # P/E
+        pe = m.get('price_to_earnings_ratio')
+        if pe and 0 < pe < 500:  # 이상치 제외
+            sector_data[sector]['pe'].append(pe)
+            sector_data['_market']['pe'].append(pe)
+
+        # P/B
+        pb = m.get('price_to_book_ratio')
+        if pb and 0 < pb < 50:
+            sector_data[sector]['pb'].append(pb)
+            sector_data['_market']['pb'].append(pb)
+
+        # PEG
+        peg = m.get('peg_ratio')
+        if peg and -5 < peg < 10:
+            sector_data[sector]['peg'].append(peg)
+            sector_data['_market']['peg'].append(peg)
+
+        # ROE
+        roe = m.get('return_on_equity')
+        if roe and -1 < roe < 2:
+            sector_data[sector]['roe'].append(roe)
+            sector_data['_market']['roe'].append(roe)
+
+        # Revenue Growth
+        growth = m.get('revenue_growth')
+        if growth and -1 < growth < 3:
+            sector_data[sector]['growth'].append(growth)
+            sector_data['_market']['growth'].append(growth)
+
+    # 통계 계산
+    result = {}
+    for sector, data in sector_data.items():
+        result[sector] = {}
+        for metric, values in data.items():
+            if len(values) >= 3:  # 최소 3개 데이터 필요
+                result[sector][f'{metric}_median'] = statistics.median(values)
+                result[sector][f'{metric}_avg'] = statistics.mean(values)
+                result[sector][f'{metric}_std'] = statistics.stdev(values) if len(values) > 1 else 0
+                result[sector][f'{metric}_p25'] = sorted(values)[len(values) // 4] if len(values) >= 4 else min(values)
+                result[sector][f'{metric}_p75'] = sorted(values)[3 * len(values) // 4] if len(values) >= 4 else max(values)
+                result[sector][f'{metric}_count'] = len(values)
+
+    return result
+
+
+def get_percentile_rank(value: float, values: list) -> float:
+    """값이 리스트에서 몇 번째 백분위인지 계산 (0-100)"""
+    if not values or value is None:
+        return 50  # 기본값
+    sorted_vals = sorted(values)
+    count_below = sum(1 for v in sorted_vals if v < value)
+    return (count_below / len(sorted_vals)) * 100
+
+
+# ============================================================================
 # 투자자 스타일별 점수 (원본 에이전트 로직 반영)
 # ============================================================================
 
 def calculate_buffett_score(metrics, growth_score, quality_score, safety_score) -> float:
     """
-    Warren Buffett 스타일 점수 (moat + margin of safety)
-    - 높은 ROE + 낮은 부채 + 일관된 수익성
+    Warren Buffett 스타일 점수 (moat + margin of safety) - 개선된 버전 v2
+
+    Buffett의 핵심 투자 철학:
+    - "Price is what you pay. Value is what you get."
+    - "It's far better to buy a wonderful company at a fair price"
+    - 높은 ROE + 낮은 부채 + 일관된 수익성 + 이해 가능한 비즈니스
+
+    개선 사항:
+    - 산업별 조정: Buffett이 피하는 산업(원자재, 금광) 감점
+    - 수익 일관성: 최근 적자 이력 감점
+    - 밸류에이션: P/E가 너무 높으면 감점
     """
     if not metrics:
         return 0
 
-    m = metrics[0]
+    m = metrics[0] if isinstance(metrics, list) else metrics
     score = 0
+
+    # ========================================
+    # 1. 핵심 재무 지표 (기존 로직)
+    # ========================================
 
     # ROE > 15% (버핏의 핵심 기준)
     roe = m.get('return_on_equity')
@@ -1718,6 +1816,8 @@ def calculate_buffett_score(metrics, growth_score, quality_score, safety_score) 
     de = m.get('debt_to_equity')
     if de is not None and de < 0.5:
         score += 2
+    elif de is not None and de < 0:  # 음수 자기자본 (STX 같은 케이스)
+        score -= 2  # 패널티
 
     # 영업 마진 > 15%
     op_margin = m.get('operating_margin')
@@ -1727,73 +1827,344 @@ def calculate_buffett_score(metrics, growth_score, quality_score, safety_score) 
     # 품질과 안전성 가중
     score += quality_score * 0.2 + safety_score * 0.1
 
-    return min(10, score)
+    # ========================================
+    # 2. 산업별 조정 (Buffett 철학 반영)
+    # ========================================
+    sector = m.get('sector')
 
+    # Buffett이 피하는 산업: 원자재, 금광, 에너지 (가격 결정력 없음)
+    # "Gold gets dug out of the ground... Anyone watching from Mars would be scratching their head."
+    BUFFETT_AVOID_SECTORS = ['Basic Materials', 'Energy']
+    if sector in BUFFETT_AVOID_SECTORS:
+        score = score * 0.6  # 40% 감점 - 아무리 숫자가 좋아도 Buffett 철학과 맞지 않음
 
-def calculate_lynch_score(metrics, growth_score, sentiment_score, insider_score) -> float:
-    """
-    Peter Lynch 스타일 점수 (GARP + PEG)
-    - PEG < 1이 핵심
-    - 성장 + 센티먼트 중시
-    """
-    if not metrics:
-        return 0
+    # Buffett이 선호하는 산업: 소비재, 금융, 헬스케어
+    BUFFETT_PREFER_SECTORS = ['Consumer Defensive', 'Financial Services', 'Healthcare']
+    if sector in BUFFETT_PREFER_SECTORS:
+        score += 0.5  # 약간의 가산점
 
-    m = metrics[0]
-    score = 0
-
-    # PEG 비율 (Lynch의 핵심 지표)
-    peg = m.get('peg_ratio')
-    if peg:
-        if 0 < peg < 1:
-            score += 4
-        elif 0 < peg < 1.5:
-            score += 2
-        elif 0 < peg < 2:
+    # ========================================
+    # 3. 밸류에이션 체크 (안전 마진)
+    # ========================================
+    pe = m.get('price_to_earnings_ratio')
+    if pe and pe > 0:
+        if pe > 50:  # P/E 50 이상은 Buffett이 절대 안 삼
+            score -= 2
+        elif pe > 35:  # P/E 35 이상도 비쌈
+            score -= 1
+        elif pe < 15:  # P/E 15 미만은 가치주 가산점
             score += 1
 
-    # 성장 점수 반영
-    score += growth_score * 0.3
+    # ========================================
+    # 4. 수익 일관성 체크
+    # ========================================
+    # 순이익이 음수면 감점 (최근 적자)
+    net_income = m.get('net_income')
+    if net_income and net_income < 0:
+        score -= 2  # "Rule #1: Never lose money"
 
-    # 센티먼트와 내부자 활동 반영
-    score += sentiment_score * 0.1 + insider_score * 0.1
-
-    return min(10, score)
+    return min(10, max(0, score))
 
 
-def calculate_graham_score(metrics) -> float:
+def calculate_lynch_score(metrics, growth_score, sentiment_score, insider_score, sector_stats=None) -> float:
     """
-    Ben Graham 스타일 점수 (Deep Value)
-    - 낮은 P/E, 낮은 P/B, NCAV
+    Peter Lynch 스타일 점수 (GARP + PEG) - 개선된 버전 v3
+
+    Lynch의 핵심 투자 철학 ("One Up on Wall Street"):
+    - "주식 뒤에는 회사가 있고, 회사는 성장한다"
+    - PEG < 1 = 성장 대비 저평가 (GARP의 핵심)
+    - "10배주(Ten-Bagger)"를 찾아라
+    - 내부자 매수는 강력한 신호
+    - 6가지 분류: Slow Grower, Stalwart, Fast Grower, Cyclical, Turnaround, Asset Play
+    - "아는 것에 투자하라" - 이해 가능한 비즈니스 선호
+
+    v3 개선 사항:
+    - 수익 안정성 보너스 (Lynch: "boring but profitable" 선호)
+    - 매출 성장 직접 반영 (Lynch는 매출 성장을 매우 중시)
+    - 대형주 패널티 완화 (Stalwart도 좋은 투자)
+    - 배당 + 성장 콤보 (Lynch의 "total return" 관점)
+
+    점수 구조 (최대 10점):
+    - 상대적 PEG: 최대 4점 (섹터 대비 저평가)
+    - GARP 비율: 최대 2.5점 (성장률/P/E)
+    - 성장 가중치: 최대 3점 (Lynch의 핵심!)
+    - 수익 안정성 + 배당: 최대 2점 (v3 신규)
+    - 10배 가능성: 최대 1.5점
+    - 내부자/센티먼트: 최대 1점
     """
     if not metrics:
         return 0
 
-    m = metrics[0]
+    m = metrics[0] if isinstance(metrics, list) else metrics
     score = 0
 
-    # P/E < 15 (Graham Number)
+    peg = m.get('peg_ratio')
+    sector = m.get('sector') or '_market'
+    rev_growth = m.get('revenue_growth')
+    earnings_growth = m.get('earnings_growth')
     pe = m.get('price_to_earnings_ratio')
-    if pe:
-        if 0 < pe < 10:
-            score += 4
-        elif 0 < pe < 15:
-            score += 2
 
-    # P/B < 1.5
+    # PEG가 없으면 직접 계산 (Lynch의 핵심 지표!)
+    # PEG = P/E ÷ (성장률 × 100)
+    if not peg and pe and pe > 0:
+        growth_rate = earnings_growth or rev_growth
+        if growth_rate and growth_rate > 0:
+            peg = pe / (growth_rate * 100)  # 예: P/E 46, 성장률 62.5% → PEG = 0.74
+
+    # 1. 상대적 PEG 평가 (섹터 대비) - Lynch의 핵심 지표
+    if peg and sector_stats:
+        sector_peg_median = sector_stats.get(sector, {}).get('peg_median') or sector_stats.get('_market', {}).get('peg_median')
+        if sector_peg_median and sector_peg_median > 0:
+            peg_ratio_to_sector = peg / sector_peg_median
+            if peg_ratio_to_sector < 0.5:  # 섹터 중간값의 50% 미만 (매우 저평가)
+                score += 4
+            elif peg_ratio_to_sector < 0.7:  # 섹터 중간값의 70% 미만
+                score += 3
+            elif peg_ratio_to_sector < 0.9:  # 섹터 중간값의 90% 미만
+                score += 2
+            elif peg_ratio_to_sector < 1.1:  # 섹터 중간값 근처
+                score += 1
+    # PEG 절대값 평가 (섹터 통계 없거나 추가 가점)
+    if peg:
+        if 0 < peg < 0.5:  # 극단적 저평가
+            score += 1.5
+        elif 0 < peg < 1:  # Lynch의 황금 기준
+            score += 1
+
+    # 2. GARP 본질: 성장률 대비 밸류에이션 균형
+    if pe and pe > 0:
+        # 성장률(%) / P/E 비율 = 높을수록 좋음
+        growth_rate = max(rev_growth or 0, earnings_growth or 0)
+        if growth_rate > 0:
+            garp_ratio = (growth_rate * 100) / pe
+            if garp_ratio > 2.0:  # 성장률이 P/E의 2배 이상 (환상적)
+                score += 2.5
+            elif garp_ratio > 1.5:  # 성장률이 P/E의 1.5배 이상
+                score += 2
+            elif garp_ratio > 1.0:  # 성장률이 P/E 이상
+                score += 1.5
+            elif garp_ratio > 0.5:
+                score += 0.5
+
+    # 3. 성장 점수 반영 (Lynch는 성장 중시! - 가중치 대폭 상향)
+    score += growth_score * 0.3  # 최대 3점
+
+    # ========================================
+    # 4. [v3] 수익 안정성 + 배당 콤보 (최대 2점)
+    # ========================================
+    # Lynch: "지루하지만 수익성 좋은 회사" (Stalwart)도 훌륭한 투자
+    # Lynch: 배당 + 성장 = "total return" (배당 재투자의 마법)
+    roe = m.get('return_on_equity')
+    op_margin = m.get('operating_margin')
+    div_yield = m.get('dividend_yield')
+
+    # 수익 안정성 (ROE > 15% + 영업이익률 > 10%)
+    if roe and roe > 0.15 and op_margin and op_margin > 0.10:
+        score += 1  # Lynch: "이런 회사는 Stalwart, 10-50% 수익 가능"
+    elif roe and roe > 0.10 and op_margin and op_margin > 0.05:
+        score += 0.5
+
+    # 배당 + 성장 콤보 (Lynch의 total return)
+    if div_yield and div_yield > 0 and rev_growth and rev_growth > 0:
+        total_return_est = div_yield + rev_growth  # 배당 + 성장률 합산
+        if total_return_est > 0.15:  # 15%+ 예상 total return
+            score += 1
+        elif total_return_est > 0.08:  # 8%+ 양호
+            score += 0.5
+
+    # ========================================
+    # 5. [v3] 매출 성장 직접 반영 (Lynch는 매출 성장을 매우 중시)
+    # ========================================
+    # Lynch: "매출이 성장하지 않는 회사의 이익 성장은 지속 불가"
+    if rev_growth:
+        if rev_growth > 0.25:  # 25%+ 고성장
+            score += 1
+        elif rev_growth > 0.10:  # 10%+ 양호
+            score += 0.5
+
+    # 6. "10배 가능성" 가점 - 고성장 + 저PEG 조합
+    if rev_growth and rev_growth > 0.20:  # 20% 이상 성장
+        if peg and 0 < peg < 1.5:
+            score += 1.5  # 10배주 잠재력
+        elif peg and 0 < peg < 2:
+            score += 0.5
+
+    # 7. 내부자 활동 (Lynch: "내부자 매수는 좋은 신호, 매도는 의미 없음")
+    score += insider_score * 0.1  # 최대 1점
+
+    # ========================================
+    # 8. 매출 트렌드 체크 - "떨어지는 칼" 감지
+    # ========================================
+    # Lynch: "좋은 스토리가 없으면 투자하지 않는다"
+    if rev_growth is not None:
+        if rev_growth < -0.20:  # 매출 20% 이상 급감
+            score -= 2.5  # "떨어지는 칼" 큰 패널티
+        elif rev_growth < -0.10:  # 매출 10% 이상 감소
+            score -= 1.5  # 스토리가 나빠지는 중
+
+    # ========================================
+    # 9. [v3] 시가총액 기반 조정 - 패널티 완화
+    # ========================================
+    # Lynch는 Stalwart(대형 우량주)도 좋은 투자라고 봄
+    # "메가캡도 10-50% 수익 가능" - 10배만 불가능할 뿐
+    market_cap = m.get('market_cap')
+    if market_cap:
+        if market_cap > 200e9:  # $200B+ 메가캡
+            score -= 0.8  # v3: -1.5 → -0.8 (Stalwart으로서의 가치 인정)
+        elif market_cap > 100e9:  # $100B+ 대형주
+            score -= 0.3  # v3: -0.5 → -0.3
+        elif market_cap < 10e9:  # $10B 미만 중소형
+            score += 0.5  # 10배 잠재력 있음
+        elif market_cap < 2e9:  # $2B 미만 소형주
+            score += 1.0  # 10배주 후보!
+
+    # ========================================
+    # 10. 경기순환주(Cyclicals) 사이클 위치 조정
+    # ========================================
+    # Lynch: "경기순환주는 PEG가 낮을 때가 아니라 높을 때 사야 한다"
+    CYCLICAL_SECTORS = ['Basic Materials', 'Energy', 'Industrials']
+    if sector in CYCLICAL_SECTORS:
+        # 원자재/에너지는 저PEG가 오히려 사이클 정점 신호일 수 있음
+        if peg and peg < 0.5 and rev_growth and rev_growth < 0:
+            score -= 1.5  # 사이클 정점 + 매출 감소 = 위험
+        # 원자재 산업 자체에 약간의 패널티 (Lynch는 "이해하기 쉬운" 스토리 선호)
+        score -= 0.5
+
+    return min(10, max(0, score))
+
+
+def calculate_graham_score(metrics, sector_stats=None) -> float:
+    """
+    Ben Graham 스타일 점수 (Deep Value) - 개선된 버전 v3
+
+    실제 Graham의 투자 방식 ("The Intelligent Investor"):
+    - "미스터 마켓"의 비합리성을 이용
+    - 안전마진(Margin of Safety) = 내재가치 대비 할인
+    - 배당 지급 기업 선호 (수익 환원)
+    - 수익 안정성 중시 (적어도 10년 연속 이익)
+    - 적정 성장 (지나친 성장주 회의)
+
+    v3 개선 사항:
+    - 배당 수익률 + 이익 안정성 추가 (Graham의 "방어적 투자자" 기준)
+    - FCF Yield 추가 (현대적 안전마진 지표)
+    - 점수 밸런스 조정 (밸류에이션 50% + 재무건전성 30% + 수익안정성 20%)
+    """
+    if not metrics:
+        return 0
+
+    m = metrics[0] if isinstance(metrics, list) else metrics
+    score = 0
+
+    pe = m.get('price_to_earnings_ratio')
     pb = m.get('price_to_book_ratio')
-    if pb:
-        if 0 < pb < 1:
-            score += 3
-        elif 0 < pb < 1.5:
+    sector = m.get('sector') or '_market'
+
+    # ========================================
+    # A. 밸류에이션 (최대 ~5점) - Graham의 핵심
+    # ========================================
+
+    # 1. 상대적 P/E 평가 (섹터 대비)
+    if pe and pe > 0 and sector_stats:
+        sector_pe_median = sector_stats.get(sector, {}).get('pe_median') or sector_stats.get('_market', {}).get('pe_median')
+        if sector_pe_median and sector_pe_median > 0:
+            pe_discount = 1 - (pe / sector_pe_median)  # 할인율 (양수가 좋음)
+            if pe_discount > 0.5:  # 50% 이상 할인
+                score += 3
+            elif pe_discount > 0.3:  # 30% 이상 할인
+                score += 2.5
+            elif pe_discount > 0.15:  # 15% 이상 할인
+                score += 1.5
+            elif pe_discount > 0:  # 섹터 평균 미만
+                score += 1
+            elif pe_discount > -0.15:  # 섹터 평균 약간 상회도 중립
+                score += 0.5
+        elif pe:  # 섹터 통계 없으면 절대값 사용 (폴백)
+            if 0 < pe < 10:
+                score += 3
+            elif 0 < pe < 15:
+                score += 2
+            elif 0 < pe < 25:
+                score += 0.5
+
+    # 2. P/B 평가 (Graham Number 핵심 요소)
+    if pb and pb > 0:
+        if 0 < pb < 1:  # 순자산 미만 = 극단적 저평가
             score += 2
+        elif 0 < pb < 1.5:  # Graham의 전통적 기준
+            score += 1.5
+        elif 0 < pb < 3:  # 현대 시장에서 합리적
+            score += 0.5
 
-    # 유동비율 > 2
+    # 3. Graham Number: P/E × P/B < 22.5
+    if pe and pb and pe > 0 and pb > 0:
+        graham_product = pe * pb
+        if graham_product < 15:  # 매우 저평가
+            score += 1.5
+        elif graham_product < 22.5:  # Graham 기준 충족
+            score += 1
+
+    # ========================================
+    # B. 재무 건전성 (최대 ~3점) - "방어적 투자자" 기준
+    # ========================================
+
+    # 4. 유동비율 (재무 안전성)
     cr = m.get('current_ratio')
-    if cr and cr > 2:
-        score += 2
+    if cr:
+        if cr > 2:
+            score += 1.5
+        elif cr > 1.5:
+            score += 1
+        elif cr > 1:
+            score += 0.5
 
-    return min(10, score)
+    # 5. FCF Yield (현대적 안전마진 지표)
+    # Graham은 "earning power"를 중시했으며, 현대에서는 FCF Yield로 대체
+    fcf_yield = m.get('free_cash_flow_yield')
+    if fcf_yield and fcf_yield > 0:
+        if fcf_yield > 0.08:  # 8%+ FCF Yield = 매우 저평가
+            score += 1.5
+        elif fcf_yield > 0.05:  # 5%+ = 양호
+            score += 1
+        elif fcf_yield > 0.03:  # 3%+ = 적정
+            score += 0.5
+
+    # ========================================
+    # C. 수익 안정성 + 배당 (최대 ~3점) - v3 신규
+    # ========================================
+
+    # 6. 배당 수익률 (Graham: "방어적 투자자는 배당주를 선호")
+    div_yield = m.get('dividend_yield')
+    if div_yield and div_yield > 0:
+        if div_yield > 0.04:  # 4%+ 고배당
+            score += 1.5
+        elif div_yield > 0.02:  # 2%+ 적정 배당
+            score += 1
+        elif div_yield > 0.01:  # 1%+ 소액 배당도 가점
+            score += 0.5
+
+    # 7. 이익 안정성: ROE 양수 + 영업이익률 양수 = 수익 기반 탄탄
+    roe = m.get('return_on_equity')
+    op_margin = m.get('operating_margin')
+    if roe and roe > 0 and op_margin and op_margin > 0:
+        if roe > 0.10 and op_margin > 0.10:
+            score += 1  # 안정적 수익 기업
+        elif roe > 0.05 and op_margin > 0.05:
+            score += 0.5
+
+    # 8. 52주 저점 대비 위치 (역발상 투자 - "미스터 마켓" 활용)
+    week_52_high = m.get('52_week_high')
+    week_52_low = m.get('52_week_low')
+    current_price = m.get('50_day_average')  # 현재가 근사
+    if week_52_high and week_52_low and current_price:
+        range_52 = week_52_high - week_52_low
+        if range_52 > 0:
+            position = (current_price - week_52_low) / range_52
+            if position < 0.25:  # 52주 범위 하위 25%
+                score += 1
+            elif position < 0.40:  # 하위 40%도 약간 가점
+                score += 0.5
+
+    return min(10, max(0, score))
 
 
 def calculate_fisher_score(metrics, growth_score, quality_score) -> float:
@@ -1811,7 +2182,7 @@ def calculate_fisher_score(metrics, growth_score, quality_score) -> float:
     if not metrics:
         return 0
 
-    m = metrics[0]
+    m = metrics[0] if isinstance(metrics, list) else metrics
     score = 0
 
     # 1. 매출 성장 (Fisher: "성장 잠재력이 있는 회사")
@@ -1861,28 +2232,158 @@ def calculate_fisher_score(metrics, growth_score, quality_score) -> float:
     return min(10, max(0, score))
 
 
-def calculate_druckenmiller_score(momentum_score, growth_score) -> float:
+def calculate_druckenmiller_score(momentum_score, growth_score, momentum_details=None, metrics=None) -> float:
     """
-    Stanley Druckenmiller 스타일 점수 (Macro + Momentum)
-    - 강한 모멘텀 + 매크로 트렌드
+    Stanley Druckenmiller 스타일 점수 (Momentum + Conviction) - 개선된 버전 v2
+
+    Druckenmiller의 핵심 투자 철학:
+    - "맞으면 크게 베팅하라" (확신 있을 때 집중 투자)
+    - "추세는 친구다" (모멘텀 추종)
+    - "손실은 작게, 수익은 크게" (비대칭 리스크-리워드)
+    - "매크로 + 모멘텀" 조합
+
+    점수 구조 (최대 10점):
+    - 기본 모멘텀: 최대 5점 (핵심!)
+    - 추세 일치/강도: 최대 2.5점
+    - 빅 베팅 조건: 최대 2점
+    - 돌파 잠재력: 최대 1.5점
     """
-    # 모멘텀 중심
-    score = momentum_score * 0.6 + growth_score * 0.3
-    return min(10, score)
+    score = 0
+
+    # 1. 기본 모멘텀 점수 (Druckenmiller의 핵심! - 가중치 대폭 상향)
+    score += momentum_score * 0.5  # 최대 5점
+
+    # 2. "빅 베팅" 조건 - 강한 모멘텀 시 추가 가점
+    if momentum_score >= 8:  # 매우 강한 모멘텀
+        score += 2  # 빅 베팅 가점
+    elif momentum_score >= 6:  # 강한 모멘텀
+        score += 1
+
+    # 3. 모멘텀 + 성장 시너지 (둘 다 높으면 확신도 상승)
+    if momentum_score >= 6 and growth_score >= 5:
+        score += 1  # 시너지 보너스
+
+    # 4. 추세 일치 분석 (단기 + 장기 방향 일치 = 강한 추세)
+    if momentum_details:
+        short_momentum = momentum_details.get('short_momentum', 0)
+        long_momentum = momentum_details.get('long_momentum', 0)
+        rsi = momentum_details.get('rsi', 50)
+        trend_strength = momentum_details.get('trend_strength', 0)
+
+        # 단기 + 장기 모멘텀 방향 일치 (Druckenmiller: 추세 확인)
+        if short_momentum > 0 and long_momentum > 0:
+            # 둘 다 양수이고 강할수록 가점
+            alignment_strength = min(short_momentum, long_momentum)
+            if alignment_strength > 5:  # 둘 다 강한 상승
+                score += 1.5
+            elif alignment_strength > 2:
+                score += 1
+            else:
+                score += 0.5
+
+        # 추세 강도 보너스
+        if trend_strength and trend_strength > 0.7:
+            score += 1
+        elif trend_strength and trend_strength > 0.5:
+            score += 0.5
+
+        # RSI 기반 진입 타이밍 (Druckenmiller: 타이밍이 중요)
+        if 40 < rsi < 70:  # 건강한 상승 추세 구간
+            score += 0.5
+
+    # 5. 52주 고점 돌파 잠재력 (Druckenmiller: 돌파 매수)
+    if metrics:
+        m = metrics[0] if isinstance(metrics, list) else metrics
+        week_52_high = m.get('52_week_high')
+        current = m.get('50_day_average')
+        if week_52_high and current and week_52_high > 0:
+            proximity_to_high = current / week_52_high
+            if proximity_to_high > 0.98:  # 신고가 임박 (2% 이내)
+                score += 1.5
+            elif proximity_to_high > 0.95:  # 고점 근처 (5% 이내)
+                score += 1
+            elif proximity_to_high > 0.90:  # 고점 대비 10% 이내
+                score += 0.5
+
+    return min(10, max(0, score))
 
 
-# 투자자별 가중치 (5명 최적화 앙상블)
+# 투자자별 가중치 (5명 최적화 앙상블) - v2: Lynch 강화, Druckenmiller 완화
 # 선정 기준: 장기 검증된 수익률(15년+), 독특한 투자 철학, 정량화 가능성
 INVESTOR_WEIGHTS = {
     "buffett": 1.00,       # 50년+ 검증, 연평균 ~20%, 품질+가치+moat
-    "lynch": 0.95,         # 13년 연평균 29%, GARP/PEG (독특한 관점)
+    "lynch": 1.05,         # 13년 연평균 29%, GARP/PEG (v2: 최고 수익률 반영, 0.95→1.05)
     "graham": 0.90,        # 가치투자 원조, 딥밸류+안전마진
-    "druckenmiller": 0.85, # 30년+ 연평균 30%, 유일한 모멘텀/매크로 관점
-    "fisher": 0.80,        # 성장주 투자 원조, 경영진/R&D 품질
+    "druckenmiller": 0.70, # 30년+ 연평균 30%, 모멘텀/매크로 (v2: 이중가중치 완화, 0.85→0.70)
+    "fisher": 0.85,        # 성장주 투자 원조, 경영진/R&D 품질 (v2: 0.80→0.85)
 }
 
 
-def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fundamental", skip_news=False):
+def generate_investor_warnings(ticker: str, investor_scores: dict, metrics: dict) -> list:
+    """
+    알고리즘 점수와 실제 투자자 철학 간의 잠재적 불일치를 감지하고 경고 생성.
+
+    문제 배경:
+    - 알고리즘은 정량적 메트릭만 사용 (ROE, PEG 등)
+    - 실제 투자자들은 산업 특성, 비즈니스 모델, 사이클 위치 등 정성적 요소도 고려
+    - 예: NEM(금광주)은 숫자상 Buffett 기준 충족하지만, Buffett은 금광주 투자 안 함
+
+    Returns:
+        list: 경고 메시지 리스트 (비어있으면 불일치 없음)
+    """
+    warnings = []
+    m = metrics[0] if isinstance(metrics, list) else metrics
+    sector = m.get('sector', '')
+    market_cap = m.get('market_cap', 0)
+    rev_growth = m.get('revenue_growth')
+    pe = m.get('price_to_earnings_ratio')
+
+    # ========================================
+    # Buffett 관련 경고
+    # ========================================
+    buffett_score = investor_scores.get('buffett', 0)
+
+    # 원자재/에너지 산업 + 높은 Buffett 점수 = 철학 충돌
+    if buffett_score >= 6 and sector in ['Basic Materials', 'Energy']:
+        warnings.append(f"⚠️ Buffett 높은점수({buffett_score:.1f}) but 원자재/에너지 (철학 충돌)")
+
+    # P/E 50 이상 + 높은 Buffett 점수 = 안전마진 부족
+    if buffett_score >= 6 and pe and pe > 50:
+        warnings.append(f"⚠️ Buffett 높은점수({buffett_score:.1f}) but P/E {pe:.0f} (과대평가)")
+
+    # ========================================
+    # Lynch 관련 경고
+    # ========================================
+    lynch_score = investor_scores.get('lynch', 0)
+
+    # 대형주 + 높은 Lynch 점수 = 10배주 불가능
+    if lynch_score >= 6 and market_cap and market_cap > 200e9:
+        cap_str = f"${market_cap/1e9:.0f}B"
+        warnings.append(f"⚠️ Lynch 높은점수({lynch_score:.1f}) but 메가캡({cap_str}, 10배 어려움)")
+
+    # 매출 급감 + 높은 Lynch 점수 = 떨어지는 칼
+    if lynch_score >= 6 and rev_growth and rev_growth < -0.15:
+        warnings.append(f"⚠️ Lynch 높은점수({lynch_score:.1f}) but 매출 {rev_growth*100:.0f}% (떨어지는 칼)")
+
+    # 경기순환 산업 + 낮은 PEG + 매출 감소 = 사이클 정점 위험
+    if lynch_score >= 6 and sector in ['Basic Materials', 'Energy', 'Industrials']:
+        if rev_growth and rev_growth < 0:
+            warnings.append(f"⚠️ Lynch 높은점수({lynch_score:.1f}) but 경기순환주 하락기")
+
+    # ========================================
+    # Graham 관련 경고
+    # ========================================
+    graham_score = investor_scores.get('graham', 0)
+
+    # Graham은 음수 ROE/적자 기업에 투자 안 함
+    roe = m.get('return_on_equity')
+    if graham_score >= 6 and roe and roe < 0:
+        warnings.append(f"⚠️ Graham 높은점수({graham_score:.1f}) but ROE 음수 (적자)")
+
+    return warnings
+
+
+def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fundamental", skip_news=False, sector_stats=None):
     """
     단일 종목 종합 분석 (앙상블 투자자 점수 포함)
 
@@ -1892,6 +2393,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         prefetched_prices: 미리 배치로 가져온 가격 데이터 (선택사항)
         strategy: 분석 전략 (fundamental, momentum, hybrid)
         skip_news: True이면 뉴스/내부자 거래 조회 건너뜀 (대량 백테스트 시 401 오류 방지)
+        sector_stats: 섹터별 통계 (상대적 밸류에이션용, 없으면 절대값 기준 사용)
     """
     try:
         # 1. 재무 지표 수집
@@ -1938,19 +2440,22 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         # 시가총액 기반 보너스
         size_bonus, size_factors = calculate_size_bonus(market_cap, growth_score)
 
+        # 강화된 모멘텀 점수 (투자자 점수 계산 전에 먼저 계산 - Druckenmiller용)
+        enhanced_momentum_score, momentum_details = calculate_enhanced_momentum_score(prices)
+
         # ========================================
         # 투자자 스타일별 점수 계산 (5명 최적화 앙상블)
         # - Buffett: 품질+가치+moat (50년+ 검증)
-        # - Lynch: GARP/PEG (13년 연평균 29%)
-        # - Graham: 딥밸류+안전마진 (가치투자 원조)
-        # - Druckenmiller: 모멘텀+매크로 (30년+ 연평균 30%)
+        # - Lynch: GARP/PEG - 상대적 밸류에이션 (13년 연평균 29%)
+        # - Graham: 딥밸류+안전마진 - 상대적 밸류에이션 (가치투자 원조)
+        # - Druckenmiller: 모멘텀+매크로 - 리스크 조정 (30년+ 연평균 30%)
         # - Fisher: 성장+경영진 품질 (Buffett 스승)
         # ========================================
         investor_scores = {
             "buffett": calculate_buffett_score(metrics, growth_score, quality_score, safety_score),
-            "lynch": calculate_lynch_score(metrics, growth_score, sentiment_score, insider_score),
-            "graham": calculate_graham_score(metrics),
-            "druckenmiller": calculate_druckenmiller_score(momentum_score, growth_score),
+            "lynch": calculate_lynch_score(metrics, growth_score, sentiment_score, insider_score, sector_stats),
+            "graham": calculate_graham_score(metrics, sector_stats),
+            "druckenmiller": calculate_druckenmiller_score(enhanced_momentum_score, growth_score, momentum_details, metrics),  # enhanced_momentum 사용!
             "fisher": calculate_fisher_score(metrics, growth_score, quality_score),
         }
 
@@ -1978,20 +2483,29 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
             insider_score * FACTOR_WEIGHTS["insider"]
         )
 
-        # 강화된 모멘텀 점수 (0-10 스케일)
-        enhanced_momentum_score, momentum_details = calculate_enhanced_momentum_score(prices)
+        # ========================================
+        # Lynch GARP 보너스 (v2: Lynch 관점 강화)
+        # ========================================
+        # Lynch의 핵심 철학(PEG, GARP, 10배주)이 factor_score에 직접 반영되지 않으므로
+        # Lynch 점수가 높으면 추가 보너스 부여 (최대 0.5점)
+        lynch_garp_bonus = 0
+        lynch_score = investor_scores.get('lynch', 0)
+        if lynch_score >= 7:  # Lynch가 강력 추천하는 종목
+            lynch_garp_bonus = 0.5
+        elif lynch_score >= 5:  # Lynch가 긍정적인 종목
+            lynch_garp_bonus = 0.25
 
         # ========================================
         # 전략별 최종 점수 계산
         # ========================================
-        fundamental_score = ensemble_score * 0.6 + factor_score * 0.4 + size_bonus
+        fundamental_score = ensemble_score * 0.6 + factor_score * 0.4 + size_bonus + lynch_garp_bonus
 
         if strategy == "momentum":
             # 모멘텀 전략: 강화된 모멘텀 점수 중심
             total_score = enhanced_momentum_score
         elif strategy == "hybrid":
-            # 하이브리드 전략: 펀더멘털 50% + 모멘텀 50%
-            total_score = fundamental_score * 0.5 + enhanced_momentum_score * 0.5
+            # 하이브리드 전략: 펀더멘털 70% + 모멘텀 30% (v2: Druckenmiller 이중 가중치 완화)
+            total_score = fundamental_score * 0.7 + enhanced_momentum_score * 0.3
         else:
             # fundamental (기본): 기존 앙상블 방식
             total_score = fundamental_score
@@ -2021,6 +2535,9 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         bullish_investors = [k for k, v in investor_scores.items() if v >= 7]
         bearish_investors = [k for k, v in investor_scores.items() if v <= 3]
 
+        # 경고 플래그 생성 (알고리즘 vs 실제 투자자 철학 불일치 감지)
+        investor_warnings = generate_investor_warnings(ticker, investor_scores, metrics)
+
         m = metrics[0]
         return {
             "ticker": ticker,
@@ -2040,6 +2557,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
                 "sentiment": round(sentiment_score, 1),
                 "insider": round(insider_score, 1),
                 "size_bonus": round(size_bonus, 1),
+                "lynch_garp_bonus": round(lynch_garp_bonus, 2),  # v2: Lynch GARP 보너스
                 "fundamental": round(fundamental_score, 2),
             },
             "momentum_details": momentum_details,
@@ -2048,6 +2566,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
                 "bullish": bullish_investors,
                 "bearish": bearish_investors,
             },
+            "investor_warnings": investor_warnings,  # 철학 불일치 경고
             "market_cap": {
                 "value": market_cap,
                 "display": cap_display,
@@ -2091,14 +2610,37 @@ def run_batch_analysis(tickers, end_date, max_workers=MAX_WORKERS, strategy="fun
 
     all_prices = batch_fetch_prices(tickers, start_date_str, end_date)
 
-    # 2단계: 재무 지표 개별 분석 (병렬 처리)
-    print(f"📈 재무 지표 분석 중... ({total}개 종목)")
+    # 2단계: 재무 지표 선행 수집 (섹터 통계 계산용)
+    print(f"📊 섹터 통계 계산을 위한 재무 지표 수집 중... ({total}개 종목)")
+    all_metrics = []
+    metrics_map = {}
+
+    def fetch_metrics_only(ticker):
+        metrics = get_financial_metrics(ticker, end_date, period="annual", limit=2)
+        if metrics:
+            return ticker, metrics[0]
+        return ticker, None
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        for ticker, metrics in executor.map(lambda t: fetch_metrics_only(t), tickers):
+            if metrics:
+                all_metrics.append(metrics)
+                metrics_map[ticker] = metrics
+
+    # 3단계: 섹터별 통계 계산 (상대적 밸류에이션용)
+    sector_stats = calculate_sector_stats(all_metrics)
+    sector_count = len([k for k in sector_stats.keys() if not k.startswith('_')])
+    print(f"   ✅ {sector_count}개 섹터 통계 계산 완료 (총 {len(all_metrics)}개 종목)")
+
+    # 4단계: 전체 분석 (섹터 통계 반영)
+    print(f"📈 투자자 앙상블 분석 중... ({total}개 종목)")
+    processed = 0  # 재설정
 
     def process_with_progress(ticker):
         nonlocal processed
         # 미리 가져온 가격 데이터 전달
         prefetched_prices = all_prices.get(ticker)
-        result = analyze_single_ticker(ticker, end_date, prefetched_prices=prefetched_prices, strategy=strategy)
+        result = analyze_single_ticker(ticker, end_date, prefetched_prices=prefetched_prices, strategy=strategy, sector_stats=sector_stats)
         with lock:
             processed += 1
             if processed % 25 == 0 or processed == total:
@@ -2128,7 +2670,7 @@ def print_results(results, top_n=30, strategy="fundamental"):
     strategy_labels = {
         "fundamental": "펀더멘털 분석",
         "momentum": "모멘텀 분석",
-        "hybrid": "하이브리드 분석 (펀더멘털 + 모멘텀)",
+        "hybrid": "하이브리드 분석 (펀더멘털 70% + 모멘텀 30%)",
     }
 
     print("\n" + "=" * 140)
@@ -2224,6 +2766,20 @@ def print_results(results, top_n=30, strategy="fundamental"):
         picks = investor_picks.get(inv_key, [])
         if picks:
             print(f"   - {inv_name}: {', '.join(picks[:5])}" + (f" 외 {len(picks)-5}개" if len(picks) > 5 else ""))
+
+    # 투자 철학 불일치 경고 (상위 종목 중)
+    warnings_found = []
+    for r in results[:top_n]:
+        warnings = r.get('investor_warnings', [])
+        if warnings:
+            warnings_found.append((r['ticker'], warnings))
+
+    if warnings_found:
+        print(f"\n⚠️ 투자 철학 불일치 경고 (알고리즘 vs 실제 투자자)")
+        print(f"   (알고리즘 점수가 높지만 실제 투자자 철학과 충돌 가능성)")
+        for ticker, warnings in warnings_found[:10]:  # 최대 10개 표시
+            for w in warnings:
+                print(f"   - {ticker}: {w}")
 
     # 시가총액별 매수 추천 분포
     print(f"\n📏 시가총액별 매수 추천 분포")
@@ -2344,7 +2900,7 @@ def main():
     strategy_methods = {
         "fundamental": "Ensemble multi-factor analysis (Value + Growth + Quality + Momentum + Safety)",
         "momentum": "Enhanced momentum analysis (Short/Long momentum + RSI + Trend)",
-        "hybrid": "Hybrid analysis (50% Fundamental + 50% Enhanced Momentum)",
+        "hybrid": "Hybrid analysis (70% Fundamental + 30% Enhanced Momentum, Lynch GARP bonus)",
     }
     if args.output:
         output_data = {
