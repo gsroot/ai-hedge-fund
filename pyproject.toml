@@ -32,6 +32,9 @@ dependencies = [
     "langchain-gigachat>=0.3.12",
     "langchain-xai>=0.2.5",
     "yfinance>=1.1.0",
+    "pykrx>=1.2.3",
+    "opendartreader>=0.2.0",
+    "finance-datareader>=0.9.60",
 ]
 
 [project.optional-dependencies]
