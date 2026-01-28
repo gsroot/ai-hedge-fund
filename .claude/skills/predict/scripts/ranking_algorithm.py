@@ -16,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 
 # 캐시 디렉토리
-CACHE_DIR = Path.home() / ".cache" / "profit-predictor"
+CACHE_DIR = Path.home() / ".cache" / "predict"
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 # 기본 설정

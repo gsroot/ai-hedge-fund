@@ -18,11 +18,11 @@ except ImportError:
     print("yfinance가 설치되지 않았습니다. 설치: pip install yfinance")
     sys.exit(1)
 
-# 한국 주식 지원을 위해 profit-predictor의 유틸리티 가져오기
+# 한국 주식 지원을 위해 predict의 유틸리티 가져오기
 _kr_utils_loaded = False
 try:
     _skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    _predictor_scripts = os.path.join(_skills_dir, "profit-predictor", "scripts")
+    _predictor_scripts = os.path.join(_skills_dir, "predict", "scripts")
     if _predictor_scripts not in sys.path:
         sys.path.insert(0, _predictor_scripts)
     from ticker_utils import is_korean_ticker, normalize_korean_ticker

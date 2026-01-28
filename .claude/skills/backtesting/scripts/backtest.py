@@ -3,7 +3,7 @@
 Backtesting Engine for Claude Code Skills
 
 Yahoo Finance 기반의 백테스팅 시스템.
-profit-predictor의 분석 결과를 활용하여 거래 신호를 생성하고
+predict의 분석 결과를 활용하여 거래 신호를 생성하고
 포트폴리오 성과를 시뮬레이션합니다.
 """
 
@@ -34,7 +34,7 @@ load_dotenv()
 _kr_utils_loaded = False
 try:
     _skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    _predictor_scripts = os.path.join(_skills_dir, "profit-predictor", "scripts")
+    _predictor_scripts = os.path.join(_skills_dir, "predict", "scripts")
     if _predictor_scripts not in sys.path:
         sys.path.insert(0, _predictor_scripts)
     from ticker_utils import is_korean_ticker, normalize_korean_ticker
@@ -352,16 +352,16 @@ def calculate_performance_metrics(
 
 
 def get_index_tickers_from_predictor(index_name: str) -> List[str]:
-    """profit-predictor에서 인덱스 티커 목록 가져오기"""
+    """predict에서 인덱스 티커 목록 가져오기"""
     try:
         skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        predictor_scripts = os.path.join(skills_dir, "profit-predictor", "scripts")
+        predictor_scripts = os.path.join(skills_dir, "predict", "scripts")
         if predictor_scripts not in sys.path:
             sys.path.insert(0, predictor_scripts)
         from analyze_stocks import get_index_tickers
         return get_index_tickers(index_name, use_cache=True)
     except ImportError:
-        print(f"⚠️ profit-predictor 모듈을 불러올 수 없습니다. 기본 목록 사용.")
+        print(f"⚠️ predict 모듈을 불러올 수 없습니다. 기본 목록 사용.")
         return None
 
 
@@ -498,11 +498,11 @@ def generate_signals_from_predictor(
     max_workers: int = 3,  # 병렬 처리 워커 수 (rate limiting 대응)
     skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (401 오류 방지)
 ) -> Dict[str, Dict]:
-    """profit-predictor 분석 결과에서 거래 신호 생성 (상대적 순위 기반, 병렬 처리)"""
+    """predict 분석 결과에서 거래 신호 생성 (상대적 순위 기반, 병렬 처리)"""
     try:
-        # profit-predictor의 analyze_stocks 모듈 임포트
+        # predict의 analyze_stocks 모듈 임포트
         skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        predictor_scripts = os.path.join(skills_dir, "profit-predictor", "scripts")
+        predictor_scripts = os.path.join(skills_dir, "predict", "scripts")
         if predictor_scripts not in sys.path:
             sys.path.insert(0, predictor_scripts)
         from analyze_stocks import analyze_single_ticker
@@ -567,7 +567,7 @@ def generate_signals_from_predictor(
 
         return signals
     except ImportError as e:
-        print(f"  ⚠️ profit-predictor import 실패: {e}, 모멘텀 전략으로 대체")
+        print(f"  ⚠️ predict import 실패: {e}, 모멘텀 전략으로 대체")
         return generate_momentum_signals(tickers, analysis_date)
 
 
@@ -687,9 +687,9 @@ def generate_hybrid_signals(
     momentum_weight = 1.0 - fundamental_weight
 
     try:
-        # profit-predictor 임포트
+        # predict 임포트
         skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        predictor_scripts = os.path.join(skills_dir, "profit-predictor", "scripts")
+        predictor_scripts = os.path.join(skills_dir, "predict", "scripts")
         if predictor_scripts not in sys.path:
             sys.path.insert(0, predictor_scripts)
         from analyze_stocks import analyze_single_ticker
@@ -1182,7 +1182,7 @@ def main():
   # S&P 500 시가총액 상위 50개 백테스트
   uv run python backtest.py --index sp500 --top 50 --rebalance monthly
 
-  # profit-predictor 전략 사용
+  # predict 전략 사용
   uv run python backtest.py --tickers AAPL,MSFT --strategy predictor --rebalance monthly
 
   # 모멘텀 전략 사용
@@ -1245,7 +1245,7 @@ def main():
             else:
                 print(f"📋 {args.index.upper()}: {len(tickers)}개 종목 로드됨")
         elif args.index in ["sp500", "nasdaq100"]:
-            # profit-predictor에서 전체 인덱스 티커 가져오기
+            # predict에서 전체 인덱스 티커 가져오기
             tickers = get_index_tickers_from_predictor(args.index)
             if not tickers:
                 # fallback: 기본 상위 종목

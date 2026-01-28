@@ -2,7 +2,7 @@
 name: backtesting
 description: |
   포트폴리오 백테스팅 시스템. Yahoo Finance + DART/PyKRX 기반 히스토리컬 데이터로 투자 전략 시뮬레이션.
-  모멘텀 전략, profit-predictor 전략, 하이브리드 전략 지원. Sharpe/Sortino Ratio, Max Drawdown 등 성과 지표 계산.
+  모멘텀 전략, predict 전략, 하이브리드 전략 지원. Sharpe/Sortino Ratio, Max Drawdown 등 성과 지표 계산.
   S&P 500, NASDAQ 100 + KOSPI, KOSDAQ 인덱스 지원.
   사용 시점: "백테스트 해줘", "전략 시뮬레이션", "과거 데이터로 테스트", "수익률 검증",
   "AAPL, MSFT 백테스트", "모멘텀 전략 테스트",
@@ -26,7 +26,7 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
   --start 2024-01-01 \
   --end 2024-12-31
 
-# profit-predictor 전략 사용
+# predict 전략 사용
 uv run python .claude/skills/backtesting/scripts/backtest.py \
   --tickers AAPL,MSFT,NVDA \
   --start 2024-01-01 \
@@ -86,7 +86,7 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 | 전략 | 설명 | 특징 |
 |------|------|------|
 | **momentum** | 모멘텀 + RSI 기반 | 20일 모멘텀 + 14일 RSI로 매수/매도 신호 |
-| **predictor** | profit-predictor 연동 | 앙상블 투자자 점수 기반 신호 생성 |
+| **predictor** | predict 연동 | 앙상블 투자자 점수 기반 신호 생성 |
 | **hybrid** | 펀더멘털 + 모멘텀 결합 | 50% 펀더멘털 + 50% 모멘텀, 상대 순위 기반 **(권장)** |
 
 ### 지원 기능
@@ -290,9 +290,9 @@ if momentum < -0.1 and rsi > 30:
     action = SELL
 ```
 
-### profit-predictor 전략
+### predict 전략
 
-profit-predictor의 앙상블 분석 결과를 **상대적 순위 기반**으로 활용:
+predict의 앙상블 분석 결과를 **상대적 순위 기반**으로 활용:
 
 ```python
 # 모든 종목 점수 계산 후 순위 결정
@@ -318,7 +318,7 @@ bottom_20% → SELL
 펀더멘털과 모멘텀을 50:50으로 결합한 하이브리드 전략:
 
 ```python
-# 펀더멘털 점수: profit-predictor 앙상블 분석
+# 펀더멘털 점수: predict 앙상블 분석
 fundamental_score = analyze_single_ticker(ticker, date)  # 0~10
 
 # 모멘텀 점수: 가격 추세 + RSI
@@ -450,7 +450,7 @@ uv run python backtest.py --index sp500 --top 100 --workers 20 --strategy predic
 
 ### 예시 2: NASDAQ 100 전체 백테스트
 ```
-"NASDAQ 100 전체 종목으로 profit-predictor 전략 백테스트"
+"NASDAQ 100 전체 종목으로 predict 전략 백테스트"
 → uv run python backtest.py --index nasdaq100 --start 2024-06-01 --end 2024-12-31 --strategy predictor --rebalance monthly
 ```
 
