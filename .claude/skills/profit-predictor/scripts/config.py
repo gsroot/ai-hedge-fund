@@ -70,3 +70,28 @@ POSITIVE_KEYWORDS = [
     "innovation", "breakthrough", "partnership", "acquisition", "dividend",
     "buyback", "raise", "strong", "surge", "rally", "outperform"
 ]
+
+# ============================================================================
+# 한국 주식 데이터 설정 (DART API + PyKRX)
+# ============================================================================
+
+DART_RATE_LIMIT = 100  # DART API 분당 최대 요청 수
+DART_RATE_WINDOW = 60  # 슬라이딩 윈도우 크기 (초)
+KR_CORPORATE_TAX_RATE = 0.22  # 한국 법인세율 (ROIC 계산용)
+
+# KRX Open API 설정 (data-dbg.krx.co.kr REST API)
+# KRX_API_KEY 환경변수 설정 시 시가총액 및 종목리스트 폴백 활성화:
+#   OHLCV:    FDR → PyKRX (KRX는 단일날짜 전종목만 지원, 날짜 범위 불가)
+#   시가총액: KRX → PyKRX
+#   종목리스트: FDR → KRX → PyKRX
+#   PER/PBR:  PyKRX (KRX REST API 미제공)
+# KRX_API_KEY 미설정 시 기존 2단계 폴백(FDR → PyKRX) 유지
+KRX_RATE_LIMIT_DELAY = 1.0  # KRX API 요청 간 딜레이 (초)
+
+# 한국 주식 데이터 소스 우선순위
+# "fdr" = FinanceDataReader (수정주가 자동 보정, 빠름)
+# "pykrx" = PyKRX (미보정 원시가격, 1초/요청 딜레이)
+# "krx" = KRX Open API (공식 데이터, KRX_API_KEY 필요, 시총/종목리스트만)
+KR_PRICE_PRIMARY = "fdr"           # 가격 데이터 primary 소스
+KR_TICKER_LIST_PRIMARY = "fdr"     # 종목 리스트 primary 소스
+KR_MARKET_CAP_PRIMARY = "krx"      # 시가총액 primary 소스 (KRX_API_KEY 필요)
