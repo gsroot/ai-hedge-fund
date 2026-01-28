@@ -749,13 +749,31 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
         except Exception:
             pass
 
-    # 한국 인덱스 지원 (kospi, kosdaq)
+    # 한국 인덱스 지원 (kospi, kosdaq, krx)
     if is_korean_index(index_name):
         from korean_data_fetcher import get_index_tickers_kr
-        print(f"📋 {index_name.upper()} 구성종목을 PyKRX에서 조회 중...")
-        kr_tickers = get_index_tickers_kr(index_name)
+
+        # krx: KOSPI + KOSDAQ 전체 합산
+        if index_name.lower() == "krx":
+            print(f"📋 KRX (KOSPI + KOSDAQ) 전체 구성종목을 PyKRX에서 조회 중...")
+            kospi_tickers = get_index_tickers_kr("kospi") or []
+            kosdaq_tickers = get_index_tickers_kr("kosdaq") or []
+            # 중복 제거 (순서 유지)
+            seen = set()
+            kr_tickers = []
+            for t in kospi_tickers + kosdaq_tickers:
+                if t not in seen:
+                    seen.add(t)
+                    kr_tickers.append(t)
+            if kr_tickers:
+                print(f"   ✅ KOSPI {len(kospi_tickers)}개 + KOSDAQ {len(kosdaq_tickers)}개 = 총 {len(kr_tickers)}개 종목 조회 완료")
+        else:
+            print(f"📋 {index_name.upper()} 구성종목을 PyKRX에서 조회 중...")
+            kr_tickers = get_index_tickers_kr(index_name)
+
         if kr_tickers:
-            print(f"   ✅ PyKRX에서 {len(kr_tickers)}개 종목 조회 완료")
+            if index_name.lower() != "krx":
+                print(f"   ✅ PyKRX에서 {len(kr_tickers)}개 종목 조회 완료")
             if use_cache and CACHE_ENABLED:
                 try:
                     if not os.path.exists(CACHE_DIR):

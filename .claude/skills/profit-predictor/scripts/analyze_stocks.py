@@ -18,6 +18,9 @@ Stock Analyzer - End-to-End 종목 분석 및 순위 산정 (Yahoo Finance + DAR
     # KOSDAQ 150 분석
     python analyze_stocks.py --index kosdaq150 --top 20
 
+    # KRX 전체 (KOSPI + KOSDAQ) 시가총액 상위 50개 분석
+    python analyze_stocks.py --index krx --top 50 --sort-by-cap
+
     # 결과를 파일로 저장
     python analyze_stocks.py --index sp500 --output results.json
 
@@ -64,6 +67,9 @@ def main():
   # KOSDAQ 150 분석
   uv run python analyze_stocks.py --index kosdaq150 --top 20
 
+  # KRX 전체 (KOSPI + KOSDAQ) 시가총액 상위 50개 분석
+  uv run python analyze_stocks.py --index krx --top 50 --sort-by-cap --strategy hybrid
+
   # 한국 특정 종목 분석 (삼성전자, SK하이닉스)
   uv run python analyze_stocks.py --tickers 005930,000660
 
@@ -72,7 +78,7 @@ def main():
         """
     )
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
-    parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150"], help="인덱스 전체 분석")
+    parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150", "krx"], help="인덱스 전체 분석 (krx = KOSPI+KOSDAQ 전체)")
     parser.add_argument("--top", type=int, default=30, help="분석 대상 종목 수 제한 (기본: 30, 전체 분석 시 큰 값 사용)")
     parser.add_argument("--strategy", type=str, default="fundamental",
                        choices=["fundamental", "momentum", "hybrid"],
