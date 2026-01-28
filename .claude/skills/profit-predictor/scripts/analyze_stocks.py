@@ -6,20 +6,20 @@ Stock Analyzer - End-to-End 종목 분석 및 순위 산정 (Yahoo Finance + DAR
     # 특정 종목 분석
     python analyze_stocks.py --tickers AAPL,GOOGL,MSFT,NVDA,TSLA
 
-    # S&P 500 전체 분석 (상위 30개 종목만 분석)
-    python analyze_stocks.py --index sp500 --top 30
+    # S&P 500 전체 분석 (--top 생략 시 전체 종목 분석)
+    python analyze_stocks.py --index sp500
 
-    # S&P 500 전체 500개 종목 분석 (--top 생략 시 기본 30개)
-    python analyze_stocks.py --index sp500 --top 500
+    # S&P 500 상위 30개만 분석
+    python analyze_stocks.py --index sp500 --top 30
 
     # KOSPI 시가총액 상위 30개 분석
     python analyze_stocks.py --index kospi --top 30 --sort-by-cap
 
     # KOSDAQ 150 분석
-    python analyze_stocks.py --index kosdaq150 --top 20
+    python analyze_stocks.py --index kosdaq150
 
-    # KRX 전체 (KOSPI + KOSDAQ) 시가총액 상위 50개 분석
-    python analyze_stocks.py --index krx --top 50 --sort-by-cap
+    # KRX 전체 (KOSPI + KOSDAQ) 분석
+    python analyze_stocks.py --index krx --sort-by-cap
 
     # 결과를 파일로 저장
     python analyze_stocks.py --index sp500 --output results.json
@@ -55,20 +55,20 @@ def main():
   # 특정 종목 분석
   uv run python analyze_stocks.py --tickers AAPL,GOOGL,MSFT
 
-  # S&P 500 분석 (상위 30개)
-  uv run python analyze_stocks.py --index sp500 --top 30
+  # S&P 500 전체 분석 (--top 미지정 시 전체)
+  uv run python analyze_stocks.py --index sp500
 
-  # NASDAQ 100 분석
+  # NASDAQ 100 상위 20개만 분석
   uv run python analyze_stocks.py --index nasdaq100 --top 20
 
   # KOSPI 시가총액 상위 30개 분석
   uv run python analyze_stocks.py --index kospi --top 30 --sort-by-cap
 
-  # KOSDAQ 150 분석
-  uv run python analyze_stocks.py --index kosdaq150 --top 20
+  # KOSDAQ 150 전체 분석
+  uv run python analyze_stocks.py --index kosdaq150
 
-  # KRX 전체 (KOSPI + KOSDAQ) 시가총액 상위 50개 분석
-  uv run python analyze_stocks.py --index krx --top 50 --sort-by-cap --strategy hybrid
+  # KRX 전체 (KOSPI + KOSDAQ) 분석
+  uv run python analyze_stocks.py --index krx --sort-by-cap --strategy hybrid
 
   # 한국 특정 종목 분석 (삼성전자, SK하이닉스)
   uv run python analyze_stocks.py --tickers 005930,000660
@@ -79,7 +79,7 @@ def main():
     )
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
     parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150", "krx"], help="인덱스 전체 분석 (krx = KOSPI200+KOSDAQ150 대표 종목)")
-    parser.add_argument("--top", type=int, default=30, help="분석 대상 종목 수 제한 (기본: 30, 전체 분석 시 큰 값 사용)")
+    parser.add_argument("--top", type=int, default=None, help="분석 대상 종목 수 제한 (미지정 시 전체 종목 분석)")
     parser.add_argument("--strategy", type=str, default="fundamental",
                        choices=["fundamental", "momentum", "hybrid"],
                        help="분석 전략: fundamental(펀더멘털), momentum(모멘텀), hybrid(혼합) (기본: fundamental)")
@@ -126,8 +126,8 @@ def main():
 
     # --sort-by-cap: 시가총액 기준으로 정렬
     if args.sort_by_cap and tickers:
-        tickers = sort_tickers_by_market_cap(tickers, top_n=args.top if args.top > 0 else 0)
-    elif args.top > 0 and len(tickers) > args.top:
+        tickers = sort_tickers_by_market_cap(tickers, top_n=args.top if args.top else 0)
+    elif args.top and len(tickers) > args.top:
         tickers = tickers[:args.top]
 
     end_date = datetime.now().strftime("%Y-%m-%d")

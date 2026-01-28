@@ -18,16 +18,21 @@ def _format_ticker_name(r):
     return ticker
 
 
-def print_results(results, top_n=30, strategy="fundamental"):
-    """결과 출력 (전략별 점수 포함)"""
+def print_results(results, top_n=None, strategy="fundamental"):
+    """결과 출력 (전략별 점수 포함). top_n=None이면 전체 출력."""
     strategy_labels = {
         "fundamental": "펀더멘털 분석",
         "momentum": "모멘텀 분석",
         "hybrid": "하이브리드 분석 (펀더멘털 70% + 모멘텀 30%)",
     }
 
+    display_n = min(top_n, len(results)) if top_n else len(results)
+
     print("\n" + "=" * 160)
-    print(f"📈 TOP {min(top_n, len(results))} 매수 추천 종목 ({strategy_labels.get(strategy, strategy)})")
+    if top_n:
+        print(f"📈 TOP {display_n} 매수 추천 종목 ({strategy_labels.get(strategy, strategy)})")
+    else:
+        print(f"📈 전체 {display_n}개 종목 분석 결과 ({strategy_labels.get(strategy, strategy)})")
     print("=" * 160)
 
     if strategy == "momentum":
@@ -40,7 +45,7 @@ def print_results(results, top_n=30, strategy="fundamental"):
         print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'앙상블':<6} {'신호':<12} {'수익률':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20} {'주요 요인'}")
         print("-" * 160)
 
-    for r in results[:top_n]:
+    for r in results[:display_n]:
         pe_str = f"{r['metrics']['pe']:.1f}" if r['metrics']['pe'] else "N/A"
         roe_str = f"{r['metrics']['roe']:.0f}%" if r['metrics']['roe'] else "N/A"
         cap_str = r.get('market_cap', {}).get('display', 'N/A')
@@ -98,13 +103,15 @@ def print_results(results, top_n=30, strategy="fundamental"):
         print(f"   - 매수 추천 종목 평균 앙상블 점수: {avg_ensemble:.2f}")
 
     # 투자자 합의도 분석
+    display_results = results[:display_n]
     consensus_counts = {"high": 0, "medium": 0, "low": 0}
-    for r in results[:top_n]:
+    for r in display_results:
         level = r.get('investor_consensus', {}).get('level', 'medium')
         consensus_counts[level] = consensus_counts.get(level, 0) + 1
     if consensus_counts["low"] > 0:
-        low_consensus = [_format_ticker_name(r) for r in results[:top_n] if r.get('investor_consensus', {}).get('level') == 'low']
-        print(f"\n🔍 투자자 합의도 분석 (상위 {top_n}개)")
+        low_consensus = [_format_ticker_name(r) for r in display_results if r.get('investor_consensus', {}).get('level') == 'low']
+        label = f"상위 {display_n}개" if top_n else f"전체 {display_n}개"
+        print(f"\n🔍 투자자 합의도 분석 ({label})")
         print(f"   - 높은 합의 (std<1.5): {consensus_counts['high']}개")
         print(f"   - 보통 합의 (std<2.5): {consensus_counts['medium']}개")
         print(f"   - 낮은 합의 (std≥2.5): {consensus_counts['low']}개 → {', '.join(low_consensus[:8])}")
@@ -133,7 +140,7 @@ def print_results(results, top_n=30, strategy="fundamental"):
 
     # 투자 철학 불일치 경고
     warnings_found = []
-    for r in results[:top_n]:
+    for r in display_results:
         warnings = r.get('investor_warnings', [])
         if warnings:
             warnings_found.append((_format_ticker_name(r), warnings))

@@ -22,13 +22,17 @@ description: |
 ### 스크립트 실행
 
 ```bash
-# S&P 500 시가총액 상위 50개, 하이브리드 전략 (권장)
+# S&P 500 전체 분석, 하이브리드 전략 (권장)
+uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
+  --index sp500 --sort-by-cap --strategy hybrid
+
+# S&P 500 상위 50개만 분석
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
   --index sp500 --top 50 --sort-by-cap --strategy hybrid
 
-# NASDAQ 100 분석 (모멘텀 전략)
+# NASDAQ 100 전체 분석 (모멘텀 전략)
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index nasdaq100 --top 30 --strategy momentum
+  --index nasdaq100 --strategy momentum
 
 # 특정 종목 분석 (펀더멘털 전략, 기본값)
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
@@ -38,13 +42,13 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
   --index kospi --top 30 --sort-by-cap --strategy hybrid
 
-# KOSDAQ 150 분석
+# KOSDAQ 150 전체 분석
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index kosdaq150 --top 20 --strategy hybrid
+  --index kosdaq150 --strategy hybrid
 
-# KRX 전체 (KOSPI + KOSDAQ) 시가총액 상위 50개 분석
+# KRX 전체 (KOSPI + KOSDAQ) 분석
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index krx --top 50 --sort-by-cap --strategy hybrid
+  --index krx --sort-by-cap --strategy hybrid
 
 # 한국 특정 종목 분석 (삼성전자, SK하이닉스)
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
@@ -52,7 +56,7 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 
 # 결과를 JSON으로 저장
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index sp500 --top 30 --strategy hybrid --output results.json
+  --index sp500 --strategy hybrid --output results.json
 ```
 
 ## 분석 방법론
@@ -195,7 +199,7 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 |------|------|--------|
 | `--tickers` | 분석할 종목 (콤마 구분) | - |
 | `--index` | 인덱스 전체 분석 (sp500, nasdaq100, kospi, kosdaq, kospi200, kosdaq150, krx) | - |
-| `--top` | 분석 대상 종목 수 제한 (전체 분석 시 생략 또는 큰 값 사용) | 30 |
+| `--top` | 분석 대상 종목 수 제한 (미지정 시 전체 종목 분석) | 전체 |
 | `--strategy` | 분석 전략 (fundamental, momentum, hybrid) | fundamental |
 | `--sort-by-cap` | 시가총액 기준 정렬 **(권장)** | false |
 | `--workers` | 병렬 처리 워커 수 | 10 |
@@ -263,53 +267,59 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 
 ## 사용 예시
 
-### 예시 1: S&P 500 하이브리드 분석 (권장)
+### 예시 1: S&P 500 전체 하이브리드 분석 (권장)
 ```
-"S&P 500 시가총액 상위 50개 종목 하이브리드 전략으로 분석해줘"
+"S&P 500 전체 종목 하이브리드 전략으로 분석해줘"
+→ uv run python analyze_stocks.py --index sp500 --sort-by-cap --strategy hybrid
+```
+
+### 예시 2: S&P 500 상위 50개만 분석
+```
+"S&P 500 시가총액 상위 50개만 분석해줘"
 → uv run python analyze_stocks.py --index sp500 --top 50 --sort-by-cap --strategy hybrid
 ```
 
-### 예시 2: 특정 종목 비교
+### 예시 3: 특정 종목 비교
 ```
 "AAPL, GOOGL, MSFT, NVDA, TSLA 중 어떤 걸 사야 할까?"
 → uv run python analyze_stocks.py --tickers AAPL,GOOGL,MSFT,NVDA,TSLA --strategy hybrid
 ```
 
-### 예시 3: NASDAQ 100 모멘텀 분석
+### 예시 4: NASDAQ 100 모멘텀 분석
 ```
 "나스닥 100 종목 모멘텀 기준으로 분석해줘"
-→ uv run python analyze_stocks.py --index nasdaq100 --top 20 --strategy momentum
+→ uv run python analyze_stocks.py --index nasdaq100 --strategy momentum
 ```
 
-### 예시 4: 펀더멘털 분석 (기존 방식)
+### 예시 5: 펀더멘털 분석
 ```
 "S&P 500 종목 중 가치투자 관점에서 추천해줘"
-→ uv run python analyze_stocks.py --index sp500 --top 30 --strategy fundamental
+→ uv run python analyze_stocks.py --index sp500 --strategy fundamental
 ```
 
-### 예시 5: KOSPI 상위 종목 분석
+### 예시 6: KOSPI 상위 종목 분석
 ```
 "KOSPI 시가총액 상위 30개 분석해줘"
 → uv run python analyze_stocks.py --index kospi --top 30 --sort-by-cap --strategy hybrid
 ```
 
-### 예시 6: KOSDAQ 150 분석
+### 예시 7: KOSDAQ 150 전체 분석
 ```
-"KOSDAQ 150 종목 중 상위 20개 추천"
-→ uv run python analyze_stocks.py --index kosdaq150 --top 20 --strategy hybrid
+"KOSDAQ 150 전체 분석해줘"
+→ uv run python analyze_stocks.py --index kosdaq150 --strategy hybrid
 ```
 
-### 예시 7: KRX 전체 (KOSPI + KOSDAQ) 분석
+### 예시 8: KRX 전체 (KOSPI + KOSDAQ) 분석
 ```
-"한국 전체 시장에서 시가총액 상위 50개 분석해줘"
-→ uv run python analyze_stocks.py --index krx --top 50 --sort-by-cap --strategy hybrid
+"한국 전체 시장 분석해줘"
+→ uv run python analyze_stocks.py --index krx --sort-by-cap --strategy hybrid
 
 "KOSPI200+KOSDAQ150 전체 분석해줘"
-→ uv run python analyze_stocks.py --index krx --top 500 --sort-by-cap --strategy hybrid
+→ uv run python analyze_stocks.py --index krx --sort-by-cap --strategy hybrid
 ⚠️ 주의: kospi200과 kosdaq150을 별도로 2번 실행하지 말고, --index krx 한 번으로 통합 실행할 것
 ```
 
-### 예시 8: 한국 특정 종목 분석
+### 예시 9: 한국 특정 종목 분석
 ```
 "삼성전자, SK하이닉스, LG에너지솔루션 비교 분석"
 → uv run python analyze_stocks.py --tickers 005930,000660,373220 --strategy hybrid
