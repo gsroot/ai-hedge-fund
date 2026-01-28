@@ -37,8 +37,6 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 uv run python .claude/skills/backtesting/scripts/backtest.py \
   --index sp500 \
   --top 50 \
-  --sort-by-cap \
-  --strategy hybrid \
   --start 2024-06-01 \
   --end 2024-12-31 \
   --rebalance monthly
@@ -63,8 +61,6 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 uv run python .claude/skills/backtesting/scripts/backtest.py \
   --index kospi \
   --top 30 \
-  --sort-by-cap \
-  --strategy hybrid \
   --start 2024-06-01 \
   --end 2024-12-31 \
   --rebalance monthly
@@ -119,11 +115,11 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 | `--tickers` | 종목 리스트 (콤마 구분) | - |
 | `--index` | 인덱스 또는 사전 정의 그룹 (sp500, nasdaq100, kospi, kosdaq 등) | - |
 | `--top` | 인덱스에서 상위 N개만 사용 | 0 (전체) |
-| `--sort-by-cap` | 시가총액 기준 정렬 **(권장)** | false |
+| `--no-sort-by-cap` | 시가총액 정렬 비활성화 | true (기본 정렬됨) |
 | `--start` | 시작 날짜 (YYYY-MM-DD) | 필수 |
 | `--end` | 종료 날짜 (YYYY-MM-DD) | 필수 |
 | `--capital` | 초기 자본 | 100000 |
-| `--strategy` | 전략 (momentum, predictor, hybrid) | momentum |
+| `--strategy` | 전략 (momentum, predictor, hybrid) | hybrid |
 | `--rebalance` | 리밸런싱 주기 (daily, weekly, monthly) | weekly |
 | `--benchmark` | 벤치마크 티커 | SPY |
 | `--margin` | 마진 요구율 | 0.5 |
@@ -150,12 +146,12 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 | `nasdaq-top10` | AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA, AVGO, COST, NFLX |
 | `faang` | META, AAPL, AMZN, NFLX, GOOGL |
 
-**참고**: `sp500`, `nasdaq100` 인덱스는 기본적으로 알파벳 순으로 정렬됩니다.
-시가총액 기준 상위 종목을 원하면 `--sort-by-cap` 옵션을 사용하세요.
+**참고**: 시가총액 내림차순 정렬이 기본 적용됩니다.
+정렬을 비활성화하려면 `--no-sort-by-cap` 옵션을 사용하세요.
 
 ```bash
 # 시가총액 기준 NASDAQ 100 상위 30개로 hybrid 전략 백테스트 (권장)
-uv run python backtest.py --index nasdaq100 --top 30 --sort-by-cap --strategy hybrid \
+uv run python backtest.py --index nasdaq100 --top 30 \
   --rebalance monthly --start 2024-06-01 --end 2024-12-31
 ```
 
@@ -461,7 +457,7 @@ uv run python backtest.py --index sp500 --top 100 --workers 20 --strategy predic
 ### 예시 3: S&P 500 상위 50개 백테스트 (권장)
 ```
 "S&P 500에서 시가총액 상위 50개 종목으로 hybrid 전략 백테스트"
-→ uv run python backtest.py --index sp500 --top 50 --sort-by-cap --strategy hybrid --start 2024-06-01 --end 2024-12-31 --rebalance monthly
+→ uv run python backtest.py --index sp500 --top 50 --start 2024-06-01 --end 2024-12-31 --rebalance monthly
 ```
 
 ### 예시 4: 장기 백테스트
@@ -479,7 +475,7 @@ uv run python backtest.py --index sp500 --top 100 --workers 20 --strategy predic
 ### 예시 6: KOSPI 상위 종목 백테스트
 ```
 "KOSPI 시가총액 상위 30개 종목으로 hybrid 백테스트"
-→ uv run python backtest.py --index kospi --top 30 --sort-by-cap --strategy hybrid --start 2024-06-01 --end 2024-12-31 --rebalance monthly
+→ uv run python backtest.py --index kospi --top 30 --start 2024-06-01 --end 2024-12-31 --rebalance monthly
 ```
 
 ### 예시 7: 한국 특정 종목 백테스트

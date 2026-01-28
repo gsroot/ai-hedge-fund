@@ -27,15 +27,15 @@ $ARGUMENTS
 - `fundamental`, `펀더멘털` → `--strategy fundamental`
 - `momentum`, `모멘텀` → `--strategy momentum`
 - `hybrid`, `하이브리드` → `--strategy hybrid`
-- 전략이 명시되지 않으면 기본값 `--strategy hybrid` (권장)
+- 전략이 명시되지 않으면 기본값 `--strategy hybrid` 자동 적용
 
 ### 4. 상위 N개 (`--top`)
 - `top 50`, `상위 50`, `50개` → `--top 50`
 - **`--top`이 명시되지 않으면 전체 종목을 분석** (종목 수 제한 없음)
 
-### 5. 시가총액 정렬 (`--sort-by-cap`)
-- `시가총액`, `시총`, `market cap`, `sort-by-cap` → `--sort-by-cap` 포함
-- 인덱스 분석 시 기본적으로 `--sort-by-cap` 포함 (권장)
+### 5. 시가총액 정렬 (기본값: 활성화)
+- 시가총액 내림차순 정렬이 기본 적용됨
+- `정렬없이`, `no-sort-by-cap` → `--no-sort-by-cap` 포함 (정렬 비활성화)
 
 ### 6. 기타 옵션
 - `no-cache`, `캐시없이`, `새로` → `--no-cache`
@@ -45,7 +45,7 @@ $ARGUMENTS
 ## 실행 방식
 
 해석된 파라미터를 profit-predictor 스킬에 전달하여 실행해줘.
-인자가 비어있거나 `$ARGUMENTS`가 그대로이면 기본값(`--index sp500 --sort-by-cap --strategy hybrid`)으로 전체 종목을 분석해줘.
+인자가 비어있거나 `$ARGUMENTS`가 그대로이면 기본값(`--index sp500`)으로 전체 종목을 분석해줘 (시가총액 정렬 및 하이브리드 전략은 기본 적용).
 
 ## 프롬프트 생성 예시
 

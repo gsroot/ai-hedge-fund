@@ -3,7 +3,7 @@ name: profit-predictor
 description: |
   특정 기간 후 최고 수익 예상 종목 선정. 전설적 투자자들의 분석 방식을 종합하여 예측.
   최대 500개 종목을 배치 처리하여 순위 산정. S&P 500, NASDAQ 100 + KOSPI, KOSDAQ 인덱스 지원.
-  펀더멘털, 모멘텀, 하이브리드 전략 선택 가능. 시가총액 기준 정렬 지원.
+  펀더멘털, 모멘텀, 하이브리드 전략 선택 가능. 시가총액 내림차순 정렬 기본 적용.
   사용 시점: "1년 후 가장 수익률 좋을 종목은?", 포트폴리오 순위, 투자 우선순위 결정,
   "어떤 종목을 사야 할까?", "AAPL, GOOGL, MSFT 중 뭘 사야해?", 수익률 예측,
   "S&P 500 종목 중 상위 10개 추천", "NASDAQ 100 순위",
@@ -24,12 +24,10 @@ description: |
 ```bash
 # S&P 500 전체 분석, 하이브리드 전략 (권장)
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index sp500 --sort-by-cap --strategy hybrid
-
+  --index sp500
 # S&P 500 상위 50개만 분석
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index sp500 --top 50 --sort-by-cap --strategy hybrid
-
+  --index sp500 --top 50
 # NASDAQ 100 전체 분석 (모멘텀 전략)
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
   --index nasdaq100 --strategy momentum
@@ -40,23 +38,20 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 
 # KOSPI 시가총액 상위 30개 분석
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index kospi --top 30 --sort-by-cap --strategy hybrid
-
+  --index kospi --top 30
 # KOSDAQ 150 전체 분석
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index kosdaq150 --strategy hybrid
-
+  --index kosdaq150
 # KRX 전체 (KOSPI + KOSDAQ) 분석
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index krx --sort-by-cap --strategy hybrid
-
+  --index krx
 # 한국 특정 종목 분석 (삼성전자, SK하이닉스)
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
   --tickers 005930,000660
 
 # 결과를 JSON으로 저장
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
-  --index sp500 --strategy hybrid --output results.json
+  --index sp500 --output results.json
 ```
 
 ## 분석 방법론
@@ -122,7 +117,7 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
   - 펀더멘털만으로 놓칠 수 있는 모멘텀 주도 상승장 포착
   - 모멘텀만으로 빠질 수 있는 가치 함정 회피
   - 가치 기업이 일시적 모멘텀 약세로 과도하게 감점되는 것 방지
-  - 시가총액 정렬과 결합 시 최적 성과
+  - 시가총액 정렬(기본 적용)과 결합 시 최적 성과
 ```
 
 ### 현금흐름 품질 게이트
@@ -200,8 +195,8 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 | `--tickers` | 분석할 종목 (콤마 구분) | - |
 | `--index` | 인덱스 전체 분석 (sp500, nasdaq100, kospi, kosdaq, kospi200, kosdaq150, krx) | - |
 | `--top` | 분석 대상 종목 수 제한 (미지정 시 전체 종목 분석) | 전체 |
-| `--strategy` | 분석 전략 (fundamental, momentum, hybrid) | fundamental |
-| `--sort-by-cap` | 시가총액 기준 정렬 **(권장)** | false |
+| `--strategy` | 분석 전략 (fundamental, momentum, hybrid) | hybrid |
+| `--no-sort-by-cap` | 시가총액 정렬 비활성화 | true (기본 정렬됨) |
 | `--workers` | 병렬 처리 워커 수 | 10 |
 | `--output` | 결과 저장 파일 (JSON) | - |
 | `--period` | 예측 기간 | 1Y |
@@ -214,9 +209,9 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 
 | 전략 | 설명 | 특징 |
 |------|------|------|
-| **fundamental** | 앙상블 펀더멘털 분석 (기본) | 투자자 점수 60% + 팩터 점수 40% |
+| **fundamental** | 앙상블 펀더멘털 분석 | 투자자 점수 60% + 팩터 점수 40% |
 | **momentum** | 강화된 모멘텀 분석 | 단기/장기 추세 + RSI + 추세 지속성 |
-| **hybrid** | 하이브리드 분석 **(권장)** | 동적 비중 (펀더멘털 55~85% + 모멘텀 15~45%) |
+| **hybrid** | 하이브리드 분석 **(기본, 권장)** | 동적 비중 (펀더멘털 55~85% + 모멘텀 15~45%) |
 
 ## 지원 인덱스
 
@@ -270,20 +265,17 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 ### 예시 1: S&P 500 전체 하이브리드 분석 (권장)
 ```
 "S&P 500 전체 종목 하이브리드 전략으로 분석해줘"
-→ uv run python analyze_stocks.py --index sp500 --sort-by-cap --strategy hybrid
-```
+→ uv run python analyze_stocks.py --index sp500```
 
 ### 예시 2: S&P 500 상위 50개만 분석
 ```
 "S&P 500 시가총액 상위 50개만 분석해줘"
-→ uv run python analyze_stocks.py --index sp500 --top 50 --sort-by-cap --strategy hybrid
-```
+→ uv run python analyze_stocks.py --index sp500 --top 50```
 
 ### 예시 3: 특정 종목 비교
 ```
 "AAPL, GOOGL, MSFT, NVDA, TSLA 중 어떤 걸 사야 할까?"
-→ uv run python analyze_stocks.py --tickers AAPL,GOOGL,MSFT,NVDA,TSLA --strategy hybrid
-```
+→ uv run python analyze_stocks.py --tickers AAPL,GOOGL,MSFT,NVDA,TSLA```
 
 ### 예시 4: NASDAQ 100 모멘텀 분석
 ```
@@ -300,27 +292,22 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 ### 예시 6: KOSPI 상위 종목 분석
 ```
 "KOSPI 시가총액 상위 30개 분석해줘"
-→ uv run python analyze_stocks.py --index kospi --top 30 --sort-by-cap --strategy hybrid
-```
+→ uv run python analyze_stocks.py --index kospi --top 30```
 
 ### 예시 7: KOSDAQ 150 전체 분석
 ```
 "KOSDAQ 150 전체 분석해줘"
-→ uv run python analyze_stocks.py --index kosdaq150 --strategy hybrid
-```
+→ uv run python analyze_stocks.py --index kosdaq150```
 
 ### 예시 8: KRX 전체 (KOSPI + KOSDAQ) 분석
 ```
 "한국 전체 시장 분석해줘"
-→ uv run python analyze_stocks.py --index krx --sort-by-cap --strategy hybrid
-
+→ uv run python analyze_stocks.py --index krx
 "KOSPI200+KOSDAQ150 전체 분석해줘"
-→ uv run python analyze_stocks.py --index krx --sort-by-cap --strategy hybrid
-⚠️ 주의: kospi200과 kosdaq150을 별도로 2번 실행하지 말고, --index krx 한 번으로 통합 실행할 것
+→ uv run python analyze_stocks.py --index krx⚠️ 주의: kospi200과 kosdaq150을 별도로 2번 실행하지 말고, --index krx 한 번으로 통합 실행할 것
 ```
 
 ### 예시 9: 한국 특정 종목 분석
 ```
 "삼성전자, SK하이닉스, LG에너지솔루션 비교 분석"
-→ uv run python analyze_stocks.py --tickers 005930,000660,373220 --strategy hybrid
-```
+→ uv run python analyze_stocks.py --tickers 005930,000660,373220```

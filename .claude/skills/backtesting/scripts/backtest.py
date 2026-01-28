@@ -1176,20 +1176,20 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 예시:
-  # 기본 모멘텀 전략 백테스트
+  # 기본 하이브리드 전략 백테스트 (시가총액 정렬 기본 적용)
   uv run python backtest.py --tickers AAPL,MSFT,GOOGL --start 2024-01-01 --end 2024-12-31
 
-  # 하이브리드 전략 (펀더멘털 + 모멘텀) - 권장
-  uv run python backtest.py --index sp500 --top 50 --sort-by-cap --strategy hybrid --rebalance monthly
+  # S&P 500 시가총액 상위 50개 백테스트
+  uv run python backtest.py --index sp500 --top 50 --rebalance monthly
 
   # profit-predictor 전략 사용
   uv run python backtest.py --tickers AAPL,MSFT --strategy predictor --rebalance monthly
 
-  # S&P 500 시가총액 상위 50개 (시가총액 정렬)
-  uv run python backtest.py --index sp500 --top 50 --sort-by-cap --strategy hybrid --rebalance monthly
+  # 모멘텀 전략 사용
+  uv run python backtest.py --index sp500 --top 50 --strategy momentum --rebalance monthly
 
   # NASDAQ 100 전체 종목 백테스트
-  uv run python backtest.py --index nasdaq100 --strategy hybrid --rebalance monthly
+  uv run python backtest.py --index nasdaq100 --rebalance monthly
 
   # 결과 JSON 저장
   uv run python backtest.py --tickers NVDA,TSLA --output results.json
@@ -1200,16 +1200,17 @@ def main():
     parser.add_argument("--index", type=str,
                        choices=["sp500", "nasdaq100", "sp500-top10", "nasdaq-top10", "faang", "kospi", "kosdaq"],
                        help="인덱스 또는 사전 정의된 종목 그룹 (한국: kospi, kosdaq)")
-    parser.add_argument("--sort-by-cap", action="store_true",
-                       help="시가총액 기준으로 정렬 (--top과 함께 사용 권장)")
+    parser.add_argument("--no-sort-by-cap", action="store_false", dest="sort_by_cap",
+                       help="시가총액 정렬 비활성화 (기본: 시가총액 내림차순 정렬)")
+    parser.set_defaults(sort_by_cap=True)
     parser.add_argument("--top", type=int, default=0,
                        help="인덱스에서 상위 N개 종목만 사용 (0=전체)")
     parser.add_argument("--start", type=str, required=True, help="시작 날짜 (YYYY-MM-DD)")
     parser.add_argument("--end", type=str, required=True, help="종료 날짜 (YYYY-MM-DD)")
     parser.add_argument("--capital", type=float, default=100000, help="초기 자본 (기본: 100000)")
-    parser.add_argument("--strategy", type=str, default="momentum",
+    parser.add_argument("--strategy", type=str, default="hybrid",
                        choices=["momentum", "predictor", "hybrid"],
-                       help="거래 전략: momentum(가격추세), predictor(펀더멘털), hybrid(혼합) (기본: momentum)")
+                       help="거래 전략: momentum(가격추세), predictor(펀더멘털), hybrid(혼합) (기본: hybrid)")
     parser.add_argument("--rebalance", type=str, default="weekly",
                        choices=["daily", "weekly", "monthly"],
                        help="리밸런싱 주기 (기본: weekly)")
@@ -1255,7 +1256,7 @@ def main():
         else:
             tickers = []
 
-        # --sort-by-cap: 시가총액 기준으로 정렬
+        # 시가총액 기준 정렬 (기본값: 활성화, --no-sort-by-cap으로 비활성화)
         if args.sort_by_cap and tickers:
             tickers = sort_tickers_by_market_cap(tickers, top_n=args.top if args.top > 0 else 0)
         elif args.top > 0 and len(tickers) > args.top:

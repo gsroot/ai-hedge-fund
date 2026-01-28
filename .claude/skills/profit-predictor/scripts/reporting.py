@@ -18,7 +18,7 @@ def _format_ticker_name(r):
     return ticker
 
 
-def print_results(results, top_n=None, strategy="fundamental"):
+def print_results(results, top_n=None, strategy="hybrid"):
     """결과 출력 (전략별 점수 포함). top_n=None이면 전체 출력."""
     strategy_labels = {
         "fundamental": "펀더멘털 분석",

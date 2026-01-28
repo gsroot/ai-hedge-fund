@@ -13,13 +13,13 @@ Stock Analyzer - End-to-End 종목 분석 및 순위 산정 (Yahoo Finance + DAR
     python analyze_stocks.py --index sp500 --top 30
 
     # KOSPI 시가총액 상위 30개 분석
-    python analyze_stocks.py --index kospi --top 30 --sort-by-cap
+    python analyze_stocks.py --index kospi --top 30
 
     # KOSDAQ 150 분석
     python analyze_stocks.py --index kosdaq150
 
     # KRX 전체 (KOSPI + KOSDAQ) 분석
-    python analyze_stocks.py --index krx --sort-by-cap
+    python analyze_stocks.py --index krx
 
     # 결과를 파일로 저장
     python analyze_stocks.py --index sp500 --output results.json
@@ -62,13 +62,13 @@ def main():
   uv run python analyze_stocks.py --index nasdaq100 --top 20
 
   # KOSPI 시가총액 상위 30개 분석
-  uv run python analyze_stocks.py --index kospi --top 30 --sort-by-cap
+  uv run python analyze_stocks.py --index kospi --top 30
 
   # KOSDAQ 150 전체 분석
   uv run python analyze_stocks.py --index kosdaq150
 
   # KRX 전체 (KOSPI + KOSDAQ) 분석
-  uv run python analyze_stocks.py --index krx --sort-by-cap --strategy hybrid
+  uv run python analyze_stocks.py --index krx
 
   # 한국 특정 종목 분석 (삼성전자, SK하이닉스)
   uv run python analyze_stocks.py --tickers 005930,000660
@@ -80,11 +80,12 @@ def main():
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
     parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150", "krx"], help="인덱스 전체 분석 (krx = KOSPI200+KOSDAQ150 대표 종목)")
     parser.add_argument("--top", type=int, default=None, help="분석 대상 종목 수 제한 (미지정 시 전체 종목 분석)")
-    parser.add_argument("--strategy", type=str, default="fundamental",
+    parser.add_argument("--strategy", type=str, default="hybrid",
                        choices=["fundamental", "momentum", "hybrid"],
-                       help="분석 전략: fundamental(펀더멘털), momentum(모멘텀), hybrid(혼합) (기본: fundamental)")
-    parser.add_argument("--sort-by-cap", action="store_true",
-                       help="시가총액 기준으로 정렬 후 분석 (--top과 함께 사용 권장)")
+                       help="분석 전략: fundamental(펀더멘털), momentum(모멘텀), hybrid(혼합) (기본: hybrid)")
+    parser.add_argument("--no-sort-by-cap", action="store_false", dest="sort_by_cap",
+                       help="시가총액 정렬 비활성화 (기본: 시가총액 내림차순 정렬)")
+    parser.set_defaults(sort_by_cap=True)
     parser.add_argument("--workers", type=int, default=config.MAX_WORKERS, help=f"병렬 처리 워커 수 (기본: {config.MAX_WORKERS})")
     parser.add_argument("--output", type=str, help="결과 저장 파일 (JSON)")
     parser.add_argument("--period", type=str, default=config.DEFAULT_PERIOD, help="예측 기간 (기본: 1Y)")
@@ -124,7 +125,7 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    # --sort-by-cap: 시가총액 기준으로 정렬
+    # 시가총액 기준 정렬 (기본값: 활성화, --no-sort-by-cap으로 비활성화)
     if args.sort_by_cap and tickers:
         tickers = sort_tickers_by_market_cap(tickers, top_n=args.top if args.top else 0)
     elif args.top and len(tickers) > args.top:

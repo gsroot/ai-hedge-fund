@@ -65,7 +65,7 @@ def _resolve_company_name(ticker, metrics):
     return ticker
 
 
-def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fundamental", skip_news=False, sector_stats=None):
+def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hybrid", skip_news=False, sector_stats=None):
     """
     단일 종목 종합 분석 (앙상블 투자자 점수 포함)
 
@@ -308,7 +308,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         return None
 
 
-def run_batch_analysis(tickers, end_date, max_workers=MAX_WORKERS, strategy="fundamental"):
+def run_batch_analysis(tickers, end_date, max_workers=MAX_WORKERS, strategy="hybrid"):
     """배치 분석 실행
 
     Args:
