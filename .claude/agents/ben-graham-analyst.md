@@ -57,7 +57,7 @@ Net-Net 할인율 = (NCAV per Share - 현재가) / NCAV per Share
 
 ```
 방어적 투자자 기준 (7가지):
-1. 매출 > $100M (대형주)
+1. 매출 > $100M / ₩1,300억 (대형주)
 2. Current Ratio > 2.0
 3. 장기부채 < 운전자본
 4. 20년간 배당 지급
@@ -79,7 +79,7 @@ MOS > 50%: 강한 매수 신호
 
 ## 데이터 수집
 
-**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (해외: Yahoo Finance, 한국: DART+PyKRX 자동 라우팅):
 
 ```bash
 uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type value

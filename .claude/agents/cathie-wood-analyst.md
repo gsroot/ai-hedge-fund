@@ -57,7 +57,7 @@ R&D 강도:
 
 ```
 TAM (Total Addressable Market) 분석:
-- 시장 규모 > $100B AND 침투율 < 10%: +3점
+- 시장 규모 > $100B / ₩130조 AND 침투율 < 10%: +3점
 - 기존 산업 대비 10배 이상 효율성: +2점
 - 네트워크 효과 또는 규모의 경제: +2점
 ```
@@ -75,7 +75,7 @@ TAM (Total Addressable Market) 분석:
 
 ## 데이터 수집
 
-**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (해외: Yahoo Finance, 한국: DART+PyKRX 자동 라우팅):
 
 ```bash
 uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type growth

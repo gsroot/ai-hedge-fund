@@ -80,7 +80,7 @@ Negative Headlines Count = 뉴스 중 sentiment가 "negative" 또는 "bearish"�
 
 ## 데이터 수집
 
-**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (해외: Yahoo Finance, 한국: DART+PyKRX 자동 라우팅):
 
 ```bash
 # 가치 + 센티먼트 데이터 모두 필요

@@ -38,7 +38,7 @@ CapEx = Capital Expenditure
 WACC = (E/V) × Re + (D/V) × Rd × (1 - T)
 
 Re (자기자본비용) = Rf + β × (Rm - Rf)
-- Rf = 무위험이자율 (10년 국채 ~4%)
+- Rf = 무위험이자율 (미국 10년 국채 ~4%, 한국 10년 국채 ~3.5%)
 - β = 베타 (시장 민감도)
 - Rm - Rf = 시장 리스크 프리미엄 (~5%)
 
@@ -88,7 +88,7 @@ MOS 해석:
 
 ## 데이터 수집
 
-**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (해외: Yahoo Finance, 한국: DART+PyKRX 자동 라우팅):
 
 ```bash
 uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type value

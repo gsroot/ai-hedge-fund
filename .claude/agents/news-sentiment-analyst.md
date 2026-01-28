@@ -96,7 +96,7 @@ else:
 
 ## 데이터 수집
 
-**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (해외: Yahoo Finance, 한국: DART+PyKRX 자동 라우팅):
 
 ```bash
 uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type sentiment

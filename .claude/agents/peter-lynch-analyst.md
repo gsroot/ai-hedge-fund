@@ -66,7 +66,7 @@ PEG 해석:
 
 ```
 10배 잠재력 체크리스트:
-- 작은 시가총액 (< $10B): +2점
+- 작은 시가총액 (< $10B / ₩13조): +2점
 - 높은 성장률 (> 20%): +2점
 - 확장 가능한 비즈니스 모델: +2점
 - 아직 기관 투자자 관심 낮음: +1점
@@ -86,7 +86,7 @@ Lynch Fair Value = EPS × (8.5 + 2 × 성장률) × 조정계수
 
 ## 데이터 수집
 
-**반드시 아래 Bash 명령으로 데이터를 수집하세요** (Yahoo Finance 기반, API 키 불필요):
+**반드시 아래 Bash 명령으로 데이터를 수집하세요** (해외: Yahoo Finance, 한국: DART+PyKRX 자동 라우팅):
 
 ```bash
 uv run python .claude/skills/investor-analysis/scripts/data_fetcher.py --ticker {TICKER} --data-type growth
