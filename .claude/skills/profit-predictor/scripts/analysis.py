@@ -42,6 +42,29 @@ from investor_scoring import (
 from ticker_utils import is_korean_ticker
 
 
+def _resolve_company_name(ticker, metrics):
+    """metrics dict에서 company_name을 추출하거나, 없으면 직접 조회"""
+    name = metrics.get("company_name")
+    if name and name != ticker:
+        return name
+    # metrics에 없는 경우 (캐시된 오래된 데이터 등) 직접 조회
+    if is_korean_ticker(ticker):
+        try:
+            from korean_data_fetcher import _get_company_name
+            return _get_company_name(ticker)
+        except Exception:
+            return ticker
+    else:
+        try:
+            from data_fetcher import safe_get_ticker_info
+            info = safe_get_ticker_info(ticker)
+            if info:
+                return info.get("shortName") or info.get("longName") or ticker
+        except Exception:
+            pass
+    return ticker
+
+
 def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fundamental", skip_news=False, sector_stats=None):
     """
     단일 종목 종합 분석 (앙상블 투자자 점수 포함)
@@ -238,6 +261,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         m = metrics[0]
         return {
             "ticker": ticker,
+            "company_name": _resolve_company_name(ticker, m),
             "total_score": round(total_score, 2),
             "ensemble_score": round(ensemble_score, 2),
             "signal": signal,

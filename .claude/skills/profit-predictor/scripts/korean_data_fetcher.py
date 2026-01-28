@@ -223,6 +223,10 @@ def _tickers_from_krx(market: str) -> list:
     Returns:
         list[str]: 6자리 종목코드 리스트
     """
+    # KOSPI200/KOSDAQ150은 KRX 전체시세 API로 구분 불가 → 건너뜀 (PyKRX 인덱스 조회로 폴백)
+    if market.upper() in ("KOSPI200", "KOSDAQ150"):
+        return []
+
     # 오늘부터 최대 7일 전까지 역순 탐색 (휴장일/미래 날짜 대응)
     for days_back in range(8):
         date = datetime.now() - timedelta(days=days_back)
@@ -629,6 +633,7 @@ def get_financial_metrics_kr(ticker: str, end_date: str) -> dict:
 
     return {
         "ticker": ticker,
+        "company_name": _get_company_name(ticker),
         "report_period": end_date,
 
         # ===== 밸류에이션 지표 (PyKRX) =====
@@ -1189,9 +1194,13 @@ def _tickers_from_fdr(market: str) -> list:
     fdr = _get_fdr()
     market_upper = market.upper()
 
-    if market_upper in ("KOSPI", "KOSPI200"):
+    # KOSPI200/KOSDAQ150은 인덱스 구성종목만 반환 (FDR은 인덱스별 조회 미지원 → 건너뜀)
+    if market_upper in ("KOSPI200", "KOSDAQ150"):
+        return []
+
+    if market_upper == "KOSPI":
         listing_market = "KOSPI"
-    elif market_upper in ("KOSDAQ", "KOSDAQ150"):
+    elif market_upper == "KOSDAQ":
         listing_market = "KOSDAQ"
     else:
         listing_market = "KOSPI"
@@ -1223,14 +1232,50 @@ def _tickers_from_pykrx(market: str) -> list:
     today = datetime.now().strftime("%Y%m%d")
 
     market_upper = market.upper()
-    if market_upper in ("KOSPI", "KOSPI200"):
+
+    # KOSPI200/KOSDAQ150: 인덱스 구성종목만 반환
+    if market_upper == "KOSPI200":
+        try:
+            # KOSPI 200 인덱스 코드: 1028
+            tickers = pykrx.get_index_portfolio_deposit_file("1028", today)
+            if tickers is not None and len(tickers) > 0:
+                return list(tickers)
+        except Exception:
+            pass
+        # 폴백: 전체 KOSPI에서 시가총액 상위 200개
+        return _top_n_by_market_cap(pykrx, today, "KOSPI", 200)
+
+    if market_upper == "KOSDAQ150":
+        try:
+            # KOSDAQ 150 인덱스 코드: 2203
+            tickers = pykrx.get_index_portfolio_deposit_file("2203", today)
+            if tickers is not None and len(tickers) > 0:
+                return list(tickers)
+        except Exception:
+            pass
+        # 폴백: 전체 KOSDAQ에서 시가총액 상위 150개
+        return _top_n_by_market_cap(pykrx, today, "KOSDAQ", 150)
+
+    if market_upper == "KOSPI":
         tickers = pykrx.get_market_ticker_list(today, market="KOSPI")
-    elif market_upper in ("KOSDAQ", "KOSDAQ150"):
+    elif market_upper == "KOSDAQ":
         tickers = pykrx.get_market_ticker_list(today, market="KOSDAQ")
     else:
         tickers = pykrx.get_market_ticker_list(today, market="KOSPI")
 
     return tickers or []
+
+
+def _top_n_by_market_cap(pykrx, date: str, market: str, n: int) -> list:
+    """시가총액 상위 N개 종목 반환 (폴백용)"""
+    try:
+        df = pykrx.get_market_cap(date, market=market)
+        if df is not None and not df.empty:
+            df = df.sort_values("시가총액", ascending=False)
+            return df.index.tolist()[:n]
+    except Exception:
+        pass
+    return []
 
 
 def get_index_tickers_kr(market: str = "KOSPI") -> list:

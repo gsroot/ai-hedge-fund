@@ -78,7 +78,7 @@ def main():
         """
     )
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
-    parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150", "krx"], help="인덱스 전체 분석 (krx = KOSPI+KOSDAQ 전체)")
+    parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150", "krx"], help="인덱스 전체 분석 (krx = KOSPI200+KOSDAQ150 대표 종목)")
     parser.add_argument("--top", type=int, default=30, help="분석 대상 종목 수 제한 (기본: 30, 전체 분석 시 큰 값 사용)")
     parser.add_argument("--strategy", type=str, default="fundamental",
                        choices=["fundamental", "momentum", "hybrid"],

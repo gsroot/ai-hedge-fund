@@ -6,6 +6,18 @@
 """
 
 
+def _format_ticker_name(r):
+    """티커와 종목명을 합쳐서 표시 문자열 생성"""
+    ticker = r['ticker']
+    name = r.get('company_name', '')
+    if name and name != ticker:
+        # 종목명이 너무 길면 잘라냄
+        if len(name) > 14:
+            name = name[:13] + "…"
+        return f"{ticker}({name})"
+    return ticker
+
+
 def print_results(results, top_n=30, strategy="fundamental"):
     """결과 출력 (전략별 점수 포함)"""
     strategy_labels = {
@@ -14,19 +26,19 @@ def print_results(results, top_n=30, strategy="fundamental"):
         "hybrid": "하이브리드 분석 (펀더멘털 70% + 모멘텀 30%)",
     }
 
-    print("\n" + "=" * 140)
+    print("\n" + "=" * 160)
     print(f"📈 TOP {min(top_n, len(results))} 매수 추천 종목 ({strategy_labels.get(strategy, strategy)})")
-    print("=" * 140)
+    print("=" * 160)
 
     if strategy == "momentum":
-        print(f"{'순위':<4} {'종목':<6} {'시총':<10} {'점수':<6} {'단기M':<7} {'장기M':<7} {'RSI':<6} {'추세':<8} {'신호':<12} {'P/E':<7}")
-        print("-" * 140)
+        print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'단기M':<7} {'장기M':<7} {'RSI':<6} {'추세':<8} {'신호':<12} {'P/E':<7}")
+        print("-" * 160)
     elif strategy == "hybrid":
-        print(f"{'순위':<4} {'종목':<6} {'시총':<10} {'점수':<6} {'펀더':<6} {'모멘':<6} {'앙상블':<6} {'신호':<12} {'수익률':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20}")
-        print("-" * 140)
+        print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'펀더':<6} {'모멘':<6} {'앙상블':<6} {'신호':<12} {'수익률':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20}")
+        print("-" * 160)
     else:  # fundamental
-        print(f"{'순위':<4} {'종목':<6} {'시총':<10} {'점수':<6} {'앙상블':<6} {'신호':<12} {'수익률':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20} {'주요 요인'}")
-        print("-" * 140)
+        print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'앙상블':<6} {'신호':<12} {'수익률':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20} {'주요 요인'}")
+        print("-" * 160)
 
     for r in results[:top_n]:
         pe_str = f"{r['metrics']['pe']:.1f}" if r['metrics']['pe'] else "N/A"
@@ -56,12 +68,14 @@ def print_results(results, top_n=30, strategy="fundamental"):
             "sell": "🔴 매도"
         }.get(r['signal'], r['signal'])
 
+        ticker_name = _format_ticker_name(r)
+
         if strategy == "momentum":
-            print(f"{r['rank']:<4} {r['ticker']:<6} {cap_str:<10} {r['total_score']:<6.2f} {short_m:<7} {long_m:<7} {rsi_str:<6} {trend_str:<8} {signal_display:<12} {pe_str:<7}")
+            print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {short_m:<7} {long_m:<7} {rsi_str:<6} {trend_str:<8} {signal_display:<12} {pe_str:<7}")
         elif strategy == "hybrid":
-            print(f"{r['rank']:<4} {r['ticker']:<6} {cap_str:<10} {r['total_score']:<6.2f} {fund_str:<6} {mom_str:<6} {ensemble_str:<6} {signal_display:<12} {r['predicted_return_1y']:>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20}")
+            print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {fund_str:<6} {mom_str:<6} {ensemble_str:<6} {signal_display:<12} {r['predicted_return_1y']:>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20}")
         else:  # fundamental
-            print(f"{r['rank']:<4} {r['ticker']:<6} {cap_str:<10} {r['total_score']:<6.2f} {ensemble_str:<6} {signal_display:<12} {r['predicted_return_1y']:>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20} {factors_str[:35]}")
+            print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {ensemble_str:<6} {signal_display:<12} {r['predicted_return_1y']:>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20} {factors_str[:35]}")
 
     # 통계 출력
     buy_signals = [r for r in results if r['signal'] in ['strong_buy', 'buy']]
@@ -89,7 +103,7 @@ def print_results(results, top_n=30, strategy="fundamental"):
         level = r.get('investor_consensus', {}).get('level', 'medium')
         consensus_counts[level] = consensus_counts.get(level, 0) + 1
     if consensus_counts["low"] > 0:
-        low_consensus = [r['ticker'] for r in results[:top_n] if r.get('investor_consensus', {}).get('level') == 'low']
+        low_consensus = [_format_ticker_name(r) for r in results[:top_n] if r.get('investor_consensus', {}).get('level') == 'low']
         print(f"\n🔍 투자자 합의도 분석 (상위 {top_n}개)")
         print(f"   - 높은 합의 (std<1.5): {consensus_counts['high']}개")
         print(f"   - 보통 합의 (std<2.5): {consensus_counts['medium']}개")
@@ -102,7 +116,7 @@ def print_results(results, top_n=30, strategy="fundamental"):
         for investor in r.get('investor_consensus', {}).get('bullish', []):
             if investor not in investor_picks:
                 investor_picks[investor] = []
-            investor_picks[investor].append(r['ticker'])
+            investor_picks[investor].append(_format_ticker_name(r))
 
     investor_names = {
         "buffett": "Warren Buffett",
@@ -122,14 +136,14 @@ def print_results(results, top_n=30, strategy="fundamental"):
     for r in results[:top_n]:
         warnings = r.get('investor_warnings', [])
         if warnings:
-            warnings_found.append((r['ticker'], warnings))
+            warnings_found.append((_format_ticker_name(r), warnings))
 
     if warnings_found:
         print(f"\n⚠️ 투자 철학 불일치 경고 (알고리즘 vs 실제 투자자)")
         print(f"   (알고리즘 점수가 높지만 실제 투자자 철학과 충돌 가능성)")
-        for ticker, warnings in warnings_found[:10]:
+        for ticker_name, warnings in warnings_found[:10]:
             for w in warnings:
-                print(f"   - {ticker}: {w}")
+                print(f"   - {ticker_name}: {w}")
 
     # 시가총액별 매수 추천 분포
     print(f"\n📏 시가총액별 매수 추천 분포")
@@ -137,6 +151,6 @@ def print_results(results, top_n=30, strategy="fundamental"):
     for cat, label in cap_labels.items():
         count = len(cap_categories.get(cat, []))
         if count > 0:
-            tickers = ', '.join([r['ticker'] for r in cap_categories[cat][:5]])
+            tickers = ', '.join([_format_ticker_name(r) for r in cap_categories[cat][:5]])
             suffix = f" 외 {count-5}개" if count > 5 else ""
             print(f"   - {label}: {count}개 ({tickers}{suffix})")

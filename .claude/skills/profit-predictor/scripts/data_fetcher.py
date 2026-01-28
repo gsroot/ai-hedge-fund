@@ -374,6 +374,7 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
 
         return {
             "ticker": ticker,
+            "company_name": info.get("shortName") or info.get("longName") or ticker,
 
             # ===== 밸류에이션 지표 =====
             "price_to_earnings_ratio": info.get("trailingPE") or info.get("forwardPE"),
@@ -753,11 +754,11 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
     if is_korean_index(index_name):
         from korean_data_fetcher import get_index_tickers_kr
 
-        # krx: KOSPI + KOSDAQ 전체 합산
+        # krx: KOSPI 200 + KOSDAQ 150 합산 (시가총액 대표 종목)
         if index_name.lower() == "krx":
-            print(f"📋 KRX (KOSPI + KOSDAQ) 전체 구성종목을 PyKRX에서 조회 중...")
-            kospi_tickers = get_index_tickers_kr("kospi") or []
-            kosdaq_tickers = get_index_tickers_kr("kosdaq") or []
+            print(f"📋 KRX (KOSPI 200 + KOSDAQ 150) 대표 종목을 PyKRX에서 조회 중...")
+            kospi_tickers = get_index_tickers_kr("kospi200") or []
+            kosdaq_tickers = get_index_tickers_kr("kosdaq150") or []
             # 중복 제거 (순서 유지)
             seen = set()
             kr_tickers = []
@@ -766,7 +767,7 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
                     seen.add(t)
                     kr_tickers.append(t)
             if kr_tickers:
-                print(f"   ✅ KOSPI {len(kospi_tickers)}개 + KOSDAQ {len(kosdaq_tickers)}개 = 총 {len(kr_tickers)}개 종목 조회 완료")
+                print(f"   ✅ KOSPI 200: {len(kospi_tickers)}개 + KOSDAQ 150: {len(kosdaq_tickers)}개 = 총 {len(kr_tickers)}개 종목 조회 완료")
         else:
             print(f"📋 {index_name.upper()} 구성종목을 PyKRX에서 조회 중...")
             kr_tickers = get_index_tickers_kr(index_name)

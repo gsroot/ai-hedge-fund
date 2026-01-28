@@ -3,7 +3,7 @@
 Ranking Algorithm for Profit Prediction
 
 다중 투자자 신호를 종합하여 종목 순위를 산정하고 수익률을 예측합니다.
-최대 300개 이상의 종목을 배치 처리할 수 있도록 설계되었습니다.
+최대 3000개 종목을 배치 처리할 수 있도록 설계되었습니다.
 """
 import json
 import argparse
@@ -20,9 +20,9 @@ CACHE_DIR = Path.home() / ".cache" / "profit-predictor"
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 # 기본 설정
-DEFAULT_BATCH_SIZE = 50  # 배치당 종목 수
+DEFAULT_BATCH_SIZE = 300  # 배치당 종목 수
 MAX_WORKERS = 10  # 병렬 처리 워커 수
-MAX_TICKERS = 500  # 최대 처리 가능 종목 수
+MAX_TICKERS = 3000  # 최대 처리 가능 종목 수
 
 
 # 투자자별 가중치 (역사적 성과 기반)
