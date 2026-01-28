@@ -8,13 +8,14 @@ description: |
   "어떤 종목을 사야 할까?", "AAPL, GOOGL, MSFT 중 뭘 사야해?", 수익률 예측,
   "S&P 500 종목 중 상위 10개 추천", "NASDAQ 100 순위",
   "KOSPI 상위 종목 분석", "KOSDAQ 150 순위",
-  "한국 전체 시장 분석", "KRX 전체 분석"
+  "한국 전체 시장 분석", "KRX 전체 분석",
+  "KOSPI200+KOSDAQ150 분석" → --index krx 사용 (두 인덱스를 분리 실행하지 말 것)
 ---
 
 # Profit Predictor Skill
 
 다중 팩터 분석을 기반으로 종목 수익률을 예측하고 순위를 산정하는 시스템.
-**최대 500개 종목을 배치 처리**할 수 있으며, S&P 500, NASDAQ 100 및 KOSPI, KOSDAQ, KRX(KOSPI+KOSDAQ 전체) 인덱스를 지원합니다.
+**최대 500개 종목을 배치 처리**할 수 있으며, S&P 500, NASDAQ 100 및 KOSPI, KOSDAQ, KRX(KOSPI 200 + KOSDAQ 150, 약 350개 종목) 인덱스를 지원합니다.
 
 ## 빠른 시작
 
@@ -223,7 +224,7 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 | **kosdaq** | KOSDAQ 전체 (약 1,700개 종목) | PyKRX |
 | **kospi200** | KOSPI 200 (시가총액 상위 200개) | PyKRX |
 | **kosdaq150** | KOSDAQ 150 (시가총액 상위 150개) | PyKRX |
-| **krx** | KRX 전체 = KOSPI + KOSDAQ 합산 (약 2,600개 종목) | PyKRX |
+| **krx** | KRX = KOSPI 200 + KOSDAQ 150 합산 (약 350개 종목). **"KOSPI200+KOSDAQ150", "한국 전체", "KRX" 요청 시 모두 이 인덱스 사용** (별도 분리 실행 금지) | PyKRX |
 
 ## 스크립트 파일
 
@@ -302,6 +303,10 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 ```
 "한국 전체 시장에서 시가총액 상위 50개 분석해줘"
 → uv run python analyze_stocks.py --index krx --top 50 --sort-by-cap --strategy hybrid
+
+"KOSPI200+KOSDAQ150 전체 분석해줘"
+→ uv run python analyze_stocks.py --index krx --top 500 --sort-by-cap --strategy hybrid
+⚠️ 주의: kospi200과 kosdaq150을 별도로 2번 실행하지 말고, --index krx 한 번으로 통합 실행할 것
 ```
 
 ### 예시 8: 한국 특정 종목 분석
