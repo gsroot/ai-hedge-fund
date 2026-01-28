@@ -35,6 +35,7 @@ dependencies = [
     "pykrx>=1.2.3",
     "opendartreader>=0.2.0",
     "finance-datareader>=0.9.60",
+    "openpyxl>=3.1.5",
 ]
 
 [project.optional-dependencies]
