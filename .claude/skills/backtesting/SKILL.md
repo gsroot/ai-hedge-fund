@@ -1,16 +1,19 @@
 ---
 name: backtesting
 description: |
-  포트폴리오 백테스팅 시스템. Yahoo Finance 기반 히스토리컬 데이터로 투자 전략 시뮬레이션.
+  포트폴리오 백테스팅 시스템. Yahoo Finance + DART/PyKRX 기반 히스토리컬 데이터로 투자 전략 시뮬레이션.
   모멘텀 전략, profit-predictor 전략, 하이브리드 전략 지원. Sharpe/Sortino Ratio, Max Drawdown 등 성과 지표 계산.
+  S&P 500, NASDAQ 100 + KOSPI, KOSDAQ 인덱스 지원.
   사용 시점: "백테스트 해줘", "전략 시뮬레이션", "과거 데이터로 테스트", "수익률 검증",
-  "AAPL, MSFT 백테스트", "모멘텀 전략 테스트"
+  "AAPL, MSFT 백테스트", "모멘텀 전략 테스트",
+  "KOSPI 백테스트", "삼성전자 백테스트", "한국 종목 백테스트"
 ---
 
 # Backtesting Skill
 
-Yahoo Finance 기반의 포트폴리오 백테스팅 시스템.
+Yahoo Finance + DART/PyKRX 기반의 포트폴리오 백테스팅 시스템.
 투자 전략을 과거 데이터로 시뮬레이션하여 성과를 검증합니다.
+한국 종목(6자리 숫자 코드)은 자동으로 PyKRX/FDR로 라우팅됩니다.
 
 ## 빠른 시작
 
@@ -56,6 +59,22 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
   --rebalance monthly \
   --capital 500000
 
+# KOSPI 시가총액 상위 30개 hybrid 전략
+uv run python .claude/skills/backtesting/scripts/backtest.py \
+  --index kospi \
+  --top 30 \
+  --sort-by-cap \
+  --strategy hybrid \
+  --start 2024-06-01 \
+  --end 2024-12-31 \
+  --rebalance monthly
+
+# 한국 특정 종목 백테스트 (삼성전자, SK하이닉스)
+uv run python .claude/skills/backtesting/scripts/backtest.py \
+  --tickers 005930,000660 \
+  --start 2024-01-01 \
+  --end 2024-12-31
+
 # 결과 JSON 저장
 uv run python .claude/skills/backtesting/scripts/backtest.py \
   --tickers NVDA,TSLA \
@@ -79,7 +98,7 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 - **롱/숏 포지션**: 롱 매수/매도, 공매도/커버 지원
 - **마진 관리**: 공매도 시 마진 요구사항 적용
 - **리밸런싱**: 일별/주별/월별 리밸런싱 주기 선택
-- **벤치마크 비교**: SPY 대비 초과 수익률(α) 계산
+- **벤치마크 비교**: SPY 대비 초과 수익률(α) 계산 (한국 종목은 `--benchmark` 옵션으로 변경 권장)
 - **성과 지표**: Sharpe, Sortino, Max Drawdown 등
 
 ### 성과 지표
@@ -98,7 +117,7 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 | 옵션 | 설명 | 기본값 |
 |------|------|--------|
 | `--tickers` | 종목 리스트 (콤마 구분) | - |
-| `--index` | 인덱스 또는 사전 정의 그룹 | - |
+| `--index` | 인덱스 또는 사전 정의 그룹 (sp500, nasdaq100, kospi, kosdaq 등) | - |
 | `--top` | 인덱스에서 상위 N개만 사용 | 0 (전체) |
 | `--sort-by-cap` | 시가총액 기준 정렬 **(권장)** | false |
 | `--start` | 시작 날짜 (YYYY-MM-DD) | 필수 |
@@ -113,13 +132,15 @@ uv run python .claude/skills/backtesting/scripts/backtest.py \
 
 ## 지원 인덱스
 
-| 인덱스 | 설명 | 종목 수 |
-|--------|------|---------|
-| `sp500` | S&P 500 전체 (Wikipedia 기반) | ~500개 |
-| `nasdaq100` | NASDAQ 100 전체 | ~100개 |
-| `sp500-top10` | S&P 500 시가총액 상위 10개 | 10개 |
-| `nasdaq-top10` | NASDAQ 시가총액 상위 10개 | 10개 |
-| `faang` | META, AAPL, AMZN, NFLX, GOOGL | 5개 |
+| 인덱스 | 설명 | 종목 수 | 소스 |
+|--------|------|---------|------|
+| `sp500` | S&P 500 전체 | ~500개 | Wikipedia |
+| `nasdaq100` | NASDAQ 100 전체 | ~100개 | Wikipedia |
+| `sp500-top10` | S&P 500 시가총액 상위 10개 | 10개 | 하드코딩 |
+| `nasdaq-top10` | NASDAQ 시가총액 상위 10개 | 10개 | 하드코딩 |
+| `faang` | META, AAPL, AMZN, NFLX, GOOGL | 5개 | 하드코딩 |
+| `kospi` | KOSPI 전체 | ~950개 | PyKRX |
+| `kosdaq` | KOSDAQ 전체 | ~1,700개 | PyKRX |
 
 ### 사전 정의 종목 그룹 (시가총액 기준)
 
@@ -230,7 +251,7 @@ uv run python backtest.py --index nasdaq100 --top 30 --sort-by-cap --strategy hy
 ┌─────────────────────────────────────────────┐
 │            BacktestEngine                   │
 ├─────────────────────────────────────────────┤
-│  1. 가격 데이터 로딩 (yfinance batch)       │
+│  1. 가격 데이터 로딩 (yfinance/PyKRX batch)  │
 │  2. 리밸런싱 날짜 계산                      │
 │  3. 일별 시뮬레이션 루프                    │
 │     ├─ 신호 생성 (momentum/predictor/hybrid)│
@@ -327,9 +348,12 @@ bottom_20% → SELL
 
 ## 데이터 소스
 
-- **가격 데이터**: Yahoo Finance (`yf.download` 배치 처리)
-- **벤치마크**: SPY (S&P 500 ETF)
-- **무위험 수익률**: 4.34% (미국 국채 수익률 기준)
+| 데이터 | 해외 | 한국 |
+|--------|------|------|
+| 가격 데이터 | Yahoo Finance (`yf.download` 배치) | FinanceDataReader / PyKRX |
+| 시가총액 | Yahoo Finance | KRX Open API / PyKRX |
+| 벤치마크 | SPY (S&P 500 ETF) | 한국 종목 시 `--benchmark` 변경 권장 |
+| 무위험 수익률 | 4.34% (미국 국채 기준) | 동일 |
 
 ## 실제 백테스트 결과 예시
 
@@ -418,6 +442,7 @@ uv run python backtest.py --index sp500 --top 100 --workers 20 --strategy predic
 3. **유동성**: 소형주의 경우 실제 체결 어려울 수 있음
 4. **생존자 편향**: 현재 존재하는 종목만 테스트
 5. **데이터 지연**: Yahoo Finance 데이터는 약간의 지연 가능
+6. **한국 종목**: DART 재무데이터 사용 시 `DART_API_KEY` 환경변수 필요. 벤치마크 기본값이 SPY이므로, 한국 종목 백테스트 시 적절한 벤치마크로 변경을 권장합니다 (예: `--benchmark 069500` KODEX 200).
 
 ## 사용 예시
 
@@ -449,4 +474,16 @@ uv run python backtest.py --index sp500 --top 100 --workers 20 --strategy predic
 ```
 "50만 달러로 S&P 500 상위 10개 종목 백테스트"
 → uv run python backtest.py --index sp500-top10 --start 2024-01-01 --end 2024-12-31 --capital 500000
+```
+
+### 예시 6: KOSPI 상위 종목 백테스트
+```
+"KOSPI 시가총액 상위 30개 종목으로 hybrid 백테스트"
+→ uv run python backtest.py --index kospi --top 30 --sort-by-cap --strategy hybrid --start 2024-06-01 --end 2024-12-31 --rebalance monthly
+```
+
+### 예시 7: 한국 특정 종목 백테스트
+```
+"삼성전자, SK하이닉스 2024년 백테스트"
+→ uv run python backtest.py --tickers 005930,000660 --start 2024-01-01 --end 2024-12-31
 ```

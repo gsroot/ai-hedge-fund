@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 """
-Stock Analyzer - End-to-End 종목 분석 및 순위 산정 (Yahoo Finance 버전)
+Stock Analyzer - End-to-End 종목 분석 및 순위 산정 (Yahoo Finance + DART/PyKRX)
 
 사용법:
     # 특정 종목 분석
     python analyze_stocks.py --tickers AAPL,GOOGL,MSFT,NVDA,TSLA
 
-    # S&P 500 전체 분석 (상위 N개 출력)
+    # S&P 500 전체 분석 (상위 30개 종목만 분석)
     python analyze_stocks.py --index sp500 --top 30
+
+    # S&P 500 전체 500개 종목 분석 (--top 생략 시 기본 30개)
+    python analyze_stocks.py --index sp500 --top 500
+
+    # KOSPI 시가총액 상위 30개 분석
+    python analyze_stocks.py --index kospi --top 30 --sort-by-cap
+
+    # KOSDAQ 150 분석
+    python analyze_stocks.py --index kosdaq150 --top 20
 
     # 결과를 파일로 저장
     python analyze_stocks.py --index sp500 --output results.json
@@ -18,7 +27,7 @@ Stock Analyzer - End-to-End 종목 분석 및 순위 산정 (Yahoo Finance 버�
     # 캐시 삭제
     python analyze_stocks.py --clear-cache
 
-    # Wikipedia에서 최신 티커 목록 갱신
+    # Wikipedia/PyKRX에서 최신 티커 목록 갱신
     python analyze_stocks.py --index sp500 --update-tickers
 """
 import sys
@@ -31,6 +40,7 @@ from cache import clear_cache, get_cache_stats, cache_stats
 from data_fetcher import get_index_tickers, sort_tickers_by_market_cap
 from analysis import run_batch_analysis
 from reporting import print_results
+from ticker_utils import is_korean_index, is_korean_ticker
 
 
 def main():
@@ -48,13 +58,22 @@ def main():
   # NASDAQ 100 분석
   uv run python analyze_stocks.py --index nasdaq100 --top 20
 
+  # KOSPI 시가총액 상위 30개 분석
+  uv run python analyze_stocks.py --index kospi --top 30 --sort-by-cap
+
+  # KOSDAQ 150 분석
+  uv run python analyze_stocks.py --index kosdaq150 --top 20
+
+  # 한국 특정 종목 분석 (삼성전자, SK하이닉스)
+  uv run python analyze_stocks.py --tickers 005930,000660
+
   # 결과 저장
   uv run python analyze_stocks.py --index sp500 --output results.json
         """
     )
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
-    parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100"], help="인덱스 전체 분석")
-    parser.add_argument("--top", type=int, default=30, help="상위 N개 출력 (기본: 30)")
+    parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150"], help="인덱스 전체 분석")
+    parser.add_argument("--top", type=int, default=30, help="분석 대상 종목 수 제한 (기본: 30, 전체 분석 시 큰 값 사용)")
     parser.add_argument("--strategy", type=str, default="fundamental",
                        choices=["fundamental", "momentum", "hybrid"],
                        help="분석 전략: fundamental(펀더멘털), momentum(모멘텀), hybrid(혼합) (기본: fundamental)")
@@ -66,7 +85,7 @@ def main():
     parser.add_argument("--no-cache", action="store_true", help="캐시 사용 안 함 (항상 API 호출)")
     parser.add_argument("--clear-cache", action="store_true", help="캐시 삭제 후 종료")
     parser.add_argument("--cache-stats", action="store_true", help="캐시 통계 출력 후 종료")
-    parser.add_argument("--update-tickers", action="store_true", help="Wikipedia에서 최신 티커 목록 갱신")
+    parser.add_argument("--update-tickers", action="store_true", help="Wikipedia/PyKRX에서 최신 티커 목록 갱신")
 
     args = parser.parse_args()
 
@@ -108,8 +127,12 @@ def main():
     end_date = datetime.now().strftime("%Y-%m-%d")
     strategy_names = {"fundamental": "펀더멘털", "momentum": "모멘텀", "hybrid": "하이브리드"}
 
+    # 데이터 소스 자동 감지
+    is_kr = (args.index and is_korean_index(args.index)) or (args.tickers and all(is_korean_ticker(t.strip()) for t in args.tickers.split(',')))
+    data_source = "DART + PyKRX" if is_kr else "Yahoo Finance"
+
     print(f"\n{'='*60}")
-    print(f"🔍 AI Hedge Fund - 종목 분석 시스템 (Yahoo Finance)")
+    print(f"🔍 AI Hedge Fund - 종목 분석 시스템 ({data_source})")
     print(f"{'='*60}")
     print(f"분석 날짜: {end_date}")
     print(f"예측 기간: {args.period}")

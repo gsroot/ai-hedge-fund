@@ -11,11 +11,34 @@ from config import NEGATIVE_KEYWORDS, POSITIVE_KEYWORDS
 # 시가총액 카테고리
 # ============================================================================
 
-def get_market_cap_category(market_cap):
-    """시가총액 기반 카테고리 분류"""
+def get_market_cap_category(market_cap, currency=None):
+    """
+    시가총액 기반 카테고리 분류 (USD/KRW 자동 감지)
+
+    Args:
+        market_cap: 시가총액 (숫자)
+        currency: 'KRW' 강제 지정 시 한국 기준 적용. None이면 자동 감지.
+                  자동 감지 기준: market_cap > 1e13 → KRW (USD 최대 ~$4T = 4e12)
+    """
     if not market_cap:
         return None, "N/A"
 
+    is_krw = (currency == "KRW") or (currency is None and market_cap > 1e13)
+
+    if is_krw:
+        # KRW 시가총액
+        cap_jo = market_cap / 1e12  # 조 단위
+        if cap_jo >= 200:
+            return "mega", f"₩{cap_jo:.0f}조"
+        elif cap_jo >= 10:
+            return "large", f"₩{cap_jo:.0f}조"
+        elif cap_jo >= 2:
+            return "mid", f"₩{cap_jo:.1f}조"
+        else:
+            cap_eok = market_cap / 1e8  # 억 단위
+            return "small", f"₩{cap_eok:,.0f}억"
+
+    # USD 시가총액
     cap_b = market_cap / 1e9  # 십억 달러 단위
 
     if cap_b >= 200:
@@ -28,7 +51,7 @@ def get_market_cap_category(market_cap):
         return "small", f"${cap_b*1000:.0f}M"
 
 
-def calculate_size_bonus(market_cap, growth_score):
+def calculate_size_bonus(market_cap, growth_score, currency=None):
     """
     시가총액 기반 보너스 점수 (피터 린치/준준왈라 스타일)
     - 고성장 소형주: 10배 수익 가능성 → 가산점
@@ -37,7 +60,7 @@ def calculate_size_bonus(market_cap, growth_score):
     if not market_cap:
         return 0, []
 
-    category, _ = get_market_cap_category(market_cap)
+    category, _ = get_market_cap_category(market_cap, currency=currency)
     score = 0
     factors = []
 

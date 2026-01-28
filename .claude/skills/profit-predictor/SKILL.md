@@ -2,17 +2,18 @@
 name: profit-predictor
 description: |
   특정 기간 후 최고 수익 예상 종목 선정. 전설적 투자자들의 분석 방식을 종합하여 예측.
-  최대 500개 종목을 배치 처리하여 순위 산정. S&P 500, NASDAQ 100 인덱스 지원.
+  최대 500개 종목을 배치 처리하여 순위 산정. S&P 500, NASDAQ 100 + KOSPI, KOSDAQ 인덱스 지원.
   펀더멘털, 모멘텀, 하이브리드 전략 선택 가능. 시가총액 기준 정렬 지원.
   사용 시점: "1년 후 가장 수익률 좋을 종목은?", 포트폴리오 순위, 투자 우선순위 결정,
   "어떤 종목을 사야 할까?", "AAPL, GOOGL, MSFT 중 뭘 사야해?", 수익률 예측,
-  "S&P 500 종목 중 상위 10개 추천", "NASDAQ 100 순위"
+  "S&P 500 종목 중 상위 10개 추천", "NASDAQ 100 순위",
+  "KOSPI 상위 종목 분석", "KOSDAQ 150 순위"
 ---
 
 # Profit Predictor Skill
 
 다중 팩터 분석을 기반으로 종목 수익률을 예측하고 순위를 산정하는 시스템.
-**최대 500개 종목을 배치 처리**할 수 있으며, S&P 500 및 NASDAQ 100 인덱스를 지원합니다.
+**최대 500개 종목을 배치 처리**할 수 있으며, S&P 500, NASDAQ 100 및 KOSPI, KOSDAQ 인덱스를 지원합니다.
 
 ## 빠른 시작
 
@@ -30,6 +31,18 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 # 특정 종목 분석 (펀더멘털 전략, 기본값)
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
   --tickers AAPL,GOOGL,MSFT,NVDA,TSLA
+
+# KOSPI 시가총액 상위 30개 분석
+uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
+  --index kospi --top 30 --sort-by-cap --strategy hybrid
+
+# KOSDAQ 150 분석
+uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
+  --index kosdaq150 --top 20 --strategy hybrid
+
+# 한국 특정 종목 분석 (삼성전자, SK하이닉스)
+uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
+  --tickers 005930,000660
 
 # 결과를 JSON으로 저장
 uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
@@ -175,8 +188,8 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 | 옵션 | 설명 | 기본값 |
 |------|------|--------|
 | `--tickers` | 분석할 종목 (콤마 구분) | - |
-| `--index` | 인덱스 전체 분석 (sp500, nasdaq100) | - |
-| `--top` | 상위 N개 출력 | 30 |
+| `--index` | 인덱스 전체 분석 (sp500, nasdaq100, kospi, kosdaq, kospi200, kosdaq150) | - |
+| `--top` | 분석 대상 종목 수 제한 (전체 분석 시 생략 또는 큰 값 사용) | 30 |
 | `--strategy` | 분석 전략 (fundamental, momentum, hybrid) | fundamental |
 | `--sort-by-cap` | 시가총액 기준 정렬 **(권장)** | false |
 | `--workers` | 병렬 처리 워커 수 | 10 |
@@ -185,7 +198,7 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 | `--no-cache` | 캐시 사용 안 함 (항상 새로 조회) | false |
 | `--clear-cache` | 캐시 삭제 후 종료 | - |
 | `--cache-stats` | 캐시 통계 출력 | - |
-| `--update-tickers` | Wikipedia에서 최신 티커 목록 갱신 | - |
+| `--update-tickers` | Wikipedia/PyKRX에서 최신 티커 목록 갱신 | - |
 
 ## 분석 전략
 
@@ -197,8 +210,14 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 
 ## 지원 인덱스
 
-- **sp500**: S&P 500 (약 500개 종목)
-- **nasdaq100**: NASDAQ 100 (약 100개 종목)
+| 인덱스 | 설명 | 소스 |
+|--------|------|------|
+| **sp500** | S&P 500 (약 500개 종목) | Wikipedia |
+| **nasdaq100** | NASDAQ 100 (약 100개 종목) | Wikipedia |
+| **kospi** | KOSPI 전체 (약 950개 종목) | PyKRX |
+| **kosdaq** | KOSDAQ 전체 (약 1,700개 종목) | PyKRX |
+| **kospi200** | KOSPI 200 (시가총액 상위 200개) | PyKRX |
+| **kosdaq150** | KOSDAQ 150 (시가총액 상위 150개) | PyKRX |
 
 ## 스크립트 파일
 
@@ -217,12 +236,14 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 
 ## 데이터 소스
 
-| 데이터 | 용도 | 출처 |
-|--------|------|------|
-| 재무 지표 | P/E, ROE, 마진 등 | Yahoo Finance |
-| 가격 데이터 | 모멘텀 분석 | Yahoo Finance (배치 다운로드) |
-| 내부자 거래 | Peter Lynch 스타일 분석 | Yahoo Finance |
-| 뉴스 헤드라인 | 센티먼트 분석 | Yahoo Finance |
+| 데이터 | 용도 | 해외 출처 | 한국 출처 |
+|--------|------|-----------|-----------|
+| 재무 지표 | P/E, ROE, 마진 등 | Yahoo Finance | DART (OpenDartReader) |
+| 가격 데이터 | 모멘텀 분석 | Yahoo Finance (배치) | PyKRX |
+| 시가총액 | 종목 정렬/분류 | Yahoo Finance | KRX Open API / PyKRX |
+| 내부자 거래 | Peter Lynch 스타일 분석 | Yahoo Finance | DART 주요주주 공시 |
+| 뉴스 헤드라인 | 센티먼트 분석 | Yahoo Finance | FinanceDataReader |
+| 인덱스 구성종목 | 종목 리스트 | Wikipedia | PyKRX |
 
 ## 주의사항
 
@@ -231,6 +252,7 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 3. **배치 가격 다운로드**: `yf.download()`로 500개 종목 가격을 1회 API 호출로 수집
 4. **분석 시간**: 500개 종목 기준 약 3-5분 소요
 5. **투자 책임**: 이 분석은 참고용이며 투자 결정은 본인 책임
+6. **한국 종목**: DART 재무데이터 사용 시 `DART_API_KEY` 환경변수 필요 (`.env` 파일에 설정). 시가총액은 KRW 단위로 자동 감지되어 `₩320조`, `₩5,000억` 형태로 표시됩니다.
 
 ## 사용 예시
 
@@ -256,4 +278,22 @@ uv run python .claude/skills/profit-predictor/scripts/analyze_stocks.py \
 ```
 "S&P 500 종목 중 가치투자 관점에서 추천해줘"
 → uv run python analyze_stocks.py --index sp500 --top 30 --strategy fundamental
+```
+
+### 예시 5: KOSPI 상위 종목 분석
+```
+"KOSPI 시가총액 상위 30개 분석해줘"
+→ uv run python analyze_stocks.py --index kospi --top 30 --sort-by-cap --strategy hybrid
+```
+
+### 예시 6: KOSDAQ 150 분석
+```
+"KOSDAQ 150 종목 중 상위 20개 추천"
+→ uv run python analyze_stocks.py --index kosdaq150 --top 20 --strategy hybrid
+```
+
+### 예시 7: 한국 특정 종목 분석
+```
+"삼성전자, SK하이닉스, LG에너지솔루션 비교 분석"
+→ uv run python analyze_stocks.py --tickers 005930,000660,373220 --strategy hybrid
 ```

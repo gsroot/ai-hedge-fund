@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Financial Data Fetcher (Yahoo Finance 버전)
+Financial Data Fetcher (Yahoo Finance / 한국 DART+PyKRX 버전)
 
 yfinance 라이브러리를 사용하여 투자 분석에 필요한 데이터를 수집합니다.
-무료이며 rate limit이 관대합니다.
+한국 주식(6자리 숫자 종목코드)은 자동으로 DART + PyKRX로 라우팅됩니다.
 """
 import sys
 import os
@@ -17,6 +17,22 @@ try:
 except ImportError:
     print("yfinance가 설치되지 않았습니다. 설치: pip install yfinance")
     sys.exit(1)
+
+# 한국 주식 지원을 위해 profit-predictor의 유틸리티 가져오기
+_kr_utils_loaded = False
+try:
+    _skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    _predictor_scripts = os.path.join(_skills_dir, "profit-predictor", "scripts")
+    if _predictor_scripts not in sys.path:
+        sys.path.insert(0, _predictor_scripts)
+    from ticker_utils import is_korean_ticker, normalize_korean_ticker
+    _kr_utils_loaded = True
+except ImportError:
+    # ticker_utils를 불러올 수 없으면 한국 주식 지원 비활성화
+    def is_korean_ticker(ticker):
+        return False
+    def normalize_korean_ticker(ticker):
+        return ticker
 
 
 def _calculate_derived_metrics(stock, info: dict) -> dict:
@@ -151,16 +167,23 @@ def _calculate_derived_metrics(stock, info: dict) -> dict:
 
 def get_financial_metrics(ticker: str, end_date: str = None, period: str = "annual", limit: int = 5) -> list:
     """
-    Yahoo Finance에서 재무 지표 가져오기 (개선된 버전)
+    재무 지표 가져오기 (Yahoo Finance / 한국 DART+PyKRX)
 
-    개선 사항:
-    - 15개 이상의 추가 필드 (enterprise_value, eps, book_value_per_share 등)
-    - ROIC, Interest Coverage, Cash Ratio 등 파생 지표 계산
-    - 소유권/공매도 지표 추가
+    한국 주식은 DART + PyKRX에서 데이터를 수집합니다.
 
     Returns:
         Financial Datasets API와 호환되는 형식의 dict 리스트
     """
+    if is_korean_ticker(ticker):
+        try:
+            from korean_data_fetcher import get_financial_metrics_kr
+            kr_ticker = normalize_korean_ticker(ticker)
+            result = get_financial_metrics_kr(kr_ticker, end_date or datetime.now().strftime("%Y-%m-%d"))
+            return [result] if result else []
+        except ImportError as e:
+            print(f"한국 주식 데이터 모듈 로드 실패: {e}")
+            return []
+
     try:
         stock = yf.Ticker(ticker)
         info = stock.info
@@ -262,11 +285,19 @@ def get_financial_metrics(ticker: str, end_date: str = None, period: str = "annu
 
 def get_prices(ticker: str, start_date: str, end_date: str) -> list:
     """
-    Yahoo Finance에서 가격 데이터 가져오기.
+    가격 데이터 가져오기 (Yahoo Finance / 한국 PyKRX)
 
     Returns:
         Financial Datasets API와 호환되는 형식의 dict 리스트
     """
+    if is_korean_ticker(ticker):
+        try:
+            from korean_data_fetcher import get_prices_kr
+            return get_prices_kr(normalize_korean_ticker(ticker), start_date, end_date)
+        except ImportError as e:
+            print(f"한국 주식 데이터 모듈 로드 실패: {e}")
+            return []
+
     try:
         stock = yf.Ticker(ticker)
         df = stock.history(start=start_date, end=end_date)
@@ -292,7 +323,14 @@ def get_prices(ticker: str, start_date: str, end_date: str) -> list:
 
 
 def get_market_cap(ticker: str, end_date: str = None) -> Optional[float]:
-    """Yahoo Finance에서 시가총액 가져오기."""
+    """시가총액 가져오기 (Yahoo Finance / 한국 PyKRX)"""
+    if is_korean_ticker(ticker):
+        try:
+            from korean_data_fetcher import get_market_cap_kr
+            return get_market_cap_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"))
+        except ImportError:
+            return None
+
     try:
         stock = yf.Ticker(ticker)
         return stock.info.get("marketCap")
@@ -303,12 +341,15 @@ def get_market_cap(ticker: str, end_date: str = None) -> Optional[float]:
 
 def get_insider_trades(ticker: str, end_date: str = None, limit: int = 100) -> list:
     """
-    Yahoo Finance에서 내부자 거래 데이터 가져오기 (개선된 버전)
-
-    개선 사항:
-    - transaction_price_per_share 계산 추가
-    - ownership_type, filing_url 필드 추가
+    내부자 거래 데이터 가져오기 (Yahoo Finance / 한국 DART 공시)
     """
+    if is_korean_ticker(ticker):
+        try:
+            from korean_data_fetcher import get_insider_trades_kr
+            return get_insider_trades_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"), limit)
+        except ImportError:
+            return []
+
     try:
         stock = yf.Ticker(ticker)
 
@@ -351,12 +392,15 @@ def get_insider_trades(ticker: str, end_date: str = None, limit: int = 100) -> l
 
 def get_company_news(ticker: str, end_date: str = None, limit: int = 100) -> list:
     """
-    Yahoo Finance에서 뉴스 데이터 가져오기 (개선된 버전)
-
-    개선 사항:
-    - content.summary 필드에서 본문 요약 추출
-    - content_type, thumbnail_url 메타데이터 추가
+    뉴스 데이터 가져오기 (Yahoo Finance / 한국 DART 공시)
     """
+    if is_korean_ticker(ticker):
+        try:
+            from korean_data_fetcher import get_company_news_kr
+            return get_company_news_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"), limit)
+        except ImportError:
+            return []
+
     try:
         stock = yf.Ticker(ticker)
         news = stock.news
@@ -404,10 +448,18 @@ def get_company_news(ticker: str, end_date: str = None, limit: int = 100) -> lis
 
 def search_line_items(ticker: str, line_items: list, end_date: str = None, period: str = "annual", limit: int = 5) -> list:
     """
-    Yahoo Finance에서 재무제표 라인 아이템 검색.
+    재무제표 라인 아이템 검색 (Yahoo Finance / 한국 DART)
 
     Financial Datasets API의 search_line_items와 유사한 인터페이스 제공.
     """
+    if is_korean_ticker(ticker):
+        try:
+            from korean_data_fetcher import search_line_items_kr
+            return search_line_items_kr(normalize_korean_ticker(ticker), line_items, end_date or datetime.now().strftime("%Y-%m-%d"), period, limit)
+        except ImportError as e:
+            print(f"한국 주식 데이터 모듈 로드 실패: {e}")
+            return []
+
     try:
         stock = yf.Ticker(ticker)
 

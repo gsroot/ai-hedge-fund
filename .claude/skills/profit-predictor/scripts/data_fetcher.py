@@ -1,9 +1,11 @@
 """
-Yahoo Finance 데이터 조회 모듈
+Yahoo Finance / 한국 주식 데이터 조회 모듈
 
 재무 지표, 가격, 뉴스, 내부자 거래, 인덱스 구성종목 데이터를 수집합니다.
 모든 API 호출은 rate_limiter의 안전한 래퍼를 통해 수행되며,
 결과는 cache 모듈을 통해 파일 기반 캐싱됩니다.
+
+한국 주식(6자리 숫자 종목코드)은 자동으로 DART + PyKRX로 라우팅됩니다.
 """
 import os
 import json
@@ -22,6 +24,7 @@ from rate_limiter import (
     safe_get_balance_sheet,
     safe_batch_download,
 )
+from ticker_utils import is_korean_ticker, normalize_korean_ticker, is_korean_index
 
 # ============================================================================
 # 인덱스 종목 리스트 (폴백용 하드코딩)
@@ -156,6 +159,10 @@ def _fetch_company_news_yf(ticker: str, limit: int = 50) -> list:
 
 def get_insider_trades(ticker: str, end_date: str, limit: int = 100) -> list:
     """캐시된 내부자 거래 데이터 조회"""
+    if is_korean_ticker(ticker):
+        from korean_data_fetcher import get_insider_trades_kr
+        return get_insider_trades_kr(normalize_korean_ticker(ticker), end_date, limit)
+
     cache_path = _get_cache_path("insider_yf_v2", ticker, end_date, "")
     cached = _read_cache(cache_path)
     if cached is not None:
@@ -171,6 +178,10 @@ def get_insider_trades(ticker: str, end_date: str, limit: int = 100) -> list:
 
 def get_company_news(ticker: str, end_date: str, limit: int = 50) -> list:
     """캐시된 뉴스 데이터 조회"""
+    if is_korean_ticker(ticker):
+        from korean_data_fetcher import get_company_news_kr
+        return get_company_news_kr(normalize_korean_ticker(ticker), end_date, limit)
+
     cache_path = _get_cache_path("news_yf_v2", ticker, end_date, "")
     cached = _read_cache(cache_path)
     if cached is not None:
@@ -230,7 +241,7 @@ def _calculate_derived_metrics(ticker: str, info: dict) -> dict:
                         break
 
             if ebit:
-                tax_rate = 0.21  # 미국 법인세율 가정
+                tax_rate = 0.21  # 미국 법인세율 가정 (한국 종목은 korean_data_fetcher로 라우팅되어 여기 도달하지 않음)
                 nopat = ebit * (1 - tax_rate)
 
                 total_equity = None
@@ -480,10 +491,11 @@ def _fetch_prices_yf(ticker: str, start_date: str, end_date: str) -> list:
 
 def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
     """
-    Yahoo Finance에서 여러 종목의 가격 데이터를 한 번에 가져오기 (배치 처리)
+    여러 종목의 가격 데이터를 한 번에 가져오기 (배치 처리)
 
-    yf.download()는 멀티 티커를 지원하며 내부적으로 스레딩을 사용하여
-    개별 호출 대비 훨씬 효율적입니다.
+    한국 티커와 해외 티커를 자동으로 분리하여 각각의 데이터소스로 라우팅합니다.
+    - 해외: yf.download() (멀티 티커 배치)
+    - 한국: PyKRX (순차 호출)
 
     Returns:
         dict: {ticker: [price_list]} 형태의 딕셔너리
@@ -491,11 +503,31 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
     if not tickers:
         return {}
 
+    # 한국/해외 티커 분리
+    kr_tickers = [t for t in tickers if is_korean_ticker(t)]
+    us_tickers = [t for t in tickers if not is_korean_ticker(t)]
+
+    result = {}
+
+    # 한국 티커 처리
+    if kr_tickers:
+        from korean_data_fetcher import batch_fetch_prices_kr
+        kr_normalized = [normalize_korean_ticker(t) for t in kr_tickers]
+        kr_result = batch_fetch_prices_kr(kr_normalized, start_date, end_date)
+        # 원래 티커명으로 매핑 (정규화 전 이름 유지)
+        for orig, norm in zip(kr_tickers, kr_normalized):
+            if norm in kr_result:
+                result[orig] = kr_result[norm]
+
+    # 해외 티커가 없으면 한국 결과만 반환
+    if not us_tickers:
+        return result
+
     try:
-        print(f"📊 가격 데이터 배치 다운로드 중... ({len(tickers)}개 종목)")
+        print(f"📊 가격 데이터 배치 다운로드 중... ({len(us_tickers)}개 해외 종목)")
 
         df = safe_batch_download(
-            tickers=tickers,
+            tickers=us_tickers,
             start=start_date,
             end=end_date,
             group_by='ticker',
@@ -503,13 +535,11 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
 
         if df is None or df.empty:
             print("   ⚠️  가격 데이터를 가져오지 못했습니다.")
-            return {}
-
-        result = {}
+            return result
 
         # 단일 티커인 경우 컬럼 구조가 다름
-        if len(tickers) == 1:
-            ticker = tickers[0]
+        if len(us_tickers) == 1:
+            ticker = us_tickers[0]
             prices = []
             for date, row in df.iterrows():
                 try:
@@ -527,7 +557,7 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
                 result[ticker] = prices
         else:
             # 멀티 티커: group_by='ticker'로 인해 (ticker, column) 형태의 멀티인덱스
-            for ticker in tickers:
+            for ticker in us_tickers:
                 try:
                     if ticker not in df.columns.get_level_values(0):
                         continue
@@ -570,7 +600,22 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
 # ============================================================================
 
 def get_financial_metrics(ticker, end_date, period="ttm", limit=10):
-    """캐시된 financial metrics 조회 (Yahoo Finance)"""
+    """캐시된 financial metrics 조회 (Yahoo Finance / 한국 DART+PyKRX)"""
+    if is_korean_ticker(ticker):
+        from korean_data_fetcher import get_financial_metrics_kr
+        kr_ticker = normalize_korean_ticker(ticker)
+        cache_path = _get_cache_path("metrics_kr", kr_ticker, end_date, "")
+        cached = _read_cache(cache_path)
+        if cached is not None:
+            cache_stats["hits"] += 1
+            return [cached]
+        cache_stats["misses"] += 1
+        result = get_financial_metrics_kr(kr_ticker, end_date)
+        if result:
+            _write_cache(cache_path, result)
+            return [result]
+        return []
+
     cache_path = _get_cache_path("metrics_yf", ticker, end_date, "")
     cached = _read_cache(cache_path)
     if cached is not None:
@@ -586,7 +631,21 @@ def get_financial_metrics(ticker, end_date, period="ttm", limit=10):
 
 
 def get_prices(ticker, start_date, end_date):
-    """캐시된 가격 데이터 조회 (Yahoo Finance)"""
+    """캐시된 가격 데이터 조회 (Yahoo Finance / 한국 PyKRX)"""
+    if is_korean_ticker(ticker):
+        from korean_data_fetcher import get_prices_kr
+        kr_ticker = normalize_korean_ticker(ticker)
+        cache_path = _get_cache_path("prices_kr", kr_ticker, end_date, start_date)
+        cached = _read_cache(cache_path)
+        if cached is not None:
+            cache_stats["hits"] += 1
+            return cached
+        cache_stats["misses"] += 1
+        result = get_prices_kr(kr_ticker, start_date, end_date)
+        if result:
+            _write_cache(cache_path, result)
+        return result
+
     cache_path = _get_cache_path("prices_yf", ticker, end_date, start_date)
     cached = _read_cache(cache_path)
     if cached is not None:
@@ -672,11 +731,11 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
     인덱스 구성종목 티커 목록 가져오기
 
     Args:
-        index_name: 'sp500' 또는 'nasdaq100'
+        index_name: 'sp500', 'nasdaq100', 'kospi', 'kosdaq', 'kospi200', 'kosdaq150'
         use_cache: 티커 목록 캐시 사용 여부
 
     Returns:
-        티커 목록 (리스트)
+        티커 목록 (리스트). 한국 인덱스는 PyKRX, 미국 인덱스는 Wikipedia에서 조회.
     """
     today = datetime.now().strftime("%Y-%m-%d")
     cache_path = os.path.join(CACHE_DIR, f"tickers_{index_name}_{today}.json")
@@ -689,6 +748,26 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
                 return cached
         except Exception:
             pass
+
+    # 한국 인덱스 지원 (kospi, kosdaq)
+    if is_korean_index(index_name):
+        from korean_data_fetcher import get_index_tickers_kr
+        print(f"📋 {index_name.upper()} 구성종목을 PyKRX에서 조회 중...")
+        kr_tickers = get_index_tickers_kr(index_name)
+        if kr_tickers:
+            print(f"   ✅ PyKRX에서 {len(kr_tickers)}개 종목 조회 완료")
+            if use_cache and CACHE_ENABLED:
+                try:
+                    if not os.path.exists(CACHE_DIR):
+                        os.makedirs(CACHE_DIR)
+                    with open(cache_path, 'w') as f:
+                        json.dump(kr_tickers, f)
+                except Exception:
+                    pass
+        else:
+            print(f"   ⚠️ {index_name.upper()} 종목 조회 실패")
+            kr_tickers = []
+        return kr_tickers
 
     tickers = None
     if index_name == "sp500":
@@ -720,7 +799,7 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
 
 
 def sort_tickers_by_market_cap(tickers, top_n=0):
-    """티커를 시가총액 기준으로 정렬"""
+    """티커를 시가총액 기준으로 정렬 (한국/해외 자동 분기)"""
     print(f"📊 {len(tickers)}개 종목을 시가총액 기준으로 정렬 중...")
 
     market_caps = {}
@@ -730,9 +809,15 @@ def sort_tickers_by_market_cap(tickers, top_n=0):
         batch = tickers[i:i+batch_size]
         for ticker in batch:
             try:
-                info = safe_get_ticker_info(ticker)
-                market_cap = info.get("marketCap", 0) or 0 if info else 0
-                market_caps[ticker] = market_cap
+                if is_korean_ticker(ticker):
+                    from korean_data_fetcher import get_market_cap_kr
+                    kr_ticker = normalize_korean_ticker(ticker)
+                    cap = get_market_cap_kr(kr_ticker, datetime.now().strftime("%Y-%m-%d"))
+                    market_caps[ticker] = cap or 0
+                else:
+                    info = safe_get_ticker_info(ticker)
+                    market_cap = info.get("marketCap", 0) or 0 if info else 0
+                    market_caps[ticker] = market_cap
             except Exception:
                 market_caps[ticker] = 0
 

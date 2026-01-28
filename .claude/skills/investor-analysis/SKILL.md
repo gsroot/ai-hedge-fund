@@ -7,18 +7,20 @@ description: |
   사용 시점: 투자 분석 요청, "버핏 스타일로 분석", 앙상블 분석, 특정 투자자 관점 분석,
   "AAPL을 분석해줘", "모든 투자자 관점에서 분석"
   단일 종목 심층 분석: "AAPL 분석해줘", "테슬라 주식 어때?", "NVDA 살까 말까?"
+  한국 종목 지원: "삼성전자 분석해줘", "005930 버핏 스타일로 분석", "SK하이닉스 앙상블 분석"
 ---
 
 # Investor Analysis Skill
 
 전설적인 투자자 페르소나와 전문 분석가를 활용한 종합 주식 분석 시스템.
 단일 종목 심층 분석부터 앙상블 분석까지 지원합니다.
+한국 종목(6자리 숫자 코드)은 자동으로 DART + PyKRX로 라우팅됩니다.
 
 ## 분석 모드
 
 ### 모드 1: 빠른 분석 (기본)
 
-"AAPL 분석해줘", "테슬라 주식 어때?" 같은 일반 분석 요청 시:
+"AAPL 분석해줘", "테슬라 주식 어때?", "삼성전자 분석해줘" 같은 일반 분석 요청 시:
 
 ```
 5개 전문 분석가 자동 호출 (병렬):
@@ -112,18 +114,19 @@ Task(
 
 ## 데이터 수집
 
-모든 에이전트는 `scripts/data_fetcher.py`의 함수 사용 (Yahoo Finance 기반, API 키 불필요):
+모든 에이전트는 `scripts/data_fetcher.py`의 함수 사용:
 
-| 함수 | 용도 |
-|------|------|
-| `get_financial_metrics()` | ROE, 마진, 부채비율 등 재무 지표 |
-| `search_line_items()` | 상세 재무제표 항목 |
-| `get_market_cap()` | 시가총액 |
-| `get_prices()` | 가격/거래량 (기술적 분석) |
-| `get_insider_trades()` | 내부자 거래 |
-| `get_company_news()` | 회사 뉴스 |
+| 함수 | 용도 | 해외 소스 | 한국 소스 |
+|------|------|-----------|-----------|
+| `get_financial_metrics()` | ROE, 마진, 부채비율 등 | Yahoo Finance | DART + PyKRX |
+| `search_line_items()` | 상세 재무제표 항목 | Yahoo Finance | DART 재무제표 |
+| `get_market_cap()` | 시가총액 | Yahoo Finance | KRX API / PyKRX |
+| `get_prices()` | 가격/거래량 (기술적 분석) | Yahoo Finance | FDR / PyKRX |
+| `get_insider_trades()` | 내부자 거래 | Yahoo Finance | DART 주요주주 공시 |
+| `get_company_news()` | 회사 뉴스 | Yahoo Finance | 네이버 뉴스 / DART |
 
-사용 예시: [scripts/data_fetcher.py](scripts/data_fetcher.py) 참조. 무료이며 rate limit이 관대합니다.
+해외 종목은 무료 (API 키 불필요). 한국 종목은 `DART_API_KEY` 환경변수 필요.
+6자리 숫자 종목코드 입력 시 자동으로 한국 데이터소스로 라우팅됩니다.
 
 ## 참고 자료
 
@@ -201,6 +204,19 @@ Task(
 "AAPL 종합 투자 리포트 만들어줘"
 "마이크로소프트 버핏, 린치 관점 포함해서 리포트"
 → 구조화된 리포트 형식으로 반환
+```
+
+### 예시 6: 한국 종목 분석
+```
+"삼성전자 분석해줘"
+"005930 버핏 스타일로 분석해줘"
+→ 6자리 종목코드 자동 감지 → DART + PyKRX 데이터 사용
+```
+
+### 예시 7: 한국 종목 앙상블 분석
+```
+"SK하이닉스를 모든 투자자 관점에서 분석해줘"
+→ 17개 서브에이전트 병렬 호출 (DART/PyKRX 데이터 자동 사용)
 ```
 
 ---

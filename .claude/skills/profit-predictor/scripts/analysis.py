@@ -39,6 +39,7 @@ from investor_scoring import (
     calculate_druckenmiller_score,
     generate_investor_warnings,
 )
+from ticker_utils import is_korean_ticker
 
 
 def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fundamental", skip_news=False, sector_stats=None):
@@ -76,9 +77,10 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
             insider_trades = get_insider_trades(ticker, end_date, limit=50)
             company_news = get_company_news(ticker, end_date, limit=20)
 
-        # 시가총액
+        # 시가총액 (한국 종목은 KRW 단위)
         market_cap = metrics[0].get('market_cap')
-        cap_category, cap_display = get_market_cap_category(market_cap)
+        currency = "KRW" if is_korean_ticker(ticker) else None
+        cap_category, cap_display = get_market_cap_category(market_cap, currency=currency)
 
         # ========================================
         # 기본 팩터별 점수 계산
@@ -92,7 +94,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="fu
         sentiment_score, sentiment_factors = calculate_sentiment_score(company_news)
         insider_score, insider_factors = calculate_insider_activity_score(insider_trades)
 
-        size_bonus, size_factors = calculate_size_bonus(market_cap, growth_score)
+        size_bonus, size_factors = calculate_size_bonus(market_cap, growth_score, currency=currency)
 
         enhanced_momentum_score, momentum_details = calculate_enhanced_momentum_score(prices)
 

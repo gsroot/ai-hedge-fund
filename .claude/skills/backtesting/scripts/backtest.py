@@ -30,6 +30,21 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirna
 from dotenv import load_dotenv
 load_dotenv()
 
+# 한국 주식 지원 유틸리티 로드
+_kr_utils_loaded = False
+try:
+    _skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    _predictor_scripts = os.path.join(_skills_dir, "profit-predictor", "scripts")
+    if _predictor_scripts not in sys.path:
+        sys.path.insert(0, _predictor_scripts)
+    from ticker_utils import is_korean_ticker, normalize_korean_ticker
+    _kr_utils_loaded = True
+except ImportError:
+    def is_korean_ticker(ticker):
+        return False
+    def normalize_korean_ticker(ticker):
+        return ticker
+
 
 # ============================================================================
 # Yahoo Finance Rate Limiting 대응 (재시도 로직)
@@ -351,7 +366,7 @@ def get_index_tickers_from_predictor(index_name: str) -> List[str]:
 
 
 def sort_tickers_by_market_cap(tickers: List[str], top_n: int = 0) -> List[str]:
-    """티커를 시가총액 기준으로 정렬 (재시도 로직 포함)"""
+    """티커를 시가총액 기준으로 정렬 (한국/해외 자동 분기, 재시도 로직 포함)"""
     print(f"📊 {len(tickers)}개 종목을 시가총액 기준으로 정렬 중...")
 
     market_caps = {}
@@ -361,10 +376,16 @@ def sort_tickers_by_market_cap(tickers: List[str], top_n: int = 0) -> List[str]:
         batch = tickers[i:i+batch_size]
         for ticker in batch:
             try:
-                # 안전한 API 호출 (재시도 로직 포함)
-                info = _safe_get_ticker_info(ticker)
-                market_cap = info.get("marketCap", 0) or 0 if info else 0
-                market_caps[ticker] = market_cap
+                if is_korean_ticker(ticker):
+                    from korean_data_fetcher import get_market_cap_kr
+                    kr_ticker = normalize_korean_ticker(ticker)
+                    cap = get_market_cap_kr(kr_ticker, datetime.now().strftime("%Y-%m-%d"))
+                    market_caps[ticker] = cap or 0
+                else:
+                    # 안전한 API 호출 (재시도 로직 포함)
+                    info = _safe_get_ticker_info(ticker)
+                    market_cap = info.get("marketCap", 0) or 0 if info else 0
+                    market_caps[ticker] = market_cap
             except Exception:
                 market_caps[ticker] = 0
 
@@ -441,8 +462,18 @@ def calculate_momentum_score(ticker: str, price_df: pd.DataFrame, lookback_short
 
 
 def get_benchmark_return(ticker: str, start_date: str, end_date: str) -> Optional[float]:
-    """벤치마크 수익률 계산"""
+    """벤치마크 수익률 계산 (한국/해외 자동 분기)"""
     try:
+        if is_korean_ticker(ticker):
+            from korean_data_fetcher import get_prices_kr
+            kr_ticker = normalize_korean_ticker(ticker)
+            prices = get_prices_kr(kr_ticker, start_date, end_date)
+            if not prices or len(prices) < 2:
+                return None
+            first_close = prices[0]["close"]
+            last_close = prices[-1]["close"]
+            return ((last_close - first_close) / first_close) * 100.0
+
         df = yf.download(ticker, start=start_date, end=end_date, progress=False)
         if df.empty:
             return None
@@ -550,14 +581,50 @@ def generate_momentum_signals(
     end_date = datetime.strptime(analysis_date, "%Y-%m-%d")
     start_date = end_date - timedelta(days=lookback_days * 2)
 
+    # 한국/해외 티커 분리
+    kr_tickers = [t for t in tickers if is_korean_ticker(t)]
+    us_tickers = [t for t in tickers if not is_korean_ticker(t)]
+
     try:
-        df = yf.download(
-            tickers,
-            start=start_date.strftime("%Y-%m-%d"),
-            end=analysis_date,
-            progress=False,
-            threads=True,
-        )
+        df = pd.DataFrame()
+        if us_tickers:
+            df = yf.download(
+                us_tickers,
+                start=start_date.strftime("%Y-%m-%d"),
+                end=analysis_date,
+                progress=False,
+                threads=True,
+            )
+
+        # 한국 티커용 가격 데이터 병합
+        if kr_tickers:
+            try:
+                from korean_data_fetcher import get_price_dataframe_kr
+                for ticker in kr_tickers:
+                    kr_ticker = normalize_korean_ticker(ticker)
+                    kr_df = get_price_dataframe_kr(kr_ticker, start_date.strftime("%Y-%m-%d"), analysis_date)
+                    if kr_df.empty:
+                        continue
+                    if df.empty:
+                        if len(tickers) > 1:
+                            multi_cols = pd.MultiIndex.from_product([kr_df.columns, [ticker]])
+                            df = pd.DataFrame(kr_df.values, index=kr_df.index, columns=multi_cols)
+                        else:
+                            df = kr_df
+                    elif isinstance(df.columns, pd.MultiIndex):
+                        for col in kr_df.columns:
+                            df[(col, ticker)] = kr_df[col].reindex(df.index)
+                    else:
+                        # 단일 해외 티커 → 멀티인덱스 변환 후 병합
+                        if us_tickers:
+                            us_t = us_tickers[0]
+                            new_cols = pd.MultiIndex.from_product([df.columns, [us_t]])
+                            df_m = pd.DataFrame(df.values, index=df.index, columns=new_cols)
+                            for col in kr_df.columns:
+                                df_m[(col, ticker)] = kr_df[col].reindex(df_m.index)
+                            df = df_m
+            except ImportError:
+                pass
 
         for ticker in tickers:
             try:
@@ -810,19 +877,69 @@ class BacktestEngine:
         return list(dates)
 
     def _fetch_price_data(self) -> pd.DataFrame:
-        """가격 데이터 일괄 조회"""
+        """가격 데이터 일괄 조회 (한국/해외 자동 분기)"""
         all_tickers = self.tickers + ([self.benchmark] if self.benchmark else [])
 
         # 1개월 전부터 조회 (모멘텀 계산용)
         start = datetime.strptime(self.start_date, "%Y-%m-%d") - timedelta(days=60)
+        start_str = start.strftime("%Y-%m-%d")
 
-        df = yf.download(
-            all_tickers,
-            start=start.strftime("%Y-%m-%d"),
-            end=self.end_date,
-            progress=False,
-            threads=True,
-        )
+        # 한국/해외 티커 분리
+        kr_tickers = [t for t in all_tickers if is_korean_ticker(t)]
+        us_tickers = [t for t in all_tickers if not is_korean_ticker(t)]
+
+        df = pd.DataFrame()
+
+        # 해외 티커: yfinance
+        if us_tickers:
+            df = yf.download(
+                us_tickers,
+                start=start_str,
+                end=self.end_date,
+                progress=False,
+                threads=True,
+            )
+
+        # 한국 티커: PyKRX
+        if kr_tickers:
+            try:
+                from korean_data_fetcher import get_price_dataframe_kr
+
+                for ticker in kr_tickers:
+                    kr_ticker = normalize_korean_ticker(ticker)
+                    kr_df = get_price_dataframe_kr(kr_ticker, start_str, self.end_date)
+
+                    if kr_df.empty:
+                        continue
+
+                    if df.empty:
+                        # 첫 번째 데이터: 멀티인덱스 구성
+                        if len(all_tickers) > 1:
+                            multi_cols = pd.MultiIndex.from_product([kr_df.columns, [ticker]])
+                            kr_df_multi = pd.DataFrame(kr_df.values, index=kr_df.index, columns=multi_cols)
+                            df = kr_df_multi
+                        else:
+                            df = kr_df
+                    else:
+                        # 기존 DataFrame에 한국 데이터 병합
+                        if isinstance(df.columns, pd.MultiIndex):
+                            for col in kr_df.columns:
+                                df[(col, ticker)] = kr_df[col].reindex(df.index)
+                        else:
+                            # 단일 티커 → 멀티인덱스로 변환
+                            if us_tickers:
+                                us_ticker = us_tickers[0]
+                                new_cols = pd.MultiIndex.from_product([df.columns, [us_ticker]])
+                                df_multi = pd.DataFrame(df.values, index=df.index, columns=new_cols)
+                                for col in kr_df.columns:
+                                    df_multi[(col, ticker)] = kr_df[col].reindex(df_multi.index)
+                                df = df_multi
+                            else:
+                                multi_cols = pd.MultiIndex.from_product([kr_df.columns, [ticker]])
+                                kr_df_multi = pd.DataFrame(kr_df.values, index=kr_df.index, columns=multi_cols)
+                                df = pd.concat([df, kr_df_multi], axis=1)
+            except ImportError as e:
+                print(f"   ⚠️ 한국 주식 데이터 모듈 로드 실패: {e}")
 
         return df
 
@@ -1081,8 +1198,8 @@ def main():
 
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
     parser.add_argument("--index", type=str,
-                       choices=["sp500", "nasdaq100", "sp500-top10", "nasdaq-top10", "faang"],
-                       help="인덱스 또는 사전 정의된 종목 그룹")
+                       choices=["sp500", "nasdaq100", "sp500-top10", "nasdaq-top10", "faang", "kospi", "kosdaq"],
+                       help="인덱스 또는 사전 정의된 종목 그룹 (한국: kospi, kosdaq)")
     parser.add_argument("--sort-by-cap", action="store_true",
                        help="시가총액 기준으로 정렬 (--top과 함께 사용 권장)")
     parser.add_argument("--top", type=int, default=0,
@@ -1118,6 +1235,14 @@ def main():
 
         if args.index in predefined_tickers:
             tickers = predefined_tickers[args.index]
+        elif args.index in ["kospi", "kosdaq"]:
+            # 한국 인덱스
+            tickers = get_index_tickers_from_predictor(args.index)
+            if not tickers:
+                print(f"⚠️ {args.index.upper()} 종목 목록을 가져올 수 없습니다.")
+                tickers = []
+            else:
+                print(f"📋 {args.index.upper()}: {len(tickers)}개 종목 로드됨")
         elif args.index in ["sp500", "nasdaq100"]:
             # profit-predictor에서 전체 인덱스 티커 가져오기
             tickers = get_index_tickers_from_predictor(args.index)

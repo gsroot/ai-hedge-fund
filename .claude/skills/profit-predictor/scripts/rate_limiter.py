@@ -1,17 +1,19 @@
 """
-Yahoo Finance Rate Limiting 대응 (재시도 로직)
+Yahoo Finance / DART Rate Limiting 대응 (재시도 로직)
 
 지수 백오프, 스레드 안전 딜레이, 안전한 API 래퍼 함수를 제공합니다.
 모든 Yahoo Finance API 호출은 이 모듈의 래퍼를 통해 수행됩니다.
+DART API용 슬라이딩 윈도우 rate limiter도 포함합니다.
 """
 import time
 import random
 import threading
+from collections import deque
 
 import yfinance as yf
 import pandas as pd
 
-from config import YF_REQUEST_DELAY, YF_MAX_RETRIES, YF_RETRY_BASE_DELAY, YF_JITTER_MAX
+from config import YF_REQUEST_DELAY, YF_MAX_RETRIES, YF_RETRY_BASE_DELAY, YF_JITTER_MAX, DART_RATE_LIMIT, DART_RATE_WINDOW
 
 # 전역 락 (동시 요청 제어)
 _yf_request_lock = threading.Lock()
@@ -151,3 +153,34 @@ def safe_batch_download(tickers: list, start: str, end: str, **kwargs) -> pd.Dat
         return result if result is not None else pd.DataFrame()
     except Exception:
         return pd.DataFrame()
+
+
+# ============================================================================
+# DART API Rate Limiter (슬라이딩 윈도우, thread-safe)
+# ============================================================================
+
+_dart_request_times = deque()
+_dart_lock = threading.Lock()
+
+
+def dart_rate_limit():
+    """
+    DART API 슬라이딩 윈도우 rate limiter
+
+    분당 DART_RATE_LIMIT(100)건 제한을 준수합니다.
+    윈도우 내 요청이 제한에 도달하면 자동으로 대기합니다.
+    """
+    with _dart_lock:
+        now = time.time()
+        # 윈도우 밖의 오래된 타임스탬프 제거
+        while _dart_request_times and _dart_request_times[0] < now - DART_RATE_WINDOW:
+            _dart_request_times.popleft()
+
+        # 제한 도달 시 대기
+        if len(_dart_request_times) >= DART_RATE_LIMIT:
+            sleep_until = _dart_request_times[0] + DART_RATE_WINDOW
+            sleep_time = sleep_until - now
+            if sleep_time > 0:
+                time.sleep(sleep_time)
+
+        _dart_request_times.append(time.time())
