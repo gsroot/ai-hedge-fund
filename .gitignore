@@ -65,3 +65,7 @@ outputs/
 
 # Alembic (keep migration files, but ignore generated/cache files)
 app/backend/alembic/versions/__pycache__/
+
+# Cache directories
+docs_cache/
+.claude/skills/profit-predictor/scripts/.cache/
