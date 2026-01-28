@@ -23,19 +23,19 @@ $ARGUMENTS
 - 한국 종목 코드: `005930,000660` → `--tickers 005930,000660`
 - `--index`와 `--tickers`가 동시에 지정되면 `--tickers` 우선
 
-### 3. 전략 지정 (`--strategy`)
-- `fundamental`, `펀더멘털` → `--strategy fundamental`
-- `momentum`, `모멘텀` → `--strategy momentum`
-- `hybrid`, `하이브리드` → `--strategy hybrid`
-- 전략이 명시되지 않으면 기본값 `--strategy hybrid` 자동 적용
+### 3. 전략 지정 (기본값: hybrid, 별도 플래그 불필요)
+- 스크립트 기본값이 `hybrid`이므로 hybrid 전략 시 **`--strategy` 인자를 추가하지 말 것**
+- 다른 전략을 명시적으로 요청한 경우에만 인자 추가:
+  - `fundamental`, `펀더멘털` → `--strategy fundamental`
+  - `momentum`, `모멘텀` → `--strategy momentum`
 
 ### 4. 상위 N개 (`--top`)
 - `top 50`, `상위 50`, `50개` → `--top 50`
 - **`--top`이 명시되지 않으면 전체 종목을 분석** (종목 수 제한 없음)
 
-### 5. 시가총액 정렬 (기본값: 활성화)
-- 시가총액 내림차순 정렬이 기본 적용됨
-- `정렬없이`, `no-sort-by-cap` → `--no-sort-by-cap` 포함 (정렬 비활성화)
+### 5. 시가총액 정렬 비활성화 (`--no-sort-by-cap`)
+- 시가총액 내림차순 정렬은 스크립트 기본 동작이므로 활성화 플래그는 존재하지 않음
+- `정렬없이`, `no-sort-by-cap` → `--no-sort-by-cap` (정렬 비활성화)
 
 ### 6. 기타 옵션
 - `no-cache`, `캐시없이`, `새로` → `--no-cache`
@@ -45,7 +45,7 @@ $ARGUMENTS
 ## 실행 방식
 
 해석된 파라미터를 profit-predictor 스킬에 전달하여 실행해줘.
-인자가 비어있거나 `$ARGUMENTS`가 그대로이면 기본값(`--index sp500`)으로 전체 종목을 분석해줘 (시가총액 정렬 및 하이브리드 전략은 기본 적용).
+인자가 비어있거나 `$ARGUMENTS`가 그대로이면 기본값(`--index sp500`)으로 전체 종목을 분석해줘 (시가총액 정렬 및 하이브리드 전략은 스크립트 기본 동작이므로 별도 CLI 플래그 불필요).
 
 ## 프롬프트 생성 예시
 
