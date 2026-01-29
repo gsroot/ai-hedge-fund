@@ -103,7 +103,7 @@ Phase 1에서 종목별로 수집하는 데이터:
 | `investor_consensus` | predict | 합의도 (level, std, bullish/bearish 리스트) |
 | `investor_warnings` | predict | 철학 불일치 경고 |
 
-### Phase 2: 투자자 관점 심층 분석 (investor-analysis)
+### Phase 2: 투자자 관점 심층 분석 (investor-analysis 스킬)
 
 상위 N개 종목 각각에 대해 선택된 투자자 에이전트 호출.
 
@@ -141,9 +141,13 @@ Phase 3에서 종목별로 산출하는 데이터:
 | `consensus_ratio` | bullish_count / 총 투자자 수 | 합의 비율 |
 | `sector` | market_cap.category 기반 | 섹터 분류 |
 
-### Phase 4: 엑셀 리포트 생성 (xlsx 스킬, 조건부)
+### Phase 4: 엑셀 리포트 생성 (xlsx 스킬)
 
-xlsx 인자가 `yes`일 때만 실행. 상세 사양은 [엑셀 리포트 사양](#엑셀-리포트-사양) 참조.
+**호출 방법**: xlsx 스킬 사용 (openpyxl 기반)
+
+xlsx 인자가 `yes`일 때만 실행.
+
+반드시 상세 형식 문서([references/excel_report_spec.md](references/excel_report_spec.md))를 참조하여 portfolios/ 경로에 형식에 맞게 엑셀 리포트 생성.
 
 ---
 
@@ -155,16 +159,7 @@ xlsx 인자가 `yes`일 때만 실행. 상세 사양은 [엑셀 리포트 사양
 
 ---
 
-## 엑셀 리포트 사양
-
-**호출 방법**: xlsx 스킬 사용 (openpyxl 기반)
-
-상세 사양은 [references/excel_report_spec.md](references/excel_report_spec.md) 참조.
-
----
-
 ## 주의사항
 
 - predict 실행은 종목 수에 따라 수 분 소요될 수 있음
 - investor-analysis는 종목당 투자자 수만큼 LLM 호출 발생 → 비용 주의
-- 이 스킬은 교육/연구 목적이며 실제 투자 결정의 근거가 될 수 없음
