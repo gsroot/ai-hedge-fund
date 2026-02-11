@@ -41,6 +41,8 @@ load_dotenv()
 
 _dart_request_times = deque()
 _dart_lock = threading.Lock()
+_dart_reader_instance = None
+_dart_reader_lock = threading.Lock()
 
 # 설정값 (config.py에서도 정의하지만, 여기서 독립적으로도 동작하도록 기본값 설정)
 DART_RATE_LIMIT = 100  # 분당 최대 요청 수
@@ -244,20 +246,36 @@ def _tickers_from_krx(market: str) -> list:
 
 
 def _get_dart_reader():
-    """OpenDartReader 인스턴스 생성 (lazy import)"""
-    try:
-        import OpenDartReader
-    except ImportError:
-        raise ImportError("OpenDartReader가 설치되지 않았습니다. 설치: pip install opendartreader")
+    """OpenDartReader 싱글턴 인스턴스 반환 (thread-safe)
 
-    api_key = os.environ.get("DART_API_KEY")
-    if not api_key:
-        raise ValueError("DART_API_KEY 환경변수가 설정되지 않았습니다. .env 파일에 DART_API_KEY를 추가하세요.")
+    OpenDartReader 초기화 시 docs_cache 디렉토리를 생성하는데,
+    여러 스레드가 동시에 호출하면 FileExistsError 또는
+    UnpicklingError가 발생합니다. 싱글턴으로 한 번만 초기화합니다.
+    """
+    global _dart_reader_instance
+    if _dart_reader_instance is not None:
+        return _dart_reader_instance
 
-    # OpenDartReader 패키지는 import 시 클래스 자체를 반환
-    if callable(OpenDartReader):
-        return OpenDartReader(api_key)
-    return OpenDartReader.OpenDartReader(api_key)
+    with _dart_reader_lock:
+        # Double-checked locking
+        if _dart_reader_instance is not None:
+            return _dart_reader_instance
+
+        try:
+            import OpenDartReader
+        except ImportError:
+            raise ImportError("OpenDartReader가 설치되지 않았습니다. 설치: pip install opendartreader")
+
+        api_key = os.environ.get("DART_API_KEY")
+        if not api_key:
+            raise ValueError("DART_API_KEY 환경변수가 설정되지 않았습니다. .env 파일에 DART_API_KEY를 추가하세요.")
+
+        if callable(OpenDartReader):
+            _dart_reader_instance = OpenDartReader(api_key)
+        else:
+            _dart_reader_instance = OpenDartReader.OpenDartReader(api_key)
+
+        return _dart_reader_instance
 
 
 def _get_fdr():
