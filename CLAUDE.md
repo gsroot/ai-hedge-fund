@@ -4,81 +4,112 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI Hedge Fund는 LLM 기반 멀티 에이전트 투자 시뮬레이션 시스템입니다. 실제 거래를 수행하지 않으며, 교육 및 연구 목적으로 설계되었습니다. 16개 이상의 투자자 페르소나 에이전트(워렌 버핏, 마이클 버리, 캐시 우드 등)가 LangGraph를 통해 조율됩니다.
+AI-powered hedge fund system that uses legendary investor personas (Buffett, Lynch, Graham, etc.) and multi-factor ensemble analysis to predict stock returns and build portfolios. Educational/research purposes only.
 
-## Build & Run Commands
+## Core Skills (Slash Commands)
+
+The project's primary functionality lives in Claude Code skills, not traditional source code:
+
+### `/predict` — Stock Return Prediction & Ranking
+- **Entry point**: `uv run python .claude/skills/predict/scripts/analyze_stocks.py`
+- Multi-factor ensemble model combining 7 factors (Value 25%, Growth 20%, Quality 20%, Momentum 10%, Safety 10%, Sentiment 8%, Insider 7%) with 8 investor style scores
+- Supports S&P 500, NASDAQ 100, KOSPI, KOSDAQ, KRX indices
+- Strategies: `hybrid` (default, recommended), `fundamental`, `momentum`
+- Output: 8-section formatted report (defined in `predict/references/output_format.md`)
+- Key scripts in `.claude/skills/predict/scripts/`: `analyze_stocks.py` (CLI), `data_fetcher.py` (data collection), `factor_scoring.py` (7 factors), `investor_scoring.py` (investor styles), `ranking_algorithm.py` (ensemble), `korean_data_fetcher.py` (DART/PyKRX)
+
+### `/portfolio-report` — Investment Portfolio Construction
+- Orchestrator: predict (ranking) → investor-analysis (deep analysis) → xlsx (Excel report)
+- Calls investor agent subagents (e.g., `warren-buffett-analyst`) via Task tool for each top-N stock
+- Portfolio construction: majority bullish filter → confidence-weighted allocation → 15% max single stock, 35% max sector
+- Output: Excel report in `portfolios/` directory
+
+### `/investor-analysis` — Investor Perspective Analysis
+- 12 investor personas + 5 specialist analysts as subagents (defined in `.claude/agents/`)
+- Modes: quick analysis (5 analysts), single investor, ensemble (17 agents parallel), report
+- All agents return `{signal, confidence, reasoning}` format
+
+### `/backtesting` — Portfolio Backtesting
+- **Entry point**: `uv run python .claude/skills/backtesting/scripts/backtest.py`
+- Strategies: `momentum`, `predictor`, `hybrid` (recommended)
+- Performance metrics: Sharpe/Sortino Ratio, Max Drawdown, Alpha vs benchmark
+
+## Data Sources
+
+| Data | US Source | Korean Source |
+|------|-----------|--------------|
+| Financials | Yahoo Finance (free, no API key) | DART (`DART_API_KEY` required) |
+| Prices | Yahoo Finance (batch `yf.download`) | PyKRX / FinanceDataReader |
+| Market Cap | Yahoo Finance | KRX Open API / PyKRX |
+| Index Members | Wikipedia | PyKRX |
+
+Korean stocks are auto-detected by 6-digit numeric ticker codes and routed to Korean data sources.
+
+## Commands
 
 ```bash
-# 의존성 설치
-poetry install
+# Install dependencies
+uv sync
 
-# 메인 분석 실행
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA
-poetry run python src/main.py --ticker AAPL --start-date 2024-01-01 --end-date 2024-03-01
+# Run predict analysis
+uv run python .claude/skills/predict/scripts/analyze_stocks.py --index sp500
+uv run python .claude/skills/predict/scripts/analyze_stocks.py --index krx --display 30
+uv run python .claude/skills/predict/scripts/analyze_stocks.py --tickers AAPL,MSFT,NVDA
 
-# 로컬 Ollama 사용
-poetry run python src/main.py --ticker AAPL --ollama
+# Run backtesting
+uv run python .claude/skills/backtesting/scripts/backtest.py --index nasdaq100 --top 30 --start 2024-06-01 --end 2024-12-31 --rebalance monthly
 
-# 백테스팅
-poetry run python src/backtester.py --ticker AAPL,MSFT,NVDA
+# Run tests
+uv run pytest tests/
 
-# 웹 앱 실행
-cd app/backend && poetry run uvicorn main:app --reload
-cd app/frontend && npm run dev
-
-# 린팅 및 테스트
-black src/                # 420자 라인 길이 사용
-isort src/
-flake8 src/
-pytest tests/
+# Web app (separate from skills)
+cd app/backend && uv run uvicorn main:app --reload
+cd app/frontend && pnpm dev
 ```
 
 ## Architecture
 
 ```
-사용자 입력 (티커, 날짜)
-        │
-        ▼
-┌──────────────────────────────────────┐
-│       LangGraph DAG 워크플로우        │
-├──────────────────────────────────────┤
-│  투자자 에이전트 (16개, 병렬 실행)     │
-│  - Warren Buffett, Michael Burry     │
-│  - Cathie Wood, Charlie Munger 등    │
-├──────────────────────────────────────┤
-│  분석 에이전트 (6개)                  │
-│  - Technical, Fundamentals           │
-│  - Sentiment, Valuation              │
-│  - News Sentiment, Growth            │
-├──────────────────────────────────────┤
-│  Risk Manager → Portfolio Manager    │
-│  (신호 집계)     (최종 결정)          │
-└──────────────────────────────────────┘
-        │
-        ▼
-   거래 신호 출력 (bullish/bearish/neutral + 신뢰도)
+.claude/
+├── agents/           # 17 investor/analyst agent definitions (subagent_type for Task tool)
+│   ├── warren-buffett-analyst.md
+│   ├── peter-lynch-analyst.md
+│   └── ...
+└── skills/
+    ├── predict/      # Core prediction engine
+    │   ├── scripts/  # Python analysis pipeline
+    │   └── references/  # Output format specs
+    ├── portfolio-report/  # Orchestrator skill
+    │   └── references/  # Excel report spec, output format
+    ├── investor-analysis/  # Deep analysis skill
+    │   └── references/  # Investor personas, frameworks
+    ├── backtesting/  # Backtesting engine
+    │   └── scripts/
+    └── xlsx/         # Excel report generation (openpyxl)
+
+app/                  # Web application (separate from skills)
+├── backend/          # FastAPI + SQLAlchemy
+└── frontend/         # Vite + React + Tailwind
+
+portfolios/           # Generated Excel portfolio reports
 ```
 
-## Key Directories
+## Key Technical Details
 
-- `src/agents/`: 21개 에이전트 구현체. 새 에이전트 추가 시 기존 패턴(signal 반환, state 읽기) 참조
-- `src/llm/models.py`: LLM 제공자 추상화 (OpenAI, Anthropic, Groq, DeepSeek, Ollama 등 13개+)
-- `src/graph/state.py`: `AgentState` TypedDict - 에이전트 간 상태 전달
-- `src/tools/api.py`: Financial Datasets API 연동 (가격, 메트릭, 뉴스, 내부자 거래)
-- `src/backtesting/`: 백테스팅 엔진, 포트폴리오 추적, 성과 지표
-- `app/backend/`: FastAPI REST API (routes/, services/, repositories/)
-- `app/frontend/`: React/Vite 웹 UI
+- **Package manager**: `uv` (not poetry, despite README saying poetry — use `uv run` for all commands)
+- **Python**: >=3.11
+- **Cache**: File-based in `.claude/skills/predict/scripts/.cache/{date}/`, key = `md5(f"{type}_{ticker}_{date}_{extra}")[:16].json`
+- **DART rate limit**: 100 requests/min sliding window
+- **DART year logic**: if month <= 3, use year-1; fallback to year-2 if empty
+- **OpenDartReader**: Singleton pattern with thread lock (double-checked locking) for thread safety with `ThreadPoolExecutor`
+- **Line length**: 420 (configured in pyproject.toml `[tool.black]`)
+- **KRX index** (`--index krx`): KOSPI200 + KOSDAQ150 combined — never run them as separate commands
+- Market cap display: Korean stocks use `₩320조`, `₩5,000억` format
 
-## Code Conventions
+## Environment Variables
 
-- **라인 길이 420자**: pyproject.toml의 Black 설정 - 표준 길이로 재포맷하지 말 것
-- **에이전트 패턴**: 각 에이전트는 `AgentState`를 받아 신호(bullish/bearish/neutral + confidence)를 반환
-- **상태 비저장**: 에이전트는 제공된 state만 사용, 공유 상태 없음
-- **LLM 추상화**: 새 LLM 제공자 추가 시 `src/llm/models.py`의 `ModelProvider` enum과 JSON 설정 파일 수정
-
-## Environment Setup
-
-필수 환경 변수 (`.env.example` 참조):
-- `FINANCIAL_DATASETS_API_KEY`: 금융 데이터 API (AAPL, GOOGL, MSFT, NVDA, TSLA는 무료)
-- LLM API 키: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GROQ_API_KEY` 등 중 하나 이상
-- Ollama: `OLLAMA_BASE_URL`, `OLLAMA_HOST` (로컬 모델 사용 시)
+```
+OPENAI_API_KEY=       # Required: at least one LLM key (OpenAI/Anthropic/Groq/DeepSeek)
+DART_API_KEY=         # Required for Korean stocks (DART financial data)
+FINANCIAL_DATASETS_API_KEY=  # Optional: for non-free tickers via financialdatasets.ai
+```
