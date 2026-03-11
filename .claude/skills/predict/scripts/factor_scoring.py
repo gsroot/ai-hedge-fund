@@ -142,8 +142,15 @@ def calculate_value_score(metrics):
 # 성장 투자 점수
 # ============================================================================
 
-def calculate_growth_score(metrics):
-    """성장 투자 점수 (린치/캐시우드 스타일)"""
+def calculate_growth_score(metrics, analyst_estimates=None):
+    """
+    성장 투자 점수 (린치/캐시우드 스타일)
+
+    Args:
+        metrics: 재무 지표 리스트 (Yahoo Finance / DART)
+        analyst_estimates: financial-datasets 애널리스트 컨센서스 추정치 (선택)
+                           {forward_revenue_growth, forward_eps_growth, ...}
+    """
     if not metrics:
         return 0, []
 
@@ -151,7 +158,7 @@ def calculate_growth_score(metrics):
     score = 0
     factors = []
 
-    # 매출 성장률
+    # 매출 성장률 (trailing)
     rev_growth = m.get('revenue_growth')
     if rev_growth:
         if rev_growth > 0.25:
@@ -165,7 +172,7 @@ def calculate_growth_score(metrics):
         elif rev_growth < 0:
             score -= 2
 
-    # EPS 성장률
+    # EPS 성장률 (trailing)
     eps_growth = m.get('earnings_per_share_growth')
     if eps_growth:
         if eps_growth > 0.25:
@@ -186,6 +193,28 @@ def calculate_growth_score(metrics):
             factors.append(f"적정 PEG ({peg:.2f})")
         elif peg > 2.5:
             score -= 1
+
+    # ── 애널리스트 컨센서스 추정치 (forward-looking, 최대 +3점) ──────────────
+    if analyst_estimates:
+        fwd_rev = analyst_estimates.get("forward_revenue_growth")
+        if fwd_rev is not None:
+            if fwd_rev > 0.20:
+                score += 2
+                factors.append(f"컨센서스 매출성장 예측 (+{fwd_rev*100:.0f}%)")
+            elif fwd_rev > 0.10:
+                score += 1
+                factors.append(f"컨센서스 매출성장 (+{fwd_rev*100:.0f}%)")
+            elif fwd_rev < -0.05:
+                score -= 1
+                factors.append(f"컨센서스 매출 역성장 예측 ({fwd_rev*100:.0f}%)")
+
+        fwd_eps = analyst_estimates.get("forward_eps_growth")
+        if fwd_eps is not None:
+            if fwd_eps > 0.20:
+                score += 1
+                factors.append(f"컨센서스 EPS 성장 예측 (+{fwd_eps*100:.0f}%)")
+            elif fwd_eps < -0.10:
+                score -= 1
 
     return score, factors
 

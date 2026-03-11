@@ -105,11 +105,20 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hy
         currency = "KRW" if is_korean_ticker(ticker) else None
         cap_category, cap_display = get_market_cap_category(market_cap, currency=currency)
 
+        # 4. 애널리스트 추정치 (US 종목만, API 키 없으면 None)
+        analyst_estimates = None
+        if not is_korean_ticker(ticker):
+            try:
+                from financial_datasets_api import get_analyst_estimates
+                analyst_estimates = get_analyst_estimates(ticker, end_date)
+            except Exception:
+                pass
+
         # ========================================
         # 기본 팩터별 점수 계산
         # ========================================
         value_score, value_factors = calculate_value_score(metrics)
-        growth_score, growth_factors = calculate_growth_score(metrics)
+        growth_score, growth_factors = calculate_growth_score(metrics, analyst_estimates)
         quality_score, quality_factors = calculate_quality_score(metrics)
         momentum_score, momentum_factors = calculate_momentum_score(prices)
         safety_score, safety_factors = calculate_safety_score(metrics)

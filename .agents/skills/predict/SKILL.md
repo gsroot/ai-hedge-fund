@@ -80,7 +80,7 @@ description: |
 ## 스크립트 실행
 
 ```bash
-uv run python .Codex/skills/predict/scripts/analyze_stocks.py \
+uv run python .claude/skills/predict/scripts/analyze_stocks.py \
   --index sp500
 ```
 

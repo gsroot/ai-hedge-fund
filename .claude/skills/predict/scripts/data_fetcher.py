@@ -628,6 +628,17 @@ def get_financial_metrics(ticker, end_date, period="ttm", limit=10):
     if result:
         _write_cache(cache_path, result)
         return [result]
+
+    # YF 실패 시 financial-datasets 스냅샷으로 fallback
+    try:
+        from financial_datasets_api import get_metrics_snapshot_fallback
+        result = get_metrics_snapshot_fallback(ticker, end_date)
+        if result:
+            _write_cache(cache_path, result)
+            return [result]
+    except Exception:
+        pass
+
     return []
 
 
