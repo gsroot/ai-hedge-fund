@@ -47,6 +47,26 @@ _dart_reader_lock = threading.Lock()
 # 설정값 (config.py에서도 정의하지만, 여기서 독립적으로도 동작하도록 기본값 설정)
 DART_RATE_LIMIT = 100  # 분당 최대 요청 수
 DART_RATE_WINDOW = 60  # 윈도우 크기 (초)
+DART_REQUEST_TIMEOUT = 15  # OpenDartReader 내부 requests.get 기본 타임아웃 (초)
+
+
+def _patch_opendart_timeout():
+    """OpenDartReader의 무제한 requests.get 호출에 기본 timeout을 적용."""
+    try:
+        import OpenDartReader.dart_finstate as dart_finstate
+    except Exception:
+        return
+
+    original_get = dart_finstate.requests.get
+    if getattr(original_get, "_aihf_timeout_patched", False):
+        return
+
+    def get_with_timeout(*args, **kwargs):
+        kwargs.setdefault("timeout", DART_REQUEST_TIMEOUT)
+        return original_get(*args, **kwargs)
+
+    get_with_timeout._aihf_timeout_patched = True
+    dart_finstate.requests.get = get_with_timeout
 
 
 def _dart_rate_limit():
@@ -265,6 +285,8 @@ def _get_dart_reader():
             import OpenDartReader
         except ImportError:
             raise ImportError("OpenDartReader가 설치되지 않았습니다. 설치: pip install opendartreader")
+
+        _patch_opendart_timeout()
 
         api_key = os.environ.get("DART_API_KEY")
         if not api_key:
@@ -1284,8 +1306,44 @@ def _tickers_from_pykrx(market: str) -> list:
     return tickers or []
 
 
+def _top_n_by_market_cap_from_krx(market: str, n: int) -> list:
+    """KRX Open API에서 시가총액 상위 N개 종목 반환."""
+    if not _krx_api_available():
+        return []
+
+    for days_back in range(8):
+        date = datetime.now() - timedelta(days=days_back)
+        date_str = date.strftime("%Y%m%d")
+        try:
+            items = _krx_fetch_market_data(market, date_str)
+            ranked = []
+            for item in items:
+                code = str(item.get("ISU_CD", "")).strip()
+                mktcap = item.get("MKTCAP")
+                if len(code) != 6 or not code.isdigit() or mktcap is None:
+                    continue
+                try:
+                    cap = float(str(mktcap).replace(",", "").strip())
+                except (ValueError, TypeError):
+                    continue
+                if cap > 0:
+                    ranked.append((code, cap))
+
+            if ranked:
+                ranked.sort(key=lambda row: row[1], reverse=True)
+                return [code for code, _ in ranked[:n]]
+        except Exception:
+            continue
+
+    return []
+
+
 def _top_n_by_market_cap(pykrx, date: str, market: str, n: int) -> list:
     """시가총액 상위 N개 종목 반환 (폴백용)"""
+    krx_tickers = _top_n_by_market_cap_from_krx(market, n)
+    if krx_tickers:
+        return krx_tickers
+
     try:
         df = pykrx.get_market_cap(date, market=market)
         if df is not None and not df.empty:
