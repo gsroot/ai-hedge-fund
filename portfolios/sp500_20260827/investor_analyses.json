@@ -1,0 +1,967 @@
+{
+  "analysis_date": "2026-08-27",
+  "source": "active_skill_llm",
+  "methodology": "independent Buffett, Lynch, and Fisher persona analysis",
+  "analyses": {
+    "APA": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 76,
+        "reasoning": "P/E 8.7, ROE 26.7%, FCF 수익률 14.9%는 싸 보이지만 원유·가스 가격에 이익이 좌우되는 E&P 사업은 예측 가능한 해자보다 원자재 사이클에 의존한다. 최근 4개 연도 매출 CAGR -7.0%도 장기 owner earnings의 안정성을 약화한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "명확한 cyclical 종목으로 P/E 8.7, PEG 0.80, 최근 매출 성장 9.2%, EPS 성장 23.9%가 회복 국면의 GARP 조건에 가깝다. 다만 4개 연도 매출 CAGR -7.0%와 상품가격 민감성 때문에 사이클 정점에서는 빠른 재평가가 필요하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 74,
+        "reasoning": "높은 현재 마진과 현금흐름은 유가 환경의 산물일 가능성이 크고, 제품 차별화나 R&D 기반의 구조적 성장보다 매장량과 원자재 가격이 성과를 결정한다. 장기 매출 감소도 지속 성장 기업 기준에 맞지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "INCY": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 63,
+        "reasoning": "ROE 30.7%, 영업마진 41.9%, 사실상 무차입(D/E 0.01), P/E 16.3은 훌륭하다. 다만 바이오 의약품의 특허·임상·제품 집중 위험은 장기 현금흐름을 단순하게 예측하기 어렵게 하므로 충분한 안전마진을 확신하기 전에는 중립이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 83,
+        "reasoning": "최근 매출 성장 37.7%, EPS 성장 44.6%, 4개 연도 매출 CAGR 14.8%의 fast grower이며 P/E 16.3은 성장 대비 부담이 낮다. PEG 31.3은 공급 데이터가 비정상적으로 높아 그대로 믿지 않고 실적 성장과 파이프라인 리스크를 함께 본다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 88,
+        "reasoning": "매출의 39.9%를 R&D에 투입하면서 26.1%의 연간 영업마진과 14.8% 매출 CAGR을 유지했다. 강한 현금창출과 낮은 부채가 연구 파이프라인을 뒷받침하지만 임상 실패와 핵심 제품 특허 집중은 주요 감시 항목이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "CINF": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 84,
+        "reasoning": "손해보험은 이해 가능한 float 사업이며 P/E 8.1, ROE 21.5%, D/E 0.05, FCF 수익률 11.3%가 가격과 재무건전성 양쪽에서 우수하다. 재해손실과 준비금 추정 오차는 리스크지만 장기 인수 규율을 유지한다면 안전마진이 충분하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "저평가된 보험 stalwart/cyclical로 P/E 8.1과 최근 매출 성장 31.6%, EPS 성장 83.2%가 강하다. PEG 2.19는 성장 정상화 후 속도가 둔화될 수 있음을 경고하므로 현재 급증률을 영구 성장으로 외삽하지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 58,
+        "reasoning": "24% 연간 영업마진과 강한 최근 성장, 보수적 부채는 긍정적이다. 그러나 R&D 기반 제품 혁신보다 보험 인수 사이클과 투자수익에 좌우되며, 공개 데이터만으로 영업조직·경영진 품질을 충분히 검증하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "HIG": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 86,
+        "reasoning": "P/E 9.5, ROE 22.1%, D/E 0.22, FCF 수익률 14.5%로 보험 float 사업에서 원하는 수익성·재무건전성·안전마진을 갖췄다. 대형 재해와 준비금 변동성은 남지만 가격 대비 질이 높다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 77,
+        "reasoning": "보험 stalwart로 최근 매출 성장 8.1%, EPS 성장 30.5%, PEG 0.12와 P/E 9.5가 GARP에 유리하다. 텐배거보다는 이익 정상화와 낮은 배수 재평가에 적합한 후보로 본다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "4개 연도 매출 CAGR 8.7%와 17.7% 영업마진은 안정적이지만, 장기 제품 혁신과 R&D 우위를 보여주는 자료가 없다. 보험업의 질은 인수 문화와 경영진 규율에 크게 달려 공개 정량 자료만으로 강한 매수 판단은 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "PSX": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 78,
+        "reasoning": "정유·미드스트림 자산이 현금을 만들지만 D/E 0.63, 영업마진 8.5%, 4개 연도 매출 CAGR -8.0%는 안정적 복리 기업의 기준에 미달한다. P/E 13.8도 상품 스프레드에 민감한 이익의 지속성을 보장하지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 64,
+        "reasoning": "최근 매출 53.1%와 EPS 338.7% 증가는 cyclical 반등으로 보이지만 4개 연도 매출 CAGR은 -8.0%다. PEG 1.13과 P/E 13.8은 합리적이나 정제마진 정점 여부를 모르면 상승 스토리를 끝까지 추종하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 72,
+        "reasoning": "최근 숫자의 급반등과 달리 장기 매출은 감소했고 영업마진도 8.5%로 낮다. 구조적 제품 혁신보다 원유·정제마진 사이클이 지배하는 사업이라 지속 성장과 마진 확대 기준에 부합하지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "WDAY": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 57,
+        "reasoning": "기업 인사·재무 SaaS의 전환비용과 반복매출, FCF 수익률 6.6%는 해자 요소다. 그러나 P/E 60.6, ROE 10.9%, 영업마진 13.3%, D/E 0.57은 현재 가격에서 충분한 안전마진과 높은 자본효율을 입증하지 못한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 75,
+        "reasoning": "4개 연도 매출 CAGR 15.4%, 최근 매출 성장 13.5%, PEG 0.76은 대형 소프트웨어 성장주 중 GARP에 가깝다. EPS 성장 226.5%는 기저효과가 섞였고 P/E 60.6이 높아 이익 성장이 계속 따라와야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 82,
+        "reasoning": "R&D/매출 28.0%, 15.4% 장기 매출 CAGR, 27.8억 달러 연간 FCF는 제품 혁신을 지속할 기반이다. 미션 크리티컬한 기업 데이터와 높은 전환비용이 장기 성장성을 뒷받침하지만 마진 확대 실행은 계속 확인해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "VEEV": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 62,
+        "reasoning": "생명과학 특화 클라우드의 높은 전환비용, 영업마진 30.9%, 사실상 무차입(D/E 0.01)은 우수하다. 다만 P/E 43.7, ROE 13.9%, FCF 수익률 3.2%에서 좋은 사업의 질이 이미 가격에 상당 부분 반영됐다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "최근 매출 성장 16.3%, 4개 연도 CAGR 14.0%, PEG 1.11은 안정적인 fast grower/stalwart 경계의 GARP다. P/E 43.7은 높지만 규제 산업의 반복매출과 낮은 부채가 성장 지속성을 높인다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 86,
+        "reasoning": "R&D/매출 24.0%, 영업마진 30.9%, 장기 매출 CAGR 14.0%, 무차입 재무구조가 제품 리더십과 연구 투자를 동시에 지지한다. 생명과학 고객의 규제 워크플로에 깊이 통합된 제품군은 장기 보유형 경쟁우위에 가깝다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "BX": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 60,
+        "reasoning": "대체자산 운용 플랫폼의 브랜드와 규모는 해자지만 P/E 32.0, D/E 0.68, 성과보수와 평가이익의 변동성은 단순한 owner earnings 산정을 어렵게 한다. 20.3% 매출 CAGR은 인상적이나 현재 가격의 안전마진은 제한적이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "4개 연도 매출 CAGR 20.3%, 최근 매출 성장 28.6%, EPS 성장 60.8%인 fast grower다. PEG 1.69와 P/E 32는 싸지는 않지만 대체투자 침투라는 명확한 스토리가 있으며 자금유입 둔화 시 빠르게 재평가해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 58,
+        "reasoning": "플랫폼 규모와 높은 마진, 장기 매출 성장에는 매력이 있다. 다만 R&D·제품 혁신보다 펀드 성과와 자본시장 환경에 좌우되고, 공개 수치만으로 투자 프로세스와 조직 문화의 지속 우위를 충분히 검증하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "EXPE": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "온라인 여행 유통의 규모와 8.6% FCF 수익률은 긍정적이나 D/E 2.30과 낮은 자본 완충력, 치열한 플랫폼 경쟁이 안전마진을 훼손한다. P/E 21.3에서 경기·여행 수요 변동까지 감수할 만큼 단순한 장기 해자는 아니다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "최근 매출 성장 14.0%, 4개 연도 CAGR 8.1%, PEG 1.00은 여행 stalwart의 GARP 조건에 부합한다. EPS 성장 166%는 정상화 효과가 섞였으므로 반복 가능한 예약 성장과 마진 개선이 핵심 확인 항목이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 68,
+        "reasoning": "R&D/매출 8.7%, 14.7% 연간 영업마진, 꾸준한 매출 성장은 여행 플랫폼의 제품 개선 투자를 보여준다. 다만 높은 부채와 경쟁 심화가 장기 보유 신뢰도를 낮춰 강한 확신보다 조건부 강세로 평가한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "IVZ": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 82,
+        "reasoning": "P/E 10.1과 FCF 수익률 7.8%가 싸 보이지만 ROE -0.6%, ROIC -1.8%, 최근 연간 순손실은 자본효율 기준을 명확히 위반한다. 패시브 운용 경쟁 속에서 가격 결정력과 지속 가능한 해자도 불확실하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 66,
+        "reasoning": "PEG 0.90과 최근 매출 성장 20.5%, EPS 성장 88%는 turnaround 가능성을 보여준다. 그러나 4개 연도 매출 CAGR 1.8%와 최근 연간 손실 때문에 회복이 실제 이익으로 정착됐다는 확인 전에는 중립이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 80,
+        "reasoning": "최근 연간 영업마진 -10.9%와 순손실, 낮은 장기 매출 성장은 장기 성장·마진 확대 기준에 반한다. R&D나 차별적 제품 혁신 근거도 부족해 전통 자산운용의 가격 경쟁을 이길 구조적 우위를 확인하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "MPC": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 76,
+        "reasoning": "ROE 42.1%와 FCF 수익률 9.1%는 강하지만 D/E 1.33, 4개 연도 매출 CAGR -9.2%, 정제마진 의존성이 예측 가능한 복리 기준과 충돌한다. 낮은 P/E는 사이클 정점 이익을 반영한 착시일 수 있다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 65,
+        "reasoning": "최근 매출·EPS 급증은 강한 cyclical 회복이지만 PEG 1.76이고 장기 매출은 감소했다. 사이클 초기라면 추가 상승이 가능하나 정제마진과 재고효과를 분리하지 못한 상태에서 추격하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 74,
+        "reasoning": "장기 매출 감소, 낮은 연간 영업마진 4.3%, 높은 부채가 장기 성장과 마진 개선 철학에 맞지 않는다. 구조적 R&D 차별화보다 상품 스프레드가 성과를 결정한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "ADBE": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 83,
+        "reasoning": "창작·문서 소프트웨어의 높은 전환비용과 생태계는 강한 해자다. P/E 15.6, ROE 63.0%, 영업마진 35.3%, FCF 수익률 8.5%가 질 대비 매력적이며 D/E 0.61은 현금창출력으로 관리 가능하지만 AI 경쟁은 지속 감시해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 80,
+        "reasoning": "4개 연도 매출 CAGR 10.5%, 최근 매출 성장 12.7%, PEG 0.67, P/E 15.6은 대형 stalwart에서 보기 드문 GARP다. EPS 성장 1.2% 둔화가 일시적인지와 생성형 AI 전환이 신규 매출로 이어지는지가 관건이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 88,
+        "reasoning": "R&D/매출 18.1%, 연간 영업마진 36.6%, 반복매출 기반 10.5% 매출 CAGR은 제품 리더십과 장기 투자 역량을 동시에 보여준다. 생성형 AI가 기존 제품의 가격 결정력과 고객 충성도를 훼손하지 않는지 확인해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "VLO": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 78,
+        "reasoning": "D/E 0.40은 감당 가능하지만 4개 연도 매출 CAGR -11.4%, 낮은 한 자릿수 연간 영업마진, 정제마진 의존성은 안정적 owner earnings와 거리가 멀다. P/E 14.2도 사이클 위험 대비 특별한 안전마진으로 보이지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 64,
+        "reasoning": "최근 매출 51.7%, EPS 421% 증가는 cyclical 반등이지만 PEG 4.08과 장기 매출 감소가 상충한다. 스토리가 원자재 가격에 달려 있어 이익 정상화 이후 성장률을 확인할 때까지 중립이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 76,
+        "reasoning": "연간 영업마진 3.5%와 장기 매출 감소는 우수한 성장 기업의 특성과 반대다. 정유 설비 효율은 중요하지만 지속적인 제품 혁신과 가격 결정력으로 이어지는 구조적 우위를 확인하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "ZBRA": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 62,
+        "reasoning": "기업용 바코드·자동화 생태계의 전환비용은 해자 요소이고 ROE 15.3%도 기준선이다. 그러나 P/E 33.0, D/E 0.86, 4개 연도 매출 CAGR -2.3%는 충분한 안전마진과 예측 가능한 성장에 의문을 준다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 71,
+        "reasoning": "최근 매출 성장 20.4%, EPS 성장 108%, PEG 0.67은 산업 자동화 회복형 fast grower의 GARP 신호다. 장기 매출 감소와 P/E 33은 회복이 일회성이면 위험하므로 다음 실적의 주문 지속성을 확인해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 76,
+        "reasoning": "R&D/매출 11.0%, 현재 영업마진 21.3%, 기업 데이터 캡처·자동화 제품군은 장기 생산성 투자와 맞닿아 있다. 높은 부채와 과거 매출 감소는 리스크지만 현재 성장 회복이 지속되면 제품·영업 우위가 재확인된다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "BLK": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 75,
+        "reasoning": "ETF·기관운용의 규모, 브랜드, 분배망은 강한 해자이고 D/E 0.23, 영업마진 35.1%도 우수하다. P/E 28.1과 ROE 12.3%는 아주 싸지는 않지만 자산운용 플랫폼의 질을 감안하면 장기 보유 후보가 된다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 70,
+        "reasoning": "PEG 1.12, 4개 연도 매출 CAGR 10.7%, 최근 매출 성장 30.6%는 대형 stalwart로서 양호한 GARP다. 시가총액이 커 텐배거 가능성은 낮고 시장 수준·ETF 자금 유입에 민감하므로 성장 정상화를 감안한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 60,
+        "reasoning": "플랫폼 규모와 높은 마진, 장기 성장성은 좋지만 R&D가 별도 공시되지 않고 제품 혁신의 질을 정량 자료로 완전히 검증하기 어렵다. 시장 베타와 운용보수 압력이 구조적 성장의 반대 요인이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "UHS": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 63,
+        "reasoning": "P/E 7.2, ROE 20.9%, 4개 연도 매출 CAGR 9.0%는 가격 대비 수익성이 좋다. 그러나 D/E 0.69, 인건비·규제·보험수가 의존성이 높고 병원 운영의 해자가 제한적이라 낮은 배수만으로 매수하지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 70,
+        "reasoning": "이해하기 쉬운 의료 서비스 stalwart로 P/E 7.2, 최근 매출 성장 8.3%, 장기 CAGR 9.0%가 합리적 가격의 안정 성장에 가깝다. EPS 성장 1.5% 둔화와 부채는 성장 재가속 확인이 필요하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "수요 방어성과 꾸준한 매출 성장은 장점이지만 영업마진 11.1%, 높은 부채, 별도 R&D 부재로 혁신적 장기 성장 기업의 기준을 충족하지 못한다. 의료 인력 유지와 병원별 운영 품질 자료도 부족하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "CF": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 75,
+        "reasoning": "P/E 9.3, ROE 29.9%, FCF는 매력적이나 비료 가격과 천연가스 비용에 이익이 좌우되는 원자재 사업이다. 4개 연도 매출 CAGR -14.1%는 현재 높은 마진을 정상 이익으로 보기 어렵게 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "비료 cyclical로 PEG 0.43, P/E 9.3, 최근 매출 성장 17.6%, EPS 성장 88.3%가 회복 국면의 GARP를 제공한다. 다만 장기 매출 급감 때문에 상품가격 사이클의 전환 신호를 면밀히 봐야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 75,
+        "reasoning": "현재 마진은 높지만 장기 매출이 크게 감소했고 R&D 기반 제품 차별화보다 비료 가격과 원가가 성과를 결정한다. 지속적 매출 성장과 혁신적 제품 파이프라인이라는 핵심 기준에 부합하지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "ALL": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 88,
+        "reasoning": "손해보험 float 사업에서 P/E 5.2, ROE 46.1%, D/E 0.22, FCF 수익률 22.9%는 매우 강한 가격·수익성 조합이다. 재해손실과 준비금 변동성을 감안해도 브랜드와 규모, 자본완충력이 충분한 안전마진을 제공한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "최근 매출 성장 11.8%, EPS 성장 55.1%, P/E 5.2의 보험 cyclical/stalwart다. PEG 3.09는 이익 성장 정상화를 경고하지만 낮은 배수와 강한 현금흐름은 회복 스토리에 여지를 준다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "매출 CAGR 9.8%와 높은 수익성은 안정적이지만 R&D 기반 제품 혁신보다 인수 사이클·재해손실·투자수익이 성과를 결정한다. 경영진의 인수 규율을 공개 정량 자료만으로 완전히 판단하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "INTU": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 79,
+        "reasoning": "세무·회계 소프트웨어의 규제 지식, 데이터, 전환비용은 견고한 해자다. ROE 22.5%, 영업마진 47.0%, D/E 0.33, P/E 21.7은 좋은 사업을 합리적 가격에 사는 조건에 가깝다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 74,
+        "reasoning": "4개 연도 매출 CAGR 14.0%, 최근 성장 10.4%, PEG 0.93은 대형 성장 stalwart의 GARP 조건을 충족한다. 시가총액이 커 텐배거보다 꾸준한 복리 성장에 적합하며 소비·중소기업 경기 민감성은 감안한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 84,
+        "reasoning": "R&D/매출 15.5%, 높은 마진, 14.0% 장기 매출 CAGR은 제품 개선과 교차판매 실행력을 보여준다. 세무·회계 데이터 기반 AI 통합이 장기 성장 동력이 될 수 있으나 인수 통합과 규제 리스크는 점검해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "PYPL": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 65,
+        "reasoning": "양면 결제 네트워크와 8.4% FCF 수익률, ROE 24.5%, P/E 11.8은 가치 요소다. 하지만 최근 매출 성장 4.8%, EPS 성장 -12.5%, D/E 0.72와 경쟁 압력으로 해자의 지속성이 약해져 명확한 안전마진 확인이 필요하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 66,
+        "reasoning": "P/E 11.8과 PEG 1.13은 비싸지 않지만 최근 매출 성장 4.8%, EPS 감소는 fast grower 스토리를 훼손한다. 4개 연도 매출 CAGR 6.4%의 stalwart/turnaround로서 거래량과 마진 재가속이 먼저다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 62,
+        "reasoning": "R&D/매출 9.4%, 19.3% 연간 영업마진, 강한 FCF는 제품 투자 여력을 준다. 그러나 장기 매출 성장 둔화와 결제 경쟁, 현재 EPS 감소 때문에 혁신이 다시 구조적 성장으로 전환됐다는 증거가 부족하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "BMY": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 60,
+        "reasoning": "P/E 15.0, ROE 46.6%, 강한 현금흐름은 매력적이지만 D/E 2.02와 주요 의약품의 특허만료 위험이 장기 owner earnings의 예측성을 떨어뜨린다. 파이프라인의 대체 현금흐름을 확인하기 전에는 중립이다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 57,
+        "reasoning": "최근 EPS 성장 153%는 기저효과가 크고 매출 성장 5.7%, 4개 연도 CAGR 1.4%, PEG 2.40은 저성장 stalwart에 가깝다. 낮은 P/E만으로 특허절벽을 상쇄하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 62,
+        "reasoning": "R&D/매출 20.6%와 높은 마진, 큰 FCF는 파이프라인 투자 여력을 준다. 그러나 장기 매출 CAGR 1.4%와 높은 부채, 핵심 제품 특허만료 때문에 연구 생산성이 구조적 성장으로 이어졌다는 확인이 부족하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "TROW": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 78,
+        "reasoning": "P/E 11.3, ROE 19.4%, D/E 0.04, FCF 수익률 8.4%로 자본집약도가 낮고 재무가 매우 보수적이다. 브랜드와 퇴직연금 분배망은 해자지만 패시브 자금 이동으로 운용보수 압력은 계속 감시해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 64,
+        "reasoning": "최근 매출 성장 10.7%와 EPS 성장 25.1%는 회복을 보이지만 4개 연도 CAGR 4.1%, PEG 2.71은 성장 대비 싼 편이 아니다. 배당·현금흐름 stalwart이지 빠른 성장 후보는 아니다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 58,
+        "reasoning": "높은 마진과 깨끗한 재무는 긍정적이지만 장기 매출 성장률이 낮고 R&D 기반 제품 혁신이 별도 확인되지 않는다. 액티브 운용 경쟁력과 인재 유지라는 정성 요소를 추가 검증해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "BKNG": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 65,
+        "reasoning": "글로벌 숙박 플랫폼의 네트워크 효과, 34.4% 영업마진, 강한 FCF는 해자 요소다. 그러나 음의 연간 자본과 약 193억 달러 부채, P/E 23.8은 경기민감 여행업에서 충분한 안전마진을 확신하기 어렵게 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 77,
+        "reasoning": "4개 연도 매출 CAGR 16.3%, 최근 매출 성장 8.1%, PEG 0.92는 대형 여행 플랫폼의 GARP 조건에 부합한다. EPS 성장 117.9%는 정상화 효과가 커 지속 가능한 예약·마진 성장으로 분해해 봐야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 73,
+        "reasoning": "34.5% 연간 영업마진과 16.3% 장기 매출 CAGR은 제품·마케팅 실행력과 플랫폼 확장성을 보여준다. R&D가 별도 공시되지 않고 레버리지가 높아 경영진의 기술 투자와 자본배분 품질을 추가 검증해야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "COF": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "P/E 11.9는 무난하지만 ROE 9.0%가 기준에 못 미치고 신용카드·은행의 손실률은 경기와 조달비용에 민감하다. 현재 매출 성장 1111%는 인수·회계 변화 영향으로 보이는 이상치라 정상화 수익을 신뢰하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "PEG 0.23과 거대한 매출 성장 수치는 표면상 매력적이지만 현재 스냅샷의 1111% 매출 증가는 비교 가능성이 낮다. Discover 통합과 신용비용이 정상화된 뒤의 EPS 성장 경로가 확인돼야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 68,
+        "reasoning": "금융업 특성상 R&D·제품 혁신 우위를 정량 확인하기 어렵고 ROE 9.0%도 낮다. 인수 통합과 신용 사이클에 따라 수익 변동이 커 장기 매출·마진의 질을 현재 자료만으로 판단하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "CBOE": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 80,
+        "reasoning": "거래소·파생상품 네트워크는 유동성이 유동성을 부르는 강한 해자다. ROE 26.3%, ROIC 29.3%, 영업마진 34.6%, D/E 0.28이 우수하지만 P/E 24.4와 FCF 수익률 2.1%는 안전마진을 제한한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 61,
+        "reasoning": "최근 매출 성장 22.9%와 EPS 성장 50.2%는 좋지만 4개 연도 CAGR 6.0%, PEG 2.62는 전형적인 stalwart 가격보다 비싸다. 변동성·거래량 증가가 정상화될 가능성을 감안한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 62,
+        "reasoning": "높은 마진과 신상품·데이터 서비스 확장 가능성은 질적 장점이다. 다만 R&D가 별도 공시되지 않고 장기 매출 성장률은 6%로 낮아 Fisher식 고성장 장기 보유 후보로는 증거가 부족하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "MU": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 60,
+        "reasoning": "ROE 66.6%, D/E 0.06, 현재 영업마진 80.4%는 강력하지만 메모리는 가격 변동이 큰 원자재형 반도체다. P/E 21.1과 FCF 수익률 0.7%에서 사이클 정점 이익을 영구화하기 어렵고 예측 가능한 해자 기준에 맞지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 88,
+        "reasoning": "AI 메모리 수요로 최근 매출 345.7%, EPS 1398.3% 성장, PEG 0.14가 나타난 강한 cyclical fast grower다. 사이클 정점 위험은 크지만 낮은 부채와 HBM 성장 스토리가 명확해 모멘텀 둔화 전까지 GARP가 강하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 86,
+        "reasoning": "R&D/매출 10.2%, HBM·DRAM 공정 투자, 강한 현재 마진은 기술 리더십의 결과다. 4개 연도 매출 CAGR은 6.7%에 그쳐 사이클성이 분명하지만 AI 데이터센터가 장기 수요 구조를 바꾸는지 확인할 가치가 높다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "PLTR": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 74,
+        "reasoning": "매출 성장 92.8%, ROE 38.1%, 영업마진 47.1%, 낮은 부채는 탁월하지만 P/E 146.7과 FCF 수익률 0.5%는 어떤 보수적 내재가치에도 안전마진을 거의 남기지 않는다. 정부·대기업 AI 플랫폼의 장기 경쟁구도도 단순하게 예측하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 70,
+        "reasoning": "4개 연도 매출 CAGR 32.9%의 명확한 fast grower지만 P/E 146.7, PEG 2.31, 약 4,270억 달러 시가총액은 성장 스토리의 상당 부분을 반영한다. 훌륭한 회사라도 성장 둔화 시 배수 압축 위험이 크다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 87,
+        "reasoning": "R&D/매출 12.5%, 32.9% 장기 매출 CAGR, 높은 현재 마진과 낮은 부채가 AI 소프트웨어 제품의 기술·영업 확장을 뒷받침한다. 고객 집중과 밸류에이션은 위험이지만 제품 리더십과 장기 혁신 기준은 강하게 충족한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "COP": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 75,
+        "reasoning": "P/E 17.5, ROE 14.2%, FCF 수익률 4.9%는 원유가격 위험을 감수할 만큼 싸거나 높은 수익성이 아니다. 4개 연도 매출 CAGR -9.1%와 상품가격 의존성 때문에 지속 가능한 해자를 확인하기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 64,
+        "reasoning": "최근 매출 성장 35.5%, EPS 성장 99.4%, PEG 1.03은 cyclical 회복을 지지한다. 그러나 장기 매출 감소와 대형 시가총액, 원유가격 민감성 때문에 명확한 초기 사이클 증거 없이 강세로 올리기 어렵다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 74,
+        "reasoning": "현재 31.5% 영업마진은 높지만 장기 매출이 감소했고 R&D 기반 제품 차별화보다 매장량·유가가 성과를 결정한다. 지속 매출 성장과 혁신적 제품이라는 장기 보유 기준에 부합하지 않는다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "HOOD": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 75,
+        "reasoning": "최근 성장과 수익성은 강하지만 P/E 49.6, PEG 2.45, D/E 2.40에서 충분한 안전마진이 없다. 거래·옵션·암호자산 활동과 규제 환경에 수익이 민감해 장기 owner earnings의 예측 가능성도 낮다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 66,
+        "reasoning": "최근 매출 성장 32.3%, 4개 연도 CAGR 48.8%의 fast grower지만 P/E 49.6과 PEG 2.45는 싸지 않다. 약 980억 달러 시가총액과 거래 활동 민감성을 감안하면 성장률 둔화 전에 신규 자산·고객 스토리가 입증돼야 한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 72,
+        "reasoning": "R&D/매출 20.1%, 연간 매출 CAGR 48.8%, 영업마진 43.9%는 제품 개발과 플랫폼 확장의 성과를 보여준다. 다만 높은 레버리지와 규제·암호자산 사이클이 장기 제품 우위의 질을 낮춰 조건부 강세로 평가한다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    },
+    "REGN": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 65,
+        "reasoning": "D/E 0.09, ROIC 16.0%, 영업마진 33.1%, P/E 20.6은 질 좋은 재무다. 다만 바이오 파이프라인과 특허·임상 위험은 장기 현금흐름 예측을 복잡하게 하며 현재 FCF 수익률 3.7%는 큰 안전마진은 아니다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 64,
+        "reasoning": "최근 매출 성장 16.7%와 PEG 1.38은 GARP에 근접하지만 EPS가 -6.8%이고 4개 연도 매출 CAGR은 5.6%다. 파이프라인 촉매가 실제 이익 성장으로 전환되는 확인이 필요하다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 86,
+        "reasoning": "R&D/매출 40.8%, 25.8% 연간 영업마진, 낮은 부채는 장기 연구개발을 지속할 이상적인 재무구조다. 매출 성장 가속과 파이프라인 생산성이 유지된다면 Fisher식 연구 중심 성장기업에 매우 가깝다.",
+        "analysis_date": "2026-08-27",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "source_file": "investor_source_data.json",
+        "current_snapshot": true
+      }
+    }
+  }
+}
