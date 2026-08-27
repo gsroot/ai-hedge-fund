@@ -54,6 +54,10 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
 
 ```json
 {
+  "index": "sp500",
+  "analysis_date": "YYYY-MM-DD",
+  "rankings": [
+  {
   "ticker": "AAPL",
   "rank": 1,
   "total_score": 8.2,
@@ -65,6 +69,8 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
     "label": "점수 환산값(예상수익률 아님)"
   },
   "data_as_of": "YYYY-MM-DD"
+  }
+  ]
 }
 ```
 
@@ -89,6 +95,8 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
 3. score와 signal을 기대수익률처럼 사용하지 않는다.
 4. 실제 포트폴리오는 독립 투자자 분석, 상관·변동성, 비중 제약, 거래비용을 추가로 검토한다.
 5. 전략 성과 주장은 `backtesting`의 point-in-time 검증 결과가 있을 때만 한다.
+6. 현금비중은 종목 점수로 정하지 않는다. `portfolio-report`가 출력의 `index`와
+   동일 기준일 시장 가격으로 과열·공포·전망을 계산해 별도로 정한다.
 
 ## 주요 파일
 

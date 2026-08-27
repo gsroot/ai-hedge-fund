@@ -175,6 +175,7 @@ def main():
     if args.output:
         output_data = {
             "analysis_date": end_date,
+            "index": args.index or "custom",
             "evaluation_horizon": args.period,
             "return_estimate": {
                 "calibrated": False,

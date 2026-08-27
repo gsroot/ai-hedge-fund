@@ -51,7 +51,6 @@ class RidgeConfig:
     alpha: float
     top_n: int
     weighting: str
-    market_filter: bool
     rebalance_months: int
 
 
@@ -154,13 +153,13 @@ def prediction_weight_schedule(
             group.sort_values("prediction", ascending=False).index[: config.top_n]
         )
         signal_date = pd.Timestamp(group["signal_date"].iloc[0])
-        gross_target = 1.0
-        market_filter_triggered = False
-        if config.market_filter:
-            dia = closes["DIA"].loc[:signal_date].dropna()
-            if len(dia) >= 200 and float(dia.iloc[-1]) < float(dia.iloc[-200:].mean()):
-                gross_target = 0.5
-                market_filter_triggered = True
+        dia = closes["DIA"].loc[:signal_date].dropna()
+        market_regime = mf.assess_market_regime(
+            dia,
+            benchmark="DIA",
+            as_of_date=signal_date,
+        )
+        gross_target = float(market_regime["target_equity_weight"])
         if config.weighting == "equal":
             weight = min(0.15, gross_target / config.top_n)
             weights = {ticker: weight for ticker in selected}
@@ -184,7 +183,6 @@ def prediction_weight_schedule(
                     "alpha": config.alpha,
                     "top_n": config.top_n,
                     "weighting": config.weighting,
-                    "market_filter": config.market_filter,
                     "rebalance_months": config.rebalance_months,
                 },
                 "selected": selected,
@@ -192,7 +190,7 @@ def prediction_weight_schedule(
                     ticker: float(group.at[ticker, "prediction"]) for ticker in selected
                 },
                 "target_invested_weight": sum(weights.values()),
-                "market_filter_triggered": market_filter_triggered,
+                "market_regime": market_regime,
             },
         }
     return schedule
@@ -262,36 +260,34 @@ def select_inner_config(
     for alpha in ALPHAS:
         for top_n in (8, 12, 20, 30):
             for weighting in ("equal", "score_inverse_vol"):
-                for market_filter in (False, True):
-                    for rebalance_months in (1, 3):
-                        config = RidgeConfig(
-                            alpha,
-                            top_n,
-                            weighting,
-                            market_filter,
-                            rebalance_months,
-                        )
-                        schedule = prediction_weight_schedule(
-                            predictions_by_alpha[alpha], closes, config
-                        )
-                        simulation = wf.simulate_weight_schedule(
-                            opens,
-                            closes,
-                            validation_start.strftime("%Y-%m-%d"),
-                            train_end.strftime("%Y-%m-%d"),
-                            cost_rate,
-                            schedule,
-                        )
-                        metrics = wf.performance_metrics(
-                            simulation["equity"], simulation["returns"]
-                        )
-                        trials.append(
-                            {
-                                "config": config,
-                                "metrics": metrics,
-                                "turnover": simulation["total_turnover"],
-                            }
-                        )
+                for rebalance_months in (1, 3):
+                    config = RidgeConfig(
+                        alpha,
+                        top_n,
+                        weighting,
+                        rebalance_months,
+                    )
+                    schedule = prediction_weight_schedule(
+                        predictions_by_alpha[alpha], closes, config
+                    )
+                    simulation = wf.simulate_weight_schedule(
+                        opens,
+                        closes,
+                        validation_start.strftime("%Y-%m-%d"),
+                        train_end.strftime("%Y-%m-%d"),
+                        cost_rate,
+                        schedule,
+                    )
+                    metrics = wf.performance_metrics(
+                        simulation["equity"], simulation["returns"]
+                    )
+                    trials.append(
+                        {
+                            "config": config,
+                            "metrics": metrics,
+                            "turnover": simulation["total_turnover"],
+                        }
+                    )
     best = max(
         trials,
         key=lambda trial: (
@@ -307,7 +303,6 @@ def select_inner_config(
                 "alpha": trial["config"].alpha,
                 "top_n": trial["config"].top_n,
                 "weighting": trial["config"].weighting,
-                "market_filter": trial["config"].market_filter,
                 "rebalance_months": trial["config"].rebalance_months,
             },
             "metrics": trial["metrics"],
@@ -393,7 +388,6 @@ def run(args: argparse.Namespace) -> dict:
                     "alpha": config.alpha,
                     "top_n": config.top_n,
                     "weighting": config.weighting,
-                    "market_filter": config.market_filter,
                     "rebalance_months": config.rebalance_months,
                 },
                 "model": _model_summary(model),

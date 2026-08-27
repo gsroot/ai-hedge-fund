@@ -3,17 +3,64 @@
   "status": "portfolio-ready",
   "portfolio_construction_eligible": true,
   "target_total_portfolio_fraction": 1.0,
+  "target_equity_fraction": 0.8985,
   "weights": {
-    "V": 0.125,
-    "CRM": 0.125,
-    "TRV": 0.125,
-    "DIS": 0.125,
-    "MSFT": 0.125,
-    "IBM": 0.125,
-    "AMZN": 0.125,
-    "AMGN": 0.125
+    "V": 0.1123125,
+    "CRM": 0.1123125,
+    "TRV": 0.1123125,
+    "DIS": 0.1123125,
+    "MSFT": 0.1123125,
+    "IBM": 0.1123125,
+    "AMZN": 0.1123125,
+    "AMGN": 0.1123125
   },
-  "cash_weight": 0.0,
+  "cash_weight": 0.10150000000000003,
+  "market_regime": {
+    "formula_version": "market-regime-cash-v1",
+    "benchmark": "DIA",
+    "as_of_date": "2026-07-31",
+    "data_quality": "complete",
+    "observations": 1207,
+    "regime": "risk_on",
+    "target_cash_weight": 0.1015,
+    "target_equity_weight": 0.8985,
+    "scores": {
+      "overheat": 0.055104,
+      "fear": 0.0,
+      "outlook": 0.622471
+    },
+    "components": {
+      "overheat": {
+        "distance_above_200d": 0.165313,
+        "rsi": 0.0,
+        "six_month_momentum": 0.0
+      },
+      "fear": {
+        "drawdown": 0.0,
+        "rsi": 0.0,
+        "realized_volatility": 0.0
+      },
+      "outlook": {
+        "price_vs_200d": 0.74797,
+        "50d_vs_200d": 0.731899,
+        "six_month_momentum": 0.387544
+      }
+    },
+    "metrics": {
+      "close": 523.8856201171875,
+      "sma_50": 515.9673016357422,
+      "sma_200": 487.4274998474121,
+      "distance_to_sma_200": 0.07479701141439188,
+      "sma_50_to_sma_200": 0.05855189089098256,
+      "momentum_126": 0.07750888065184736,
+      "rsi_14": 49.99894423446441,
+      "drawdown_from_252d_peak": -0.010604084959937032,
+      "realized_volatility_20": 0.12686369182020413
+    },
+    "rationale": [
+      "200일 추세·50/200일 추세·6개월 모멘텀이 긍정적이라 현금 축소"
+    ]
+  },
   "evidence_grade": "promising",
   "evidence_assessment": {
     "grade": "promising",
@@ -77,8 +124,7 @@
     "low_vol_weight": 0.0,
     "momentum_lookback": 252,
     "top_n": 8,
-    "weighting": "equal",
-    "market_filter": false
+    "weighting": "equal"
   },
   "validation_result": "C:\\projects\\ai-hedge-fund\\artifacts\\walk_forward\\dow_2026_holdout\\multifactor_walk_forward_results.json"
 }

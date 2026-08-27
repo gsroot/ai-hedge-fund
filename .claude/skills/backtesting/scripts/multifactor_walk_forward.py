@@ -21,10 +21,14 @@ import yfinance as yf
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PREDICT_SCRIPTS = SCRIPT_DIR.parents[1] / "predict" / "scripts"
+PORTFOLIO_REPORT_SCRIPTS = SCRIPT_DIR.parents[1] / "portfolio-report" / "scripts"
 if str(PREDICT_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(PREDICT_SCRIPTS))
+if str(PORTFOLIO_REPORT_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(PORTFOLIO_REPORT_SCRIPTS))
 
 import sec_point_in_time as sec_pit  # noqa: E402
+from market_regime import assess_market_regime  # noqa: E402
 
 
 def _load_walk_forward_module():
@@ -52,7 +56,6 @@ class MultifactorParams:
     momentum_lookback: int
     top_n: int
     weighting: str
-    market_filter: bool
 
 
 STYLE_WEIGHTS = {
@@ -75,12 +78,10 @@ PARAMETER_GRID = tuple(
         momentum_lookback=252 if style != "growth_momentum" else 126,
         top_n=top_n,
         weighting=weighting,
-        market_filter=market_filter,
     )
     for style, weights in STYLE_WEIGHTS.items()
     for top_n in (8, 12)
     for weighting in ("equal", "score_inverse_vol")
-    for market_filter in (False, True)
 )
 
 EVIDENCE_MIN_OOS_DAYS = 126
@@ -554,7 +555,9 @@ def assess_evidence(
 
 
 def portfolio_construction_payload(
-    model_weights: dict[str, float], evidence_assessment: dict
+    model_weights: dict[str, float],
+    evidence_assessment: dict,
+    market_regime: dict[str, Any],
 ) -> dict:
     """Build a full target portfolio; evidence is descriptive, not a blocker."""
     normalized_weights = {
@@ -569,8 +572,10 @@ def portfolio_construction_payload(
         "status": "portfolio-ready",
         "portfolio_construction_eligible": True,
         "target_total_portfolio_fraction": 1.0,
+        "target_equity_fraction": round(total_weight, 6),
         "weights": normalized_weights,
         "cash_weight": max(0.0, 1.0 - total_weight),
+        "market_regime": market_regime,
         "evidence_grade": evidence_assessment["grade"],
         "evidence_assessment": evidence_assessment,
     }
@@ -619,13 +624,13 @@ def build_weight_schedule(
             scores[ticker] = weighted_score / available_weight
         selected = sorted(scores, key=lambda ticker: (-scores[ticker], ticker))[: params.top_n]
         signal_date = pd.Timestamp(group["signal_date"].iloc[0])
-        gross_target = 1.0
-        market_filter_triggered = False
-        if params.market_filter:
-            dia = closes["DIA"].loc[:signal_date].dropna()
-            if len(dia) >= 200 and float(dia.iloc[-1]) < float(dia.iloc[-200:].mean()):
-                gross_target = 0.50
-                market_filter_triggered = True
+        dia = closes["DIA"].loc[:signal_date].dropna()
+        market_regime = assess_market_regime(
+            dia,
+            benchmark="DIA",
+            as_of_date=signal_date,
+        )
+        gross_target = float(market_regime["target_equity_weight"])
         if params.weighting == "equal":
             per_name = min(0.15, gross_target / params.top_n)
             weights = {ticker: per_name for ticker in selected}
@@ -656,7 +661,7 @@ def build_weight_schedule(
                 "factor_weight_coverage": {ticker: coverage[ticker] for ticker in selected},
                 "latest_filed_dates": latest_filed_dates,
                 "target_invested_weight": sum(weights.values()),
-                "market_filter_triggered": market_filter_triggered,
+                "market_regime": market_regime,
             },
         }
     return schedule
@@ -866,7 +871,9 @@ def run(args: argparse.Namespace) -> dict:
     latest_target = selected_schedule[latest_execution_date]
     model_weights = latest_target["weights"]
     portfolio_payload = portfolio_construction_payload(
-        model_weights, evidence_assessment
+        model_weights,
+        evidence_assessment,
+        latest_target["detail"]["market_regime"],
     )
     candidate_path = output_dir / "multifactor_latest_candidate.json"
     latest_candidate = {

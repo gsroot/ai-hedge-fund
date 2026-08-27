@@ -1,7 +1,7 @@
 {
   "experiment": {
     "name": "nested_ridge_sec_point_in_time_walk_forward",
-    "generated_at_utc": "2026-08-26T13:19:03.058020+00:00",
+    "generated_at_utc": "2026-08-27T00:41:52.528212+00:00",
     "oos_start": "2026-01-01",
     "oos_end": "2026-08-25",
     "outer_training_years": 3,
@@ -42,27 +42,27 @@
   },
   "oos_strategy": {
     "metrics": {
-      "total_return": 0.038439229178405476,
-      "cagr": 0.060429228260692414,
-      "annualized_volatility": 0.17469519426514443,
-      "sharpe_ratio": 0.4227830305717373,
-      "sortino_ratio": 0.642954294645629,
-      "max_drawdown": -0.15793485223430326,
-      "calmar_ratio": 0.3826212353119058,
+      "total_return": 0.02915305341236163,
+      "cagr": 0.04571486552442061,
+      "annualized_volatility": 0.15313554899706944,
+      "sharpe_ratio": 0.36808043799223616,
+      "sortino_ratio": 0.5583608113810065,
+      "max_drawdown": -0.14454841475657587,
+      "calmar_ratio": 0.31625988843534464,
       "positive_month_rate": 0.625,
       "annual_returns": {
-        "2026": 0.038439229178405254
+        "2026": 0.02915305341236163
       },
       "positive_years": 1,
       "years_observed": 1
     },
     "block_bootstrap_cagr_95pct": {
-      "low": -0.33965986002619364,
-      "median": 0.016592721961629087,
-      "high": 0.6121919413320488
+      "low": -0.31499365786545797,
+      "median": 0.007597055566185507,
+      "high": 0.5151174478401457
     },
-    "total_turnover": 4.78239224337141,
-    "transaction_cost_fraction_of_initial_capital": 0.004715442966324737,
+    "total_turnover": 4.279581698384437,
+    "transaction_cost_fraction_of_initial_capital": 0.00421361208271318,
     "rebalance_count": 8
   },
   "benchmark_dia": {
@@ -102,21 +102,21 @@
     "transaction_cost_fraction_of_initial_capital": 0.0015768089344681557
   },
   "comparison": {
-    "cagr_difference": -0.1311063683841085,
-    "total_return_difference": -0.08080777918601312,
-    "max_drawdown_improvement": -0.060359490766365265,
-    "cagr_difference_vs_equal_weight": -0.14284005908780295,
+    "cagr_difference": -0.1458207311203803,
+    "total_return_difference": -0.09009395495205696,
+    "max_drawdown_improvement": -0.04697305328863788,
+    "cagr_difference_vs_equal_weight": -0.15755442182407475,
     "paired_block_bootstrap_cagr_difference_vs_dia_95pct": {
-      "low": -0.3970637237335656,
-      "median": -0.14651263846682155,
-      "high": 0.20799795889773623,
-      "probability_greater_than_zero": 0.177
+      "low": -0.38565542123048335,
+      "median": -0.15657649599514073,
+      "high": 0.11900757003686821,
+      "probability_greater_than_zero": 0.1185
     },
     "paired_block_bootstrap_cagr_difference_vs_equal_weight_95pct": {
-      "low": -0.4422092162168858,
-      "median": -0.15590044652945462,
-      "high": 0.2412553397036472,
-      "probability_greater_than_zero": 0.1775
+      "low": -0.4306523681024223,
+      "median": -0.1672840490911447,
+      "high": 0.1391391874458773,
+      "probability_greater_than_zero": 0.117
     }
   },
   "evidence_assessment": {
@@ -180,7 +180,6 @@
         "alpha": 0.1,
         "top_n": 12,
         "weighting": "equal",
-        "market_filter": false,
         "rebalance_months": 1
       },
       "model": {
@@ -205,3213 +204,1549 @@
             "alpha": 0.1,
             "top_n": 8,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.18196937736446683,
-            "cagr": 0.18355126712393077,
-            "annualized_volatility": 0.2074740075616975,
-            "sharpe_ratio": 0.9151998497914154,
-            "sortino_ratio": 1.2597164347099405,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 0.9448586926010337,
+            "total_return": 0.14899260292882688,
+            "cagr": 0.15026994027032403,
+            "annualized_volatility": 0.17854268570196036,
+            "sharpe_ratio": 0.872785355799243,
+            "sortino_ratio": 1.1945017719634392,
+            "max_drawdown": -0.17412622246618603,
+            "calmar_ratio": 0.8629943160887517,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.18196937736446706
+              "2025": 0.1489926029288282
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 6.278874997301087
+          "turnover": 5.548506644565664
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 8,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.16803056531056804,
-            "cagr": 0.16948280657684944,
-            "annualized_volatility": 0.20812171598394658,
-            "sharpe_ratio": 0.8556335739217773,
-            "sortino_ratio": 1.1315117641308037,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8239218919501422,
+            "total_return": 0.13617397566874767,
+            "cagr": 0.13733497889301338,
+            "annualized_volatility": 0.18211411903111768,
+            "sharpe_ratio": 0.7971701211903807,
+            "sortino_ratio": 1.0493263811688884,
+            "max_drawdown": -0.18808939707138628,
+            "calmar_ratio": 0.730158004817731,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.1680305653105698
+              "2025": 0.136173975668747
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.5466035124150532
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.16851056363632533,
-            "cagr": 0.16996724725355072,
-            "annualized_volatility": 0.19997718594781097,
-            "sharpe_ratio": 0.884254051982838,
-            "sortino_ratio": 1.1773415842124189,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 0.8749328377916098,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.16851056363632488
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.504717907587127
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.16803056531056804,
-            "cagr": 0.16948280657684944,
-            "annualized_volatility": 0.20812171598394658,
-            "sharpe_ratio": 0.8556335739217773,
-            "sortino_ratio": 1.1315117641308037,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8239218919501422,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1680305653105698
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.5466035124150532
+          "turnover": 3.166146096770067
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 8,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1260996457285284,
-            "cagr": 0.1271700390694388,
-            "annualized_volatility": 0.20943096168128972,
-            "sharpe_ratio": 0.6756538474631226,
-            "sortino_ratio": 0.9262628718177863,
-            "max_drawdown": -0.2102333379959619,
-            "calmar_ratio": 0.6048994906406397,
-            "positive_month_rate": 0.5833333333333334,
+            "total_return": 0.0899340999796776,
+            "cagr": 0.09068525559384866,
+            "annualized_volatility": 0.18486669662665667,
+            "sharpe_ratio": 0.5614805993935623,
+            "sortino_ratio": 0.7513504407248857,
+            "max_drawdown": -0.1858002400343589,
+            "calmar_ratio": 0.4880793242090472,
+            "positive_month_rate": 0.5,
             "annual_returns": {
-              "2025": 0.12609964572852994
+              "2025": 0.08993409997967938
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 6.240161597289432
+          "turnover": 6.074378324435413
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 8,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.08592991209717016,
-            "cagr": 0.08664631197038242,
-            "annualized_volatility": 0.21822098560053355,
-            "sharpe_ratio": 0.48932221826738204,
-            "sortino_ratio": 0.6520121066013623,
-            "max_drawdown": -0.24477050630280694,
-            "calmar_ratio": 0.3539900018149727,
+            "total_return": 0.05113828574981727,
+            "cagr": 0.051557762323985123,
+            "annualized_volatility": 0.1959302958024615,
+            "sharpe_ratio": 0.3540920995226097,
+            "sortino_ratio": 0.46615313923549545,
+            "max_drawdown": -0.2290770389354817,
+            "calmar_ratio": 0.2250673509818943,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.08592991209716905
+              "2025": 0.051138285749816825
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.9045487403239494
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.13812899867897288,
-            "cagr": 0.1393076693860591,
-            "annualized_volatility": 0.20252615889386297,
-            "sharpe_ratio": 0.7447127427310991,
-            "sortino_ratio": 0.9869799799925681,
-            "max_drawdown": -0.2102333379959619,
-            "calmar_ratio": 0.6626335799735762,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.13812899867897288
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.47692128619637
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.08592991209717016,
-            "cagr": 0.08664631197038242,
-            "annualized_volatility": 0.21822098560053355,
-            "sharpe_ratio": 0.48932221826738204,
-            "sortino_ratio": 0.6520121066013623,
-            "max_drawdown": -0.24477050630280694,
-            "calmar_ratio": 0.3539900018149727,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.08592991209716905
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.9045487403239494
+          "turnover": 3.58381231041273
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 12,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.2109163537112002,
-            "cagr": 0.21277170973283077,
-            "annualized_volatility": 0.20051486372298583,
-            "sharpe_ratio": 1.061548337209765,
-            "sortino_ratio": 1.4293636883276832,
-            "max_drawdown": -0.18898041727758408,
-            "calmar_ratio": 1.1258928983117908,
+            "total_return": 0.1720051133808953,
+            "cagr": 0.1734941867560691,
+            "annualized_volatility": 0.17202093485712355,
+            "sharpe_ratio": 1.0154698405546836,
+            "sortino_ratio": 1.3592103744317625,
+            "max_drawdown": -0.16826727983284284,
+            "calmar_ratio": 1.031063121293805,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.210916353711202
+              "2025": 0.17200511338089708
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 5.496713610188587
+          "turnover": 4.9147925812708
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 12,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.17325415640741815,
-            "cagr": 0.17475482714725898,
-            "annualized_volatility": 0.19674834636487165,
-            "sharpe_ratio": 0.916167032664104,
-            "sortino_ratio": 1.2239909841362835,
-            "max_drawdown": -0.1969707764046036,
-            "calmar_ratio": 0.8872119526415931,
+            "total_return": 0.1406055449234591,
+            "cagr": 0.141806635017794,
+            "annualized_volatility": 0.17150373682655182,
+            "sharpe_ratio": 0.8583680783718926,
+            "sortino_ratio": 1.1436177379980288,
+            "max_drawdown": -0.17958907854753214,
+            "calmar_ratio": 0.7896172538145843,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.1732541564074186
+              "2025": 0.1406055449234591
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.605701279640834
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.19597006658954763,
-            "cagr": 0.1976835165599664,
-            "annualized_volatility": 0.19300552320266456,
-            "sharpe_ratio": 1.0304379307850737,
-            "sortino_ratio": 1.3390635725568056,
-            "max_drawdown": -0.18898041727758408,
-            "calmar_ratio": 1.0460529159992211,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.19597006658954985
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.868012547559451
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17325415640741815,
-            "cagr": 0.17475482714725898,
-            "annualized_volatility": 0.19674834636487165,
-            "sharpe_ratio": 0.916167032664104,
-            "sortino_ratio": 1.2239909841362835,
-            "max_drawdown": -0.1969707764046036,
-            "calmar_ratio": 0.8872119526415931,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1732541564074186
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.605701279640834
+          "turnover": 2.349351271061879
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 12,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.14123233250488454,
-            "cagr": 0.14243910359519596,
-            "annualized_volatility": 0.2038560468908569,
-            "sharpe_ratio": 0.7543545053754321,
-            "sortino_ratio": 1.015572413423425,
-            "max_drawdown": -0.1991512476386441,
-            "calmar_ratio": 0.7152307870731938,
+            "total_return": 0.11517826123462127,
+            "cagr": 0.11615124818263989,
+            "annualized_volatility": 0.1777969681945782,
+            "sharpe_ratio": 0.706285308414502,
+            "sortino_ratio": 0.9482917726148311,
+            "max_drawdown": -0.1818131453248647,
+            "calmar_ratio": 0.6388495615930312,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.14123233250488565
+              "2025": 0.11517826123462083
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 6.220636268461438
+          "turnover": 5.606984384907399
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 12,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.12180020281950088,
-            "cagr": 0.12283214749958149,
-            "annualized_volatility": 0.20616067273020905,
-            "sharpe_ratio": 0.6642962645229213,
-            "sortino_ratio": 0.8794584149346192,
-            "max_drawdown": -0.22855755387766075,
-            "calmar_ratio": 0.5374232678624546,
+            "total_return": 0.10316958305133861,
+            "cagr": 0.10403646296550528,
+            "annualized_volatility": 0.18268402395916686,
+            "sharpe_ratio": 0.632509964269583,
+            "sortino_ratio": 0.8385022976080285,
+            "max_drawdown": -0.21019110393810247,
+            "calmar_ratio": 0.49496130433827573,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.12180020281950044
+              "2025": 0.10316958305133861
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.6263338614214096
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.13029756391209357,
-            "cagr": 0.1314056258542462,
-            "annualized_volatility": 0.19635437577033518,
-            "sharpe_ratio": 0.726241254595798,
-            "sortino_ratio": 0.9426026911972213,
-            "max_drawdown": -0.1991512476386441,
-            "calmar_ratio": 0.6598282833390983,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.13029756391209402
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.440924861470335
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.12180020281950088,
-            "cagr": 0.12283214749958149,
-            "annualized_volatility": 0.20616067273020905,
-            "sharpe_ratio": 0.6642962645229213,
-            "sortino_ratio": 0.8794584149346192,
-            "max_drawdown": -0.22855755387766075,
-            "calmar_ratio": 0.5374232678624546,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.12180020281950044
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.6263338614214096
+          "turnover": 3.262509379165381
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 20,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1901361666358483,
-            "cagr": 0.19179463548376607,
-            "annualized_volatility": 0.18567985958224498,
-            "sharpe_ratio": 1.036989352776232,
-            "sortino_ratio": 1.396480851662826,
-            "max_drawdown": -0.16834910718411888,
-            "calmar_ratio": 1.1392673159472444,
+            "total_return": 0.1566080757927102,
+            "cagr": 0.1579550740788782,
+            "annualized_volatility": 0.15941795988002289,
+            "sharpe_ratio": 0.9990590587243755,
+            "sortino_ratio": 1.3337055043267625,
+            "max_drawdown": -0.14960325346220427,
+            "calmar_ratio": 1.0558264638194113,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.19013616663584787
+              "2025": 0.1566080757927102
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.574121815052589
+          "turnover": 3.31953867501449
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 20,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.17191735822231546,
-            "cagr": 0.17340561719479064,
-            "annualized_volatility": 0.1852097763389944,
-            "sharpe_ratio": 0.9551723881039933,
-            "sortino_ratio": 1.2839144178089337,
-            "max_drawdown": -0.17615234891534637,
-            "calmar_ratio": 0.9844070673058369,
+            "total_return": 0.14271188919375621,
+            "cagr": 0.14393208151749382,
+            "annualized_volatility": 0.16113971524197504,
+            "sharpe_ratio": 0.9144654961337875,
+            "sortino_ratio": 1.2221010488764128,
+            "max_drawdown": -0.15870347503778814,
+            "calmar_ratio": 0.9069245741671556,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.17191735822231524
+              "2025": 0.1427118891937531
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.170070180267809
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.16673169076258287,
-            "cagr": 0.1681719190233837,
-            "annualized_volatility": 0.17917982183651704,
-            "sharpe_ratio": 0.9562966190654228,
-            "sortino_ratio": 1.246990981882003,
-            "max_drawdown": -0.16834910718411888,
-            "calmar_ratio": 0.9989474956909548,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.16673169076258287
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 4.290773416552305
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17191735822231546,
-            "cagr": 0.17340561719479064,
-            "annualized_volatility": 0.1852097763389944,
-            "sharpe_ratio": 0.9551723881039933,
-            "sortino_ratio": 1.2839144178089337,
-            "max_drawdown": -0.17615234891534637,
-            "calmar_ratio": 0.9844070673058369,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.17191735822231524
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.170070180267809
+          "turnover": 1.9739101367704999
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 20,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1660735307686012,
-            "cagr": 0.16750767630805052,
-            "annualized_volatility": 0.18862197049922047,
-            "sharpe_ratio": 0.9144522587520386,
-            "sortino_ratio": 1.2578244961817542,
-            "max_drawdown": -0.17923617561752858,
-            "calmar_ratio": 0.9345639948572354,
+            "total_return": 0.1362161404838549,
+            "cagr": 0.13737752446390616,
+            "annualized_volatility": 0.1618436307636125,
+            "sharpe_ratio": 0.8755952247205239,
+            "sortino_ratio": 1.1973960345441008,
+            "max_drawdown": -0.1593813849655823,
+            "calmar_ratio": 0.861942092507053,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.16607353076860076
+              "2025": 0.13621614048385333
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 5.348046248340959
+          "turnover": 4.705267600265405
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 20,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.15947308810239758,
-            "cagr": 0.16084639842885218,
-            "annualized_volatility": 0.18803889128419005,
-            "sharpe_ratio": 0.8863215317568324,
-            "sortino_ratio": 1.2122062774060698,
-            "max_drawdown": -0.1956747662287237,
-            "calmar_ratio": 0.8220088953158081,
+            "total_return": 0.12943704590882854,
+            "cagr": 0.13053737601339344,
+            "annualized_volatility": 0.163932430065701,
+            "sharpe_ratio": 0.8297457670290753,
+            "sortino_ratio": 1.1275734400816422,
+            "max_drawdown": -0.17822662294959346,
+            "calmar_ratio": 0.7324235507189764,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.15947308810239869
+              "2025": 0.12943704590882854
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.0297405180368444
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.1469629436652098,
-            "cagr": 0.14822178378596318,
-            "annualized_volatility": 0.18151977824624696,
-            "sharpe_ratio": 0.8513167150533836,
-            "sortino_ratio": 1.1312830786535384,
-            "max_drawdown": -0.17923617561752858,
-            "calmar_ratio": 0.8269635483757091,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1469629436652069
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.594215142697717
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.15947308810239758,
-            "cagr": 0.16084639842885218,
-            "annualized_volatility": 0.18803889128419005,
-            "sharpe_ratio": 0.8863215317568324,
-            "sortino_ratio": 1.2122062774060698,
-            "max_drawdown": -0.1956747662287237,
-            "calmar_ratio": 0.8220088953158081,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.15947308810239869
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.0297405180368444
+          "turnover": 2.699364248703029
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 30,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.15326402851725351,
-            "cagr": 0.1545803878215639,
-            "annualized_volatility": 0.16119124721086103,
-            "sharpe_ratio": 0.9718082789849581,
-            "sortino_ratio": 1.284419607673923,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.9948609868999818,
+            "total_return": 0.12582006683773495,
+            "cagr": 0.12688795595310576,
+            "annualized_volatility": 0.13836366481718335,
+            "sharpe_ratio": 0.9321823771584001,
+            "sortino_ratio": 1.2222683453408807,
+            "max_drawdown": -0.13636146457350906,
+            "calmar_ratio": 0.9305264969833441,
             "positive_month_rate": 0.8333333333333334,
             "annual_returns": {
-              "2025": 0.15326402851725307
+              "2025": 0.1258200668377336
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 1.5099614982402083
+          "turnover": 1.5901051732426734
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 30,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
+            "total_return": 0.13180464416447601,
+            "cagr": 0.132926260107056,
+            "annualized_volatility": 0.14011742564413604,
+            "sharpe_ratio": 0.9604119062168602,
+            "sortino_ratio": 1.263919430825742,
+            "max_drawdown": -0.1377639817371482,
+            "calmar_ratio": 0.9648839880417908,
             "positive_month_rate": 0.8333333333333334,
             "annual_returns": {
-              "2025": 0.15612478057847023
+              "2025": 0.13180464416447712
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 1.296964413354127
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.12849836324365338,
-            "cagr": 0.12959026522874773,
-            "annualized_volatility": 0.15629189743027824,
-            "sharpe_ratio": 0.8572760423882904,
-            "sortino_ratio": 1.1008745784496934,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.8340275307558612,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.12849836324365294
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.389899022191964
-        },
-        {
-          "configuration": {
-            "alpha": 0.1,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.15612478057847023
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 1.296964413354127
+          "turnover": 1.2238752273111948
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 30,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.16054359926153872,
-            "cagr": 0.16192675575091386,
-            "annualized_volatility": 0.16289133537668876,
-            "sharpe_ratio": 1.0022256485780965,
-            "sortino_ratio": 1.350765783848568,
-            "max_drawdown": -0.15321618876352983,
-            "calmar_ratio": 1.0568514793226433,
+            "total_return": 0.13186476927460533,
+            "cagr": 0.13298692629148157,
+            "annualized_volatility": 0.1397545855445476,
+            "sharpe_ratio": 0.9628600381788939,
+            "sortino_ratio": 1.2875951625429114,
+            "max_drawdown": -0.1352790328086544,
+            "calmar_ratio": 0.9830564539856306,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.16054359926153938
+              "2025": 0.13186476927460533
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.2324330796085743
+          "turnover": 2.890461932437821
         },
         {
           "configuration": {
             "alpha": 0.1,
             "top_n": 30,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.15577275977905547,
-            "cagr": 0.15711209737231702,
-            "annualized_volatility": 0.16287750761969824,
-            "sharpe_ratio": 0.9767965645393412,
-            "sortino_ratio": 1.3216143493924146,
-            "max_drawdown": -0.15266923199912308,
-            "calmar_ratio": 1.0291012492498781,
+            "total_return": 0.13050008682810965,
+            "cagr": 0.1316099692271584,
+            "annualized_volatility": 0.14161016515458758,
+            "sharpe_ratio": 0.9434967845955013,
+            "sortino_ratio": 1.27106413609092,
+            "max_drawdown": -0.13674567322025521,
+            "calmar_ratio": 0.9624433894531729,
             "positive_month_rate": 0.75,
             "annual_returns": {
-              "2025": 0.15577275977905436
+              "2025": 0.13050008682811032
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.1846151896085115
+          "turnover": 1.9562857684829444
         },
         {
           "configuration": {
-            "alpha": 0.1,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
+            "alpha": 1.0,
+            "top_n": 8,
+            "weighting": "equal",
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1389582703060881,
-            "cagr": 0.14014444330628706,
-            "annualized_volatility": 0.15752358290242505,
-            "sharpe_ratio": 0.9107880455316609,
-            "sortino_ratio": 1.190358823426132,
-            "max_drawdown": -0.15321618876352983,
-            "calmar_ratio": 0.914684306125005,
-            "positive_month_rate": 0.6666666666666666,
+            "total_return": 0.14899260292882688,
+            "cagr": 0.15026994027032403,
+            "annualized_volatility": 0.17854268570196036,
+            "sharpe_ratio": 0.872785355799243,
+            "sortino_ratio": 1.1945017719634392,
+            "max_drawdown": -0.17412622246618603,
+            "calmar_ratio": 0.8629943160887517,
+            "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.1389582703060881
+              "2025": 0.1489926029288282
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.8122925099080587
+          "turnover": 5.548506644565664
         },
         {
           "configuration": {
-            "alpha": 0.1,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
+            "alpha": 1.0,
+            "top_n": 8,
+            "weighting": "equal",
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.15577275977905547,
-            "cagr": 0.15711209737231702,
-            "annualized_volatility": 0.16287750761969824,
-            "sharpe_ratio": 0.9767965645393412,
-            "sortino_ratio": 1.3216143493924146,
-            "max_drawdown": -0.15266923199912308,
-            "calmar_ratio": 1.0291012492498781,
+            "total_return": 0.13617397566874767,
+            "cagr": 0.13733497889301338,
+            "annualized_volatility": 0.18211411903111768,
+            "sharpe_ratio": 0.7971701211903807,
+            "sortino_ratio": 1.0493263811688884,
+            "max_drawdown": -0.18808939707138628,
+            "calmar_ratio": 0.730158004817731,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.136173975668747
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 3.166146096770067
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 8,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.08960609750248905,
+            "cagr": 0.09035440163554731,
+            "annualized_volatility": 0.1848412208815778,
+            "sharpe_ratio": 0.5598907675314597,
+            "sortino_ratio": 0.7492096189674067,
+            "max_drawdown": -0.18584783173788233,
+            "calmar_ratio": 0.4861740962519387,
+            "positive_month_rate": 0.5,
+            "annual_returns": {
+              "2025": 0.08960609750248594
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 6.066752988429468
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 8,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.05114018084592953,
+            "cagr": 0.051559673343204215,
+            "annualized_volatility": 0.19593709389478633,
+            "sharpe_ratio": 0.3540959549136849,
+            "sortino_ratio": 0.46614614595742654,
+            "max_drawdown": -0.22909649115317243,
+            "calmar_ratio": 0.22505658241937784,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.051140180845928196
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 3.5826254517231346
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 12,
+            "weighting": "equal",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.1720051133808953,
+            "cagr": 0.1734941867560691,
+            "annualized_volatility": 0.17202093485712355,
+            "sharpe_ratio": 1.0154698405546836,
+            "sortino_ratio": 1.3592103744317625,
+            "max_drawdown": -0.16826727983284284,
+            "calmar_ratio": 1.031063121293805,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2025": 0.17200511338089708
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 4.9147925812708
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 12,
+            "weighting": "equal",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.1406055449234591,
+            "cagr": 0.141806635017794,
+            "annualized_volatility": 0.17150373682655182,
+            "sharpe_ratio": 0.8583680783718926,
+            "sortino_ratio": 1.1436177379980288,
+            "max_drawdown": -0.17958907854753214,
+            "calmar_ratio": 0.7896172538145843,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.1406055449234591
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 2.349351271061879
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 12,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.11521809357841928,
+            "cagr": 0.11619143422246037,
+            "annualized_volatility": 0.1777997467070186,
+            "sharpe_ratio": 0.7064795383136431,
+            "sortino_ratio": 0.948651727209123,
+            "max_drawdown": -0.1818154311537502,
+            "calmar_ratio": 0.6390625563800708,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.11521809357841772
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 5.601433354585577
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 12,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.10314295777951221,
+            "cagr": 0.10400960360435652,
+            "annualized_volatility": 0.18266773584270346,
+            "sharpe_ratio": 0.6324167474767746,
+            "sortino_ratio": 0.8384765851177042,
+            "max_drawdown": -0.21017375684634154,
+            "calmar_ratio": 0.4948743609336448,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.10314295777951332
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 3.261100413175792
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 20,
+            "weighting": "equal",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.1566080757927102,
+            "cagr": 0.1579550740788782,
+            "annualized_volatility": 0.15941795988002289,
+            "sharpe_ratio": 0.9990590587243755,
+            "sortino_ratio": 1.3337055043267625,
+            "max_drawdown": -0.14960325346220427,
+            "calmar_ratio": 1.0558264638194113,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2025": 0.1566080757927102
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 3.31953867501449
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 20,
+            "weighting": "equal",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.14271188919375621,
+            "cagr": 0.14393208151749382,
+            "annualized_volatility": 0.16113971524197504,
+            "sharpe_ratio": 0.9144654961337875,
+            "sortino_ratio": 1.2221010488764128,
+            "max_drawdown": -0.15870347503778814,
+            "calmar_ratio": 0.9069245741671556,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2025": 0.1427118891937531
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 1.9739101367704999
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 20,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.13627975133167536,
+            "cagr": 0.13744170975290615,
+            "annualized_volatility": 0.16184329068012263,
+            "sharpe_ratio": 0.8759455947618471,
+            "sortino_ratio": 1.1980216528332526,
+            "max_drawdown": -0.1594006409960248,
+            "calmar_ratio": 0.8622406340030573,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.13627975133167736
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 4.701074235676774
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 20,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.12942163953809604,
+            "cagr": 0.13052183126313843,
+            "annualized_volatility": 0.16392845853248875,
+            "sharpe_ratio": 0.829678180854684,
+            "sortino_ratio": 1.1275240185495188,
+            "max_drawdown": -0.17823436703894946,
+            "calmar_ratio": 0.7323045124884112,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2025": 0.1294216395380956
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 2.697085323317965
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 30,
+            "weighting": "equal",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.12582006683773495,
+            "cagr": 0.12688795595310576,
+            "annualized_volatility": 0.13836366481718335,
+            "sharpe_ratio": 0.9321823771584001,
+            "sortino_ratio": 1.2222683453408807,
+            "max_drawdown": -0.13636146457350906,
+            "calmar_ratio": 0.9305264969833441,
+            "positive_month_rate": 0.8333333333333334,
+            "annual_returns": {
+              "2025": 0.1258200668377336
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 1.5901051732426734
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 30,
+            "weighting": "equal",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.13180464416447601,
+            "cagr": 0.132926260107056,
+            "annualized_volatility": 0.14011742564413604,
+            "sharpe_ratio": 0.9604119062168602,
+            "sortino_ratio": 1.263919430825742,
+            "max_drawdown": -0.1377639817371482,
+            "calmar_ratio": 0.9648839880417908,
+            "positive_month_rate": 0.8333333333333334,
+            "annual_returns": {
+              "2025": 0.13180464416447712
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 1.2238752273111948
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 30,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.13186849796787747,
+            "cagr": 0.13299068854063623,
+            "annualized_volatility": 0.13975649151716313,
+            "sharpe_ratio": 0.9628725798876214,
+            "sortino_ratio": 1.287612912729013,
+            "max_drawdown": -0.13528516304090232,
+            "calmar_ratio": 0.9830397181132687,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2025": 0.13186849796787747
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 2.8892187025355778
+        },
+        {
+          "configuration": {
+            "alpha": 1.0,
+            "top_n": 30,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.13049805079685584,
+            "cagr": 0.13160791489277957,
+            "annualized_volatility": 0.14161036428076365,
+            "sharpe_ratio": 0.9434828517888924,
+            "sortino_ratio": 1.2710517713628156,
+            "max_drawdown": -0.1367479383973198,
+            "calmar_ratio": 0.9624124241668204,
             "positive_month_rate": 0.75,
             "annual_returns": {
-              "2025": 0.15577275977905436
+              "2025": 0.13049805079685428
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.1846151896085115
+          "turnover": 1.955751537187453
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 8,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.18196937736446683,
-            "cagr": 0.18355126712393077,
-            "annualized_volatility": 0.2074740075616975,
-            "sharpe_ratio": 0.9151998497914154,
-            "sortino_ratio": 1.2597164347099405,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 0.9448586926010337,
+            "total_return": 0.14899260292882688,
+            "cagr": 0.15026994027032403,
+            "annualized_volatility": 0.17854268570196036,
+            "sharpe_ratio": 0.872785355799243,
+            "sortino_ratio": 1.1945017719634392,
+            "max_drawdown": -0.17412622246618603,
+            "calmar_ratio": 0.8629943160887517,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.18196937736446706
+              "2025": 0.1489926029288282
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 6.278874997301087
+          "turnover": 5.548506644565664
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 8,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.16803056531056804,
-            "cagr": 0.16948280657684944,
-            "annualized_volatility": 0.20812171598394658,
-            "sharpe_ratio": 0.8556335739217773,
-            "sortino_ratio": 1.1315117641308037,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8239218919501422,
+            "total_return": 0.13617397566874767,
+            "cagr": 0.13733497889301338,
+            "annualized_volatility": 0.18211411903111768,
+            "sharpe_ratio": 0.7971701211903807,
+            "sortino_ratio": 1.0493263811688884,
+            "max_drawdown": -0.18808939707138628,
+            "calmar_ratio": 0.730158004817731,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.1680305653105698
+              "2025": 0.136173975668747
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.5466035124150532
+          "turnover": 3.166146096770067
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.16851056363632533,
-            "cagr": 0.16996724725355072,
-            "annualized_volatility": 0.19997718594781097,
-            "sharpe_ratio": 0.884254051982838,
-            "sortino_ratio": 1.1773415842124189,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 0.8749328377916098,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.16851056363632488
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.504717907587127
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.16803056531056804,
-            "cagr": 0.16948280657684944,
-            "annualized_volatility": 0.20812171598394658,
-            "sharpe_ratio": 0.8556335739217773,
-            "sortino_ratio": 1.1315117641308037,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8239218919501422,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1680305653105698
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.5466035124150532
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 8,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.12597281995703713,
-            "cagr": 0.12704207723310046,
-            "annualized_volatility": 0.20944380407700153,
-            "sharpe_ratio": 0.6750829142531483,
-            "sortino_ratio": 0.9255361414037396,
-            "max_drawdown": -0.21032420510771777,
-            "calmar_ratio": 0.604029750964877,
-            "positive_month_rate": 0.5833333333333334,
+            "total_return": 0.09094377805986009,
+            "cagr": 0.09170371628328544,
+            "annualized_volatility": 0.18459152689419137,
+            "sharpe_ratio": 0.5670963092072658,
+            "sortino_ratio": 0.7593040539541565,
+            "max_drawdown": -0.18630694139708748,
+            "calmar_ratio": 0.49221846269179875,
+            "positive_month_rate": 0.5,
             "annual_returns": {
-              "2025": 0.1259728199570389
+              "2025": 0.09094377805986142
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 6.239150740294618
+          "turnover": 6.002877308918813
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 8,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.08587031835380765,
-            "cagr": 0.086586201861105,
-            "annualized_volatility": 0.218235001456706,
-            "sharpe_ratio": 0.4890511100898531,
-            "sortino_ratio": 0.6516956462859048,
-            "max_drawdown": -0.24479352664887566,
-            "calmar_ratio": 0.3537111583236496,
+            "total_return": 0.05111186663094802,
+            "cagr": 0.05153112122745074,
+            "annualized_volatility": 0.1960032740243869,
+            "sharpe_ratio": 0.3539045407874026,
+            "sortino_ratio": 0.4659313523858124,
+            "max_drawdown": -0.22928798167942743,
+            "calmar_ratio": 0.2247441006284295,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.08587031835380743
+              "2025": 0.05111186663094647
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.9048195375593684
+          "turnover": 3.5731905927996612
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.13808477656599738,
-            "cagr": 0.139263047339371,
-            "annualized_volatility": 0.20253868725686672,
-            "sharpe_ratio": 0.7444857212840864,
-            "sortino_ratio": 0.9867345686703343,
-            "max_drawdown": -0.21032420510771777,
-            "calmar_ratio": 0.6621351416402467,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.13808477656599694
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.4761335428887365
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.08587031835380765,
-            "cagr": 0.086586201861105,
-            "annualized_volatility": 0.218235001456706,
-            "sharpe_ratio": 0.4890511100898531,
-            "sortino_ratio": 0.6516956462859048,
-            "max_drawdown": -0.24479352664887566,
-            "calmar_ratio": 0.3537111583236496,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.08587031835380743
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.9048195375593684
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 12,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.2109163537112002,
-            "cagr": 0.21277170973283077,
-            "annualized_volatility": 0.20051486372298583,
-            "sharpe_ratio": 1.061548337209765,
-            "sortino_ratio": 1.4293636883276832,
-            "max_drawdown": -0.18898041727758408,
-            "calmar_ratio": 1.1258928983117908,
+            "total_return": 0.1720051133808953,
+            "cagr": 0.1734941867560691,
+            "annualized_volatility": 0.17202093485712355,
+            "sharpe_ratio": 1.0154698405546836,
+            "sortino_ratio": 1.3592103744317625,
+            "max_drawdown": -0.16826727983284284,
+            "calmar_ratio": 1.031063121293805,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.210916353711202
+              "2025": 0.17200511338089708
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 5.496713610188587
+          "turnover": 4.9147925812708
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 12,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.17325415640741815,
-            "cagr": 0.17475482714725898,
-            "annualized_volatility": 0.19674834636487165,
-            "sharpe_ratio": 0.916167032664104,
-            "sortino_ratio": 1.2239909841362835,
-            "max_drawdown": -0.1969707764046036,
-            "calmar_ratio": 0.8872119526415931,
+            "total_return": 0.1406055449234591,
+            "cagr": 0.141806635017794,
+            "annualized_volatility": 0.17150373682655182,
+            "sharpe_ratio": 0.8583680783718926,
+            "sortino_ratio": 1.1436177379980288,
+            "max_drawdown": -0.17958907854753214,
+            "calmar_ratio": 0.7896172538145843,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.1732541564074186
+              "2025": 0.1406055449234591
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.605701279640834
+          "turnover": 2.349351271061879
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.19597006658954763,
-            "cagr": 0.1976835165599664,
-            "annualized_volatility": 0.19300552320266456,
-            "sharpe_ratio": 1.0304379307850737,
-            "sortino_ratio": 1.3390635725568056,
-            "max_drawdown": -0.18898041727758408,
-            "calmar_ratio": 1.0460529159992211,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.19597006658954985
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.868012547559451
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17325415640741815,
-            "cagr": 0.17475482714725898,
-            "annualized_volatility": 0.19674834636487165,
-            "sharpe_ratio": 0.916167032664104,
-            "sortino_ratio": 1.2239909841362835,
-            "max_drawdown": -0.1969707764046036,
-            "calmar_ratio": 0.8872119526415931,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1732541564074186
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.605701279640834
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 12,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.14144060074775222,
-            "cagr": 0.1426492601279199,
-            "annualized_volatility": 0.2038618087089856,
-            "sharpe_ratio": 0.7552414310081165,
-            "sortino_ratio": 1.0167815052797282,
-            "max_drawdown": -0.19915558227868713,
-            "calmar_ratio": 0.7162704579794532,
+            "total_return": 0.11587039730153781,
+            "cagr": 0.11684953178731372,
+            "annualized_volatility": 0.17781967466290327,
+            "sharpe_ratio": 0.70973545958295,
+            "sortino_ratio": 0.9537555700720161,
+            "max_drawdown": -0.18184141281367505,
+            "calmar_ratio": 0.6425903207595749,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.14144060074775378
+              "2025": 0.11587039730153892
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 6.2146954773279095
+          "turnover": 5.545760618977534
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 12,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.12181204790448796,
-            "cagr": 0.1228440983292245,
-            "annualized_volatility": 0.20614635377306295,
-            "sharpe_ratio": 0.6643794430604274,
-            "sortino_ratio": 0.8796470774981876,
-            "max_drawdown": -0.22853726953282616,
-            "calmar_ratio": 0.5375232607807965,
+            "total_return": 0.10289125423612866,
+            "cagr": 0.10375568734033225,
+            "annualized_volatility": 0.1825164344003502,
+            "sharpe_ratio": 0.6315280410752893,
+            "sortino_ratio": 0.8382252051140131,
+            "max_drawdown": -0.21000833824901044,
+            "calmar_ratio": 0.49405508469529136,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.12181204790448796
+              "2025": 0.10289125423612688
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.623904106079692
+          "turnover": 3.247586976616433
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.1304551829753129,
-            "cagr": 0.13156466171314762,
-            "annualized_volatility": 0.19635895712776535,
-            "sharpe_ratio": 0.7269448776170869,
-            "sortino_ratio": 0.9432511138483178,
-            "max_drawdown": -0.19915558227868713,
-            "calmar_ratio": 0.6606124729611819,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1304551829753129
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.435069566820326
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.12181204790448796,
-            "cagr": 0.1228440983292245,
-            "annualized_volatility": 0.20614635377306295,
-            "sharpe_ratio": 0.6643794430604274,
-            "sortino_ratio": 0.8796470774981876,
-            "max_drawdown": -0.22853726953282616,
-            "calmar_ratio": 0.5375232607807965,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.12181204790448796
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.623904106079692
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 20,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1901361666358483,
-            "cagr": 0.19179463548376607,
-            "annualized_volatility": 0.18567985958224498,
-            "sharpe_ratio": 1.036989352776232,
-            "sortino_ratio": 1.396480851662826,
-            "max_drawdown": -0.16834910718411888,
-            "calmar_ratio": 1.1392673159472444,
+            "total_return": 0.14810494391521045,
+            "cagr": 0.14937418804660973,
+            "annualized_volatility": 0.15932529015599117,
+            "sharpe_ratio": 0.9528401500907467,
+            "sortino_ratio": 1.271363329596031,
+            "max_drawdown": -0.1532753435363332,
+            "calmar_ratio": 0.9745480558078232,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.19013616663584787
+              "2025": 0.14810494391520934
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.574121815052589
+          "turnover": 3.31945222197319
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 20,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.17191735822231546,
-            "cagr": 0.17340561719479064,
-            "annualized_volatility": 0.1852097763389944,
-            "sharpe_ratio": 0.9551723881039933,
-            "sortino_ratio": 1.2839144178089337,
-            "max_drawdown": -0.17615234891534637,
-            "calmar_ratio": 0.9844070673058369,
+            "total_return": 0.141470099203429,
+            "cagr": 0.14267902605980654,
+            "annualized_volatility": 0.16039752329887186,
+            "sharpe_ratio": 0.9111165272417924,
+            "sortino_ratio": 1.221834535341631,
+            "max_drawdown": -0.15704937205227976,
+            "calmar_ratio": 0.9084979086214396,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.17191735822231524
+              "2025": 0.14147009920342923
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.170070180267809
+          "turnover": 1.9733094124275883
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.16673169076258287,
-            "cagr": 0.1681719190233837,
-            "annualized_volatility": 0.17917982183651704,
-            "sharpe_ratio": 0.9562966190654228,
-            "sortino_ratio": 1.246990981882003,
-            "max_drawdown": -0.16834910718411888,
-            "calmar_ratio": 0.9989474956909548,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.16673169076258287
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 4.290773416552305
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17191735822231546,
-            "cagr": 0.17340561719479064,
-            "annualized_volatility": 0.1852097763389944,
-            "sharpe_ratio": 0.9551723881039933,
-            "sortino_ratio": 1.2839144178089337,
-            "max_drawdown": -0.17615234891534637,
-            "calmar_ratio": 0.9844070673058369,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.17191735822231524
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.170070180267809
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 20,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1661479552364098,
-            "cagr": 0.16758278845717367,
-            "annualized_volatility": 0.1886224491207432,
-            "sharpe_ratio": 0.9147917129649895,
-            "sortino_ratio": 1.2584378084455934,
-            "max_drawdown": -0.1792599828903253,
-            "calmar_ratio": 0.9348588890567062,
+            "total_return": 0.13691620825021067,
+            "cagr": 0.1380839158122431,
+            "annualized_volatility": 0.16186976094385455,
+            "sharpe_ratio": 0.8793177383056343,
+            "sortino_ratio": 1.204063086314226,
+            "max_drawdown": -0.15965914636810563,
+            "calmar_ratio": 0.864866930290863,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.16614795523641246
+              "2025": 0.13691620825021178
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 5.34297357240697
+          "turnover": 4.6652485584968915
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 20,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.15945635175421802,
-            "cagr": 0.1608295082093092,
-            "annualized_volatility": 0.1880348772471202,
-            "sharpe_ratio": 0.886259280448499,
-            "sortino_ratio": 1.212166093239237,
-            "max_drawdown": -0.19568403229281572,
-            "calmar_ratio": 0.8218836576744736,
+            "total_return": 0.12900482254608603,
+            "cagr": 0.13010127107827896,
+            "annualized_volatility": 0.16388420002660106,
+            "sharpe_ratio": 0.8275884905582841,
+            "sortino_ratio": 1.1250028448841936,
+            "max_drawdown": -0.1784201122666621,
+            "calmar_ratio": 0.7291850084918283,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.15945635175421757
+              "2025": 0.12900482254608336
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.027131101945005
+          "turnover": 2.6715775659455563
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.14701895002430843,
-            "cagr": 0.14827830016806498,
-            "annualized_volatility": 0.1815146774600892,
-            "sharpe_ratio": 0.8516070476735816,
-            "sortino_ratio": 1.131772051720531,
-            "max_drawdown": -0.1792599828903253,
-            "calmar_ratio": 0.8271689965450041,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.14701895002431042
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.589105785510967
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.15945635175421802,
-            "cagr": 0.1608295082093092,
-            "annualized_volatility": 0.1880348772471202,
-            "sharpe_ratio": 0.886259280448499,
-            "sortino_ratio": 1.212166093239237,
-            "max_drawdown": -0.19568403229281572,
-            "calmar_ratio": 0.8218836576744736,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.15945635175421757
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.027131101945005
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 30,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.15326402851725351,
-            "cagr": 0.1545803878215639,
-            "annualized_volatility": 0.16119124721086103,
-            "sharpe_ratio": 0.9718082789849581,
-            "sortino_ratio": 1.284419607673923,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.9948609868999818,
+            "total_return": 0.12582006683773495,
+            "cagr": 0.12688795595310576,
+            "annualized_volatility": 0.13836366481718335,
+            "sharpe_ratio": 0.9321823771584001,
+            "sortino_ratio": 1.2222683453408807,
+            "max_drawdown": -0.13636146457350906,
+            "calmar_ratio": 0.9305264969833441,
             "positive_month_rate": 0.8333333333333334,
             "annual_returns": {
-              "2025": 0.15326402851725307
+              "2025": 0.1258200668377336
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 1.5099614982402083
+          "turnover": 1.5901051732426734
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 30,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
+            "total_return": 0.13180464416447601,
+            "cagr": 0.132926260107056,
+            "annualized_volatility": 0.14011742564413604,
+            "sharpe_ratio": 0.9604119062168602,
+            "sortino_ratio": 1.263919430825742,
+            "max_drawdown": -0.1377639817371482,
+            "calmar_ratio": 0.9648839880417908,
             "positive_month_rate": 0.8333333333333334,
             "annual_returns": {
-              "2025": 0.15612478057847023
+              "2025": 0.13180464416447712
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 1.296964413354127
+          "turnover": 1.2238752273111948
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.12849836324365338,
-            "cagr": 0.12959026522874773,
-            "annualized_volatility": 0.15629189743027824,
-            "sharpe_ratio": 0.8572760423882904,
-            "sortino_ratio": 1.1008745784496934,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.8340275307558612,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.12849836324365294
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.389899022191964
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.15612478057847023
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 1.296964413354127
-        },
-        {
-          "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 30,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.16054867402712514,
-            "cagr": 0.1619318772112961,
-            "annualized_volatility": 0.16289369052834785,
-            "sharpe_ratio": 1.0022405803894807,
-            "sortino_ratio": 1.3507868498088007,
-            "max_drawdown": -0.15322225777951293,
-            "calmar_ratio": 1.0568430432888956,
+            "total_return": 0.13190468283564583,
+            "cagr": 0.13302719905449223,
+            "annualized_volatility": 0.13977531853396988,
+            "sharpe_ratio": 0.962992318457197,
+            "sortino_ratio": 1.2877852393540072,
+            "max_drawdown": -0.13534423196363732,
+            "calmar_ratio": 0.9828804458414777,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.16054867402712536
+              "2025": 0.13190468283564605
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.2308041689759115
+          "turnover": 2.877733984258045
         },
         {
           "configuration": {
-            "alpha": 1.0,
+            "alpha": 10.0,
             "top_n": 30,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.15577086938678097,
-            "cagr": 0.157110189648759,
-            "annualized_volatility": 0.16287781294645076,
-            "sharpe_ratio": 0.9767849404249462,
-            "sortino_ratio": 1.3216034727093782,
-            "max_drawdown": -0.15267172946629082,
-            "calmar_ratio": 1.0290719191954145,
+            "total_return": 0.13047949014918858,
+            "cagr": 0.13158918739350867,
+            "annualized_volatility": 0.14161250783681428,
+            "sharpe_ratio": 0.9433539929527757,
+            "sortino_ratio": 1.2709420888597711,
+            "max_drawdown": -0.13676881533641794,
+            "calmar_ratio": 0.9621285895460259,
             "positive_month_rate": 0.75,
             "annual_returns": {
-              "2025": 0.1557708693867823
+              "2025": 0.13047949014918814
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.18400505842888
+          "turnover": 1.9506350543232274
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
+            "alpha": 100.0,
+            "top_n": 8,
+            "weighting": "equal",
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1389574916209395,
-            "cagr": 0.14014365757420655,
-            "annualized_volatility": 0.15752474303261854,
-            "sharpe_ratio": 0.9107781459686574,
-            "sortino_ratio": 1.190342359321586,
-            "max_drawdown": -0.15322225777951293,
-            "calmar_ratio": 0.914642948127507,
+            "total_return": 0.17637387895269296,
+            "cagr": 0.17790356319052236,
+            "annualized_volatility": 0.17905698053838046,
+            "sharpe_ratio": 1.0034517669272198,
+            "sortino_ratio": 1.379830946947596,
+            "max_drawdown": -0.17412622246618603,
+            "calmar_ratio": 1.0216931181922921,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.13895749162093907
+              "2025": 0.1763738789526914
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.8110050098635693
+          "turnover": 4.508813983452323
         },
         {
           "configuration": {
-            "alpha": 1.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
+            "alpha": 100.0,
+            "top_n": 8,
+            "weighting": "equal",
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.15577086938678097,
-            "cagr": 0.157110189648759,
-            "annualized_volatility": 0.16287781294645076,
-            "sharpe_ratio": 0.9767849404249462,
-            "sortino_ratio": 1.3216034727093782,
-            "max_drawdown": -0.15267172946629082,
-            "calmar_ratio": 1.0290719191954145,
+            "total_return": 0.14648261569683174,
+            "cagr": 0.14773708260827978,
+            "annualized_volatility": 0.1814673278851345,
+            "sharpe_ratio": 0.8495575477526573,
+            "sortino_ratio": 1.1339576158199374,
+            "max_drawdown": -0.18808939707138628,
+            "calmar_ratio": 0.7854620457537463,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.14648261569683063
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 3.1405890630863946
+        },
+        {
+          "configuration": {
+            "alpha": 100.0,
+            "top_n": 8,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.0987166023704662,
+            "cagr": 0.09954440388364949,
+            "annualized_volatility": 0.18387922943888863,
+            "sharpe_ratio": 0.6075058224731436,
+            "sortino_ratio": 0.8147052382094229,
+            "max_drawdown": -0.18933693092430248,
+            "calmar_ratio": 0.5257527065517275,
+            "positive_month_rate": 0.5,
+            "annual_returns": {
+              "2025": 0.09871660237046664
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 5.92668486699829
+        },
+        {
+          "configuration": {
+            "alpha": 100.0,
+            "top_n": 8,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.04717826311675588,
+            "cagr": 0.047564526797436724,
+            "annualized_volatility": 0.19629698589585026,
+            "sharpe_ratio": 0.33441339675631315,
+            "sortino_ratio": 0.44091360813525105,
+            "max_drawdown": -0.23062360816012906,
+            "calmar_ratio": 0.20624309530536533,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.04717826311675455
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 3.525647907704125
+        },
+        {
+          "configuration": {
+            "alpha": 100.0,
+            "top_n": 12,
+            "weighting": "equal",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.16496656811781873,
+            "cagr": 0.16639048986257254,
+            "annualized_volatility": 0.17220592343594837,
+            "sharpe_ratio": 0.9792754663364286,
+            "sortino_ratio": 1.3118086866937968,
+            "max_drawdown": -0.1679566385631499,
+            "calmar_ratio": 0.9906752795603937,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2025": 0.1649665681178203
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 4.621983796304921
+        },
+        {
+          "configuration": {
+            "alpha": 100.0,
+            "top_n": 12,
+            "weighting": "equal",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.1185383250323433,
+            "cagr": 0.11954118839598116,
+            "annualized_volatility": 0.17154671504286284,
+            "sharpe_ratio": 0.743356369687011,
+            "sortino_ratio": 0.9852635002803445,
+            "max_drawdown": -0.1960542452785512,
+            "calmar_ratio": 0.6097352711038655,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2025": 0.1185383250323424
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 2.62188294898893
+        },
+        {
+          "configuration": {
+            "alpha": 100.0,
+            "top_n": 12,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.12551397442456458,
+            "cagr": 0.12657912247187597,
+            "annualized_volatility": 0.1783973877918179,
+            "sharpe_ratio": 0.7566279366304757,
+            "sortino_ratio": 1.02729178390586,
+            "max_drawdown": -0.18263518497674214,
+            "calmar_ratio": 0.6930708477010896,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.1255139744245657
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 5.162501381270259
+        },
+        {
+          "configuration": {
+            "alpha": 100.0,
+            "top_n": 12,
+            "weighting": "score_inverse_vol",
+            "rebalance_months": 3
+          },
+          "metrics": {
+            "total_return": 0.10294481835469282,
+            "cagr": 0.10380972230112717,
+            "annualized_volatility": 0.18271419511663772,
+            "sharpe_ratio": 0.6312891538504811,
+            "sortino_ratio": 0.8449258866941536,
+            "max_drawdown": -0.20880611431900176,
+            "calmar_ratio": 0.4971584411677369,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2025": 0.1029448183546926
+            },
+            "positive_years": 1,
+            "years_observed": 1
+          },
+          "turnover": 3.1382767560064604
+        },
+        {
+          "configuration": {
+            "alpha": 100.0,
+            "top_n": 20,
+            "weighting": "equal",
+            "rebalance_months": 1
+          },
+          "metrics": {
+            "total_return": 0.15445447601308704,
+            "cagr": 0.15578173352765856,
+            "annualized_volatility": 0.15911066646947886,
+            "sharpe_ratio": 0.9888719161390233,
+            "sortino_ratio": 1.3179965884408151,
+            "max_drawdown": -0.1532753435363332,
+            "calmar_ratio": 1.0163522059941181,
             "positive_month_rate": 0.75,
             "annual_returns": {
-              "2025": 0.1557708693867823
+              "2025": 0.15445447601308526
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.18400505842888
+          "turnover": 3.2470573499565525
         },
         {
           "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.18196937736446683,
-            "cagr": 0.18355126712393077,
-            "annualized_volatility": 0.2074740075616975,
-            "sharpe_ratio": 0.9151998497914154,
-            "sortino_ratio": 1.2597164347099405,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 0.9448586926010337,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.18196937736446706
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.278874997301087
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.16803056531056804,
-            "cagr": 0.16948280657684944,
-            "annualized_volatility": 0.20812171598394658,
-            "sharpe_ratio": 0.8556335739217773,
-            "sortino_ratio": 1.1315117641308037,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8239218919501422,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1680305653105698
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.5466035124150532
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.16851056363632533,
-            "cagr": 0.16996724725355072,
-            "annualized_volatility": 0.19997718594781097,
-            "sharpe_ratio": 0.884254051982838,
-            "sortino_ratio": 1.1773415842124189,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 0.8749328377916098,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.16851056363632488
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.504717907587127
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.16803056531056804,
-            "cagr": 0.16948280657684944,
-            "annualized_volatility": 0.20812171598394658,
-            "sharpe_ratio": 0.8556335739217773,
-            "sortino_ratio": 1.1315117641308037,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8239218919501422,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1680305653105698
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.5466035124150532
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.12563736067453046,
-            "cagr": 0.12670361356911775,
-            "annualized_volatility": 0.2095754104054767,
-            "sharpe_ratio": 0.6733534196587627,
-            "sortino_ratio": 0.9237669450365976,
-            "max_drawdown": -0.21077908397857248,
-            "calmar_ratio": 0.601120429871487,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.12563736067453046
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.231480695198778
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.08597685654213838,
-            "cagr": 0.08669366319662153,
-            "annualized_volatility": 0.21836968033791757,
-            "sharpe_ratio": 0.48933373528086005,
-            "sortino_ratio": 0.6524820506005353,
-            "max_drawdown": -0.24490687395128763,
-            "calmar_ratio": 0.35398623892388187,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.0859768565421406
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.9050825210560105
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.13850158435591364,
-            "cagr": 0.13968362518521205,
-            "annualized_volatility": 0.20266966213361792,
-            "sharpe_ratio": 0.7459544170676159,
-            "sortino_ratio": 0.9893184855800667,
-            "max_drawdown": -0.21077908397857248,
-            "calmar_ratio": 0.6627015477466071,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.13850158435591453
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.470295181311365
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.08597685654213838,
-            "cagr": 0.08669366319662153,
-            "annualized_volatility": 0.21836968033791757,
-            "sharpe_ratio": 0.48933373528086005,
-            "sortino_ratio": 0.6524820506005353,
-            "max_drawdown": -0.24490687395128763,
-            "calmar_ratio": 0.35398623892388187,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.0859768565421406
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.9050825210560105
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.2109163537112002,
-            "cagr": 0.21277170973283077,
-            "annualized_volatility": 0.20051486372298583,
-            "sharpe_ratio": 1.061548337209765,
-            "sortino_ratio": 1.4293636883276832,
-            "max_drawdown": -0.18898041727758408,
-            "calmar_ratio": 1.1258928983117908,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.210916353711202
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.496713610188587
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17325415640741815,
-            "cagr": 0.17475482714725898,
-            "annualized_volatility": 0.19674834636487165,
-            "sharpe_ratio": 0.916167032664104,
-            "sortino_ratio": 1.2239909841362835,
-            "max_drawdown": -0.1969707764046036,
-            "calmar_ratio": 0.8872119526415931,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1732541564074186
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.605701279640834
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.19597006658954763,
-            "cagr": 0.1976835165599664,
-            "annualized_volatility": 0.19300552320266456,
-            "sharpe_ratio": 1.0304379307850737,
-            "sortino_ratio": 1.3390635725568056,
-            "max_drawdown": -0.18898041727758408,
-            "calmar_ratio": 1.0460529159992211,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.19597006658954985
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.868012547559451
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17325415640741815,
-            "cagr": 0.17475482714725898,
-            "annualized_volatility": 0.19674834636487165,
-            "sharpe_ratio": 0.916167032664104,
-            "sortino_ratio": 1.2239909841362835,
-            "max_drawdown": -0.1969707764046036,
-            "calmar_ratio": 0.8872119526415931,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1732541564074186
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.605701279640834
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.14358155373589132,
-            "cagr": 0.14480964210709213,
-            "annualized_volatility": 0.20392194650097498,
-            "sharpe_ratio": 0.764344079233062,
-            "sortino_ratio": 1.0302351974515673,
-            "max_drawdown": -0.1991996469071693,
-            "calmar_ratio": 0.7269573232455382,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.14358155373589065
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.156455584303924
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.12193342164485554,
-            "cagr": 0.12296655566784476,
-            "annualized_volatility": 0.20601478529994563,
-            "sharpe_ratio": 0.6651989001663837,
-            "sortino_ratio": 0.8814779477730723,
-            "max_drawdown": -0.2283433616462508,
-            "calmar_ratio": 0.5385160084414644,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.12193342164485532
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.600559756334378
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.13211061134187796,
-            "cagr": 0.1332349809941904,
-            "annualized_volatility": 0.19640745533376772,
-            "sharpe_ratio": 0.7343259146449643,
-            "sortino_ratio": 0.9537430169953436,
-            "max_drawdown": -0.1991996469071693,
-            "calmar_ratio": 0.6688514917713703,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.13211061134187752
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.3776598895458
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.12193342164485554,
-            "cagr": 0.12296655566784476,
-            "annualized_volatility": 0.20601478529994563,
-            "sharpe_ratio": 0.6651989001663837,
-            "sortino_ratio": 0.8814779477730723,
-            "max_drawdown": -0.2283433616462508,
-            "calmar_ratio": 0.5385160084414644,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.12193342164485532
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.600559756334378
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
+            "alpha": 100.0,
             "top_n": 20,
             "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.18062319976206442,
-            "cagr": 0.18219251022192684,
-            "annualized_volatility": 0.18560042270084015,
-            "sharpe_ratio": 0.9937421748803018,
-            "sortino_ratio": 1.337763242396512,
-            "max_drawdown": -0.17232552706401094,
-            "calmar_ratio": 1.0572578150551704,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.1806231997620651
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.56466444266823
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.17056299657488982,
-            "cagr": 0.17203869326455057,
-            "annualized_volatility": 0.1844856054415257,
-            "sharpe_ratio": 0.9518739223024074,
-            "sortino_ratio": 1.2834562475835576,
-            "max_drawdown": -0.1744401663737446,
-            "calmar_ratio": 0.9862332560263168,
-            "positive_month_rate": 0.6666666666666666,
+            "total_return": 0.14746984256603213,
+            "cagr": 0.148733299575742,
+            "annualized_volatility": 0.1600822808813323,
+            "sharpe_ratio": 0.945623389933242,
+            "sortino_ratio": 1.262318881745865,
+            "max_drawdown": -0.15704937205227976,
+            "calmar_ratio": 0.9470480373919009,
+            "positive_month_rate": 0.75,
             "annual_returns": {
-              "2025": 0.17056299657489093
+              "2025": 0.14746984256603257
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.1689095712535886
+          "turnover": 2.0546535649972273
         },
         {
           "configuration": {
-            "alpha": 10.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.15740579996456416,
-            "cagr": 0.158760118735096,
-            "annualized_volatility": 0.1790936777469925,
-            "sharpe_ratio": 0.9114782285016167,
-            "sortino_ratio": 1.188582840843841,
-            "max_drawdown": -0.17232552706401094,
-            "calmar_ratio": 0.9212803317068862,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.15740579996456372
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 4.281316044167946
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17056299657488982,
-            "cagr": 0.17203869326455057,
-            "annualized_volatility": 0.1844856054415257,
-            "sharpe_ratio": 0.9518739223024074,
-            "sortino_ratio": 1.2834562475835576,
-            "max_drawdown": -0.1744401663737446,
-            "calmar_ratio": 0.9862332560263168,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.17056299657489093
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.1689095712535886
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
+            "alpha": 100.0,
             "top_n": 20,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.16690499748061227,
-            "cagr": 0.16834682794252287,
-            "annualized_volatility": 0.18865644185326777,
-            "sharpe_ratio": 0.9181305823569482,
-            "sortino_ratio": 1.264494717711779,
-            "max_drawdown": -0.17956678816342708,
-            "calmar_ratio": 0.9375165066120539,
+            "total_return": 0.1396769552728272,
+            "cagr": 0.1408696340481379,
+            "annualized_volatility": 0.16230910224394135,
+            "sharpe_ratio": 0.8924461029299355,
+            "sortino_ratio": 1.2312364375280074,
+            "max_drawdown": -0.16199565153947415,
+            "calmar_ratio": 0.8695889840833883,
             "positive_month_rate": 0.5833333333333334,
             "annual_returns": {
-              "2025": 0.16690499748061072
+              "2025": 0.13967695527282475
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 5.29860542085993
+          "turnover": 4.426268077950247
         },
         {
           "configuration": {
-            "alpha": 10.0,
+            "alpha": 100.0,
             "top_n": 20,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.15898144313896134,
-            "cagr": 0.1603502341716483,
-            "annualized_volatility": 0.18798244678354015,
-            "sharpe_ratio": 0.884258541262904,
-            "sortino_ratio": 1.2097915634967562,
-            "max_drawdown": -0.1958904535854913,
-            "calmar_ratio": 0.818570947367109,
+            "total_return": 0.1227364023543831,
+            "cagr": 0.12377670788319617,
+            "annualized_volatility": 0.16389707934260866,
+            "sharpe_ratio": 0.7932893262280929,
+            "sortino_ratio": 1.0804333041954546,
+            "max_drawdown": -0.18149568550508222,
+            "calmar_ratio": 0.6819815442925787,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.15898144313896312
+              "2025": 0.12273640235438443
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.999424434368011
+          "turnover": 2.5069039323097697
         },
         {
           "configuration": {
-            "alpha": 10.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.14759428097975325,
-            "cagr": 0.14885887166412393,
-            "annualized_volatility": 0.1814945256047842,
-            "sharpe_ratio": 0.8544699585686378,
-            "sortino_ratio": 1.1366133572438466,
-            "max_drawdown": -0.17956678816342708,
-            "calmar_ratio": 0.8289888858993496,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.14759428097975347
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.546134169778135
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.15898144313896134,
-            "cagr": 0.1603502341716483,
-            "annualized_volatility": 0.18798244678354015,
-            "sharpe_ratio": 0.884258541262904,
-            "sortino_ratio": 1.2097915634967562,
-            "max_drawdown": -0.1958904535854913,
-            "calmar_ratio": 0.818570947367109,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.15898144313896312
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.999424434368011
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
+            "alpha": 100.0,
             "top_n": 30,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.15326402851725351,
-            "cagr": 0.1545803878215639,
-            "annualized_volatility": 0.16119124721086103,
-            "sharpe_ratio": 0.9718082789849581,
-            "sortino_ratio": 1.284419607673923,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.9948609868999818,
+            "total_return": 0.12582006683773495,
+            "cagr": 0.12688795595310576,
+            "annualized_volatility": 0.13836366481718335,
+            "sharpe_ratio": 0.9321823771584001,
+            "sortino_ratio": 1.2222683453408807,
+            "max_drawdown": -0.13636146457350906,
+            "calmar_ratio": 0.9305264969833441,
             "positive_month_rate": 0.8333333333333334,
             "annual_returns": {
-              "2025": 0.15326402851725307
+              "2025": 0.1258200668377336
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 1.5099614982402083
+          "turnover": 1.5901051732426734
         },
         {
           "configuration": {
-            "alpha": 10.0,
+            "alpha": 100.0,
             "top_n": 30,
             "weighting": "equal",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
+            "total_return": 0.13180464416447601,
+            "cagr": 0.132926260107056,
+            "annualized_volatility": 0.14011742564413604,
+            "sharpe_ratio": 0.9604119062168602,
+            "sortino_ratio": 1.263919430825742,
+            "max_drawdown": -0.1377639817371482,
+            "calmar_ratio": 0.9648839880417908,
             "positive_month_rate": 0.8333333333333334,
             "annual_returns": {
-              "2025": 0.15612478057847023
+              "2025": 0.13180464416447712
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 1.296964413354127
+          "turnover": 1.2238752273111948
         },
         {
           "configuration": {
-            "alpha": 10.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.12849836324365338,
-            "cagr": 0.12959026522874773,
-            "annualized_volatility": 0.15629189743027824,
-            "sharpe_ratio": 0.8572760423882904,
-            "sortino_ratio": 1.1008745784496934,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.8340275307558612,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.12849836324365294
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.389899022191964
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.15612478057847023
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 1.296964413354127
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
+            "alpha": 100.0,
             "top_n": 30,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 1
           },
           "metrics": {
-            "total_return": 0.1605984444976769,
-            "cagr": 0.16198210564785542,
-            "annualized_volatility": 0.1629169046892974,
-            "sharpe_ratio": 1.0023863929575914,
-            "sortino_ratio": 1.350995580347583,
-            "max_drawdown": -0.15328015574067155,
-            "calmar_ratio": 1.056771536179193,
+            "total_return": 0.13221941609338095,
+            "cagr": 0.1333447651511792,
+            "annualized_volatility": 0.13993629318764617,
+            "sharpe_ratio": 0.9640484352990027,
+            "sortino_ratio": 1.2894986440148348,
+            "max_drawdown": -0.13573742667822586,
+            "calmar_ratio": 0.9823728680762558,
             "positive_month_rate": 0.6666666666666666,
             "annual_returns": {
-              "2025": 0.16059844449767624
+              "2025": 0.1322194160933814
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 3.2151887843901763
+          "turnover": 2.7956935695287464
         },
         {
           "configuration": {
-            "alpha": 10.0,
+            "alpha": 100.0,
             "top_n": 30,
             "weighting": "score_inverse_vol",
-            "market_filter": false,
             "rebalance_months": 3
           },
           "metrics": {
-            "total_return": 0.1557538742982607,
-            "cagr": 0.15709303874888714,
-            "annualized_volatility": 0.16288105568001246,
-            "sharpe_ratio": 0.97667797183057,
-            "sortino_ratio": 1.3215074681818433,
-            "max_drawdown": -0.15269482815301683,
-            "calmar_ratio": 1.0288039264267865,
+            "total_return": 0.13041810262412556,
+            "cagr": 0.13152724804062377,
+            "annualized_volatility": 0.141638179385068,
+            "sharpe_ratio": 0.9428236003001828,
+            "sortino_ratio": 1.2709691522633118,
+            "max_drawdown": -0.1368518660473631,
+            "calmar_ratio": 0.9610921052044951,
             "positive_month_rate": 0.75,
             "annual_returns": {
-              "2025": 0.15575387429826093
+              "2025": 0.13041810262412645
             },
             "positive_years": 1,
             "years_observed": 1
           },
-          "turnover": 2.178162147076195
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.13895074857838807,
-            "cagr": 0.14013685350876193,
-            "annualized_volatility": 0.15753617410735235,
-            "sharpe_ratio": 0.9106858318309032,
-            "sortino_ratio": 1.1901896565752696,
-            "max_drawdown": -0.15328015574067155,
-            "calmar_ratio": 0.914253073606304,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.1389507485783883
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.798683152169779
-        },
-        {
-          "configuration": {
-            "alpha": 10.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.1557538742982607,
-            "cagr": 0.15709303874888714,
-            "annualized_volatility": 0.16288105568001246,
-            "sharpe_ratio": 0.97667797183057,
-            "sortino_ratio": 1.3215074681818433,
-            "max_drawdown": -0.15269482815301683,
-            "calmar_ratio": 1.0288039264267865,
-            "positive_month_rate": 0.75,
-            "annual_returns": {
-              "2025": 0.15575387429826093
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.178162147076195
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.2156966452554201,
-            "cagr": 0.21759770263227907,
-            "annualized_volatility": 0.208000919539957,
-            "sharpe_ratio": 1.0498524293805247,
-            "sortino_ratio": 1.452723814458687,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 1.1201180141312053,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.21569664525542187
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.048736138213296
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17973478679595933,
-            "cagr": 0.18129580230650366,
-            "annualized_volatility": 0.20744395579165603,
-            "sharpe_ratio": 0.906229438376494,
-            "sortino_ratio": 1.214723109168317,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8813494622610125,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.17973478679596
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.507716361305422
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.20185378687705624,
-            "cagr": 0.20362292025814632,
-            "annualized_volatility": 0.20053118491027622,
-            "sharpe_ratio": 1.023884276187092,
-            "sortino_ratio": 1.3736081802267122,
-            "max_drawdown": -0.19426319359844768,
-            "calmar_ratio": 1.0481806485640595,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.2018537868770578
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.274579048499479
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17973478679595933,
-            "cagr": 0.18129580230650366,
-            "annualized_volatility": 0.20744395579165603,
-            "sharpe_ratio": 0.906229438376494,
-            "sortino_ratio": 1.214723109168317,
-            "max_drawdown": -0.20570251650396165,
-            "calmar_ratio": 0.8813494622610125,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.17973478679596
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.507716361305422
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.1303175690782501,
-            "cagr": 0.13142581083167126,
-            "annualized_volatility": 0.2099839223954203,
-            "sharpe_ratio": 0.6923650318584722,
-            "sortino_ratio": 0.9515802798484241,
-            "max_drawdown": -0.21245026538334633,
-            "calmar_ratio": 0.6186191887994391,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.1303175690782492
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.102866357877556
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.08705158099715504,
-            "cagr": 0.087777704791558,
-            "annualized_volatility": 0.2189776871316587,
-            "sharpe_ratio": 0.4931287332495454,
-            "sortino_ratio": 0.6581141049081147,
-            "max_drawdown": -0.24577337569333824,
-            "calmar_ratio": 0.35714895701754906,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.08705158099715615
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.8672778627691615
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.14558009914000647,
-            "cagr": 0.1468263533649916,
-            "annualized_volatility": 0.2031423615989417,
-            "sharpe_ratio": 0.775449357658642,
-            "sortino_ratio": 1.0296423030218445,
-            "max_drawdown": -0.21245026538334633,
-            "calmar_ratio": 0.6911092960983476,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.14558009914000714
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 6.354016272132855
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 8,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.08705158099715504,
-            "cagr": 0.087777704791558,
-            "annualized_volatility": 0.2189776871316587,
-            "sharpe_ratio": 0.4931287332495454,
-            "sortino_ratio": 0.6581141049081147,
-            "max_drawdown": -0.24577337569333824,
-            "calmar_ratio": 0.35714895701754906,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.08705158099715615
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.8672778627691615
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.2026372077998717,
-            "cagr": 0.20441377303413466,
-            "annualized_volatility": 0.20068292086165312,
-            "sharpe_ratio": 1.026333577350679,
-            "sortino_ratio": 1.3825611380414506,
-            "max_drawdown": -0.1886489614597373,
-            "calmar_ratio": 1.0835669141903121,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.2026372077998726
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.156019151927849
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.14926184683520827,
-            "cagr": 0.1505416400961399,
-            "annualized_volatility": 0.19668459014774445,
-            "sharpe_ratio": 0.8104574923025963,
-            "sortino_ratio": 1.0797784541084487,
-            "max_drawdown": -0.21417099777629522,
-            "calmar_ratio": 0.7029039489902498,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.14926184683520805
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.9147328691074286
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.18779310981088204,
-            "cagr": 0.18942956164318736,
-            "annualized_volatility": 0.193178127595954,
-            "sharpe_ratio": 0.9938579188983222,
-            "sortino_ratio": 1.2926743935024194,
-            "max_drawdown": -0.1886489614597373,
-            "calmar_ratio": 1.0041378451140675,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.18779310981088204
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.527318089298717
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.14926184683520827,
-            "cagr": 0.1505416400961399,
-            "annualized_volatility": 0.19668459014774445,
-            "sharpe_ratio": 0.8104574923025963,
-            "sortino_ratio": 1.0797784541084487,
-            "max_drawdown": -0.21417099777629522,
-            "calmar_ratio": 0.7029039489902498,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.14926184683520805
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.9147328691074286
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.159451498403542,
-            "cagr": 0.16082461023805195,
-            "annualized_volatility": 0.20439652522195956,
-            "sharpe_ratio": 0.8310165132584684,
-            "sortino_ratio": 1.132629793434205,
-            "max_drawdown": -0.20116119239676622,
-            "calmar_ratio": 0.7994812931951844,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.15945149840354267
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.679124480703103
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.12268414778402903,
-            "cagr": 0.12372398648069005,
-            "annualized_volatility": 0.20608348516933636,
-            "sharpe_ratio": 0.6682951887030909,
-            "sortino_ratio": 0.8938601705925764,
-            "max_drawdown": -0.22710436663742017,
-            "calmar_ratio": 0.5447891130962691,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.12268414778402814
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.4347244601723537
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.14460673422085013,
-            "cagr": 0.14584413748973835,
-            "annualized_volatility": 0.1967757038618735,
-            "sharpe_ratio": 0.7895544569277364,
-            "sortino_ratio": 1.0367600288514303,
-            "max_drawdown": -0.20116119239676622,
-            "calmar_ratio": 0.7250112994064897,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.14460673422084946
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.9258331319727775
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 12,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.12268414778402903,
-            "cagr": 0.12372398648069005,
-            "annualized_volatility": 0.20608348516933636,
-            "sharpe_ratio": 0.6682951887030909,
-            "sortino_ratio": 0.8938601705925764,
-            "max_drawdown": -0.22710436663742017,
-            "calmar_ratio": 0.5447891130962691,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.12268414778402814
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.4347244601723537
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.18875134559719497,
-            "cagr": 0.19039679718269675,
-            "annualized_volatility": 0.18534227083082733,
-            "sharpe_ratio": 1.0322091807819376,
-            "sortino_ratio": 1.3882159675025494,
-            "max_drawdown": -0.17232552706401094,
-            "calmar_ratio": 1.1048670526449234,
-            "positive_month_rate": 0.75,
-            "annual_returns": {
-              "2025": 0.18875134559719475
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.4772748587131694
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17791549816627938,
-            "cagr": 0.17945954417441623,
-            "annualized_volatility": 0.184069699105861,
-            "sharpe_ratio": 0.987919695293928,
-            "sortino_ratio": 1.3260651272373867,
-            "max_drawdown": -0.1744401663737446,
-            "calmar_ratio": 1.0287742089738519,
-            "positive_month_rate": 0.75,
-            "annual_returns": {
-              "2025": 0.17791549816627916
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.2651343207999766
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.16537410275112152,
-            "cagr": 0.1668017874570662,
-            "annualized_volatility": 0.17882937918909536,
-            "sharpe_ratio": 0.9512587625431879,
-            "sortino_ratio": 1.239438090031315,
-            "max_drawdown": -0.17232552706401094,
-            "calmar_ratio": 0.9679459004068913,
-            "positive_month_rate": 0.75,
-            "annual_returns": {
-              "2025": 0.16537410275112174
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 4.193926460212885
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.17791549816627938,
-            "cagr": 0.17945954417441623,
-            "annualized_volatility": 0.184069699105861,
-            "sharpe_ratio": 0.987919695293928,
-            "sortino_ratio": 1.3260651272373867,
-            "max_drawdown": -0.1744401663737446,
-            "calmar_ratio": 1.0287742089738519,
-            "positive_month_rate": 0.75,
-            "annual_returns": {
-              "2025": 0.17791549816627916
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.2651343207999766
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.17030197450584672,
-            "cagr": 0.1717752515580746,
-            "annualized_volatility": 0.18914357003482118,
-            "sharpe_ratio": 0.9317533426520375,
-            "sortino_ratio": 1.2927875155234878,
-            "max_drawdown": -0.18223307978637326,
-            "calmar_ratio": 0.9426128985991014,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.17030197450584716
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.001282038517026
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.15189262032141881,
-            "cagr": 0.1531964370693284,
-            "annualized_volatility": 0.18792762661557877,
-            "sharpe_ratio": 0.8515496836990917,
-            "sortino_ratio": 1.1675506411063528,
-            "max_drawdown": -0.19917783528694932,
-            "calmar_ratio": 0.769144000629503,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.1518926203214186
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.812568681774971
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.14964155950878166,
-            "cagr": 0.15092481720002904,
-            "annualized_volatility": 0.1816476872823363,
-            "sharpe_ratio": 0.8638101427004109,
-            "sortino_ratio": 1.1557643642555546,
-            "max_drawdown": -0.18223307978637326,
-            "calmar_ratio": 0.8281966006224225,
-            "positive_month_rate": 0.5833333333333334,
-            "annual_returns": {
-              "2025": 0.14964155950877944
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 5.245459739029227
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 20,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.15189262032141881,
-            "cagr": 0.1531964370693284,
-            "annualized_volatility": 0.18792762661557877,
-            "sharpe_ratio": 0.8515496836990917,
-            "sortino_ratio": 1.1675506411063528,
-            "max_drawdown": -0.19917783528694932,
-            "calmar_ratio": 0.769144000629503,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.1518926203214186
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.812568681774971
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.15326402851725351,
-            "cagr": 0.1545803878215639,
-            "annualized_volatility": 0.16119124721086103,
-            "sharpe_ratio": 0.9718082789849581,
-            "sortino_ratio": 1.284419607673923,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.9948609868999818,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.15326402851725307
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 1.5099614982402083
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.15612478057847023
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 1.296964413354127
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.12849836324365338,
-            "cagr": 0.12959026522874773,
-            "annualized_volatility": 0.15629189743027824,
-            "sharpe_ratio": 0.8572760423882904,
-            "sortino_ratio": 1.1008745784496934,
-            "max_drawdown": -0.15537888193127491,
-            "calmar_ratio": 0.8340275307558612,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.12849836324365294
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.389899022191964
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "equal",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.1561247805784709,
-            "cagr": 0.15746734596459344,
-            "annualized_volatility": 0.16101736394403415,
-            "sharpe_ratio": 0.9882038470004018,
-            "sortino_ratio": 1.3045622299774553,
-            "max_drawdown": -0.15413244389125036,
-            "calmar_ratio": 1.02163660024554,
-            "positive_month_rate": 0.8333333333333334,
-            "annual_returns": {
-              "2025": 0.15612478057847023
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 1.296964413354127
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.1610094114242384,
-            "cagr": 0.16239685477007693,
-            "annualized_volatility": 0.1631158510965204,
-            "sharpe_ratio": 1.0035508368203216,
-            "sortino_ratio": 1.3528732723692203,
-            "max_drawdown": -0.15365170150773166,
-            "calmar_ratio": 1.0569154339101492,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.16100941142423686
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.1131783622088856
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": false,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.15571192392830047,
-            "cagr": 0.1570507037856339,
-            "annualized_volatility": 0.162919213827535,
-            "sharpe_ratio": 0.9762649171648586,
-            "sortino_ratio": 1.3215802731500277,
-            "max_drawdown": -0.15279562649589995,
-            "calmar_ratio": 1.0278481615430801,
-            "positive_month_rate": 0.75,
-            "annual_returns": {
-              "2025": 0.15571192392829913
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.1418112447644275
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 1
-          },
-          "metrics": {
-            "total_return": 0.13894647187056464,
-            "cagr": 0.1401325380979408,
-            "annualized_volatility": 0.15763181243898453,
-            "sharpe_ratio": 0.9102068025904098,
-            "sortino_ratio": 1.189466923859266,
-            "max_drawdown": -0.15365170150773166,
-            "calmar_ratio": 0.9120142290834925,
-            "positive_month_rate": 0.6666666666666666,
-            "annual_returns": {
-              "2025": 0.13894647187056508
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 3.719315047590944
-        },
-        {
-          "configuration": {
-            "alpha": 100.0,
-            "top_n": 30,
-            "weighting": "score_inverse_vol",
-            "market_filter": true,
-            "rebalance_months": 3
-          },
-          "metrics": {
-            "total_return": 0.15571192392830047,
-            "cagr": 0.1570507037856339,
-            "annualized_volatility": 0.162919213827535,
-            "sharpe_ratio": 0.9762649171648586,
-            "sortino_ratio": 1.3215802731500277,
-            "max_drawdown": -0.15279562649589995,
-            "calmar_ratio": 1.0278481615430801,
-            "positive_month_rate": 0.75,
-            "annual_returns": {
-              "2025": 0.15571192392829913
-            },
-            "positive_years": 1,
-            "years_observed": 1
-          },
-          "turnover": 2.1418112447644275
+          "turnover": 1.9167251191641483
         }
       ],
       "test_metrics_reset_at_fold_start": {
-        "total_return": 0.038439229178405476,
-        "cagr": 0.060429228260692414,
-        "annualized_volatility": 0.17469519426514443,
-        "sharpe_ratio": 0.4227830305717373,
-        "sortino_ratio": 0.642954294645629,
-        "max_drawdown": -0.15793485223430326,
-        "calmar_ratio": 0.3826212353119058,
+        "total_return": 0.02915305341236163,
+        "cagr": 0.04571486552442061,
+        "annualized_volatility": 0.15313554899706944,
+        "sharpe_ratio": 0.36808043799223616,
+        "sortino_ratio": 0.5583608113810065,
+        "max_drawdown": -0.14454841475657587,
+        "calmar_ratio": 0.31625988843534464,
         "positive_month_rate": 0.625,
         "annual_returns": {
-          "2026": 0.038439229178405254
+          "2026": 0.02915305341236163
         },
         "positive_years": 1,
         "years_observed": 1

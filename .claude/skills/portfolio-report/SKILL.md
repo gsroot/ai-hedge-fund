@@ -2,7 +2,8 @@
 name: portfolio-report
 description: |
   predict 상대 순위와 독립 investor-analysis 결과를 결합해 제약식 포트폴리오와
-  선택적 엑셀 리포트를 만든다. 사용 시점: "투자 리포트", "포트폴리오 구성",
+  시장 국면에 따른 동적 현금비중, 선택적 엑셀 리포트를 만든다.
+  사용 시점: "투자 리포트", "포트폴리오 구성",
   "상위 종목 심층 분석", "버핏·린치 관점 포트폴리오", "엑셀 투자 리포트".
 ---
 
@@ -24,7 +25,7 @@ point-in-time으로 다시 실행한 독립 OOS 결과가 필요하다.
 - 엑셀: 기본 생성
 - `predict JSON`: 필수
 - 종목별 독립 `investor-analysis JSON`: 필수
-- 동일 기준일의 변동성·상관 `risk JSON`: 필수
+- 동일 기준일의 변동성·상관·시장 국면 `risk JSON`: 필수
 
 지원 식별자:
 
@@ -48,7 +49,10 @@ point-in-time으로 다시 실행한 독립 OOS 결과가 필요하다.
 }
 ```
 
-4. predict 후보의 기준일까지 가격으로 risk snapshot을 만든다.
+4. predict 후보와 해당 시장 벤치마크의 기준일까지 가격으로 risk snapshot을 만든다.
+   `sp500=SPY`, `nasdaq100=QQQ`, `kospi/kospi200/krx=^KS11`,
+   `kosdaq/kosdaq150=^KQ11`을 기본 사용한다. custom 유니버스는 `--benchmark`를
+   명시한다.
 
 ```bash
 uv run python .agents/skills/portfolio-report/scripts/build_risk_snapshot.py \
@@ -76,11 +80,20 @@ uv run python .agents/skills/portfolio-report/scripts/generate_portfolio_report.
 2. 원시 비중 점수는 `predict total_score × 독립 분석 confidence × bullish 합의율`을
    연환산 변동성과 후보 간 평균 양의 상관으로 조정한다.
 3. 단일 종목 최대 15%, 단일 섹터 최대 35%, 최소 종목 비중 2%다.
-4. 상한 때문에 100%를 투자할 수 없으면 남은 비중은 현금이다. 제약을 깨면서
+4. 시장 현금 목표는 15%를 기준으로 과열 점수와 부정 전망이 높을수록 늘리고,
+   공포 점수와 긍정 전망이 높을수록 줄인다. 결과는 0~50% 범위다.
+   - 과열: 200일선 이격, RSI, 6개월 상승률
+   - 공포: 252일 고점 낙폭, RSI 과매도, 20일 실현변동성
+   - 전망: 가격/200일선, 50/200일선, 6개월 모멘텀
+5. 공포와 부정 전망이 동시에 발생하면 두 효과를 상쇄한다. 공포가 크다는 이유만으로
+   하락 추세를 무시하거나, 추세가 나쁘다는 이유만으로 공포 구간의 주식을 전부
+   현금화하지 않는다.
+6. 종목·섹터 상한 때문에 목표 주식비중을 채우지 못하면 남은 비중도 현금이다.
+   실제 현금은 시장 목표보다 많을 수 있지만 적을 수는 없다. 제약을 깨면서
    다시 100%로 정규화하지 않는다.
-5. 과거 분석일에는 현재 Yahoo 섹터를 끼워 넣지 않는다. predict JSON에 당시 섹터가
+7. 과거 분석일에는 현재 Yahoo 섹터를 끼워 넣지 않는다. predict JSON에 당시 섹터가
    없으면 `Unknown`으로 두며 Unknown 묶음에도 섹터 상한을 적용한다.
-6. `score_implied_return_pct`는 예상수익률이 아니다. 리포트에서는 “점수 환산값”과
+8. `score_implied_return_pct`는 예상수익률이 아니다. 리포트에서는 “점수 환산값”과
    “점수 환산 기여값”으로만 표시한다.
 
 ## 12개 투자자 가중치
@@ -101,6 +114,8 @@ uv run python .agents/skills/portfolio-report/scripts/generate_portfolio_report.
 - 종목별 비중 `<= 15%`
 - 섹터 합계 `<= 35%`
 - 주식 비중 + 현금 비중 `= 100%`
+- 실제 현금 비중 `>= market_regime.target_cash_weight`
+- `market_regime.as_of_date <= analysis_date`
 - 모든 투자자 분석의 `analysis_source = independent_investor_analysis`
 - 과거 결과라면 섹터·재무 데이터의 기준 시점 확인
 - 실제 자금 투입 전 `backtesting`으로 고정 유니버스와 비용을 반영해 검증
@@ -118,4 +133,5 @@ uv run python .agents/skills/backtesting/scripts/backtest.py \
 `--start`는 portfolio JSON의 `analysis_date`보다 반드시 늦어야 한다.
 
 스크립트: [scripts/build_risk_snapshot.py](scripts/build_risk_snapshot.py),
+[scripts/market_regime.py](scripts/market_regime.py),
 [scripts/generate_portfolio_report.py](scripts/generate_portfolio_report.py)

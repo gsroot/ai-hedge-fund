@@ -83,6 +83,9 @@ uv run python .agents/skills/backtesting/scripts/walk_forward.py \
 미국 재무 팩터는 SEC EDGAR Company Facts의 실제 제출일을 기준으로 복원한다.
 가치·품질·성장·모멘텀·저변동성 조합을 직전 3년 학습 성과로 선택하고 다음 1년을
 OOS로 평가한다. DIA뿐 아니라 당시 Dow 구성종목 동일가중도 기준선으로 쓴다.
+각 리밸런싱의 신호일까지 DIA 가격만 사용해 과열·공포·전망 점수를 다시 계산하고,
+`portfolio-report/scripts/market_regime.py`와 동일한 0~50% 동적 현금 규칙을 적용한다.
+고정 100% 주식이나 단순 200일선 이탈 시 50% 현금 규칙으로 대체하지 않는다.
 
 ```bash
 uv run python .agents/skills/backtesting/scripts/multifactor_walk_forward.py \
@@ -118,7 +121,7 @@ uv run python .agents/skills/backtesting/scripts/ridge_walk_forward.py \
 백테스트는 포트폴리오 구성을 승인하거나 차단하지 않는다. 검증 근거를 `weak`,
 `preliminary`, `promising`, `robust`로 분류해 포트폴리오와 함께 보여준다.
 `multifactor_latest_candidate.json`은 근거 등급과 무관하게 선택 모델의 전체 목표비중을
-`weights`에 기록하며 `target_total_portfolio_fraction=1.0`으로 생성한다.
+`weights`와 `cash_weight`에 기록한다. 두 합은 1이고 시장 국면도 함께 기록한다.
 
 `promising`은 독립 OOS가 126 거래일 이상이고 아래 조건을 모두 만족한 경우다.
 

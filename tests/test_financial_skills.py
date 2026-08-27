@@ -16,6 +16,9 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 PREDICT_SCRIPTS = ROOT / ".agents" / "skills" / "predict" / "scripts"
+PORTFOLIO_REPORT_SCRIPTS = (
+    ROOT / ".agents" / "skills" / "portfolio-report" / "scripts"
+)
 
 
 def load_module(name: str, path: Path):
@@ -29,6 +32,8 @@ def load_module(name: str, path: Path):
 
 if str(PREDICT_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(PREDICT_SCRIPTS))
+if str(PORTFOLIO_REPORT_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(PORTFOLIO_REPORT_SCRIPTS))
 
 backtest = load_module(
     "financial_skill_backtest",
@@ -37,6 +42,10 @@ backtest = load_module(
 portfolio_report = load_module(
     "financial_skill_portfolio_report",
     ROOT / ".agents" / "skills" / "portfolio-report" / "scripts" / "generate_portfolio_report.py",
+)
+market_regime = load_module(
+    "market_regime",
+    PORTFOLIO_REPORT_SCRIPTS / "market_regime.py",
 )
 risk_builder = load_module(
     "financial_skill_risk_builder",
@@ -297,18 +306,20 @@ class PointInTimeTests(unittest.TestCase):
         self.assertNotIn("decision", evidence)
 
     def test_portfolio_candidate_keeps_full_model_weights(self):
-        model_weights = {f"T{index}": 0.125 for index in range(8)}
+        model_weights = {f"T{index}": 0.09375 for index in range(8)}
         evidence = {"grade": "promising"}
+        regime = {"target_cash_weight": 0.25, "target_equity_weight": 0.75}
 
         payload = multifactor_walk_forward.portfolio_construction_payload(
-            model_weights, evidence
+            model_weights, evidence, regime
         )
 
         self.assertEqual(payload["status"], "portfolio-ready")
         self.assertTrue(payload["portfolio_construction_eligible"])
         self.assertEqual(payload["target_total_portfolio_fraction"], 1.0)
-        self.assertAlmostEqual(sum(payload["weights"].values()), 1.0)
-        self.assertAlmostEqual(payload["cash_weight"], 0.0)
+        self.assertAlmostEqual(sum(payload["weights"].values()), 0.75)
+        self.assertAlmostEqual(payload["cash_weight"], 0.25)
+        self.assertEqual(payload["market_regime"], regime)
 
     def test_supplemental_prices_fill_missing_without_overwriting_vendor_data(self):
         dates = pd.to_datetime(["2020-01-02", "2020-01-03"])
@@ -341,7 +352,7 @@ class PointInTimeTests(unittest.TestCase):
 
     def test_multifactor_candidate_weights_respect_name_cap(self):
         params = multifactor_walk_forward.MultifactorParams(
-            "balanced", 0.2, 0.2, 0.2, 0.2, 0.2, 252, 8, "equal", False
+            "balanced", 0.2, 0.2, 0.2, 0.2, 0.2, 252, 8, "equal"
         )
         tickers = [f"T{index}" for index in range(8)]
         panel = pd.DataFrame(
@@ -359,13 +370,19 @@ class PointInTimeTests(unittest.TestCase):
             }
         )
 
+        closes = pd.DataFrame(
+            {"DIA": np.linspace(80.0, 120.0, 220)},
+            index=pd.bdate_range(end="2019-12-31", periods=220),
+        )
         schedule = multifactor_walk_forward.build_weight_schedule(
-            panel, pd.DataFrame(), "2020-01-01", "2020-01-31", params
+            panel, closes, "2020-01-01", "2020-01-31", params
         )
         weights = schedule[pd.Timestamp("2020-01-02")]["weights"]
+        regime = schedule[pd.Timestamp("2020-01-02")]["detail"]["market_regime"]
 
         self.assertLessEqual(max(weights.values()), 0.15 + 1e-12)
-        self.assertAlmostEqual(sum(weights.values()), 1.0)
+        self.assertAlmostEqual(sum(weights.values()), regime["target_equity_weight"])
+        self.assertGreater(regime["target_cash_weight"], 0.0)
 
     def test_ridge_labels_use_the_next_execution_open(self):
         dates = pd.to_datetime(["2020-01-02", "2020-02-03", "2020-03-02"])
@@ -421,7 +438,6 @@ class PointInTimeTests(unittest.TestCase):
             alpha=1.0,
             top_n=8,
             weighting="score_inverse_vol",
-            market_filter=False,
             rebalance_months=1,
         )
 
@@ -429,9 +445,10 @@ class PointInTimeTests(unittest.TestCase):
             predictions, closes, config
         )
         weights = schedule[pd.Timestamp("2020-02-03")]["weights"]
+        regime = schedule[pd.Timestamp("2020-02-03")]["detail"]["market_regime"]
 
         self.assertLessEqual(max(weights.values()), 0.15 + 1e-12)
-        self.assertAlmostEqual(sum(weights.values()), 1.0)
+        self.assertAlmostEqual(sum(weights.values()), regime["target_equity_weight"])
 
     def test_ridge_quarterly_schedule_only_trades_calendar_quarters(self):
         predictions = pd.DataFrame(
@@ -443,10 +460,15 @@ class PointInTimeTests(unittest.TestCase):
                 "annualized_volatility": [0.2, 0.2],
             }
         )
-        config = ridge_walk_forward.RidgeConfig(1.0, 8, "equal", False, 3)
+        config = ridge_walk_forward.RidgeConfig(1.0, 8, "equal", 3)
+
+        closes = pd.DataFrame(
+            {"DIA": np.linspace(100.0, 105.0, 220)},
+            index=pd.bdate_range(end="2020-01-31", periods=220),
+        )
 
         schedule = ridge_walk_forward.prediction_weight_schedule(
-            predictions, pd.DataFrame(), config
+            predictions, closes, config
         )
 
         self.assertEqual(list(schedule), [pd.Timestamp("2020-01-02")])
@@ -593,6 +615,32 @@ class AllocationConstraintTests(unittest.TestCase):
         self.assertLessEqual(sector_weight, 35.0)
         self.assertAlmostEqual(sector_weight + cash, 100.0, places=1)
 
+    def test_market_scores_move_cash_in_requested_directions(self):
+        neutral = market_regime.cash_weight_from_scores(0.0, 0.0, 0.0)
+        overheated = market_regime.cash_weight_from_scores(1.0, 0.0, 0.0)
+        fearful = market_regime.cash_weight_from_scores(0.0, 1.0, 0.0)
+        positive_outlook = market_regime.cash_weight_from_scores(0.0, 0.0, 1.0)
+        negative_outlook = market_regime.cash_weight_from_scores(0.0, 0.0, -1.0)
+
+        self.assertGreater(overheated, neutral)
+        self.assertLess(fearful, neutral)
+        self.assertLess(positive_outlook, neutral)
+        self.assertGreater(negative_outlook, neutral)
+
+    def test_market_cash_target_caps_stock_allocation(self):
+        candidates = [candidate(f"T{i}", f"S{i}", i) for i in range(8)]
+
+        included, excluded, cash = portfolio_report.allocate_weights(
+            candidates, target_cash_weight=40.0
+        )
+
+        self.assertFalse(excluded)
+        self.assertLessEqual(sum(item["weight"] for item in included), 60.0)
+        self.assertGreaterEqual(cash, 40.0)
+        self.assertAlmostEqual(
+            sum(item["weight"] for item in included) + cash, 100.0, places=1
+        )
+
     def test_risk_adjustment_penalizes_higher_volatility(self):
         candidates = [candidate("LOW", "A", 1), candidate("HIGH", "B", 2)]
         snapshot = {
@@ -624,6 +672,33 @@ class AllocationConstraintTests(unittest.TestCase):
         self.assertEqual(snapshot["analysis_date"], "2024-01-31")
         self.assertEqual(set(snapshot["annualized_volatility"]), {"A", "B"})
         self.assertIn("B", snapshot["correlation"]["A"])
+        self.assertIn("market_regime", snapshot)
+        self.assertEqual(snapshot["market_regime"]["benchmark"], "SPY")
+
+    def test_market_regime_ignores_prices_after_analysis_date(self):
+        dates = pd.bdate_range("2023-01-02", periods=260)
+        base = pd.Series(np.linspace(100.0, 120.0, len(dates)), index=dates)
+        analysis_date = dates[229]
+        with_future_crash = base.copy()
+        with_future_crash.loc[dates[230:]] = np.linspace(80.0, 50.0, 30)
+
+        before = market_regime.assess_market_regime(
+            base, as_of_date=analysis_date
+        )
+        after = market_regime.assess_market_regime(
+            with_future_crash, as_of_date=analysis_date
+        )
+
+        self.assertEqual(before["target_cash_weight"], after["target_cash_weight"])
+        self.assertEqual(before["metrics"], after["metrics"])
+
+    def test_market_regime_rejects_non_date_index_for_cutoff(self):
+        closes = pd.Series([100.0] * 220, index=[str(i) for i in range(220)])
+
+        with self.assertRaises(TypeError):
+            market_regime.assess_market_regime(
+                closes, benchmark="SPY", as_of_date="2026-08-25"
+            )
 
     def test_independent_investor_results_are_required(self):
         stock = {
@@ -696,8 +771,20 @@ class AllocationConstraintTests(unittest.TestCase):
                 "correlation": {"AAPL": {}},
             },
         )
-        included, excluded_weight, cash = portfolio_report.allocate_weights(candidates)
-        summary = portfolio_report.summarize_portfolio(included, [stock], ["buffett"], cash)
+        regime = {
+            "benchmark": "SPY",
+            "as_of_date": "2024-01-01",
+            "regime": "risk_on",
+            "target_cash_weight": 0.05,
+            "target_equity_weight": 0.95,
+            "scores": {"overheat": 0.1, "fear": 0.1, "outlook": 0.8},
+        }
+        included, excluded_weight, cash = portfolio_report.allocate_weights(
+            candidates, target_cash_weight=5.0
+        )
+        summary = portfolio_report.summarize_portfolio(
+            included, [stock], ["buffett"], cash, regime
+        )
 
         with tempfile.TemporaryDirectory() as temp_dir:
             output = Path(temp_dir) / "portfolio.xlsx"
@@ -715,13 +802,17 @@ class AllocationConstraintTests(unittest.TestCase):
             self.assertTrue(output.exists())
             self.assertGreater(output.stat().st_size, 0)
             portfolio_report.write_portfolio_json(
-                weights_output, "2024-01-01", included, cash
+                weights_output, "2024-01-01", included, cash, regime
             )
             weights_payload = json.loads(weights_output.read_text(encoding="utf-8"))
             self.assertAlmostEqual(
                 sum(weights_payload["weights"].values()) + weights_payload["cash_weight"],
                 1.0,
                 places=6,
+            )
+            self.assertEqual(weights_payload["market_regime"]["regime"], "risk_on")
+            self.assertEqual(
+                weights_payload["constraints"]["market_cash_target"], 0.05
             )
         self.assertAlmostEqual(summary["invested_weight"] + summary["cash_weight"], 100.0, places=1)
 
