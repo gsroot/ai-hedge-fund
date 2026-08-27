@@ -100,6 +100,107 @@ factor_scoring = load_module(
     "financial_skill_factor_scoring",
     PREDICT_SCRIPTS / "factor_scoring.py",
 )
+predict_analysis = load_module(
+    "financial_skill_predict_analysis",
+    PREDICT_SCRIPTS / "analysis.py",
+)
+factor_evidence_policy = load_module(
+    "financial_skill_factor_evidence_policy",
+    PREDICT_SCRIPTS / "factor_evidence.py",
+)
+factor_evidence_validation = load_module(
+    "financial_skill_factor_evidence_validation",
+    ROOT / ".agents" / "skills" / "backtesting" / "scripts" / "factor_evidence.py",
+)
+
+
+def rich_news_classification(
+    article_index: int,
+    sentiment: str,
+    confidence: float,
+    *,
+    relevance: str = "relevant",
+    event_type: str = "other",
+    surprise: str = "unknown",
+    impact_horizon: str = "short",
+    abstain: bool = False,
+    reasoning: str = "test classification",
+):
+    return {
+        "article_index": article_index,
+        "relevance": relevance,
+        "event_type": event_type,
+        "sentiment": sentiment,
+        "surprise": surprise,
+        "impact_horizon": impact_horizon,
+        "confidence": confidence,
+        "abstain": abstain,
+        "reasoning": reasoning,
+    }
+
+
+def passing_news_validation():
+    return {
+        "schema_version": 2,
+        "classifier_policy_id": "news_event_v2",
+        "validation_decision": {
+            "accuracy_validated": True,
+            "evidence_grade": "strong",
+            "gates": {
+                "semantic": {
+                    "gold_sample_size": 120,
+                    "macro_f1": 0.75,
+                    "class_recalls": {
+                        "positive": 0.75,
+                        "negative": 0.72,
+                        "neutral": 0.74,
+                    },
+                },
+                "predictive": {
+                    "directional_event_count": 100,
+                    "wilson_lower_bound": 0.51,
+                    "positive_mean_abnormal_return": 0.01,
+                    "negative_mean_abnormal_return": -0.01,
+                    "long_short_abnormal_return": 0.02,
+                    "beats_neutral_baseline_5d": True,
+                    "beats_neutral_baseline_20d": True,
+                },
+                "portfolio": {
+                    "independent_holdout_windows": 2,
+                    "net_excess_return_delta": 0.01,
+                    "sharpe_delta": 0.1,
+                },
+            },
+        },
+    }
+
+
+def passing_sentiment_factor_policy():
+    return {
+        "schema_version": 1,
+        "factor_spec_id": "predict_factor_v1",
+        "mode": "evidence_shrunk",
+        "validity": {
+            "point_in_time": True,
+            "signal_before_execution": True,
+            "execution_before_label_end": True,
+            "independent_holdout": True,
+        },
+        "factors": {
+            "sentiment": {
+                "grade": "robust",
+                "metrics": {
+                    "data_coverage": 1.0,
+                    "oos_periods": 40,
+                    "mean_rank_ic": 0.08,
+                    "rank_ic_ci_low": 0.02,
+                    "positive_ic_rate": 0.65,
+                    "net_top_vs_universe_total_return": 0.12,
+                    "ablation_net_total_return_delta": 0.03,
+                },
+            }
+        },
+    }
 
 
 class PointInTimeTests(unittest.TestCase):
@@ -109,7 +210,17 @@ class PointInTimeTests(unittest.TestCase):
             Path("portfolio-report/scripts/build_risk_snapshot.py"),
             Path("portfolio-report/scripts/generate_portfolio_report.py"),
             Path("predict/scripts/news_sentiment_enrichment.py"),
+            Path("predict/scripts/analysis.py"),
+            Path("predict/scripts/analyze_stocks.py"),
+            Path("predict/scripts/config.py"),
+            Path("predict/scripts/factor_evidence.py"),
+            Path("predict/SKILL.md"),
+            Path("predict/references/news_validation_contract.md"),
+            Path("backtesting/scripts/factor_evidence.py"),
+            Path("backtesting/SKILL.md"),
+            Path("backtesting/references/factor_evidence_contract.md"),
             Path("investor-analysis/scripts/analyze_news_sentiment.py"),
+            Path("investor-analysis/SKILL.md"),
             Path("investor-analysis/references/analyst_personas.md"),
         )
 
@@ -149,9 +260,32 @@ class PointInTimeTests(unittest.TestCase):
         self.assertEqual(len(prepared["articles"]), 5)
         self.assertEqual(
             [article["article_index"] for article in prepared["articles"]],
-            [1, 2, 3, 4, 5],
+            [0, 1, 2, 3, 4],
         )
         self.assertIn("외부 모델 API를 호출", prepared["instruction"])
+        schema = prepared["response_schema"]["classifications"][0]
+        self.assertIn("relevance", schema)
+        self.assertIn("event_type", schema)
+        self.assertIn("impact_horizon", schema)
+        self.assertIn("abstain", schema)
+
+    def test_news_sentiment_deduplicates_headlines_and_links_before_llm(self):
+        news = {
+            "company_news": [
+                {"title": "같은 기사", "link": "https://news.test/a?tracking=1"},
+                {"title": "같은 기사!", "link": "https://news.test/b"},
+                {"title": "다른 제목", "link": "https://news.test/a?tracking=2"},
+                {"title": "고유 기사", "link": "https://news.test/c"},
+            ]
+        }
+
+        prepared = news_sentiment.prepare_news_for_llm(news, "TEST")
+
+        self.assertEqual(prepared["duplicates_removed"], 2)
+        self.assertEqual(
+            [article["article_index"] for article in prepared["articles"]],
+            [0, 3],
+        )
 
     def test_news_sentiment_aggregates_active_llm_classifications(self):
         news = {
@@ -160,26 +294,47 @@ class PointInTimeTests(unittest.TestCase):
                 {"title": "good news"},
                 {"title": "bad news"},
                 {"title": "unclear news"},
+                {"title": "stock price rose today"},
             ]
         }
         classifications = [
-            {
-                "article_index": 1,
-                "sentiment": "positive",
-                "confidence": 90,
-                "reasoning": "positive catalyst",
-            },
-            {
-                "article_index": 2,
-                "sentiment": "negative",
-                "confidence": 80,
-                "reasoning": "negative catalyst",
-            },
+            rich_news_classification(
+                0,
+                "positive",
+                85,
+                event_type="other",
+                surprise="unknown",
+                reasoning="rechecked legacy label",
+            ),
+            rich_news_classification(
+                1,
+                "positive",
+                90,
+                event_type="contract",
+                surprise="positive",
+                reasoning="positive catalyst",
+            ),
+            rich_news_classification(
+                2,
+                "negative",
+                80,
+                event_type="legal_regulatory",
+                surprise="negative",
+                reasoning="negative catalyst",
+            ),
             {
                 "article_index": 3,
                 "sentiment": "invalid",
                 "confidence": 100,
             },
+            rich_news_classification(
+                4,
+                "positive",
+                95,
+                event_type="market_price_recap",
+                surprise="none",
+                impact_horizon="intraday",
+            ),
         ]
 
         result = news_sentiment.analyze_news_sentiment(
@@ -191,8 +346,13 @@ class PointInTimeTests(unittest.TestCase):
         self.assertEqual(result["signal"], "bullish")
         self.assertEqual(result["metrics"]["bullish_articles"], 2)
         self.assertEqual(result["metrics"]["bearish_articles"], 1)
-        self.assertEqual(result["metrics"]["articles_classified_by_llm"], 2)
+        self.assertEqual(result["metrics"]["articles_classified_by_llm"], 4)
+        self.assertEqual(result["metrics"]["actionable_llm_articles"], 3)
+        self.assertEqual(result["metrics"]["excluded_llm_articles"], 1)
         self.assertEqual(result["metrics"]["articles_pending_llm"], 1)
+        self.assertEqual(result["metrics"]["legacy_sentiment_labels_ignored"], 1)
+        self.assertEqual(result["decision_use"], "risk_and_explanation_only")
+        self.assertEqual(len(result["risk_flags"]), 1)
 
     def test_news_sentiment_has_no_external_model_dependency(self):
         source = (
@@ -237,6 +397,211 @@ class PointInTimeTests(unittest.TestCase):
         self.assertEqual(score, 6.5)
         self.assertTrue(any("coverage: 2/2" in factor for factor in factors))
 
+    def test_unvalidated_keyword_sentiment_is_rank_neutral(self):
+        self.assertEqual(predict_analysis.ranking_sentiment_score(9.5), 5.0)
+        self.assertEqual(predict_analysis.ranking_sentiment_score(1.0), 5.0)
+        self.assertEqual(
+            predict_analysis.ranking_sentiment_score(
+                9.5,
+                accuracy_validated=True,
+            ),
+            9.5,
+        )
+
+    def test_default_factor_policy_preserves_prior_relative_weights(self):
+        priors = {
+            "value": 0.25,
+            "growth": 0.20,
+            "quality": 0.20,
+            "momentum": 0.10,
+            "safety": 0.10,
+            "sentiment": 0.08,
+            "insider": 0.07,
+        }
+
+        result = factor_evidence_policy.default_factor_weight_policy(priors)
+
+        self.assertEqual(result["mode"], "prior_only")
+        self.assertEqual(result["effective_weights"], priors)
+        self.assertTrue(
+            all(
+                item["grade"] == "unvalidated" and item["multiplier"] == 0.5
+                for item in result["factors"].values()
+            )
+        )
+
+    def test_factor_evidence_recomputes_grades_and_shrinks_relative_weights(self):
+        priors = {
+            "value": 0.25,
+            "growth": 0.20,
+            "quality": 0.20,
+            "momentum": 0.10,
+            "safety": 0.10,
+            "sentiment": 0.08,
+            "insider": 0.07,
+        }
+        robust_metrics = {
+            "data_coverage": 1.0,
+            "oos_periods": 40,
+            "mean_rank_ic": 0.08,
+            "rank_ic_ci_low": 0.02,
+            "positive_ic_rate": 0.65,
+            "net_top_vs_universe_total_return": 0.12,
+            "ablation_net_total_return_delta": 0.03,
+        }
+        contradicted_metrics = {
+            "data_coverage": 1.0,
+            "oos_periods": 40,
+            "mean_rank_ic": -0.05,
+            "rank_ic_ci_low": -0.10,
+            "positive_ic_rate": 0.35,
+            "net_top_vs_universe_total_return": -0.08,
+            "ablation_net_total_return_delta": -0.02,
+        }
+        evidence = {
+            "schema_version": 1,
+            "factor_spec_id": "predict_factor_v1",
+            "validation_end": "2025-12-31",
+            "applicability": {
+                "market_scope": "krx",
+                "indices": ["krx"],
+                "universe_id": "historical_krx",
+            },
+            "validity": {
+                "point_in_time": True,
+                "signal_before_execution": True,
+                "execution_before_label_end": True,
+                "independent_holdout": True,
+            },
+            "factors": {
+                "value": {"metrics": robust_metrics},
+                "growth": {
+                    "metrics": contradicted_metrics,
+                    "assessment": {"grade": "robust"},
+                },
+            },
+        }
+
+        result = factor_evidence_policy.build_factor_weight_policy(
+            priors,
+            evidence,
+            market_scope="krx",
+            index="krx",
+            analysis_date="2026-01-02",
+        )
+
+        self.assertEqual(result["factors"]["value"]["grade"], "robust")
+        self.assertEqual(result["factors"]["growth"]["grade"], "contradicted")
+        self.assertEqual(result["effective_weights"]["growth"], 0.0)
+        self.assertGreater(result["effective_weights"]["value"], priors["value"])
+        self.assertAlmostEqual(sum(result["effective_weights"].values()), 1.0)
+
+    def test_factor_evidence_rejects_wrong_scope_or_future_labels(self):
+        priors = {factor: 1 / 7 for factor in factor_evidence_policy.FACTOR_NAMES}
+        evidence = {
+            "schema_version": 1,
+            "factor_spec_id": "predict_factor_v1",
+            "validation_end": "2026-01-02",
+            "applicability": {
+                "market_scope": "us",
+                "indices": ["sp500"],
+            },
+            "validity": {
+                "point_in_time": True,
+                "signal_before_execution": True,
+                "execution_before_label_end": True,
+                "independent_holdout": False,
+            },
+            "factors": {},
+        }
+
+        with self.assertRaisesRegex(ValueError, "market_scope"):
+            factor_evidence_policy.build_factor_weight_policy(
+                priors,
+                evidence,
+                market_scope="krx",
+                index="krx",
+                analysis_date="2026-01-03",
+            )
+        with self.assertRaisesRegex(ValueError, "precede"):
+            factor_evidence_policy.build_factor_weight_policy(
+                priors,
+                evidence,
+                market_scope="us",
+                index="sp500",
+                analysis_date="2026-01-02",
+            )
+
+    def test_factor_panel_rejects_lookahead_timing(self):
+        rows = []
+        for index in range(5):
+            row = {
+                "signal_date": "2025-01-02",
+                "execution_date": "2025-01-02",
+                "label_end_date": "2025-02-03",
+                "ticker": f"T{index}",
+                "forward_return": 0.01 * index,
+            }
+            row.update({factor: index for factor in factor_evidence_policy.FACTOR_NAMES})
+            rows.append(row)
+
+        with self.assertRaisesRegex(ValueError, "signal_date"):
+            factor_evidence_validation.validate_factor_panel(pd.DataFrame(rows))
+
+    def test_unified_factor_evidence_finds_synthetic_point_in_time_signal(self):
+        rows = []
+        execution_dates = pd.date_range("2022-01-03", periods=36, freq="MS")
+        for execution_date in execution_dates:
+            for ticker_index in range(10):
+                row = {
+                    "signal_date": execution_date - pd.offsets.BDay(1),
+                    "execution_date": execution_date,
+                    "label_end_date": execution_date + pd.offsets.MonthBegin(1),
+                    "ticker": f"T{ticker_index}",
+                    "forward_return": (ticker_index - 4.5) * 0.002,
+                    "value": float(ticker_index),
+                }
+                row.update(
+                    {
+                        factor: 0.0
+                        for factor in factor_evidence_policy.FACTOR_NAMES
+                        if factor != "value"
+                    }
+                )
+                rows.append(row)
+        priors = {factor: 1 / 7 for factor in factor_evidence_policy.FACTOR_NAMES}
+
+        result = factor_evidence_validation.build_factor_evidence(
+            pd.DataFrame(rows),
+            priors,
+            market_scope="krx",
+            applicable_indices=["krx"],
+            universe_id="synthetic_historical_krx",
+            round_trip_cost_bps=10,
+            independent_holdout=True,
+            bootstrap_samples=200,
+        )
+
+        self.assertTrue(result["validity"]["point_in_time"])
+        self.assertEqual(result["methodology"]["round_trip_cost_bps"], 10)
+        self.assertEqual(result["factors"]["value"]["assessment"]["grade"], "robust")
+        self.assertGreater(
+            result["factors"]["value"]["metrics"]["mean_rank_ic"],
+            0.9,
+        )
+        json.dumps(result, allow_nan=False)
+
+    def test_factor_score_accepts_run_specific_effective_weights(self):
+        scores = {factor: 1.0 for factor in factor_evidence_policy.FACTOR_NAMES}
+        scores["value"] = 9.0
+        weights = {factor: 0.0 for factor in factor_evidence_policy.FACTOR_NAMES}
+        weights["value"] = 1.0
+
+        self.assertEqual(
+            predict_analysis.calculate_weighted_factor_score(scores, weights),
+            9.0,
+        )
+
     def test_news_enrichment_prepares_only_top_candidate_pool(self):
         predict_payload = {
             "analysis_date": "2025-01-02",
@@ -258,14 +623,17 @@ class PointInTimeTests(unittest.TestCase):
 
         self.assertEqual([task["ticker"] for task in tasks["tasks"]], ["A", "B"])
         self.assertEqual(fetch.call_count, 2)
+        self.assertEqual(tasks["schema_version"], 2)
+        self.assertEqual(tasks["classifier_policy_id"], "news_event_v2")
 
-    def test_news_enrichment_replaces_sentiment_and_reranks(self):
+    def test_news_enrichment_is_evidence_only_without_passing_validation(self):
         predict_payload = {
             "analysis_date": "2025-01-02",
             "index": "krx",
             "strategy": "hybrid",
             "methodology": "base",
             "factor_weights": {"sentiment": 0.08},
+            "factor_weight_policy": passing_sentiment_factor_policy(),
             "rankings": [
                 {
                     "ticker": "B",
@@ -298,6 +666,8 @@ class PointInTimeTests(unittest.TestCase):
             ],
         }
         task_payload = {
+            "schema_version": 2,
+            "classifier_policy_id": "news_event_v2",
             "analysis_date": "2025-01-02",
             "index": "krx",
             "candidate_pool": 2,
@@ -312,14 +682,28 @@ class PointInTimeTests(unittest.TestCase):
             ],
         }
         classifications = {
+            "schema_version": 2,
+            "classifier_policy_id": "news_event_v2",
             "analysis_date": "2025-01-02",
             "source": "active_skill_llm",
             "results": [
                 {
                     "ticker": "A",
                     "classifications": [
-                        {"article_index": 0, "sentiment": "positive", "confidence": 100},
-                        {"article_index": 1, "sentiment": "positive", "confidence": 100},
+                        rich_news_classification(
+                            0,
+                            "positive",
+                            100,
+                            event_type="earnings_surprise",
+                            surprise="positive",
+                        ),
+                        rich_news_classification(
+                            1,
+                            "positive",
+                            100,
+                            event_type="contract",
+                            surprise="positive",
+                        ),
                     ],
                 }
             ],
@@ -331,14 +715,163 @@ class PointInTimeTests(unittest.TestCase):
             classifications,
         )
 
+        self.assertEqual(enriched["rankings"][0]["ticker"], "B")
+        self.assertEqual(enriched["rankings"][1]["scores"]["sentiment"], 5.0)
+        self.assertAlmostEqual(enriched["rankings"][1]["total_score"], 6.0)
+        self.assertEqual(
+            enriched["rankings"][1]["sentiment_analysis"]["source"],
+            "active_skill_llm",
+        )
+        self.assertFalse(
+            enriched["rankings"][1]["sentiment_analysis"][
+                "ranking_contribution_applied"
+            ]
+        )
+        self.assertEqual(
+            enriched["news_sentiment_enrichment"]["ranking_policy"],
+            "risk_and_explanation_only",
+        )
+        self.assertFalse(
+            enriched["news_sentiment_policy"]["ranking_contribution_applied"]
+        )
+        self.assertFalse(enriched["news_sentiment_enrichment"]["accuracy_validated"])
+
+    def test_news_enrichment_reranks_only_after_all_validation_gates_pass(self):
+        predict_payload = {
+            "analysis_date": "2025-01-02",
+            "index": "krx",
+            "strategy": "hybrid",
+            "methodology": "base",
+            "factor_weights": {"sentiment": 0.08},
+            "factor_weight_policy": passing_sentiment_factor_policy(),
+            "rankings": [
+                {
+                    "ticker": "B",
+                    "rank": 1,
+                    "total_score": 6.03,
+                    "signal": "buy",
+                    "score_implied_return_pct": 10.6,
+                    "scores": {"sentiment": 5.0, "fundamental": 6.0},
+                    "investor_scores": {
+                        "buffett": 5.0,
+                        "graham": 5.0,
+                        "druckenmiller": 5.0,
+                    },
+                    "factors": [],
+                },
+                {
+                    "ticker": "A",
+                    "rank": 2,
+                    "total_score": 6.0,
+                    "signal": "buy",
+                    "score_implied_return_pct": 10.5,
+                    "scores": {"sentiment": 5.0, "fundamental": 6.0},
+                    "investor_scores": {
+                        "buffett": 5.0,
+                        "graham": 5.0,
+                        "druckenmiller": 5.0,
+                    },
+                    "factors": [],
+                },
+            ],
+        }
+        task_payload = {
+            "schema_version": 2,
+            "classifier_policy_id": "news_event_v2",
+            "analysis_date": "2025-01-02",
+            "index": "krx",
+            "candidate_pool": 2,
+            "tasks": [
+                {
+                    "ticker": "A",
+                    "articles": [
+                        {"article_index": 0, "headline": "호실적"},
+                        {"article_index": 1, "headline": "수주 확대"},
+                    ],
+                }
+            ],
+        }
+        classifications = {
+            "schema_version": 2,
+            "classifier_policy_id": "news_event_v2",
+            "analysis_date": "2025-01-02",
+            "source": "active_skill_llm",
+            "results": [
+                {
+                    "ticker": "A",
+                    "classifications": [
+                        rich_news_classification(
+                            0,
+                            "positive",
+                            100,
+                            event_type="earnings_surprise",
+                            surprise="positive",
+                        ),
+                        rich_news_classification(
+                            1,
+                            "positive",
+                            100,
+                            event_type="contract",
+                            surprise="positive",
+                        ),
+                    ],
+                }
+            ],
+        }
+
+        enriched = news_enrichment.apply_news_sentiment_enrichment(
+            predict_payload,
+            task_payload,
+            classifications,
+            passing_news_validation(),
+        )
+
         self.assertEqual(enriched["rankings"][0]["ticker"], "A")
         self.assertEqual(enriched["rankings"][0]["scores"]["sentiment"], 8.0)
         self.assertAlmostEqual(enriched["rankings"][0]["total_score"], 6.07)
-        self.assertEqual(
-            enriched["rankings"][0]["sentiment_analysis"]["source"],
-            "active_skill_llm",
+        self.assertTrue(
+            enriched["news_sentiment_enrichment"]["ranking_contribution_applied"]
         )
-        self.assertFalse(enriched["news_sentiment_enrichment"]["accuracy_validated"])
+        self.assertFalse(enriched["news_sentiment_enrichment"]["calibrated"])
+        self.assertTrue(
+            enriched["news_sentiment_enrichment"]["validated_for_ranking"]
+        )
+        self.assertEqual(
+            enriched["news_sentiment_policy"]["ranking_policy"],
+            "validated_signal",
+        )
+        self.assertTrue(enriched["news_sentiment_enrichment"]["accuracy_validated"])
+
+    def test_news_validation_gate_rejects_bare_accuracy_flag(self):
+        gate = news_enrichment.evaluate_ranking_validation_gate(
+            {
+                "schema_version": 2,
+                "classifier_policy_id": "news_event_v2",
+                "validation_decision": {
+                    "accuracy_validated": True,
+                    "evidence_grade": "strong",
+                },
+            }
+        )
+
+        self.assertFalse(gate["passed"])
+        self.assertIn("semantic_gold_sample_below_90", gate["failure_reasons"])
+        self.assertIn(
+            "portfolio_net_excess_return_not_improved",
+            gate["failure_reasons"],
+        )
+
+    def test_news_ranking_requires_common_sentiment_factor_evidence(self):
+        gate = news_enrichment.evaluate_ranking_validation_gate(
+            passing_news_validation()
+        )
+
+        self.assertFalse(gate["passed"])
+        self.assertIn("factor_evidence_not_applied", gate["failure_reasons"])
+        self.assertIn(
+            "sentiment_factor_evidence_below_promising",
+            gate["failure_reasons"],
+        )
 
     def test_naver_search_news_excludes_future_and_unverifiable_dates(self):
         response = Mock()

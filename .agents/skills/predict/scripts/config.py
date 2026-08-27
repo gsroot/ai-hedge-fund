@@ -38,7 +38,7 @@ FACTOR_WEIGHTS = {
     "quality": 0.20,    # 멍거, 피셔 스타일
     "momentum": 0.10,   # 드러켄밀러 스타일
     "safety": 0.10,     # 파브라이, 버핏 스타일
-    "sentiment": 0.08,  # 뉴스 센티먼트
+    "sentiment": 0.08,  # 검증 전 중립 상수, 전체 게이트 통과 후 뉴스에 사용
     "insider": 0.07,    # 내부자 거래
 }
 

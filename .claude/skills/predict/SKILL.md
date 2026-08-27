@@ -39,11 +39,37 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
   --index krx --top 50 --display 20 --output results.json
 ```
 
-## 현재 LLM 뉴스 보강
+## 팩터 근거 기반 가중치
+
+7개 기본 팩터는 모두 같은 point-in-time OOS 기준으로 판정한다. 검증
+JSON이 없으면 기존 prior 상대 비중을 유지하지만 `prior_only`·`unvalidated`를
+결과에 명시한다. 적용 가능한 JSON이 있으면 검증 기간, 시장, 인덱스,
+시점 계약을 검사하고 원시 metrics에서 등급을 다시 계산해 prior를 수축한다.
+
+```bash
+uv run python .agents/skills/predict/scripts/analyze_stocks.py \
+  --index krx --factor-evidence-json artifacts/krx_predict_factor_evidence.json \
+  --display 30 --output krx_base.json
+```
+
+- 등급은 `contradicted`, `weak`, `unvalidated`, `preliminary`, `promising`,
+  `robust`이며 multiplier는 각각 0, 0.35, 0.50, 0.65, 0.85, 1.0이다.
+- multiplier를 prior에 곱한 후 기존 팩터 블록 총량으로 정규화한다. 근거가
+  약한 팩터의 상대 비중은 줄고 강한 팩터로 이동한다.
+- 검증 종료일은 분석일보다 앞서야 하며 다른 시장·인덱스 근거는 거부한다.
+- 팩터 정의와 산출 계약이 다른 기존 backtest JSON은 적용하지 않는다.
+- 산출물은 기본 팩터 블록만 검증한다. 투자자 persona, GARP 보너스,
+  현금흐름 패널티, enhanced momentum/hybrid 결합까지 전체 모델이 검증된
+  것으로 표현하지 않는다.
+- 검증 JSON은 `backtesting` 스킬의
+  `references/factor_evidence_contract.md`와 `scripts/factor_evidence.py`로 생성한다.
+
+## 현재 LLM 뉴스 분석
 
 KRX의 `fundamental` 또는 `hybrid` 분석은 기본 정량 순위를 만든 뒤 상위 후보의
-뉴스를 현재 스킬 LLM으로 분류하고 최종 순위를 다시 산정한다. 전체 시장 요청에서는
-1차 분석에 임의의 `--top`을 넣지 않고, 뉴스 보강 후보군만 기본 60개로 제한한다.
+뉴스를 현재 스킬 LLM으로 분류한다. 독립 검증 전에는 뉴스가 순위에 영향을 주지 않고
+위험 경보와 설명 evidence로만 남는다. 전체 시장 요청에서는 1차 분석에 임의의
+`--top`을 넣지 않고, 뉴스 분석 후보군만 기본 60개로 제한한다.
 
 ```bash
 # 1. 전체 유니버스 기본 순위
@@ -55,33 +81,60 @@ uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py prepar
   --predict-json krx_base.json --candidate-pool 60 --article-limit 5 \
   --output krx_news_tasks.json
 
-# 3. 현재 스킬 LLM이 krx_news_tasks.json을 직접 분류해 아래 계약으로 저장
-# {"analysis_date":"YYYY-MM-DD","source":"active_skill_llm",
+# 3. 현재 스킬 LLM이 중복 제거된 작업을 직접 분류해 아래 계약으로 저장
+# {"schema_version":2,"classifier_policy_id":"news_event_v2",
+#  "analysis_date":"YYYY-MM-DD","source":"active_skill_llm",
 #  "results":[{"ticker":"005930","classifications":[
-#    {"article_index":0,"sentiment":"positive|negative|neutral",
-#     "confidence":0-100,"reasoning":"..."}]}]}
+#    {"article_index":0,"relevance":"relevant|unrelated|ambiguous",
+#     "event_type":"earnings_surprise|guidance|contract|financing_dilution|...",
+#     "sentiment":"positive|negative|neutral",
+#     "surprise":"positive|negative|none|unknown",
+#     "impact_horizon":"intraday|short|medium|long|none",
+#     "confidence":0-100,"abstain":false,"reasoning":"..."}]}]}
 
-# 4. 검증된 분류로 기존 sentiment 기여분을 교체하고 최종 재순위
+# 4. 기본 실행: 분류 evidence와 위험 경보만 추가하고 순위는 유지
 uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply \
   --predict-json krx_base.json --tasks-json krx_news_tasks.json \
   --classifications-json krx_news_classifications.json \
+  --output krx_final.json
+
+# 5. 모든 독립 검증 게이트를 통과한 산출물이 있을 때만 뉴스 점수와 재순위를 허용
+uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply \
+  --predict-json krx_base.json --tasks-json krx_news_tasks.json \
+  --classifications-json krx_news_classifications.json \
+  --validation-json news_sentiment_validation.json \
   --output krx_final.json
 ```
 
 - 현재 작업에 선택된 LLM과 추론 설정을 그대로 사용한다. 외부 LLM API를 호출하거나
   모델명을 지정하지 않는다.
-- LLM 점수는 별도 보너스가 아니라 기존 8% sentiment 팩터를 대체한다.
-- 분류 confidence와 기사 coverage를 곱해 중립 5점으로 수축하고 2~8점으로 제한한다.
-- 검증되지 않은 ticker·article index·sentiment·confidence는 제외한다.
-- 분류가 없는 후보는 기존 keyword 점수를 유지한다.
+- 링크 또는 정규화 제목이 같은 기사를 분류 전에 제거한다.
+- 종목 관련성을 먼저 확인하고 이벤트 유형, 기대 대비 surprise, 영향 기간을 분리한다.
+- 무관·애매·abstain·60% 미만 신뢰도와 `market_price_recap`,
+  `routine_disclosure`는 의사결정 evidence에서 제외한다.
+- 70% 이상 신뢰도의 부정 이벤트는 감점 대신 `risk_flags`에 남긴다.
+- 기본 keyword sentiment도 중립 5점으로 고정해 상대 순위 영향을 없애고 원점수는
+  `sentiment_diagnostics`에 보존한다.
+- 독립 사람 라벨의 의미 정확도, 미래 홀드아웃 방향성, 비용 차감 포트폴리오 개선을
+  모두 통과한 `schema_version: 2` 검증 산출물이 있을 때만 factor evidence로
+  결정된 sentiment 비중을 LLM 점수에 적용한다. `accuracy_validated: true`만 단독으로
+  적은 파일은 거부한다.
+- 뉴스 순위 반영은 위 공통 factor evidence와 이 분류·성과 전용 게이트를
+  모두 통과해야 한다.
+- 검증 JSON을 만들거나 판정할 때는
+  [references/news_validation_contract.md](references/news_validation_contract.md)를 읽는다.
+- 분류 confidence와 actionable coverage를 곱해 중립 5점으로 수축하고 2~8점으로 제한한다.
+- 검증되지 않은 ticker·article index·분류 필드는 제외한다.
+- 분류가 없는 후보는 중립 sentiment를 유지한다.
 - `momentum` 전략은 sentiment를 사용하지 않으므로 이 단계를 실행하지 않는다.
-- 최종 JSON에 분류 evidence와 `accuracy_validated: false`를 남긴다. 실제 정확도 향상은
-  별도 point-in-time 검증 전까지 주장하지 않는다.
+- 최종 JSON에 분류 evidence, 적용 정책, 검증 게이트 실패 사유를 남긴다. 실제 정확도나
+  성과 향상은 별도 point-in-time 검증 전까지 주장하지 않는다.
 
 ## 점수 구성
 
 - 팩터: 가치, 성장, 품질, 모멘텀, 안전성, 뉴스 심리, 내부자 활동
-- 뉴스 심리: 기존 sentiment 우선, keyword 폴백, KRX 상위 후보는 현재 LLM 분류로 대체
+- 뉴스 심리: 검증 전에는 중립값과 진단 evidence만 사용하고, 전체 검증 통과 후에만
+  KRX 상위 후보의 현재 LLM 이벤트 분류로 교체
 - 투자자 스타일: Buffett, Lynch, Graham, Fisher, Druckenmiller
 - `fundamental`: 투자자 앙상블과 기본 팩터를 결합
 - `momentum`: 단·장기 모멘텀, RSI, 추세
@@ -96,6 +149,14 @@ uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply 
 {
   "index": "sp500",
   "analysis_date": "YYYY-MM-DD",
+  "factor_weights": {
+    "value": 0.25, "growth": 0.20, "quality": 0.20,
+    "momentum": 0.10, "safety": 0.10, "sentiment": 0.08, "insider": 0.07
+  },
+  "factor_weight_policy": {
+    "factor_spec_id": "predict_factor_v1",
+    "mode": "prior_only|evidence_shrunk"
+  },
   "rankings": [
   {
   "ticker": "AAPL",
@@ -146,6 +207,7 @@ uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply 
 
 - [scripts/analyze_stocks.py](scripts/analyze_stocks.py): CLI
 - [scripts/analysis.py](scripts/analysis.py): 종합 점수
+- [scripts/factor_evidence.py](scripts/factor_evidence.py): 팩터 근거 검증·수축 정책
 - [scripts/data_fetcher.py](scripts/data_fetcher.py): 데이터·시점 차단
 - [scripts/sec_point_in_time.py](scripts/sec_point_in_time.py): SEC 제출일 기준 재무 스냅샷
 - [scripts/news_sentiment_enrichment.py](scripts/news_sentiment_enrichment.py): 상위 후보 뉴스 작업·검증·재순위

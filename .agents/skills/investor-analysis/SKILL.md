@@ -90,15 +90,21 @@ description: |
 [references/analyst_personas.md](references/analyst_personas.md)에서 읽고 직접 분석한다.
 
 `news-sentiment-analyst`도 현재 이 스킬을 실행 중인 LLM이 직접 수행한다.
-`scripts/analyze_news_sentiment.py --prepare`로 sentiment가 없는 최근 기사 최대 5개의
-분류 작업을 만들고, 현재 LLM이 각 기사에
-`{article_index, sentiment, confidence, reasoning}`을 작성한 뒤 같은 스크립트의
-집계 함수에 전달한다. 스크립트 안에서 OpenAI SDK나 다른 외부 모델 API를 호출하지 말고,
-모델명도 지정하지 않는다. 따라서 뉴스 분류에는 현재 작업에 선택된 모델과 추론 설정이
-그대로 적용된다.
+`scripts/analyze_news_sentiment.py --prepare`로 기존 sentiment 유무와 관계없이 최근 기사
+최대 5개의
+중복 제거된 분류 작업을 만들고, 현재 LLM이 각 기사에 종목 관련성, 이벤트 유형,
+sentiment, surprise, 영향 기간, confidence, abstain 여부와 reasoning을 작성한 뒤 같은
+스크립트의 집계 함수에 전달한다. 무관·애매·abstain·저신뢰 기사와 단순 주가 요약·정형
+공시는 의사결정 evidence에서 제외한다. 스크립트 안에서 OpenAI SDK나 다른 외부 모델
+API를 호출하지 말고, 모델명도 지정하지 않는다. 따라서 뉴스 분류에는 현재 작업에
+선택된 모델과 추론 설정이 그대로 적용된다.
+공급자나 keyword의 기존 sentiment는 새 관련성 검사를 우회하지 못하도록 집계에서 제외하고
+진단용으로만 센다.
 
 `predict`가 상위 후보 뉴스 작업 JSON을 만든 경우에도 동일한 분류 계약을 사용한다.
-이 분류는 `predict`의 기존 sentiment 팩터를 대체하며 별도 보너스로 중복 반영하지 않는다.
+이 분류는 기본적으로 위험 경보·설명에만 사용한다. `predict`가 의미 정확도, 미래 방향성,
+비용 차감 포트폴리오 개선의 독립 검증 게이트를 모두 통과한 파일을 받은 경우에만 기존
+sentiment 팩터를 대체하며, 별도 보너스로 중복 반영하지 않는다.
 
 여러 관점이나 앙상블을 사용자가 요청한 경우에는 Codex 협업 에이전트를 사용할 수 있다.
 각 에이전트에 하나의 관점, 종목, 기준일, 필요한 참조 파일의 정확한 경로를 전달하고

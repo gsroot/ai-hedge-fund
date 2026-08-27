@@ -39,7 +39,39 @@ from investor_scoring import (
     calculate_druckenmiller_score,
     generate_investor_warnings,
 )
+
+
 from ticker_utils import is_korean_ticker
+
+
+UNVALIDATED_SENTIMENT_NEUTRAL = 5.0
+
+
+def ranking_sentiment_score(
+    diagnostic_score: float,
+    *,
+    accuracy_validated: bool = False,
+) -> float:
+    """Keep news rank-neutral until an independent validation gate passes."""
+    if not accuracy_validated:
+        return UNVALIDATED_SENTIMENT_NEUTRAL
+    return max(0.0, min(10.0, float(diagnostic_score)))
+
+
+def calculate_weighted_factor_score(
+    factor_scores: dict[str, float],
+    factor_weights: dict[str, float] | None = None,
+) -> float:
+    """Combine factor scores with the run's validated effective weights."""
+    weights = FACTOR_WEIGHTS if factor_weights is None else factor_weights
+    if set(weights) != set(FACTOR_WEIGHTS):
+        raise ValueError("factor_weights keys must match config.FACTOR_WEIGHTS")
+    if any(float(weight) < 0 for weight in weights.values()):
+        raise ValueError("factor_weights cannot contain negative values")
+    return sum(
+        float(factor_scores[factor]) * float(weights[factor])
+        for factor in FACTOR_WEIGHTS
+    )
 
 
 def _resolve_company_name(ticker, metrics):
@@ -72,6 +104,7 @@ def analyze_single_ticker(
     strategy="hybrid",
     skip_news=False,
     sector_stats=None,
+    factor_weights=None,
 ):
     """
     단일 종목 종합 분석 (앙상블 투자자 점수 포함)
@@ -83,6 +116,7 @@ def analyze_single_ticker(
         strategy: 분석 전략 (fundamental, momentum, hybrid)
         skip_news: True이면 뉴스/내부자 거래 조회 건너뜀
         sector_stats: 섹터별 통계 (상대적 밸류에이션용)
+        factor_weights: 이 실행에 적용할 검증 수축 후 팩터 가중치
     """
     try:
         # 1. 재무 지표 수집
@@ -135,7 +169,8 @@ def analyze_single_ticker(
         momentum_score, momentum_factors = calculate_momentum_score(prices)
         safety_score, safety_factors = calculate_safety_score(metrics)
 
-        sentiment_score, sentiment_factors = calculate_sentiment_score(company_news)
+        raw_sentiment_score, raw_sentiment_factors = calculate_sentiment_score(company_news)
+        sentiment_score = ranking_sentiment_score(raw_sentiment_score)
         insider_score, insider_factors = calculate_insider_activity_score(insider_trades)
 
         size_bonus, size_factors = calculate_size_bonus(market_cap, growth_score, currency=currency)
@@ -167,14 +202,17 @@ def analyze_single_ticker(
         ensemble_score = ensemble_weighted_sum / ensemble_total_weight if ensemble_total_weight > 0 else 0
 
         # 기본 팩터 가중 점수
-        factor_score = (
-            value_score * FACTOR_WEIGHTS["value"] +
-            growth_score * FACTOR_WEIGHTS["growth"] +
-            quality_score * FACTOR_WEIGHTS["quality"] +
-            momentum_score * FACTOR_WEIGHTS["momentum"] +
-            safety_score * FACTOR_WEIGHTS["safety"] +
-            sentiment_score * FACTOR_WEIGHTS["sentiment"] +
-            insider_score * FACTOR_WEIGHTS["insider"]
+        factor_score = calculate_weighted_factor_score(
+            {
+                "value": value_score,
+                "growth": growth_score,
+                "quality": quality_score,
+                "momentum": momentum_score,
+                "safety": safety_score,
+                "sentiment": sentiment_score,
+                "insider": insider_score,
+            },
+            factor_weights,
         )
 
         # ========================================
@@ -236,7 +274,7 @@ def analyze_single_ticker(
 
         # 모든 요인 병합
         all_factors = (value_factors + growth_factors + quality_factors +
-                      momentum_factors + safety_factors + sentiment_factors +
+                      momentum_factors + safety_factors +
                       insider_factors + size_factors + all_factors_cf)
 
         # 점수를 사람이 읽기 쉬운 퍼센트 범위로만 환산한다.
@@ -309,6 +347,15 @@ def analyze_single_ticker(
                 "lynch_garp_bonus": round(lynch_garp_bonus, 2),
                 "fundamental": round(fundamental_score, 2),
             },
+            "sentiment_diagnostics": {
+                "source": "keyword",
+                "raw_score": round(raw_sentiment_score, 2),
+                "ranking_score": round(sentiment_score, 2),
+                "ranking_policy": "risk_and_explanation_only",
+                "ranking_contribution_applied": False,
+                "accuracy_validated": False,
+                "factors": raw_sentiment_factors,
+            },
             "momentum_details": momentum_details,
             "investor_scores": {k: round(v, 1) for k, v in investor_scores.items()},
             "investor_consensus": {
@@ -337,7 +384,13 @@ def analyze_single_ticker(
         return None
 
 
-def run_batch_analysis(tickers, end_date, max_workers=MAX_WORKERS, strategy="hybrid"):
+def run_batch_analysis(
+    tickers,
+    end_date,
+    max_workers=MAX_WORKERS,
+    strategy="hybrid",
+    factor_weights=None,
+):
     """배치 분석 실행
 
     Args:
@@ -345,6 +398,7 @@ def run_batch_analysis(tickers, end_date, max_workers=MAX_WORKERS, strategy="hyb
         end_date: 분석 기준일
         max_workers: 병렬 처리 워커 수
         strategy: 분석 전략 (fundamental, momentum, hybrid)
+        factor_weights: 이 실행에 적용할 검증 수축 후 팩터 가중치
     """
     results = []
     total = len(tickers)
@@ -391,7 +445,14 @@ def run_batch_analysis(tickers, end_date, max_workers=MAX_WORKERS, strategy="hyb
     def process_with_progress(ticker):
         nonlocal processed
         prefetched_prices = all_prices.get(ticker)
-        result = analyze_single_ticker(ticker, end_date, prefetched_prices=prefetched_prices, strategy=strategy, sector_stats=sector_stats)
+        result = analyze_single_ticker(
+            ticker,
+            end_date,
+            prefetched_prices=prefetched_prices,
+            strategy=strategy,
+            sector_stats=sector_stats,
+            factor_weights=factor_weights,
+        )
         with lock:
             processed += 1
             if processed % 25 == 0 or processed == total:

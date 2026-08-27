@@ -204,24 +204,29 @@ signal = weighted_bullish > weighted_bearish ? "bullish" : "bearish"
 #### 1. 뉴스 수집
 - 최근 100개 기사 수집
 - 제목, 발행일, 기존 sentiment
+- 동일 링크 또는 정규화 제목 중복 제거
 
 #### 2. LLM 분석
-- sentiment 없는 기사 중 최대 5개 분석
+- 기존 sentiment 유무와 관계없이 기사 최대 5개를 다시 분석
+- 종목 관련성(`relevant|unrelated|ambiguous`)을 먼저 판정
+- 이벤트 유형, 시장 기대 대비 surprise, 영향 기간을 분리
 - 제목 기반 심리 분류
 - 신뢰도 점수 (0-100) 함께 반환
+- 불명확하거나 근거가 부족하면 `abstain=true`
 - 현재 스킬 LLM이 직접 분류하며 외부 모델 API나 고정 모델명을 사용하지 않음
 
 **현재 스킬 LLM 지시문**:
 ```
-"Analyze the sentiment of this headline for stock {ticker}.
-Determine if it's positive, negative, or neutral.
-Provide confidence score 0-100."
+"For stock {ticker}, first determine entity relevance. Classify event type,
+surprise versus expectations, impact horizon, and sentiment. Abstain when the
+headline is ambiguous or insufficient. Provide confidence 0-100 and reasoning."
 ```
 
 #### 3. 집계
-- positive → bullish
-- negative → bearish
-- neutral → neutral
+- 무관·애매·abstain·confidence 60 미만은 제외
+- `market_price_recap`, `routine_disclosure`는 제외
+- 남은 positive → bullish, negative → bearish, neutral → neutral
+- confidence 70 이상의 negative는 `risk_flags`에도 기록
 
 #### 4. 신뢰도 계산
 ```
@@ -236,3 +241,5 @@ else:
 - 모델명은 지정하지 않고 현재 스킬 실행 모델을 그대로 사용
 - 헤드라인 기반 분석 (본문 미포함)
 - 종목 특정 sentiment만 판단
+- 뉴스 신호는 기본적으로 위험 경보·설명용이며, 검증 전 순위 성과 향상을 주장하지 않음
+- 공급자·keyword의 기존 sentiment는 관련성 검사를 우회하지 못하며 진단용으로만 집계

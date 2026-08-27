@@ -42,6 +42,7 @@ import config
 from cache import clear_cache, get_cache_stats, cache_stats
 from data_fetcher import get_index_tickers, sort_tickers_by_market_cap
 from analysis import run_batch_analysis
+from factor_evidence import load_factor_weight_policy
 from reporting import print_results
 from ticker_utils import is_korean_index, is_korean_ticker
 
@@ -95,6 +96,13 @@ def main():
     parser.add_argument("--clear-cache", action="store_true", help="캐시 삭제 후 종료")
     parser.add_argument("--cache-stats", action="store_true", help="캐시 통계 출력 후 종료")
     parser.add_argument("--update-tickers", action="store_true", help="Wikipedia/PyKRX에서 최신 티커 목록 갱신")
+    parser.add_argument(
+        "--factor-evidence-json",
+        help=(
+            "predict_factor_v1 point-in-time OOS 팩터 검증 JSON. "
+            "미지정 시 사전 가중치를 유지하되 미검증으로 표시"
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -139,6 +147,17 @@ def main():
     # 데이터 소스 자동 감지
     is_kr = (args.index and is_korean_index(args.index)) or (args.tickers and all(is_korean_ticker(t.strip()) for t in args.tickers.split(',')))
     data_source = "DART + PyKRX" if is_kr else "Yahoo Finance"
+    try:
+        factor_weight_policy = load_factor_weight_policy(
+            config.FACTOR_WEIGHTS,
+            args.factor_evidence_json,
+            market_scope="krx" if is_kr else "us",
+            index=args.index or "custom",
+            analysis_date=end_date,
+        )
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        parser.error(f"팩터 검증 JSON을 적용할 수 없습니다: {exc}")
+    effective_factor_weights = factor_weight_policy["effective_weights"]
 
     print(f"\n{'='*60}")
     print(f"🔍 AI Hedge Fund - 종목 분석 시스템 ({data_source})")
@@ -146,11 +165,18 @@ def main():
     print(f"분석 날짜: {end_date}")
     print(f"평가 기간 라벨: {args.period} (점수 기반, 수익률 예측 아님)")
     print(f"분석 전략: {strategy_names.get(args.strategy, args.strategy)}")
+    print(f"팩터 가중치 정책: {factor_weight_policy['mode']}")
     print(f"대상 종목: {len(tickers)}개")
     print()
 
     # 분석 실행
-    results = run_batch_analysis(tickers, end_date, args.workers, strategy=args.strategy)
+    results = run_batch_analysis(
+        tickers,
+        end_date,
+        args.workers,
+        strategy=args.strategy,
+        factor_weights=effective_factor_weights,
+    )
 
     if not results:
         print("분석 결과가 없습니다.")
@@ -185,7 +211,20 @@ def main():
             "strategy": args.strategy,
             "total_analyzed": len(results),
             "methodology": strategy_methods.get(args.strategy, "Multi-factor analysis"),
-            "factor_weights": config.FACTOR_WEIGHTS,
+            "factor_weights": effective_factor_weights,
+            "factor_weight_policy": factor_weight_policy,
+            "news_sentiment_policy": {
+                "classifier_policy_id": "news_event_v2",
+                "ranking_policy": "risk_and_explanation_only",
+                "ranking_contribution_applied": False,
+                "base_sentiment_factor_weight": effective_factor_weights["sentiment"],
+                "effective_sentiment_factor_weight": 0.0,
+                "accuracy_validated": False,
+                "note": (
+                    "keyword sentiment is stored as diagnostics; the ranking score "
+                    "stays neutral until all validation gates pass"
+                ),
+            },
             "rankings": results
         }
         with open(args.output, 'w', encoding='utf-8') as f:

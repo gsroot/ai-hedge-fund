@@ -136,6 +136,28 @@ bootstrap 95% 하한 양수를 요구한다. `preliminary`는 완전한 유니�
 기준선의 총수익률을 앞선 상태다. 이 등급은 성과 근거의 강도이지 자금 비중 제한이나
 매수 승인 플래그가 아니다.
 
+## Predict 7개 팩터 통합 검증
+
+`predict_factor_v1`의 가치·성장·품질·모멘텀·안전성·뉴스 심리·내부자
+팩터를 같은 시점·수익률·비용·ablation 기준으로 검증한다. 기존 Dow
+multifactor 패널은 팩터 정의가 다르므로 이 경로에 재사용하지 않는다.
+
+```bash
+uv run python .agents/skills/backtesting/scripts/factor_evidence.py \
+  --factor-panel artifacts/krx_predict_factor_panel.csv \
+  --prior-weights-json artifacts/predict_prior_weights.json \
+  --market-scope krx --applicable-index krx \
+  --universe-id historical_krx_membership_v1 \
+  --round-trip-cost-bps 30 --point-in-time --independent-holdout \
+  --output artifacts/krx_predict_factor_evidence.json
+```
+
+입력 패널·등급·가중치 수축 계약은
+[references/factor_evidence_contract.md](references/factor_evidence_contract.md)를 반드시 적용한다.
+뉴스 `sentiment`는 이 공통 성과 검증 외에 분류 정확도 게이트도 통과해야 한다.
+산출물은 7개 기본 팩터의 상대 비중만 다루며, 투자자 persona와 hybrid 전체
+모델을 검증한 것으로 표현하지 않는다.
+
 ## 주요 옵션
 
 | 옵션 | 설명 | 기본값 |
@@ -187,4 +209,5 @@ bootstrap 95% 하한 양수를 요구한다. `preliminary`는 완전한 유니�
 스크립트: [scripts/backtest.py](scripts/backtest.py),
 [scripts/walk_forward.py](scripts/walk_forward.py),
 [scripts/multifactor_walk_forward.py](scripts/multifactor_walk_forward.py),
-[scripts/ridge_walk_forward.py](scripts/ridge_walk_forward.py)
+[scripts/ridge_walk_forward.py](scripts/ridge_walk_forward.py),
+[scripts/factor_evidence.py](scripts/factor_evidence.py)

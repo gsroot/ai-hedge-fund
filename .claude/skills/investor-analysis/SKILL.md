@@ -23,7 +23,7 @@ description: |
 "AAPL 분석해줘", "테슬라 주식 어때?", "삼성전자 분석해줘" 같은 일반 분석 요청 시:
 
 ```
-5개 전문 분석가 자동 호출 (병렬):
+5개 전문 분석 관점을 독립적으로 수행하고 종합:
 - fundamentals-analyst: 수익성, 성장, 건전성, 밸류에이션
 - technical-analyst: 추세, 모멘텀, 변동성, 평균회귀
 - growth-analyst: 매출/수익 성장, 마진 확대
@@ -36,7 +36,7 @@ description: |
 "버핏 스타일로 분석해줘" 같은 특정 투자자 요청 시:
 
 ```
-해당 투자자 에이전트 호출 (예: warren-buffett-analyst)
+해당 투자자 페르소나를 적용해 분석 (예: warren-buffett-analyst)
 ```
 
 ### 모드 3: 앙상블 분석
@@ -44,7 +44,7 @@ description: |
 "모든 투자자 관점에서 분석해줘" 요청 시:
 
 ```
-17개 서브에이전트 병렬 호출 → 가중 평균 계산 → 종합 신호
+17개 관점을 독립 분석 → 가중 평균 계산 → 종합 신호
 ```
 
 ### 모드 4: 리포트 모드
@@ -61,9 +61,9 @@ description: |
 
 ### 1. 투자자/분석가 선택
 
-사용자 요청에 따라 적절한 서브에이전트 선택:
+사용자 요청에 따라 적절한 투자자 또는 분석가 관점을 선택:
 
-| 키워드 | 서브에이전트 |
+| 키워드 | 관점 식별자 |
 |--------|-------------|
 | "버핏", "가치 투자", "moat" | warren-buffett-analyst |
 | "멍거", "정신 모형" | charlie-munger-analyst |
@@ -87,25 +87,36 @@ description: |
 
 특정 투자자 요청 시 해당 섹션을
 [references/investor_personas.md](references/investor_personas.md) 또는
-[references/analyst_personas.md](references/analyst_personas.md)에서 읽고 분석한다.
+[references/analyst_personas.md](references/analyst_personas.md)에서 읽고 직접 분석한다.
 
-`news-sentiment-analyst`는 현재 이 스킬을 실행 중인 LLM이 직접 수행한다.
-`scripts/analyze_news_sentiment.py --prepare`로 sentiment가 없는 최근 기사 최대 5개의
-분류 작업을 만들고, 현재 LLM이 각 기사에
-`{article_index, sentiment, confidence, reasoning}`을 작성한 뒤 같은 스크립트의
-집계 함수에 전달한다. 스크립트 안에서 OpenAI SDK나 다른 외부 모델 API를 호출하지 말고,
-모델명도 지정하지 않는다. 따라서 뉴스 분류에는 현재 작업에 선택된 모델과 추론 설정이
-그대로 적용된다.
+`news-sentiment-analyst`도 현재 이 스킬을 실행 중인 LLM이 직접 수행한다.
+`scripts/analyze_news_sentiment.py --prepare`로 기존 sentiment 유무와 관계없이 최근 기사
+최대 5개의
+중복 제거된 분류 작업을 만들고, 현재 LLM이 각 기사에 종목 관련성, 이벤트 유형,
+sentiment, surprise, 영향 기간, confidence, abstain 여부와 reasoning을 작성한 뒤 같은
+스크립트의 집계 함수에 전달한다. 무관·애매·abstain·저신뢰 기사와 단순 주가 요약·정형
+공시는 의사결정 evidence에서 제외한다. 스크립트 안에서 OpenAI SDK나 다른 외부 모델
+API를 호출하지 말고, 모델명도 지정하지 않는다. 따라서 뉴스 분류에는 현재 작업에
+선택된 모델과 추론 설정이 그대로 적용된다.
+공급자나 keyword의 기존 sentiment는 새 관련성 검사를 우회하지 못하도록 집계에서 제외하고
+진단용으로만 센다.
 
 `predict`가 상위 후보 뉴스 작업 JSON을 만든 경우에도 동일한 분류 계약을 사용한다.
-이 분류는 `predict`의 기존 sentiment 팩터를 대체하며 별도 보너스로 중복 반영하지 않는다.
+이 분류는 기본적으로 위험 경보·설명에만 사용한다. `predict`가 의미 정확도, 미래 방향성,
+비용 차감 포트폴리오 개선의 독립 검증 게이트를 모두 통과한 파일을 받은 경우에만 기존
+sentiment 팩터를 대체하며, 별도 보너스로 중복 반영하지 않는다.
+
+여러 관점이나 앙상블을 사용자가 요청한 경우에는 Codex 협업 에이전트를 사용할 수 있다.
+각 에이전트에 하나의 관점, 종목, 기준일, 필요한 참조 파일의 정확한 경로를 전달하고
+`{signal, confidence, reasoning}` 형식으로 반환하게 한다. 사용 가능한 동시 실행 슬롯을 넘기지 말고
+필요하면 여러 차례로 나누어 실행한다. 단일 관점 요청에는 불필요한 에이전트를 만들지 않는다.
 
 ### 3. 앙상블 분석
 
 "모든 투자자", "종합 분석" 요청 시:
 
 ```
-1. 17개 서브에이전트 병렬 호출
+1. 17개 관점을 독립 분석한다. 협업 에이전트를 쓰면 사용 가능한 슬롯 수에 맞춰 나누어 실행한다.
 2. 각 에이전트 신호 수집
 3. scripts/ensemble_analyzer.py로 가중 평균 계산
 4. 최종 신호 및 순위 반환
@@ -195,19 +206,19 @@ description: |
 "AAPL 분석해줘"
 "테슬라 주식 어때?"
 "NVDA 살까 말까?"
-→ 5개 전문 분석가 병렬 호출 후 종합 결과 반환
+→ 5개 전문 분석 관점 수행 후 종합 결과 반환
 ```
 
 ### 예시 2: 버핏 스타일 분석
 ```
 "AAPL을 Warren Buffett 관점으로 분석해줘"
-→ warren-buffett-analyst 서브에이전트 호출
+→ Warren Buffett 페르소나 기준으로 분석
 ```
 
 ### 예시 3: 앙상블 분석
 ```
 "테슬라를 모든 투자자 관점에서 분석해줘"
-→ 17개 서브에이전트 병렬 호출 후 앙상블 결과 반환
+→ 17개 관점을 독립 분석한 후 앙상블 결과 반환
 ```
 
 ### 예시 4: 특정 그룹 분석
@@ -233,7 +244,7 @@ description: |
 ### 예시 7: 한국 종목 앙상블 분석
 ```
 "SK하이닉스를 모든 투자자 관점에서 분석해줘"
-→ 17개 서브에이전트 병렬 호출 (DART/PyKRX 데이터 자동 사용)
+→ 17개 관점을 독립 분석 (DART/PyKRX 데이터 자동 사용)
 ```
 
 ---
