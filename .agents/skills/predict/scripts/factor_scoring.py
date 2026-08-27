@@ -545,9 +545,10 @@ def calculate_sentiment_score(news_items: list) -> tuple:
     뉴스 센티먼트 점수 계산 (Peter Lynch 스타일)
 
     분석 방식:
-    - title + summary 결합 분석 (최대 50건)
-    - 긍정/부정 키워드 매칭
-    - summary 키워드는 1.5배 가중치 적용
+    - 제공된 sentiment가 있으면 우선 사용
+    - 없으면 title + summary의 긍정/부정 키워드 매칭
+    - 제목 1.0, 요약 0.5 가중치
+    - 분류 coverage가 낮을수록 중립 5점으로 수축
 
     Returns:
         (score, factors): 0-10 범위의 점수와 주요 요인 리스트
@@ -557,11 +558,26 @@ def calculate_sentiment_score(news_items: list) -> tuple:
 
     positive_score = 0
     negative_score = 0
-    news_with_keywords = 0
+    neutral_score = 0
+    covered_articles = 0
 
     for item in news_items:
         title = (item.get("title") or "").lower()
         summary = (item.get("summary") or "").lower()
+        existing_sentiment = str(item.get("sentiment") or "").lower()
+
+        if existing_sentiment in {"positive", "bullish"}:
+            positive_score += 1
+            covered_articles += 1
+            continue
+        if existing_sentiment in {"negative", "bearish"}:
+            negative_score += 1
+            covered_articles += 1
+            continue
+        if existing_sentiment == "neutral":
+            neutral_score += 1
+            covered_articles += 1
+            continue
 
         # 제목에서 키워드 검색
         title_negative = any(word in title for word in NEGATIVE_KEYWORDS)
@@ -571,20 +587,22 @@ def calculate_sentiment_score(news_items: list) -> tuple:
         summary_negative = any(word in summary for word in NEGATIVE_KEYWORDS)
         summary_positive = any(word in summary for word in POSITIVE_KEYWORDS)
 
-        # 점수 계산
+        article_covered = False
         if title_negative:
             negative_score += 1
-            news_with_keywords += 1
+            article_covered = True
         if summary_negative:
             negative_score += 0.5
-            news_with_keywords += 1
+            article_covered = True
 
         if title_positive:
             positive_score += 1
-            news_with_keywords += 1
+            article_covered = True
         if summary_positive:
             positive_score += 0.5
-            news_with_keywords += 1
+            article_covered = True
+        if article_covered:
+            covered_articles += 1
 
     total = len(news_items)
     factors = []
@@ -592,35 +610,25 @@ def calculate_sentiment_score(news_items: list) -> tuple:
     if total == 0:
         return 5, ["뉴스 없음"]
 
-    total_score = positive_score + negative_score
-    if total_score > 0:
-        negative_ratio = negative_score / total_score
-        positive_ratio = positive_score / total_score
+    evidence_score = positive_score + negative_score + neutral_score
+    coverage_ratio = covered_articles / total if total > 0 else 0
+    if evidence_score > 0:
+        polarity = (positive_score - negative_score) / evidence_score
+        score = max(2.0, min(8.0, 5.0 + 3.0 * polarity * coverage_ratio))
     else:
-        negative_ratio = 0
-        positive_ratio = 0
+        score = 5.0
 
-    coverage_ratio = news_with_keywords / total if total > 0 else 0
-
-    if negative_ratio > 0.6:
-        score = 2
-        factors.append(f"부정적 뉴스 우세 ({negative_score:.1f}점)")
-    elif negative_ratio > 0.4:
-        score = 4
-        factors.append(f"부정적 뉴스 다수 ({negative_score:.1f}점)")
-    elif positive_ratio > 0.6:
-        score = 9
+    if score > 5.25:
         factors.append(f"긍정적 뉴스 우세 ({positive_score:.1f}점)")
-    elif positive_ratio > 0.4:
-        score = 7
-        factors.append(f"긍정적 뉴스 다수 ({positive_score:.1f}점)")
+    elif score < 4.75:
+        factors.append(f"부정적 뉴스 우세 ({negative_score:.1f}점)")
     else:
-        score = 5
         factors.append("뉴스 센티먼트 중립")
 
+    factors.append(f"분류 coverage: {covered_articles}/{total}")
     factors.append(f"분석 뉴스: {total}개")
 
-    return score, factors
+    return round(score, 2), factors
 
 
 # ============================================================================

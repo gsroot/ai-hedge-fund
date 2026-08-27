@@ -196,8 +196,8 @@ signal = weighted_bullish > weighted_bearish ? "bullish" : "bearish"
 
 ## News Sentiment Analyst
 
-**분석 유형**: 뉴스 심리 분석 (LLM 기반)
-**데이터 소스**: 회사 뉴스, LLM
+**분석 유형**: 뉴스 심리 분석 (현재 스킬 LLM 기반)
+**데이터 소스**: 회사 뉴스, 현재 스킬을 실행 중인 LLM
 
 ### 분석 프로세스
 
@@ -209,8 +209,9 @@ signal = weighted_bullish > weighted_bearish ? "bullish" : "bearish"
 - sentiment 없는 기사 중 최대 5개 분석
 - 제목 기반 심리 분류
 - 신뢰도 점수 (0-100) 함께 반환
+- 현재 스킬 LLM이 직접 분류하며 외부 모델 API나 고정 모델명을 사용하지 않음
 
-**LLM 프롬프트**:
+**현재 스킬 LLM 지시문**:
 ```
 "Analyze the sentiment of this headline for stock {ticker}.
 Determine if it's positive, negative, or neutral.
@@ -225,12 +226,13 @@ Provide confidence score 0-100."
 #### 4. 신뢰도 계산
 ```
 if LLM 분석 있음:
-  confidence = 0.7 × avg_llm_confidence + 0.3 × signal_proportion
+  confidence = 0.7 × avg_skill_llm_confidence + 0.3 × signal_proportion
 else:
   confidence = max(bullish, bearish) / total × 100
 ```
 
 ### 주의사항
-- LLM 호출 최소화 (비용 절감)
+- 별도 OpenAI API 호출과 `OPENAI_API_KEY` 사용 금지
+- 모델명은 지정하지 않고 현재 스킬 실행 모델을 그대로 사용
 - 헤드라인 기반 분석 (본문 미포함)
 - 종목 특정 sentiment만 판단

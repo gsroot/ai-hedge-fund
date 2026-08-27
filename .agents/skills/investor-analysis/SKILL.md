@@ -28,7 +28,7 @@ description: |
 - technical-analyst: 추세, 모멘텀, 변동성, 평균회귀
 - growth-analyst: 매출/수익 성장, 마진 확대
 - sentiment-analyst: 내부자 거래 + 뉴스 심리
-- news-sentiment-analyst: LLM 기반 뉴스 분석
+- news-sentiment-analyst: 현재 스킬 LLM이 직접 수행하는 뉴스 분석
 ```
 
 ### 모드 2: 투자자 관점 분석
@@ -89,6 +89,17 @@ description: |
 [references/investor_personas.md](references/investor_personas.md) 또는
 [references/analyst_personas.md](references/analyst_personas.md)에서 읽고 직접 분석한다.
 
+`news-sentiment-analyst`도 현재 이 스킬을 실행 중인 LLM이 직접 수행한다.
+`scripts/analyze_news_sentiment.py --prepare`로 sentiment가 없는 최근 기사 최대 5개의
+분류 작업을 만들고, 현재 LLM이 각 기사에
+`{article_index, sentiment, confidence, reasoning}`을 작성한 뒤 같은 스크립트의
+집계 함수에 전달한다. 스크립트 안에서 OpenAI SDK나 다른 외부 모델 API를 호출하지 말고,
+모델명도 지정하지 않는다. 따라서 뉴스 분류에는 현재 작업에 선택된 모델과 추론 설정이
+그대로 적용된다.
+
+`predict`가 상위 후보 뉴스 작업 JSON을 만든 경우에도 동일한 분류 계약을 사용한다.
+이 분류는 `predict`의 기존 sentiment 팩터를 대체하며 별도 보너스로 중복 반영하지 않는다.
+
 여러 관점이나 앙상블을 사용자가 요청한 경우에는 Codex 협업 에이전트를 사용할 수 있다.
 각 에이전트에 하나의 관점, 종목, 기준일, 필요한 참조 파일의 정확한 경로를 전달하고
 `{signal, confidence, reasoning}` 형식으로 반환하게 한다. 사용 가능한 동시 실행 슬롯을 넘기지 말고
@@ -107,8 +118,9 @@ description: |
 
 ## 데이터 수집
 
-프로젝트 루트 `.env`는 API를 사용하는 데이터 모듈과 뉴스 감성 스크립트가 자동으로
-로드한다. 이미 설정된 프로세스 환경변수는 `.env` 값으로 덮어쓰지 않는다.
+프로젝트 루트 `.env`는 API를 사용하는 데이터 모듈이 자동으로 로드한다.
+이미 설정된 프로세스 환경변수는 `.env` 값으로 덮어쓰지 않는다.
+뉴스 감성 스크립트는 외부 LLM API 키를 읽지 않는다.
 
 모든 에이전트는 `scripts/data_fetcher.py`의 함수 사용:
 

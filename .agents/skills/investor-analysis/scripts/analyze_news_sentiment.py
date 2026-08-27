@@ -1,237 +1,271 @@
 #!/usr/bin/env python3
 """
-뉴스 심리 분석 스크립트
-LLM을 사용하여 뉴스 헤드라인의 sentiment를 분석합니다.
+뉴스 심리 분석 보조 스크립트.
+
+별도 모델 API를 호출하지 않는다. 스킬을 실행 중인 현재 LLM이
+prepare_news_for_llm()의 기사를 분류하고, 이 모듈은 그 결과를 검증·집계한다.
 """
+import argparse
 import json
-import os
 import sys
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
 
-from dotenv import load_dotenv
 
-PROJECT_ROOT = Path(__file__).resolve().parents[4]
-load_dotenv(PROJECT_ROOT / ".env", override=False)
+VALID_SENTIMENTS = {"positive", "negative", "neutral"}
+MAX_RECENT_ARTICLES = 10
+MAX_LLM_ARTICLES = 5
 
-def analyze_news_sentiment(news_data: dict, ticker: str) -> dict:
-    """
-    뉴스 데이터를 분석하여 bullish/bearish/neutral 신호 생성
-    
-    Args:
-        news_data: get_company_news()에서 반환된 뉴스 데이터
-        ticker: 종목 코드
-    
-    Returns:
-        {
-            "signal": "bullish|bearish|neutral",
-            "confidence": 0-100,
-            "reasoning": "분석 근거",
-            "metrics": {
-                "total_articles": N,
-                "bullish_articles": N,
-                "bearish_articles": N,
-                "neutral_articles": N,
-                "articles_classified_by_llm": N
+
+def _headline(news: dict[str, Any]) -> str:
+    return str(news.get("summary") or news.get("title") or "").strip()
+
+
+def prepare_news_for_llm(
+    news_data: dict[str, Any],
+    ticker: str,
+    limit: int = MAX_LLM_ARTICLES,
+) -> dict[str, Any]:
+    """현재 스킬 LLM이 분류할 기사와 출력 계약을 만든다."""
+    company_news = news_data.get("company_news", [])
+    articles = []
+    for article_index, news in enumerate(company_news[:MAX_RECENT_ARTICLES]):
+        if news.get("sentiment") is not None:
+            continue
+        headline = _headline(news)
+        if not headline:
+            continue
+        articles.append(
+            {
+                "article_index": article_index,
+                "headline": headline,
+                "date": news.get("date"),
+                "publisher": news.get("publisher"),
+                "link": news.get("link"),
+                "content_type": news.get("content_type"),
             }
-        }
+        )
+        if len(articles) >= max(0, min(limit, MAX_LLM_ARTICLES)):
+            break
+
+    return {
+        "ticker": ticker,
+        "classification_source": "active_skill_llm",
+        "instruction": (
+            "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 "
+            "positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 "
+            "간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다."
+        ),
+        "articles": articles,
+        "response_schema": {
+            "classifications": [
+                {
+                    "article_index": "integer",
+                    "sentiment": "positive|negative|neutral",
+                    "confidence": "number 0-100",
+                    "reasoning": "string",
+                }
+            ]
+        },
+    }
+
+
+def validate_classifications(
+    prepared: dict[str, Any],
+    classifications: list[dict[str, Any]] | None,
+) -> list[dict[str, Any]]:
+    candidates = {
+        article["article_index"]: article
+        for article in prepared.get("articles", [])
+    }
+    validated = []
+    seen = set()
+
+    for item in classifications or []:
+        if not isinstance(item, dict):
+            continue
+        article_index = item.get("article_index")
+        sentiment = str(item.get("sentiment") or "").lower()
+        if (
+            not isinstance(article_index, int)
+            or isinstance(article_index, bool)
+            or article_index not in candidates
+            or article_index in seen
+            or sentiment not in VALID_SENTIMENTS
+        ):
+            continue
+        try:
+            confidence = float(item.get("confidence"))
+        except (TypeError, ValueError):
+            continue
+        if not 0 <= confidence <= 100:
+            continue
+
+        candidate = candidates[article_index]
+        validated.append(
+            {
+                "article_index": article_index,
+                "headline": candidate["headline"],
+                "sentiment": sentiment,
+                "confidence": confidence,
+                "reasoning": str(item.get("reasoning") or "").strip(),
+            }
+        )
+        seen.add(article_index)
+
+    return validated
+
+
+def analyze_news_sentiment(
+    news_data: dict[str, Any],
+    ticker: str,
+    llm_classifications: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """
+    기존 sentiment와 현재 스킬 LLM의 분류를 합쳐 최종 신호를 계산한다.
+
+    llm_classifications는 prepare_news_for_llm()의 response_schema를 따라야 한다.
+    이 함수 자체는 네트워크나 외부 LLM API를 호출하지 않는다.
     """
     company_news = news_data.get("company_news", [])
-    
     if not company_news:
         return {
             "signal": "neutral",
             "confidence": 0,
-            "reasoning": "No news articles available for analysis",
+            "reasoning": "분석할 뉴스 기사가 없습니다.",
             "metrics": {
                 "total_articles": 0,
                 "bullish_articles": 0,
                 "bearish_articles": 0,
                 "neutral_articles": 0,
-                "articles_classified_by_llm": 0
-            }
+                "articles_classified_by_llm": 0,
+                "articles_pending_llm": 0,
+            },
         }
-    
-    # 최신 10개 기사 중 sentiment 없는 것 추출
-    recent_news = company_news[:10]
-    news_without_sentiment = [
-        news for news in recent_news 
-        if news.get("sentiment") is None
-    ]
-    
-    # LLM 분석할 기사 선택 (최대 5개)
-    news_to_analyze = news_without_sentiment[:5]
-    
-    # LLM으로 sentiment 분석
-    llm_analyzed = []
-    
-    try:
-        from openai import OpenAI
-        
-        api_key = os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            print("Warning: OPENAI_API_KEY not set", file=sys.stderr)
-        else:
-            client = OpenAI(api_key=api_key)
-            
-            for news in news_to_analyze:
-                headline = news.get("summary", "") or news.get("title", "")
-                if not headline:
-                    continue
-                
-                try:
-                    response = client.chat.completions.create(
-                        model="gpt-4o-mini",
-                        messages=[
-                            {
-                                "role": "user",
-                                "content": f"""Please analyze the sentiment of the following news headline
-with the following context:
-The stock is {ticker}.
-Determine if sentiment is 'positive', 'negative', or 'neutral'
-for the stock {ticker} only.
-Also provide a confidence score for your prediction from 0 to 100.
-Respond in JSON format.
 
-Headline: {headline}
+    prepared = prepare_news_for_llm(news_data, ticker)
+    llm_analyzed = validate_classifications(prepared, llm_classifications)
 
-Response format:
-{{
-  "sentiment": "positive|negative|neutral",
-  "confidence": 0-100
-}}"""
-                            }
-                        ],
-                        temperature=0.3,
-                        max_tokens=150
-                    )
-                    
-                    result_text = response.choices[0].message.content.strip()
-                    # JSON 파싱
-                    if result_text.startswith("```json"):
-                        result_text = result_text[7:]
-                    if result_text.endswith("```"):
-                        result_text = result_text[:-3]
-                    result_text = result_text.strip()
-                    
-                    result = json.loads(result_text)
-                    llm_analyzed.append({
-                        "headline": headline[:100] + "..." if len(headline) > 100 else headline,
-                        "sentiment": result["sentiment"],
-                        "confidence": result["confidence"]
-                    })
-                    
-                    print(f"Analyzed: {headline[:60]}... -> {result['sentiment']} (confidence: {result['confidence']})", file=sys.stderr)
-                except Exception as e:
-                    print(f"LLM 분석 실패: {e}", file=sys.stderr)
-                    continue
-    except ImportError:
-        print("Warning: openai library not installed", file=sys.stderr)
-    
-    # 기존 sentiment가 있는 기사 집계
-    existing_sentiments = {
-        "positive": 0,
-        "negative": 0,
-        "neutral": 0
-    }
-    
+    existing_sentiments = {sentiment: 0 for sentiment in VALID_SENTIMENTS}
     for news in company_news:
-        sentiment = news.get("sentiment")
+        sentiment = str(news.get("sentiment") or "").lower()
         if sentiment in existing_sentiments:
             existing_sentiments[sentiment] += 1
-    
-    # LLM 분석 결과 집계
-    llm_sentiments = {
-        "positive": 0,
-        "negative": 0,
-        "neutral": 0
-    }
-    
+
+    llm_sentiments = {sentiment: 0 for sentiment in VALID_SENTIMENTS}
     for analyzed in llm_analyzed:
-        sentiment = analyzed["sentiment"]
-        if sentiment in llm_sentiments:
-            llm_sentiments[sentiment] += 1
-    
-    # 전체 집계
+        llm_sentiments[analyzed["sentiment"]] += 1
+
     bullish_count = existing_sentiments["positive"] + llm_sentiments["positive"]
     bearish_count = existing_sentiments["negative"] + llm_sentiments["negative"]
     neutral_count = existing_sentiments["neutral"] + llm_sentiments["neutral"]
     total_count = len(company_news)
-    
-    # 신호 결정
+
     if bullish_count > bearish_count:
         signal = "bullish"
     elif bearish_count > bullish_count:
         signal = "bearish"
     else:
         signal = "neutral"
-    
-    # 신뢰도 계산
+
     if llm_analyzed:
-        # LLM 분석 결과의 평균 confidence
         matching_confidences = [
-            a["confidence"] for a in llm_analyzed
-            if (signal == "bullish" and a["sentiment"] == "positive") or
-               (signal == "bearish" and a["sentiment"] == "negative") or
-               (signal == "neutral" and a["sentiment"] == "neutral")
+            analyzed["confidence"]
+            for analyzed in llm_analyzed
+            if (
+                (signal == "bullish" and analyzed["sentiment"] == "positive")
+                or (signal == "bearish" and analyzed["sentiment"] == "negative")
+                or (signal == "neutral" and analyzed["sentiment"] == "neutral")
+            )
         ]
-        
-        if matching_confidences:
-            avg_llm_confidence = sum(matching_confidences) / len(matching_confidences)
-        else:
-            avg_llm_confidence = 50
-        
-        signal_proportion = max(bullish_count, bearish_count, neutral_count) / total_count * 100 if total_count > 0 else 0
+        avg_llm_confidence = (
+            sum(matching_confidences) / len(matching_confidences)
+            if matching_confidences
+            else 50
+        )
+        signal_proportion = (
+            max(bullish_count, bearish_count, neutral_count) / total_count * 100
+            if total_count
+            else 0
+        )
         confidence = int(0.7 * avg_llm_confidence + 0.3 * signal_proportion)
     else:
-        # LLM 분석 없이 기존 sentiment만 사용
-        confidence = int(max(bullish_count, bearish_count, neutral_count) / total_count * 100) if total_count > 0 else 0
-    
-    # Reasoning 생성
+        confidence = (
+            int(max(bullish_count, bearish_count, neutral_count) / total_count * 100)
+            if total_count
+            else 0
+        )
+
+    pending_count = max(0, len(prepared["articles"]) - len(llm_analyzed))
     reasoning_parts = [
-        f"Analyzed {total_count} news articles for {ticker}.",
-        f"Distribution: {bullish_count} bullish, {bearish_count} bearish, {neutral_count} neutral.",
+        f"{ticker} 뉴스 {total_count}건을 집계했습니다.",
+        (
+            f"분포는 bullish {bullish_count}건, bearish {bearish_count}건, "
+            f"neutral {neutral_count}건입니다."
+        ),
     ]
-    
     if llm_analyzed:
-        reasoning_parts.append(f"LLM analyzed {len(llm_analyzed)} recent articles without existing sentiment.")
-        # 샘플 헤드라인 추가
-        sample_headlines = [a["headline"] for a in llm_analyzed[:3]]
-        if sample_headlines:
-            reasoning_parts.append(f"Sample headlines analyzed: {'; '.join(sample_headlines)}")
-    
-    reasoning_parts.append(f"Overall sentiment is {signal} with confidence {confidence}%.")
-    
-    reasoning = " ".join(reasoning_parts)
-    
+        reasoning_parts.append(
+            f"현재 스킬 LLM이 기존 sentiment가 없던 기사 {len(llm_analyzed)}건을 분류했습니다."
+        )
+    if pending_count:
+        reasoning_parts.append(f"LLM 분류가 필요한 기사 {pending_count}건이 남았습니다.")
+    reasoning_parts.append(f"종합 심리는 {signal}, 신뢰도는 {confidence}%입니다.")
+
     return {
         "signal": signal,
         "confidence": confidence,
-        "reasoning": reasoning,
+        "reasoning": " ".join(reasoning_parts),
         "metrics": {
             "total_articles": total_count,
             "bullish_articles": bullish_count,
             "bearish_articles": bearish_count,
             "neutral_articles": neutral_count,
-            "articles_classified_by_llm": len(llm_analyzed)
-        }
+            "articles_classified_by_llm": len(llm_analyzed),
+            "articles_pending_llm": pending_count,
+        },
     }
 
 
-if __name__ == "__main__":
-    import argparse
-    
-    parser = argparse.ArgumentParser(description="Analyze news sentiment using LLM")
-    parser.add_argument("--ticker", type=str, required=True, help="Stock ticker (e.g., NVDA)")
-    parser.add_argument("--input", type=str, help="Input JSON file (if not provided, reads from stdin)")
-    
+def _read_json(path: str | None) -> Any:
+    if path:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    return json.load(sys.stdin)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Prepare or aggregate news sentiment without an external LLM API"
+    )
+    parser.add_argument("--ticker", required=True, help="Stock ticker (e.g., NVDA)")
+    parser.add_argument("--input", help="Input JSON file; otherwise read stdin")
+    parser.add_argument(
+        "--classifications",
+        help="Current skill LLM classifications JSON file",
+    )
+    parser.add_argument(
+        "--prepare",
+        action="store_true",
+        help="Output the classification task for the current skill LLM",
+    )
     args = parser.parse_args()
-    
-    if args.input:
-        with open(args.input, 'r') as f:
-            input_data = json.load(f)
+
+    input_data = _read_json(args.input)
+    if args.prepare:
+        result = prepare_news_for_llm(input_data, args.ticker)
     else:
-        input_data = json.load(sys.stdin)
-    
-    result = analyze_news_sentiment(input_data, args.ticker)
-    print(json.dumps(result, indent=2))
+        classifications = input_data.get("llm_classifications")
+        if args.classifications:
+            classification_payload = _read_json(args.classifications)
+            classifications = (
+                classification_payload.get("classifications", [])
+                if isinstance(classification_payload, dict)
+                else classification_payload
+            )
+        result = analyze_news_sentiment(input_data, args.ticker, classifications)
+
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

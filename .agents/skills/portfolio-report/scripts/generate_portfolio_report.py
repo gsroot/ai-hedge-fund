@@ -231,12 +231,21 @@ def normalize_sector(sector: str | None) -> str:
     return mapping.get(sector, sector)
 
 
+def yahoo_ticker_candidates(ticker: str) -> list[str]:
+    if ticker.isdigit() and len(ticker) == 6:
+        return [f"{ticker}.KS", f"{ticker}.KQ"]
+    return [ticker]
+
+
 def fetch_sector(ticker: str) -> str:
-    try:
-        info = yf.Ticker(ticker).info
-        return normalize_sector(info.get("sector"))
-    except Exception:
-        return "Unknown"
+    for yahoo_ticker in yahoo_ticker_candidates(ticker):
+        try:
+            sector = yf.Ticker(yahoo_ticker).info.get("sector")
+            if sector:
+                return normalize_sector(sector)
+        except Exception:
+            continue
+    return "Unknown"
 
 
 def fetch_sectors(stocks: list[dict[str, Any]], analysis_date: str) -> dict[str, str]:

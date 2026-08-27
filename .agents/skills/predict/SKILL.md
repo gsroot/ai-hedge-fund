@@ -39,9 +39,49 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
   --index krx --top 50 --display 20 --output results.json
 ```
 
+## 현재 LLM 뉴스 보강
+
+KRX의 `fundamental` 또는 `hybrid` 분석은 기본 정량 순위를 만든 뒤 상위 후보의
+뉴스를 현재 스킬 LLM으로 분류하고 최종 순위를 다시 산정한다. 전체 시장 요청에서는
+1차 분석에 임의의 `--top`을 넣지 않고, 뉴스 보강 후보군만 기본 60개로 제한한다.
+
+```bash
+# 1. 전체 유니버스 기본 순위
+uv run python .agents/skills/predict/scripts/analyze_stocks.py \
+  --index krx --output krx_base.json
+
+# 2. 기본 순위 상위 60개의 최근 뉴스 분류 작업 생성
+uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py prepare \
+  --predict-json krx_base.json --candidate-pool 60 --article-limit 5 \
+  --output krx_news_tasks.json
+
+# 3. 현재 스킬 LLM이 krx_news_tasks.json을 직접 분류해 아래 계약으로 저장
+# {"analysis_date":"YYYY-MM-DD","source":"active_skill_llm",
+#  "results":[{"ticker":"005930","classifications":[
+#    {"article_index":0,"sentiment":"positive|negative|neutral",
+#     "confidence":0-100,"reasoning":"..."}]}]}
+
+# 4. 검증된 분류로 기존 sentiment 기여분을 교체하고 최종 재순위
+uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply \
+  --predict-json krx_base.json --tasks-json krx_news_tasks.json \
+  --classifications-json krx_news_classifications.json \
+  --output krx_final.json
+```
+
+- 현재 작업에 선택된 LLM과 추론 설정을 그대로 사용한다. 외부 LLM API를 호출하거나
+  모델명을 지정하지 않는다.
+- LLM 점수는 별도 보너스가 아니라 기존 8% sentiment 팩터를 대체한다.
+- 분류 confidence와 기사 coverage를 곱해 중립 5점으로 수축하고 2~8점으로 제한한다.
+- 검증되지 않은 ticker·article index·sentiment·confidence는 제외한다.
+- 분류가 없는 후보는 기존 keyword 점수를 유지한다.
+- `momentum` 전략은 sentiment를 사용하지 않으므로 이 단계를 실행하지 않는다.
+- 최종 JSON에 분류 evidence와 `accuracy_validated: false`를 남긴다. 실제 정확도 향상은
+  별도 point-in-time 검증 전까지 주장하지 않는다.
+
 ## 점수 구성
 
 - 팩터: 가치, 성장, 품질, 모멘텀, 안전성, 뉴스 심리, 내부자 활동
+- 뉴스 심리: 기존 sentiment 우선, keyword 폴백, KRX 상위 후보는 현재 LLM 분류로 대체
 - 투자자 스타일: Buffett, Lynch, Graham, Fisher, Druckenmiller
 - `fundamental`: 투자자 앙상블과 기본 팩터를 결합
 - `momentum`: 단·장기 모멘텀, RSI, 추세
@@ -108,5 +148,6 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
 - [scripts/analysis.py](scripts/analysis.py): 종합 점수
 - [scripts/data_fetcher.py](scripts/data_fetcher.py): 데이터·시점 차단
 - [scripts/sec_point_in_time.py](scripts/sec_point_in_time.py): SEC 제출일 기준 재무 스냅샷
+- [scripts/news_sentiment_enrichment.py](scripts/news_sentiment_enrichment.py): 상위 후보 뉴스 작업·검증·재순위
 - [scripts/reporting.py](scripts/reporting.py): 출력
 - [scripts/ranking_algorithm.py](scripts/ranking_algorithm.py): 별도 순위 유틸리티

@@ -47,6 +47,8 @@ _dart_request_times = deque()
 _dart_lock = threading.Lock()
 _dart_reader_instance = None
 _dart_reader_lock = threading.Lock()
+_naver_search_api_disabled = False
+_naver_search_api_lock = threading.Lock()
 
 # 설정값 (config.py에서도 정의하지만, 여기서 독립적으로도 동작하도록 기본값 설정)
 DART_RATE_LIMIT = 100  # 분당 최대 요청 수
@@ -651,6 +653,62 @@ def _get_pykrx_fundamental(ticker: str, end_date: str) -> dict:
         }
 
 
+def _empty_valuation_snapshot() -> dict:
+    return {
+        "price_to_earnings_ratio": None,
+        "price_to_book_ratio": None,
+        "earnings_per_share": None,
+        "book_value_per_share": None,
+        "dividend_yield": None,
+    }
+
+
+def _parse_naver_numeric(value: object) -> Optional[float]:
+    """Parse values such as `11.98배`, `22,292원`, and `0.63%`."""
+    text = str(value or "").replace(",", "").strip()
+    numeric = "".join(char for char in text if char.isdigit() or char in ".-")
+    if not numeric or numeric in {"-", ".", "-."}:
+        return None
+    try:
+        return float(numeric)
+    except ValueError:
+        return None
+
+
+def _get_naver_valuation_snapshot(ticker: str, end_date: str) -> dict:
+    """Use Naver's current snapshot only when it cannot introduce look-ahead."""
+    result = _empty_valuation_snapshot()
+    try:
+        cutoff_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+        if cutoff_date < datetime.now().date():
+            return result
+
+        url = f"https://m.stock.naver.com/api/stock/{ticker}/integration"
+        response = requests.get(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=10,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        values = {
+            item.get("code"): item.get("value")
+            for item in payload.get("totalInfos", [])
+            if isinstance(item, dict)
+        }
+
+        result["price_to_earnings_ratio"] = _parse_naver_numeric(values.get("per"))
+        result["price_to_book_ratio"] = _parse_naver_numeric(values.get("pbr"))
+        result["earnings_per_share"] = _parse_naver_numeric(values.get("eps"))
+        result["book_value_per_share"] = _parse_naver_numeric(values.get("bps"))
+        dividend_yield = _parse_naver_numeric(values.get("dividendYieldRatio"))
+        if dividend_yield is not None:
+            result["dividend_yield"] = dividend_yield / 100.0
+    except Exception as e:
+        print(f"   ⚠️ 네이버 현재 밸류에이션 조회 실패 ({ticker}): {e}")
+    return result
+
+
 # ============================================================================
 # 공개 함수: 재무 지표
 # ============================================================================
@@ -671,10 +729,23 @@ def get_financial_metrics_kr(ticker: str, end_date: str) -> dict:
     # PyKRX 기본 지표
     pykrx_data = _get_pykrx_fundamental(ticker, end_date)
 
+    # PyKRX의 밸류에이션 엔드포인트가 비어 있는 경우 현재 스냅샷에 한해
+    # 네이버 증권을 보조 소스로 사용한다. 과거 기준일에는 look-ahead 방지를 위해 생략한다.
+    valuation_data = dict(pykrx_data)
+    if any(
+        valuation_data.get(key) is None
+        for key in _empty_valuation_snapshot()
+    ):
+        naver_data = _get_naver_valuation_snapshot(ticker, end_date)
+        for key, value in naver_data.items():
+            if valuation_data.get(key) is None and value is not None:
+                valuation_data[key] = value
+
     # DART 파생 지표
     dart_data = _derive_metrics_from_dart(ticker, end_date)
 
-    market_cap = pykrx_data.get("market_cap")
+    # PyKRX 시총이 비어도 KRX 공식 API 폴백 체인을 반드시 사용한다.
+    market_cap = pykrx_data.get("market_cap") or get_market_cap_kr(ticker, end_date)
 
     return {
         "ticker": ticker,
@@ -682,8 +753,8 @@ def get_financial_metrics_kr(ticker: str, end_date: str) -> dict:
         "report_period": end_date,
 
         # ===== 밸류에이션 지표 (PyKRX) =====
-        "price_to_earnings_ratio": pykrx_data.get("price_to_earnings_ratio"),
-        "price_to_book_ratio": pykrx_data.get("price_to_book_ratio"),
+        "price_to_earnings_ratio": valuation_data.get("price_to_earnings_ratio"),
+        "price_to_book_ratio": valuation_data.get("price_to_book_ratio"),
         "price_to_sales_ratio": None,  # PyKRX에서 직접 제공하지 않음
         "peg_ratio": None,  # 한국 데이터소스에서 미제공
         "enterprise_value_to_ebitda": None,
@@ -716,7 +787,7 @@ def get_financial_metrics_kr(ticker: str, end_date: str) -> dict:
         "debt_to_assets": None,
 
         # ===== 배당 (PyKRX) =====
-        "dividend_yield": pykrx_data.get("dividend_yield"),
+        "dividend_yield": valuation_data.get("dividend_yield"),
         "payout_ratio": None,
 
         # ===== 시가총액 및 주식 정보 =====
@@ -738,9 +809,9 @@ def get_financial_metrics_kr(ticker: str, end_date: str) -> dict:
         # ===== 매출/수익 =====
         "total_revenue": None,
         "revenue_per_share": None,
-        "earnings_per_share": pykrx_data.get("earnings_per_share"),
+        "earnings_per_share": valuation_data.get("earnings_per_share"),
         "forward_eps": None,
-        "book_value_per_share": pykrx_data.get("book_value_per_share"),
+        "book_value_per_share": valuation_data.get("book_value_per_share"),
 
         # ===== 소유권/공매도 지표 =====
         "held_percent_insiders": None,
@@ -978,12 +1049,12 @@ def _fetch_naver_news_api(query: str, end_date: str, limit: int = 30) -> list:
     Returns:
         list[dict]: 뉴스 리스트
     """
-    import requests
+    global _naver_search_api_disabled
 
     client_id = os.environ.get("NAVER_CLIENT_ID")
     client_secret = os.environ.get("NAVER_CLIENT_SECRET")
 
-    if not client_id or not client_secret:
+    if not client_id or not client_secret or _naver_search_api_disabled:
         return []
 
     try:
@@ -1027,6 +1098,20 @@ def _fetch_naver_news_api(query: str, end_date: str, limit: int = 30) -> list:
             })
 
         return news_list
+    except requests.HTTPError as e:
+        status_code = getattr(e.response, "status_code", None)
+        if status_code in {401, 403}:
+            with _naver_search_api_lock:
+                first_failure = not _naver_search_api_disabled
+                _naver_search_api_disabled = True
+            if first_failure:
+                print(
+                    "   ⚠️ 네이버 검색 API 인증 실패 — "
+                    "이번 실행에서는 네이버 증권 공개 뉴스로 전환합니다."
+                )
+        else:
+            print(f"   ⚠️ 네이버 검색 API 조회 실패: {e}")
+        return []
     except Exception as e:
         print(f"   ⚠️ 네이버 검색 API 조회 실패: {e}")
         return []

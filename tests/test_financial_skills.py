@@ -88,15 +88,42 @@ korean_data = load_module(
     "financial_skill_korean_data",
     PREDICT_SCRIPTS / "korean_data_fetcher.py",
 )
+news_sentiment = load_module(
+    "financial_skill_news_sentiment",
+    INVESTOR_ANALYSIS_SCRIPTS / "analyze_news_sentiment.py",
+)
+news_enrichment = load_module(
+    "financial_skill_news_enrichment",
+    PREDICT_SCRIPTS / "news_sentiment_enrichment.py",
+)
+factor_scoring = load_module(
+    "financial_skill_factor_scoring",
+    PREDICT_SCRIPTS / "factor_scoring.py",
+)
 
 
 class PointInTimeTests(unittest.TestCase):
+    def test_agent_and_claude_skill_mirrors_match(self):
+        relative_paths = (
+            Path("predict/scripts/korean_data_fetcher.py"),
+            Path("portfolio-report/scripts/build_risk_snapshot.py"),
+            Path("portfolio-report/scripts/generate_portfolio_report.py"),
+            Path("predict/scripts/news_sentiment_enrichment.py"),
+            Path("investor-analysis/scripts/analyze_news_sentiment.py"),
+            Path("investor-analysis/references/analyst_personas.md"),
+        )
+
+        for relative_path in relative_paths:
+            with self.subTest(path=str(relative_path)):
+                agent_path = ROOT / ".agents" / "skills" / relative_path
+                claude_path = ROOT / ".claude" / "skills" / relative_path
+                self.assertEqual(agent_path.read_bytes(), claude_path.read_bytes())
+
     def test_api_modules_load_project_root_dotenv_without_override(self):
         module_paths = (
             PREDICT_SCRIPTS / "korean_data_fetcher.py",
             PREDICT_SCRIPTS / "financial_datasets_api.py",
             PREDICT_SCRIPTS / "sec_point_in_time.py",
-            INVESTOR_ANALYSIS_SCRIPTS / "analyze_news_sentiment.py",
         )
 
         for index, module_path in enumerate(module_paths):
@@ -104,6 +131,214 @@ class PointInTimeTests(unittest.TestCase):
                 with patch("dotenv.load_dotenv") as mocked_load:
                     load_module(f"dotenv_probe_{index}", module_path)
                 mocked_load.assert_called_once_with(ROOT / ".env", override=False)
+
+    def test_news_sentiment_prepares_work_for_active_skill_llm(self):
+        news = {
+            "company_news": [
+                {"title": "already classified", "sentiment": "positive"},
+                *[
+                    {"title": f"headline {index}", "date": f"2025-01-{index + 1:02d}"}
+                    for index in range(8)
+                ],
+            ]
+        }
+
+        prepared = news_sentiment.prepare_news_for_llm(news, "TEST")
+
+        self.assertEqual(prepared["classification_source"], "active_skill_llm")
+        self.assertEqual(len(prepared["articles"]), 5)
+        self.assertEqual(
+            [article["article_index"] for article in prepared["articles"]],
+            [1, 2, 3, 4, 5],
+        )
+        self.assertIn("외부 모델 API를 호출", prepared["instruction"])
+
+    def test_news_sentiment_aggregates_active_llm_classifications(self):
+        news = {
+            "company_news": [
+                {"title": "existing positive", "sentiment": "positive"},
+                {"title": "good news"},
+                {"title": "bad news"},
+                {"title": "unclear news"},
+            ]
+        }
+        classifications = [
+            {
+                "article_index": 1,
+                "sentiment": "positive",
+                "confidence": 90,
+                "reasoning": "positive catalyst",
+            },
+            {
+                "article_index": 2,
+                "sentiment": "negative",
+                "confidence": 80,
+                "reasoning": "negative catalyst",
+            },
+            {
+                "article_index": 3,
+                "sentiment": "invalid",
+                "confidence": 100,
+            },
+        ]
+
+        result = news_sentiment.analyze_news_sentiment(
+            news,
+            "TEST",
+            classifications,
+        )
+
+        self.assertEqual(result["signal"], "bullish")
+        self.assertEqual(result["metrics"]["bullish_articles"], 2)
+        self.assertEqual(result["metrics"]["bearish_articles"], 1)
+        self.assertEqual(result["metrics"]["articles_classified_by_llm"], 2)
+        self.assertEqual(result["metrics"]["articles_pending_llm"], 1)
+
+    def test_news_sentiment_has_no_external_model_dependency(self):
+        source = (
+            INVESTOR_ANALYSIS_SCRIPTS / "analyze_news_sentiment.py"
+        ).read_text(encoding="utf-8")
+
+        self.assertNotIn("OPENAI_API_KEY", source)
+        self.assertNotIn("gpt-4o-mini", source)
+        self.assertNotIn("from openai import", source)
+        self.assertNotIn("chat.completions.create", source)
+
+        enrichment_source = (
+            PREDICT_SCRIPTS / "news_sentiment_enrichment.py"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("OPENAI_API_KEY", enrichment_source)
+        self.assertNotIn("from openai import", enrichment_source)
+
+    def test_keyword_sentiment_uses_coverage_and_has_no_tie_bias(self):
+        sparse_positive = [{"title": "record profit"}] + [
+            {"title": f"일반 뉴스 {index}"}
+            for index in range(9)
+        ]
+        balanced = [
+            {"title": "record profit"},
+            {"title": "fraud investigation"},
+        ]
+
+        sparse_score, _ = factor_scoring.calculate_sentiment_score(sparse_positive)
+        balanced_score, _ = factor_scoring.calculate_sentiment_score(balanced)
+
+        self.assertAlmostEqual(sparse_score, 5.3)
+        self.assertEqual(balanced_score, 5.0)
+
+    def test_keyword_sentiment_prefers_existing_classification(self):
+        score, factors = factor_scoring.calculate_sentiment_score(
+            [
+                {"title": "fraud investigation", "sentiment": "positive"},
+                {"title": "일반 기사", "sentiment": "neutral"},
+            ]
+        )
+
+        self.assertEqual(score, 6.5)
+        self.assertTrue(any("coverage: 2/2" in factor for factor in factors))
+
+    def test_news_enrichment_prepares_only_top_candidate_pool(self):
+        predict_payload = {
+            "analysis_date": "2025-01-02",
+            "index": "krx",
+            "rankings": [
+                {"ticker": "A", "rank": 1},
+                {"ticker": "B", "rank": 2},
+                {"ticker": "C", "rank": 3},
+            ],
+        }
+        news = [{"title": "호실적", "date": "2025-01-02"}]
+
+        with patch.object(news_enrichment, "get_company_news", return_value=news) as fetch:
+            tasks = news_enrichment.prepare_candidate_tasks(
+                predict_payload,
+                candidate_pool=2,
+                article_limit=1,
+            )
+
+        self.assertEqual([task["ticker"] for task in tasks["tasks"]], ["A", "B"])
+        self.assertEqual(fetch.call_count, 2)
+
+    def test_news_enrichment_replaces_sentiment_and_reranks(self):
+        predict_payload = {
+            "analysis_date": "2025-01-02",
+            "index": "krx",
+            "strategy": "hybrid",
+            "methodology": "base",
+            "factor_weights": {"sentiment": 0.08},
+            "rankings": [
+                {
+                    "ticker": "B",
+                    "rank": 1,
+                    "total_score": 6.03,
+                    "signal": "buy",
+                    "score_implied_return_pct": 10.6,
+                    "scores": {"sentiment": 5.0, "fundamental": 6.0},
+                    "investor_scores": {
+                        "buffett": 5.0,
+                        "graham": 5.0,
+                        "druckenmiller": 5.0,
+                    },
+                    "factors": [],
+                },
+                {
+                    "ticker": "A",
+                    "rank": 2,
+                    "total_score": 6.0,
+                    "signal": "buy",
+                    "score_implied_return_pct": 10.5,
+                    "scores": {"sentiment": 5.0, "fundamental": 6.0},
+                    "investor_scores": {
+                        "buffett": 5.0,
+                        "graham": 5.0,
+                        "druckenmiller": 5.0,
+                    },
+                    "factors": [],
+                },
+            ],
+        }
+        task_payload = {
+            "analysis_date": "2025-01-02",
+            "index": "krx",
+            "candidate_pool": 2,
+            "tasks": [
+                {
+                    "ticker": "A",
+                    "articles": [
+                        {"article_index": 0, "headline": "호실적"},
+                        {"article_index": 1, "headline": "수주 확대"},
+                    ],
+                }
+            ],
+        }
+        classifications = {
+            "analysis_date": "2025-01-02",
+            "source": "active_skill_llm",
+            "results": [
+                {
+                    "ticker": "A",
+                    "classifications": [
+                        {"article_index": 0, "sentiment": "positive", "confidence": 100},
+                        {"article_index": 1, "sentiment": "positive", "confidence": 100},
+                    ],
+                }
+            ],
+        }
+
+        enriched = news_enrichment.apply_news_sentiment_enrichment(
+            predict_payload,
+            task_payload,
+            classifications,
+        )
+
+        self.assertEqual(enriched["rankings"][0]["ticker"], "A")
+        self.assertEqual(enriched["rankings"][0]["scores"]["sentiment"], 8.0)
+        self.assertAlmostEqual(enriched["rankings"][0]["total_score"], 6.07)
+        self.assertEqual(
+            enriched["rankings"][0]["sentiment_analysis"]["source"],
+            "active_skill_llm",
+        )
+        self.assertFalse(enriched["news_sentiment_enrichment"]["accuracy_validated"])
 
     def test_naver_search_news_excludes_future_and_unverifiable_dates(self):
         response = Mock()
@@ -145,6 +380,96 @@ class PointInTimeTests(unittest.TestCase):
 
         self.assertEqual([item["title"] for item in news], ["past", "cutoff"])
         self.assertTrue(all(item["date"][:10] <= "2025-01-01" for item in news))
+
+    def test_naver_search_auth_failure_disables_repeated_requests(self):
+        response = Mock(status_code=401)
+        response.raise_for_status.side_effect = korean_data.requests.HTTPError(
+            "unauthorized",
+            response=response,
+        )
+        original_disabled = korean_data._naver_search_api_disabled
+        korean_data._naver_search_api_disabled = False
+        try:
+            with patch.dict(
+                "os.environ",
+                {"NAVER_CLIENT_ID": "client", "NAVER_CLIENT_SECRET": "secret"},
+            ), patch.object(
+                korean_data.requests,
+                "get",
+                return_value=response,
+            ) as mocked_get, redirect_stdout(io.StringIO()):
+                first = korean_data._fetch_naver_news_api("테스트", "2025-01-01")
+                second = korean_data._fetch_naver_news_api("테스트", "2025-01-01")
+
+            self.assertEqual(first, [])
+            self.assertEqual(second, [])
+            mocked_get.assert_called_once()
+        finally:
+            korean_data._naver_search_api_disabled = original_disabled
+
+    def test_current_korean_valuation_falls_back_to_naver(self):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {
+            "totalInfos": [
+                {"code": "per", "value": "11.98배"},
+                {"code": "pbr", "value": "3.10배"},
+                {"code": "eps", "value": "22,292원"},
+                {"code": "bps", "value": "86,052원"},
+                {"code": "dividendYieldRatio", "value": "0.63%"},
+            ]
+        }
+        today = korean_data.datetime.now().strftime("%Y-%m-%d")
+
+        with patch.object(korean_data.requests, "get", return_value=response):
+            snapshot = korean_data._get_naver_valuation_snapshot("005930", today)
+
+        self.assertEqual(snapshot["price_to_earnings_ratio"], 11.98)
+        self.assertEqual(snapshot["price_to_book_ratio"], 3.10)
+        self.assertEqual(snapshot["earnings_per_share"], 22292.0)
+        self.assertEqual(snapshot["book_value_per_share"], 86052.0)
+        self.assertAlmostEqual(snapshot["dividend_yield"], 0.0063)
+
+    def test_historical_korean_valuation_does_not_use_current_naver_data(self):
+        with patch.object(korean_data.requests, "get") as mocked_get:
+            snapshot = korean_data._get_naver_valuation_snapshot(
+                "005930",
+                "2020-01-02",
+            )
+
+        self.assertTrue(all(value is None for value in snapshot.values()))
+        mocked_get.assert_not_called()
+
+    def test_korean_financial_metrics_fall_back_to_krx_market_cap(self):
+        pykrx_snapshot = {
+            **korean_data._empty_valuation_snapshot(),
+            "market_cap": None,
+        }
+        with patch.object(
+            korean_data,
+            "_get_pykrx_fundamental",
+            return_value=pykrx_snapshot,
+        ), patch.object(
+            korean_data,
+            "_get_naver_valuation_snapshot",
+            return_value=korean_data._empty_valuation_snapshot(),
+        ), patch.object(
+            korean_data,
+            "_derive_metrics_from_dart",
+            return_value={},
+        ), patch.object(
+            korean_data,
+            "get_market_cap_kr",
+            return_value=123_000_000.0,
+        ) as mocked_market_cap, patch.object(
+            korean_data,
+            "_get_company_name",
+            return_value="테스트",
+        ):
+            metrics = korean_data.get_financial_metrics_kr("005930", "2026-08-27")
+
+        self.assertEqual(metrics["market_cap"], 123_000_000.0)
+        mocked_market_cap.assert_called_once_with("005930", "2026-08-27")
 
     def test_naver_finance_fallback_excludes_future_news(self):
         response = Mock()
@@ -761,6 +1086,25 @@ class AllocationConstraintTests(unittest.TestCase):
         self.assertIn("market_regime", snapshot)
         self.assertEqual(snapshot["market_regime"]["benchmark"], "SPY")
 
+    def test_risk_snapshot_accepts_korean_time_price_key(self):
+        dates = pd.bdate_range("2023-09-01", periods=100)
+
+        def price_rows(ticker, _start, _end):
+            offset = 0.4 if ticker == "B" else 0.2
+            return [
+                {"time": date.strftime("%Y-%m-%d"), "close": 100 + index + ((-1) ** index) * offset}
+                for index, date in enumerate(dates)
+            ]
+
+        with patch.object(risk_builder, "get_prices", side_effect=price_rows):
+            snapshot = risk_builder.build_risk_snapshot(
+                ["A", "B"], "2024-01-31", min_observations=60
+            )
+
+        self.assertEqual(set(snapshot["annualized_volatility"]), {"A", "B"})
+        self.assertIn("B", snapshot["correlation"]["A"])
+        self.assertEqual(snapshot["market_regime"]["benchmark"], "SPY")
+
     def test_market_regime_ignores_prices_after_analysis_date(self):
         dates = pd.bdate_range("2023-01-02", periods=260)
         base = pd.Series(np.linspace(100.0, 120.0, len(dates)), index=dates)
@@ -802,6 +1146,20 @@ class AllocationConstraintTests(unittest.TestCase):
                 {"AAPL": "Technology"},
                 {},
             )
+
+    def test_fetch_sector_uses_korean_yahoo_suffixes(self):
+        def ticker_factory(symbol):
+            info = {} if symbol.endswith(".KS") else {"sector": "Consumer Cyclical"}
+            return type("TickerStub", (), {"info": info})()
+
+        with patch.object(portfolio_report.yf, "Ticker", side_effect=ticker_factory) as mocked:
+            sector = portfolio_report.fetch_sector("257720")
+
+        self.assertEqual(sector, "Consumer Disc.")
+        self.assertEqual(
+            [call.args[0] for call in mocked.call_args_list],
+            ["257720.KS", "257720.KQ"],
+        )
 
     def test_investor_analysis_date_must_match_predict_date(self):
         payload = {

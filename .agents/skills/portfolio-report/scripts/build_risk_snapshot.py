@@ -37,6 +37,11 @@ def benchmark_for_index(index_name: str | None) -> str:
     return INDEX_BENCHMARKS.get((index_name or "sp500").lower(), "SPY")
 
 
+def _price_row_date(row: dict) -> object | None:
+    """Normalize US (`date`) and Korean (`time`) price row schemas."""
+    return row.get("date") or row.get("time")
+
+
 def build_risk_snapshot(
     tickers: list[str],
     analysis_date: str,
@@ -51,9 +56,9 @@ def build_risk_snapshot(
     for ticker in tickers:
         rows = get_prices(ticker, start_date, analysis_date)
         values = {
-            pd.Timestamp(row["date"]): float(row["close"])
+            pd.Timestamp(_price_row_date(row)): float(row["close"])
             for row in rows
-            if row.get("date") and row.get("close") is not None
+            if _price_row_date(row) and row.get("close") is not None
         }
         series = pd.Series(values, dtype=float).sort_index()
         if len(series) < min_observations + 1:
@@ -93,9 +98,9 @@ def build_risk_snapshot(
     benchmark_rows = get_prices(benchmark, start_date, analysis_date)
     benchmark_closes = pd.Series(
         {
-            pd.Timestamp(row["date"]): float(row["close"])
+            pd.Timestamp(_price_row_date(row)): float(row["close"])
             for row in benchmark_rows
-            if row.get("date") and row.get("close") is not None
+            if _price_row_date(row) and row.get("close") is not None
         },
         dtype=float,
     ).sort_index()

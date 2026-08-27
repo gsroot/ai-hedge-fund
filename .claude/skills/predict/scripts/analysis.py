@@ -303,7 +303,7 @@ def analyze_single_ticker(
                 "momentum": round(momentum_score, 1),
                 "enhanced_momentum": round(enhanced_momentum_score, 1),
                 "safety": round(safety_score, 1),
-                "sentiment": round(sentiment_score, 1),
+                "sentiment": round(sentiment_score, 2),
                 "insider": round(insider_score, 1),
                 "size_bonus": round(size_bonus, 1),
                 "lynch_garp_bonus": round(lynch_garp_bonus, 2),
