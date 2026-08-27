@@ -48,7 +48,7 @@ from ticker_utils import is_korean_index, is_korean_ticker
 
 def main():
     parser = argparse.ArgumentParser(
-        description="종목 분석 및 1년 후 수익률 예측",
+        description="다중 팩터 기반 종목 분석 및 순위 산정",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 예시:
@@ -80,6 +80,7 @@ def main():
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
     parser.add_argument("--index", type=str, choices=["sp500", "nasdaq100", "kospi", "kosdaq", "kospi200", "kosdaq150", "krx"], help="인덱스 전체 분석 (krx = KOSPI200+KOSDAQ150 대표 종목)")
     parser.add_argument("--top", type=int, default=None, help="분석 대상 종목 수 제한 (미지정 시 전체 종목 분석)")
+    parser.add_argument("--display", type=int, default=None, help="화면에 표시할 상위 종목 수 (분석 대상 수와 독립)")
     parser.add_argument("--strategy", type=str, default="hybrid",
                        choices=["fundamental", "momentum", "hybrid"],
                        help="분석 전략: fundamental(펀더멘털), momentum(모멘텀), hybrid(혼합) (기본: hybrid)")
@@ -88,7 +89,8 @@ def main():
     parser.set_defaults(sort_by_cap=True)
     parser.add_argument("--workers", type=int, default=config.MAX_WORKERS, help=f"병렬 처리 워커 수 (기본: {config.MAX_WORKERS})")
     parser.add_argument("--output", type=str, help="결과 저장 파일 (JSON)")
-    parser.add_argument("--period", type=str, default=config.DEFAULT_PERIOD, help="예측 기간 (기본: 1Y)")
+    parser.add_argument("--period", type=str, default="1Y", choices=["1Y"],
+                        help="점수 비교 기간 라벨 (현재 1Y만 지원, 실제 수익률 예측 아님)")
     parser.add_argument("--no-cache", action="store_true", help="캐시 사용 안 함 (항상 API 호출)")
     parser.add_argument("--clear-cache", action="store_true", help="캐시 삭제 후 종료")
     parser.add_argument("--cache-stats", action="store_true", help="캐시 통계 출력 후 종료")
@@ -142,7 +144,7 @@ def main():
     print(f"🔍 AI Hedge Fund - 종목 분석 시스템 ({data_source})")
     print(f"{'='*60}")
     print(f"분석 날짜: {end_date}")
-    print(f"예측 기간: {args.period}")
+    print(f"평가 기간 라벨: {args.period} (점수 기반, 수익률 예측 아님)")
     print(f"분석 전략: {strategy_names.get(args.strategy, args.strategy)}")
     print(f"대상 종목: {len(tickers)}개")
     print()
@@ -155,7 +157,7 @@ def main():
         sys.exit(1)
 
     # 결과 출력
-    print_results(results, args.top, strategy=args.strategy)
+    print_results(results, args.display, strategy=args.strategy)
 
     # 캐시 통계 출력
     if config.CACHE_ENABLED:
@@ -173,7 +175,12 @@ def main():
     if args.output:
         output_data = {
             "analysis_date": end_date,
-            "prediction_period": args.period,
+            "evaluation_horizon": args.period,
+            "return_estimate": {
+                "calibrated": False,
+                "method": "heuristic_score_mapping",
+                "label": "점수 환산값(예상수익률 아님)",
+            },
             "strategy": args.strategy,
             "total_analyzed": len(results),
             "methodology": strategy_methods.get(args.strategy, "Multi-factor analysis"),

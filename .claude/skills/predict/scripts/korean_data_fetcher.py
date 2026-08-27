@@ -466,10 +466,11 @@ def _derive_metrics_from_dart(ticker: str, end_date: str) -> dict:
         dart = _get_dart_reader()
         _dart_rate_limit()
 
-        # 기준 연도 결정
+        # 기준일 현재 공시가 완료됐다고 보수적으로 판단할 수 있는 최근 사업연도.
+        # 당해 연도 사업보고서는 다음 해에 공시되므로 항상 전년도를 기준으로 하고,
+        # 3월 말 이전에는 전년도 보고서도 아직 미공시일 수 있어 한 해 더 물린다.
         end_dt = datetime.strptime(end_date, "%Y-%m-%d")
-        year = end_dt.year
-        # 1분기(~3월)인 경우 전년도 사업보고서 사용
+        year = end_dt.year - 1
         if end_dt.month <= 3:
             year -= 1
 

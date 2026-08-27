@@ -35,6 +35,15 @@ except ImportError:
         return ticker
 
 
+def _is_historical_snapshot(end_date: str | None) -> bool:
+    if not end_date:
+        return False
+    try:
+        return datetime.strptime(end_date, "%Y-%m-%d").date() < datetime.now().date()
+    except ValueError:
+        return False
+
+
 def _calculate_derived_metrics(stock, info: dict) -> dict:
     """
     재무제표 기반 파생 지표 계산
@@ -184,6 +193,10 @@ def get_financial_metrics(ticker: str, end_date: str = None, period: str = "annu
             print(f"한국 주식 데이터 모듈 로드 실패: {e}")
             return []
 
+    # Yahoo 재무 API는 현재 스냅샷이므로 과거 기준일 분석에 섞지 않는다.
+    if _is_historical_snapshot(end_date):
+        return []
+
     try:
         stock = yf.Ticker(ticker)
         info = stock.info
@@ -331,6 +344,9 @@ def get_market_cap(ticker: str, end_date: str = None) -> Optional[float]:
         except ImportError:
             return None
 
+    if _is_historical_snapshot(end_date):
+        return None
+
     try:
         stock = yf.Ticker(ticker)
         return stock.info.get("marketCap")
@@ -349,6 +365,9 @@ def get_insider_trades(ticker: str, end_date: str = None, limit: int = 100) -> l
             return get_insider_trades_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"), limit)
         except ImportError:
             return []
+
+    if _is_historical_snapshot(end_date):
+        return []
 
     try:
         stock = yf.Ticker(ticker)
@@ -400,6 +419,9 @@ def get_company_news(ticker: str, end_date: str = None, limit: int = 100) -> lis
             return get_company_news_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"), limit)
         except ImportError:
             return []
+
+    if _is_historical_snapshot(end_date):
+        return []
 
     try:
         stock = yf.Ticker(ticker)
@@ -459,6 +481,9 @@ def search_line_items(ticker: str, line_items: list, end_date: str = None, perio
         except ImportError as e:
             print(f"한국 주식 데이터 모듈 로드 실패: {e}")
             return []
+
+    if _is_historical_snapshot(end_date):
+        return []
 
     try:
         stock = yf.Ticker(ticker)
@@ -648,6 +673,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     end_date = args.end_date or datetime.now().strftime("%Y-%m-%d")
+
+    if (
+        _is_historical_snapshot(end_date)
+        and not is_korean_ticker(args.ticker)
+        and args.data_type != "technical"
+    ):
+        parser.error(
+            "Yahoo의 과거 재무/뉴스/내부자 스냅샷은 지원되지 않습니다. "
+            "과거 미국 종목은 --data-type technical만 사용하거나 point-in-time 공급자를 연결하세요."
+        )
 
     print(f"Yahoo Finance에서 {args.ticker} 데이터 조회 중...")
 

@@ -123,13 +123,13 @@ def calculate_ensemble_score(signals: Dict[str, Dict[str, Any]]) -> Dict[str, An
     }
 
 
-def predict_return(
+def calculate_score_return_proxy(
     ensemble_score: float,
     volatility: float = 0.3,
     momentum_factor: float = 0.0
 ) -> float:
     """
-    앙상블 점수와 시장 요인을 기반으로 예상 수익률 추정.
+    앙상블 점수와 시장 요인을 퍼센트형 표시값으로 환산.
 
     Args:
         ensemble_score: 앙상블 점수 (-1.0 ~ 1.0)
@@ -137,7 +137,7 @@ def predict_return(
         momentum_factor: 모멘텀 요인 (-1.0 ~ 1.0)
 
     Returns:
-        예상 수익률 (소수점, 예: 0.15 = 15%)
+        점수 환산값 (소수점). 학습·검증된 예상수익률이 아님.
     """
     # 기본 수익률: 앙상블 점수 기반 (최대 ±20%)
     base_return = ensemble_score * 0.20
@@ -193,7 +193,7 @@ def rank_tickers(
 
     Args:
         ticker_signals: {ticker: {agent: {signal, confidence, reasoning}}}
-        period: 예측 기간
+        period: 평가 기간 라벨 (계산식 변경 없음)
         volatilities: {ticker: volatility} 종목별 변동성
         momentum_factors: {ticker: momentum} 종목별 모멘텀
 
@@ -209,7 +209,7 @@ def rank_tickers(
 
         volatility = volatilities.get(ticker, 0.3)
         momentum = momentum_factors.get(ticker, 0.0)
-        predicted_return = predict_return(
+        score_return_proxy = calculate_score_return_proxy(
             ensemble["ensemble_score"],
             volatility,
             momentum
@@ -222,8 +222,9 @@ def rank_tickers(
             "ensemble_score": ensemble["ensemble_score"],
             "signal": ensemble["signal"],
             "confidence": ensemble["confidence"],
-            "predicted_return": f"{predicted_return * 100:.1f}%",
-            "predicted_return_value": predicted_return,
+            "score_implied_return": f"{score_return_proxy * 100:.1f}%",
+            "score_implied_return_value": score_return_proxy,
+            "return_estimate_calibrated": False,
             "top_bullish": ensemble["bullish_investors"][:3],
             "top_bearish": ensemble["bearish_investors"][:3],
             "key_factors": key_factors if key_factors else ["데이터 분석 중"],
@@ -324,7 +325,7 @@ def process_ticker_batch(
 
         volatility = volatilities.get(ticker, 0.3)
         momentum = momentum_factors.get(ticker, 0.0)
-        predicted_return = predict_return(
+        score_return_proxy = calculate_score_return_proxy(
             ensemble["ensemble_score"],
             volatility,
             momentum
@@ -337,8 +338,9 @@ def process_ticker_batch(
             "ensemble_score": ensemble["ensemble_score"],
             "signal": ensemble["signal"],
             "confidence": ensemble["confidence"],
-            "predicted_return": f"{predicted_return * 100:.1f}%",
-            "predicted_return_value": predicted_return,
+            "score_implied_return": f"{score_return_proxy * 100:.1f}%",
+            "score_implied_return_value": score_return_proxy,
+            "return_estimate_calibrated": False,
             "top_bullish": ensemble["bullish_investors"][:3],
             "top_bearish": ensemble["bearish_investors"][:3],
             "key_factors": key_factors if key_factors else ["데이터 분석 중"],
@@ -362,7 +364,7 @@ def rank_tickers_batch(
 
     Args:
         ticker_signals: {ticker: {agent: {signal, confidence, reasoning}}}
-        period: 예측 기간
+        period: 평가 기간 라벨
         volatilities: {ticker: volatility} 종목별 변동성
         momentum_factors: {ticker: momentum} 종목별 모멘텀
         batch_size: 배치당 종목 수 (기본: 50)
@@ -475,21 +477,21 @@ def generate_report(
 
     if output_format == "markdown":
         lines = [
-            f"# 수익률 예측 리포트",
+            f"# 종목 상대 순위 리포트",
             f"",
             f"- **분석 종목 수**: {total}개",
-            f"- **예측 기간**: {period}",
+            f"- **평가 기간 라벨**: {period}",
             f"- **분석 방법론**: {rankings.get('methodology', 'N/A')}",
             f"",
             f"## 상위 20개 종목",
             f"",
-            f"| 순위 | 종목 | 신호 | 점수 | 예상수익률 | 신뢰도 |",
+            f"| 순위 | 종목 | 신호 | 점수 | 점수환산값 | 신뢰도 |",
             f"|------|------|------|------|------------|--------|",
         ]
         for r in results[:20]:
             lines.append(
                 f"| {r['rank']} | {r['ticker']} | {r['signal']} | "
-                f"{r['ensemble_score']:.3f} | {r['predicted_return']} | {r['confidence']}% |"
+                f"{r['ensemble_score']:.3f} | {r['score_implied_return']} | {r['confidence']}% |"
             )
 
         if total > 20:
@@ -501,10 +503,10 @@ def generate_report(
     # text format
     lines = [
         f"=" * 60,
-        f"수익률 예측 리포트",
+        f"종목 상대 순위 리포트",
         f"=" * 60,
         f"분석 종목 수: {total}개",
-        f"예측 기간: {period}",
+        f"평가 기간 라벨: {period}",
         f"",
         f"상위 20개 종목:",
         f"-" * 60,
@@ -512,7 +514,7 @@ def generate_report(
     for r in results[:20]:
         lines.append(
             f"{r['rank']:3d}. {r['ticker']:6s} | {r['signal']:8s} | "
-            f"점수: {r['ensemble_score']:+.3f} | 예상: {r['predicted_return']:>7s} | "
+            f"점수: {r['ensemble_score']:+.3f} | 점수환산: {r['score_implied_return']:>7s} | "
             f"신뢰도: {r['confidence']:3d}%"
         )
 
@@ -529,7 +531,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--signals", type=str, required=True,
                        help="JSON file with signals: {ticker: {agent: {signal, confidence, reasoning}}}")
-    parser.add_argument("--period", type=str, default="3M", help="Prediction period")
+    parser.add_argument("--period", type=str, default="3M", help="Evaluation horizon label (does not change calculation)")
     parser.add_argument("--output", type=str, default=None, help="Output file (optional)")
     parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE,
                        help=f"Batch size for processing (default: {DEFAULT_BATCH_SIZE})")

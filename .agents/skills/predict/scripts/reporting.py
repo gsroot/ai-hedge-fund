@@ -18,6 +18,14 @@ def _format_ticker_name(r):
     return ticker
 
 
+def _score_implied_return(r):
+    """점수 환산 필드를 읽는다."""
+    value = r.get("score_implied_return_pct")
+    if value is None:
+        raise ValueError(f"{r.get('ticker', 'unknown')}: score_implied_return_pct가 없습니다.")
+    return float(value or 0)
+
+
 def print_results(results, top_n=None, strategy="hybrid"):
     """결과 출력 (전략별 점수 포함). top_n=None이면 전체 출력."""
     strategy_labels = {
@@ -39,10 +47,10 @@ def print_results(results, top_n=None, strategy="hybrid"):
         print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'단기M':<7} {'장기M':<7} {'RSI':<6} {'추세':<8} {'신호':<12} {'P/E':<7}")
         print("-" * 160)
     elif strategy == "hybrid":
-        print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'펀더':<6} {'모멘':<6} {'앙상블':<6} {'신호':<12} {'수익률':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20}")
+        print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'펀더':<6} {'모멘':<6} {'앙상블':<6} {'신호':<12} {'점수환산':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20}")
         print("-" * 160)
     else:  # fundamental
-        print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'앙상블':<6} {'신호':<12} {'수익률':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20} {'주요 요인'}")
+        print(f"{'순위':<4} {'종목':<24} {'시총':<10} {'점수':<6} {'앙상블':<6} {'신호':<12} {'점수환산':<8} {'P/E':<7} {'ROE':<7} {'강세 투자자':<20} {'주요 요인'}")
         print("-" * 160)
 
     for r in results[:display_n]:
@@ -78,9 +86,9 @@ def print_results(results, top_n=None, strategy="hybrid"):
         if strategy == "momentum":
             print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {short_m:<7} {long_m:<7} {rsi_str:<6} {trend_str:<8} {signal_display:<12} {pe_str:<7}")
         elif strategy == "hybrid":
-            print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {fund_str:<6} {mom_str:<6} {ensemble_str:<6} {signal_display:<12} {r['predicted_return_1y']:>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20}")
+            print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {fund_str:<6} {mom_str:<6} {ensemble_str:<6} {signal_display:<12} {_score_implied_return(r):>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20}")
         else:  # fundamental
-            print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {ensemble_str:<6} {signal_display:<12} {r['predicted_return_1y']:>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20} {factors_str[:35]}")
+            print(f"{r['rank']:<4} {ticker_name:<24} {cap_str:<10} {r['total_score']:<6.2f} {ensemble_str:<6} {signal_display:<12} {_score_implied_return(r):>+5.1f}%   {pe_str:<7} {roe_str:<7} {bullish_str:<20} {factors_str[:35]}")
 
     # 통계 출력
     buy_signals = [r for r in results if r['signal'] in ['strong_buy', 'buy']]
@@ -97,9 +105,9 @@ def print_results(results, top_n=None, strategy="hybrid"):
     print(f"   - 매수 추천 (strong_buy + buy): {len(buy_signals)}개")
     print(f"   - 매도/회피 권장: {len(sell_signals)}개")
     if buy_signals:
-        avg_return = sum(r['predicted_return_1y'] for r in buy_signals) / len(buy_signals)
+        avg_return = sum(_score_implied_return(r) for r in buy_signals) / len(buy_signals)
         avg_ensemble = sum(r.get('ensemble_score', 0) for r in buy_signals) / len(buy_signals)
-        print(f"   - 매수 추천 종목 평균 예상 수익률: {avg_return:+.1f}%")
+        print(f"   - 매수 추천 종목 평균 점수 환산값: {avg_return:+.1f}% (예상수익률 아님)")
         print(f"   - 매수 추천 종목 평균 앙상블 점수: {avg_ensemble:.2f}")
 
     # 투자자 합의도 분석

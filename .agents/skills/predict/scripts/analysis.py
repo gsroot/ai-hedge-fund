@@ -65,7 +65,14 @@ def _resolve_company_name(ticker, metrics):
     return ticker
 
 
-def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hybrid", skip_news=False, sector_stats=None):
+def analyze_single_ticker(
+    ticker,
+    end_date,
+    prefetched_prices=None,
+    strategy="hybrid",
+    skip_news=False,
+    sector_stats=None,
+):
     """
     단일 종목 종합 분석 (앙상블 투자자 점수 포함)
 
@@ -79,7 +86,12 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hy
     """
     try:
         # 1. 재무 지표 수집
-        metrics = get_financial_metrics(ticker, end_date, period="annual", limit=2)
+        metrics = get_financial_metrics(
+            ticker,
+            end_date,
+            period="annual",
+            limit=2,
+        )
 
         if not metrics:
             return None
@@ -227,9 +239,10 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hy
                       momentum_factors + safety_factors + sentiment_factors +
                       insider_factors + size_factors + all_factors_cf)
 
-        # 예상 수익률 계산
+        # 점수를 사람이 읽기 쉬운 퍼센트 범위로만 환산한다.
+        # 학습·검증된 기대수익률 모델이 아니므로 예상 수익률로 표기하지 않는다.
         normalized = (total_score - 3) / 10
-        predicted_return = max(-0.30, min(0.40, normalized * 0.35))
+        score_implied_return = max(-0.30, min(0.40, normalized * 0.35))
 
         # 신호 결정
         if total_score >= 8:
@@ -274,7 +287,13 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hy
             "total_score": round(total_score, 2),
             "ensemble_score": round(ensemble_score, 2),
             "signal": signal,
-            "predicted_return_1y": round(predicted_return * 100, 1),
+            "score_implied_return_pct": round(score_implied_return * 100, 1),
+            "return_estimate": {
+                "calibrated": False,
+                "method": "heuristic_score_mapping",
+                "label": "점수 환산값(예상수익률 아님)",
+            },
+            "data_as_of": end_date,
             "factors": all_factors[:5],
             "strategy": strategy,
             "scores": {
@@ -310,6 +329,7 @@ def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hy
                 "roe": round(m.get('return_on_equity', 0) * 100, 1) if m.get('return_on_equity') else None,
                 "revenue_growth": round(m.get('revenue_growth', 0) * 100, 1) if m.get('revenue_growth') else None,
                 "peg": m.get('peg_ratio'),
+                "sector": m.get('sector'),
             }
         }
 

@@ -55,6 +55,14 @@ node_modules
 # Outputs
 outputs/
 
+# Rebuildable point-in-time research caches (large, local-only)
+artifacts/walk_forward/**/sec_companyfacts/
+artifacts/walk_forward/**/adjusted_ohlc.csv
+artifacts/walk_forward/**/raw_close.csv
+artifacts/walk_forward/**/combined_adjusted_ohlc.csv
+artifacts/walk_forward/**/combined_raw_close.csv
+artifacts/walk_forward/supplemental_sources/
+
 # Database files (users will have their own local databases)
 *.db
 *.db-journal

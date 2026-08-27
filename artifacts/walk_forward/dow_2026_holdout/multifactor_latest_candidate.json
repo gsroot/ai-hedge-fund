@@ -1,0 +1,84 @@
+{
+  "model_id": "sec_pit_multifactor_v1",
+  "status": "portfolio-ready",
+  "portfolio_construction_eligible": true,
+  "target_total_portfolio_fraction": 1.0,
+  "weights": {
+    "V": 0.125,
+    "CRM": 0.125,
+    "TRV": 0.125,
+    "DIS": 0.125,
+    "MSFT": 0.125,
+    "IBM": 0.125,
+    "AMZN": 0.125,
+    "AMGN": 0.125
+  },
+  "cash_weight": 0.0,
+  "evidence_grade": "promising",
+  "evidence_assessment": {
+    "grade": "promising",
+    "interpretation": "short-independent-oos-with-probabilistic-edge",
+    "portfolio_construction_effect": "informational-only-does-not-block-output",
+    "checks": {
+      "complete_historical_universe": true,
+      "beats_dia_total_return": true,
+      "beats_equal_weight_total_return": true,
+      "drawdown_no_worse_than_dia": true,
+      "drawdown_no_worse_than_equal_weight": true,
+      "independent_holdout_declared": true,
+      "minimum_126_oos_days": true,
+      "outperformance_probability_vs_dia_at_least_80pct": true,
+      "outperformance_probability_vs_equal_weight_at_least_80pct": true,
+      "minimum_three_oos_years": false,
+      "paired_ci_low_above_zero_vs_dia": false,
+      "paired_ci_low_above_zero_vs_equal_weight": false
+    },
+    "grade_requirements": {
+      "preliminary": [
+        "complete_historical_universe",
+        "beats_dia_total_return",
+        "beats_equal_weight_total_return"
+      ],
+      "promising": [
+        "complete_historical_universe",
+        "beats_dia_total_return",
+        "beats_equal_weight_total_return",
+        "drawdown_no_worse_than_dia",
+        "drawdown_no_worse_than_equal_weight",
+        "independent_holdout_declared",
+        "minimum_126_oos_days",
+        "outperformance_probability_vs_dia_at_least_80pct",
+        "outperformance_probability_vs_equal_weight_at_least_80pct"
+      ],
+      "robust": [
+        "complete_historical_universe",
+        "beats_dia_total_return",
+        "beats_equal_weight_total_return",
+        "drawdown_no_worse_than_dia",
+        "drawdown_no_worse_than_equal_weight",
+        "independent_holdout_declared",
+        "minimum_126_oos_days",
+        "outperformance_probability_vs_dia_at_least_80pct",
+        "outperformance_probability_vs_equal_weight_at_least_80pct",
+        "minimum_three_oos_years",
+        "paired_ci_low_above_zero_vs_dia",
+        "paired_ci_low_above_zero_vs_equal_weight"
+      ]
+    }
+  },
+  "signal_date": "2026-07-31",
+  "execution_date": "2026-08-03",
+  "configuration": {
+    "style": "fundamental",
+    "value_weight": 0.4,
+    "quality_weight": 0.4,
+    "growth_weight": 0.2,
+    "momentum_weight": 0.0,
+    "low_vol_weight": 0.0,
+    "momentum_lookback": 252,
+    "top_n": 8,
+    "weighting": "equal",
+    "market_filter": false
+  },
+  "validation_result": "C:\\projects\\ai-hedge-fund\\artifacts\\walk_forward\\dow_2026_holdout\\multifactor_walk_forward_results.json"
+}

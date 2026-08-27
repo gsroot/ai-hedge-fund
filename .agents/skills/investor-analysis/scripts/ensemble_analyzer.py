@@ -9,9 +9,9 @@ import argparse
 from typing import Dict, List, Any
 
 
-# 투자자별 가중치 (역사적 성과 기반)
+# 투자자별 휴리스틱 가중치 (성과로 캘리브레이션되지 않음)
 INVESTOR_WEIGHTS = {
-    "warren-buffett-analyst": 1.0,       # 장기 복리 성과 최고
+    "warren-buffett-analyst": 1.0,       # 기준 가중치
     "charlie-munger-analyst": 0.95,      # 버핏 파트너
     "aswath-damodaran-analyst": 0.90,    # DCF 전문가
     "peter-lynch-analyst": 0.85,         # GARP 선구자
@@ -99,9 +99,9 @@ def calculate_ensemble_score(signals: Dict[str, Dict[str, Any]]) -> Dict[str, An
     }
 
 
-def predict_return(ensemble_score: float, volatility: float = 0.3, momentum_factor: float = 0.0) -> float:
+def calculate_score_return_proxy(ensemble_score: float, volatility: float = 0.3, momentum_factor: float = 0.0) -> float:
     """
-    앙상블 점수와 시장 요인을 기반으로 예상 수익률 추정.
+    앙상블 점수와 시장 요인을 퍼센트형 표시값으로 환산.
 
     Args:
         ensemble_score: 앙상블 점수 (-1.0 ~ 1.0)
@@ -109,7 +109,7 @@ def predict_return(ensemble_score: float, volatility: float = 0.3, momentum_fact
         momentum_factor: 모멘텀 요인 (-1.0 ~ 1.0)
 
     Returns:
-        예상 수익률 (소수점, 예: 0.15 = 15%)
+        점수 환산값 (소수점). 학습·검증된 예상수익률이 아님.
     """
     # 기본 수익률: 앙상블 점수 기반 (최대 ±20%)
     base_return = ensemble_score * 0.20
@@ -129,7 +129,7 @@ def rank_tickers(ticker_signals: Dict[str, Dict[str, Any]], period: str = "3M") 
 
     Args:
         ticker_signals: {ticker: {agent: {signal, confidence, reasoning}}}
-        period: 예측 기간
+        period: 평가 기간 라벨
 
     Returns:
         순위가 매겨진 종목 리스트
@@ -138,14 +138,15 @@ def rank_tickers(ticker_signals: Dict[str, Dict[str, Any]], period: str = "3M") 
 
     for ticker, signals in ticker_signals.items():
         ensemble = calculate_ensemble_score(signals)
-        predicted_return = predict_return(ensemble["ensemble_score"])
+        score_return_proxy = calculate_score_return_proxy(ensemble["ensemble_score"])
 
         results.append({
             "ticker": ticker,
             "ensemble_score": ensemble["ensemble_score"],
             "signal": ensemble["signal"],
             "confidence": ensemble["confidence"],
-            "predicted_return": f"{predicted_return * 100:.1f}%",
+            "score_implied_return": f"{score_return_proxy * 100:.1f}%",
+            "return_estimate_calibrated": False,
             "top_bullish": ensemble["bullish_investors"][:3],
             "top_bearish": ensemble["bearish_investors"][:3],
         })

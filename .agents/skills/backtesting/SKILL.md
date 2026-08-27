@@ -1,485 +1,187 @@
 ---
 name: backtesting
 description: |
-  포트폴리오 백테스팅 시스템. Yahoo Finance + DART/PyKRX 기반 히스토리컬 데이터로 투자 전략 시뮬레이션.
-  모멘텀 전략, predict 전략, 하이브리드 전략 지원. Sharpe/Sortino Ratio, Max Drawdown 등 성과 지표 계산.
-  S&P 500, NASDAQ 100 + KOSPI, KOSDAQ 인덱스 지원.
-  사용 시점: "백테스트 해줘", "전략 시뮬레이션", "과거 데이터로 테스트", "수익률 검증",
-  "AAPL, MSFT 백테스트", "모멘텀 전략 테스트",
-  "KOSPI 백테스트", "삼성전자 백테스트", "한국 종목 백테스트"
+  가격·재무 데이터의 기준 시점을 지키는 포트폴리오 백테스트. 실제 거래일,
+  전일 신호/익일 시가 체결, 거래비용, Sharpe/Sortino, MDD, 실현 승률을 계산한다.
+  사용 시점: "백테스트 해줘", "전략 시뮬레이션", "과거 데이터로 검증",
+  "AAPL 모멘텀 테스트", "삼성전자 백테스트", "포트폴리오 성과 검증".
 ---
 
-# Backtesting Skill
+# Backtesting
 
-Yahoo Finance + DART/PyKRX 기반의 포트폴리오 백테스팅 시스템.
-투자 전략을 과거 데이터로 시뮬레이션하여 성과를 검증합니다.
-한국 종목(6자리 숫자 코드)은 자동으로 PyKRX/FDR로 라우팅됩니다.
+이 스킬은 전략의 과거 성과를 재현한다. 높은 수익률을 만드는 도구가 아니라,
+미래정보 누수·거래비용·유니버스 편향을 드러내는 검증 도구로 사용한다.
 
-## 빠른 시작
+## 필수 정확성 규칙
 
-### 스크립트 실행
+1. 신호에는 체결일 전 거래일 종가까지의 데이터만 사용한다.
+2. 거래는 다음 실제 거래일 시가에 체결한다.
+3. 미국 Yahoo 재무·뉴스·내부자 데이터는 현재 스냅샷이므로 과거
+   `predictor`/`hybrid` 백테스트에 사용하지 않는다. 단일 종목 엔진은 현재
+   `momentum`만 허용한다. 미국 펀더멘털 워크포워드는 SEC Company Facts를
+   `filed <= signal_date`로 거르는 아래 전용 경로만 사용한다.
+4. 한국 `predictor`/`hybrid`는 기준일 당시 공시 가능했던 DART 연간자료와
+   PyKRX 데이터를 사용한다. 다만 이후 정정공시 버전을 분리하지 못하므로 결과의
+   `validity.fundamental_data` 경고를 유지한다.
+5. `--index`는 현재 구성종목이라 생존편향이 있다. 기본 차단하며, 탐색 목적으로만
+   `--acknowledge-survivorship-bias`를 명시한다. 검증 결과에는 당시 유니버스를
+   `--tickers`로 전달한다.
+6. 수수료·슬리피지·매도세를 0으로 암묵 가정하지 않는다. 시장/브로커에 맞게
+   CLI 값을 조정한다.
+7. 벤치마크 차이는 단순 초과수익이며 회귀 알파가 아니다.
+
+## 실행
 
 ```bash
-# 기본 모멘텀 전략 백테스트
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
+# 미국 종목: point-in-time 가격만 쓰는 기본 모멘텀
+uv run python .agents/skills/backtesting/scripts/backtest.py \
   --tickers AAPL,MSFT,GOOGL \
-  --start 2024-01-01 \
-  --end 2024-12-31
+  --start 2024-01-01 --end 2024-12-31 \
+  --strategy momentum --rebalance monthly \
+  --commission-bps 5 --slippage-bps 5 --risk-free-rate 0.04
 
-# predict 전략 사용
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
-  --tickers AAPL,MSFT,NVDA \
-  --start 2024-01-01 \
-  --end 2024-12-31 \
-  --strategy predictor
-
-# S&P 500 시가총액 상위 50개 hybrid 전략 (권장)
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
-  --index sp500 \
-  --top 50 \
-  --start 2024-06-01 \
-  --end 2024-12-31 \
-  --rebalance monthly
-
-# NASDAQ 100 전체 종목 백테스트
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
-  --index nasdaq100 \
-  --start 2024-06-01 \
-  --end 2024-12-31 \
-  --strategy predictor \
-  --rebalance monthly
-
-# FAANG 종목 월별 리밸런싱
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
-  --index faang \
-  --start 2023-01-01 \
-  --end 2024-12-31 \
-  --rebalance monthly \
-  --capital 500000
-
-# KOSPI 시가총액 상위 30개 hybrid 전략
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
-  --index kospi \
-  --top 30 \
-  --start 2024-06-01 \
-  --end 2024-12-31 \
-  --rebalance monthly
-
-# 한국 특정 종목 백테스트 (삼성전자, SK하이닉스)
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
+# 한국 종목: 공시 시점을 보수적으로 지키는 hybrid
+uv run python .agents/skills/backtesting/scripts/backtest.py \
   --tickers 005930,000660 \
-  --start 2024-01-01 \
-  --end 2024-12-31
+  --start 2024-01-01 --end 2024-12-31 \
+  --strategy hybrid --rebalance monthly \
+  --commission-bps 5 --slippage-bps 5 --sell-tax-bps 18
 
-# 결과 JSON 저장
-uv run python .Codex/skills/backtesting/scripts/backtest.py \
-  --tickers NVDA,TSLA \
-  --start 2024-01-01 \
-  --end 2024-06-30 \
-  --output results.json
+# 현재 S&P 500 구성종목을 쓰는 탐색용 실행(검증용으로 해석 금지)
+uv run python .agents/skills/backtesting/scripts/backtest.py \
+  --index sp500 --top 50 --acknowledge-survivorship-bias \
+  --start 2024-01-01 --end 2024-12-31 --strategy momentum
+
+# portfolio-report가 만든 고정 목표비중을 구성일 이후 구간에서 검증
+uv run python .agents/skills/backtesting/scripts/backtest.py \
+  --weights-json portfolios/portfolio.json \
+  --start 2024-02-01 --end 2025-01-31 --rebalance monthly
 ```
 
-## 기능
+## 가격 전용 워크포워드 OOS 검증
 
-### 거래 전략
+미국 재무 데이터의 과거 빈티지가 없을 때는 펀더멘털을 현재 값으로 대체하지
+않는다. 대신 역사적 Dow 구성 변경과 해당 신호일까지의 실제 조정 OHLC만 쓰는
+가격 기반 검증을 실행할 수 있다. 각 OOS 연도의 파라미터는 직전 3년 학습
+Sharpe만으로 선택하며, 신호는 전 거래일 종가·체결은 다음 시가다.
 
-| 전략 | 설명 | 특징 |
-|------|------|------|
-| **momentum** | 모멘텀 + RSI 기반 | 20일 모멘텀 + 14일 RSI로 매수/매도 신호 |
-| **predictor** | predict 연동 | 앙상블 투자자 점수 기반 신호 생성 |
-| **hybrid** | 펀더멘털 + 모멘텀 결합 | 50% 펀더멘털 + 50% 모멘텀, 상대 순위 기반 **(권장)** |
+```bash
+uv run python .agents/skills/backtesting/scripts/walk_forward.py \
+  --start-oos 2018-01-01 --end-oos 2025-12-31 \
+  --train-years 3 --commission-bps 5 --slippage-bps 5 \
+  --sensitivity-total-cost-bps 0,25 --fixed-grid-diagnostics \
+  --output-dir artifacts/walk_forward/dow_momentum_2018_2025 \
+  --refresh-data
+```
 
-### 지원 기능
+이 모드는 가격·구성종목 시점만 검증한다. Yahoo의 사후 기업행동 조정과 공급자
+정정 이력은 빈티지별로 보존되지 않으며, 재무·뉴스·내부자 팩터를 검증한 것으로
+해석하지 않는다. 데이터 누락 종목과 월별 유니버스 커버리지는 결과에 기록한다.
 
-- **롱/숏 포지션**: 롱 매수/매도, 공매도/커버 지원
-- **마진 관리**: 공매도 시 마진 요구사항 적용
-- **리밸런싱**: 일별/주별/월별 리밸런싱 주기 선택
-- **벤치마크 비교**: SPY 대비 초과 수익률(α) 계산 (한국 종목은 `--benchmark` 옵션으로 변경 권장)
-- **성과 지표**: Sharpe, Sortino, Max Drawdown 등
+## SEC point-in-time 다중팩터 검증
 
-### 성과 지표
+미국 재무 팩터는 SEC EDGAR Company Facts의 실제 제출일을 기준으로 복원한다.
+가치·품질·성장·모멘텀·저변동성 조합을 직전 3년 학습 성과로 선택하고 다음 1년을
+OOS로 평가한다. DIA뿐 아니라 당시 Dow 구성종목 동일가중도 기준선으로 쓴다.
 
-| 지표 | 설명 | 계산 방식 |
-|------|------|----------|
-| **Sharpe Ratio** | 위험 대비 수익률 | (수익률 - 무위험수익률) / 표준편차 × √252 |
-| **Sortino Ratio** | 하방 위험 대비 수익률 | 초과수익률 / 하방편차 × √252 |
-| **Max Drawdown** | 최대 낙폭 | (고점 - 저점) / 고점 × 100 |
-| **Total Return** | 총 수익률 | (최종가치 - 초기자본) / 초기자본 × 100 |
-| **Annualized Return** | 연환산 수익률 | (1 + 총수익률)^(365/일수) - 1 |
-| **Win Rate** | 승률 | 수익 거래 / 총 거래 × 100 |
+```bash
+uv run python .agents/skills/backtesting/scripts/multifactor_walk_forward.py \
+  --start-oos 2018-01-01 --end-oos 2025-12-31 \
+  --train-years 3 --commission-bps 5 --slippage-bps 5 \
+  --bootstrap-samples 2000 \
+  --output-dir artifacts/walk_forward/dow_multifactor_2018_2025 \
+  --refresh-prices
+```
 
-## CLI 옵션
+상장폐지 후 Yahoo가 과거 가격을 제거한 종목은 검증 가능한 별도 CSV로 보완한다.
+CSV는 `Date,Open,Close,Adj Close`를 포함해야 하며 기존 Yahoo 관측값을 덮지 않고
+누락값만 채운다. 파일 경로·SHA-256·기간은 결과에 기록된다.
+
+```bash
+uv run python .agents/skills/backtesting/scripts/multifactor_walk_forward.py \
+  ... \
+  --supplemental-price WBA=artifacts/walk_forward/supplemental_sources/WBA_stock_data.csv
+```
+
+선형 예측 모델은 외부 OOS 안에서 다시 학습/검증을 나누는 nested 경로로 비교한다.
+알파, 보유 종목 수, 가중 방식, 월/분기 리밸런싱은 내부 검증에서만 선택한다.
+
+```bash
+uv run python .agents/skills/backtesting/scripts/ridge_walk_forward.py \
+  --start-oos 2018-01-01 --end-oos 2025-12-31 --train-years 3 \
+  --factor-panel artifacts/walk_forward/dow_multifactor_2018_2025/point_in_time_factor_panel.csv \
+  --adjusted-price-cache artifacts/walk_forward/dow_multifactor_2018_2025/adjusted_ohlc.csv \
+  --output-dir artifacts/walk_forward/dow_multifactor_2018_2025
+```
+
+`--independent-holdout`은 모델·그리드·기간을 결과 확인 전에 동결한 경우에만 쓴다.
+백테스트는 포트폴리오 구성을 승인하거나 차단하지 않는다. 검증 근거를 `weak`,
+`preliminary`, `promising`, `robust`로 분류해 포트폴리오와 함께 보여준다.
+`multifactor_latest_candidate.json`은 근거 등급과 무관하게 선택 모델의 전체 목표비중을
+`weights`에 기록하며 `target_total_portfolio_fraction=1.0`으로 생성한다.
+
+`promising`은 독립 OOS가 126 거래일 이상이고 아래 조건을 모두 만족한 경우다.
+
+- 역사적 월별 유니버스 가격 커버리지 100%
+- 비용 반영 구간 총수익률이 DIA와 역사적 동일가중을 모두 상회
+- 최대낙폭이 DIA와 역사적 동일가중보다 모두 나쁘지 않음
+- 두 기준선 대비 paired block bootstrap 우위 확률이 각각 80% 이상
+- 결과 확인 전에 모델·그리드·기간을 동결한 독립 홀드아웃 선언
+
+`robust`는 위 조건에 더해 최소 3년 OOS와 두 기준선 대비 CAGR 차이의 paired
+bootstrap 95% 하한 양수를 요구한다. `preliminary`는 완전한 유니버스에서 두
+기준선의 총수익률을 앞선 상태다. 이 등급은 성과 근거의 강도이지 자금 비중 제한이나
+매수 승인 플래그가 아니다.
+
+## 주요 옵션
 
 | 옵션 | 설명 | 기본값 |
-|------|------|--------|
-| `--tickers` | 종목 리스트 (콤마 구분) | - |
-| `--index` | 인덱스 또는 사전 정의 그룹 (sp500, nasdaq100, kospi, kosdaq 등) | - |
-| `--top` | 인덱스에서 상위 N개만 사용 | 0 (전체) |
-| `--no-sort-by-cap` | 시가총액 정렬 비활성화 | true (기본 정렬됨) |
-| `--start` | 시작 날짜 (YYYY-MM-DD) | 필수 |
-| `--end` | 종료 날짜 (YYYY-MM-DD) | 필수 |
-| `--capital` | 초기 자본 | 100000 |
-| `--strategy` | 전략 (momentum, predictor, hybrid) | hybrid |
-| `--rebalance` | 리밸런싱 주기 (daily, weekly, monthly) | weekly |
-| `--benchmark` | 벤치마크 티커 | SPY |
-| `--margin` | 마진 요구율 | 0.5 |
-| `--workers` | 병렬 처리 워커 수 | 10 |
-| `--output` | 결과 JSON 저장 경로 | - |
+|---|---|---|
+| `--tickers` | 콤마 구분 고정 유니버스 | - |
+| `--weights-json` | 구성일과 0~1 목표비중을 담은 portfolio JSON | - |
+| `--index` | 현재 인덱스/사전 그룹. 승인 플래그 필수 | - |
+| `--acknowledge-survivorship-bias` | 현재 구성종목 사용의 편향 승인 | false |
+| `--start`, `--end` | 백테스트 기간 | 필수 |
+| `--strategy` | `momentum`, `predictor`, `hybrid` | momentum |
+| `--rebalance` | `daily`, `weekly`, `monthly` | weekly |
+| `--commission-bps` | 편도 수수료 | 5 |
+| `--slippage-bps` | 편도 슬리피지 | 5 |
+| `--sell-tax-bps` | 매도 거래세 | 0 |
+| `--risk-free-rate` | 연 무위험수익률, 소수 | 0 |
+| `--benchmark` | 비교 벤치마크 | SPY |
+| `--output` | JSON 저장 경로 | - |
 
-## 지원 인덱스
+## 결과 해석
 
-| 인덱스 | 설명 | 종목 수 | 소스 |
-|--------|------|---------|------|
-| `sp500` | S&P 500 전체 | ~500개 | Wikipedia |
-| `nasdaq100` | NASDAQ 100 전체 | ~100개 | Wikipedia |
-| `sp500-top10` | S&P 500 시가총액 상위 10개 | 10개 | 하드코딩 |
-| `nasdaq-top10` | NASDAQ 시가총액 상위 10개 | 10개 | 하드코딩 |
-| `faang` | META, AAPL, AMZN, NFLX, GOOGL | 5개 | 하드코딩 |
-| `kospi` | KOSPI 전체 | ~950개 | PyKRX |
-| `kosdaq` | KOSDAQ 전체 | ~1,700개 | PyKRX |
+- `total_return`, `annualized_return`: 비용 반영 성과
+- `sharpe_ratio`, `sortino_ratio`: 사용자가 지정한 무위험수익률 반영
+- `max_drawdown`: 고점 대비 최대 손실
+- `win_rate`: 매수 횟수나 confidence가 아니라 실제 청산 거래의 실현손익 기준
+- `transaction_costs`: 수수료·세금·슬리피지의 누적 비용
+- `benchmark_excess_return`: 포트폴리오 총수익률 - 벤치마크 총수익률
+- `validity.survivorship_bias`: 현재 인덱스 구성종목 사용 여부
+- 목표비중 백테스트는 `analysis_date < start`를 강제해 포트폴리오 선정 후 성과만 측정
 
-### 사전 정의 종목 그룹 (시가총액 기준)
+## 검증 체크리스트
 
-| 그룹 | 종목 |
-|------|------|
-| `sp500-top10` | AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA, BRK-B, UNH, JPM |
-| `nasdaq-top10` | AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA, AVGO, COST, NFLX |
-| `faang` | META, AAPL, AMZN, NFLX, GOOGL |
+- `trade_history[].signal_date < trade_history[].date`인지 확인한다.
+- 이름별 비중, 현금, 거래비용이 의도한 설정과 맞는지 확인한다.
+- `--index` 결과는 종목선정 성과의 증거로 사용하지 않는다.
+- 한 기간의 최고 성과만 고르지 말고 훈련/검증/워크포워드 구간을 분리한다.
+- 이미 확인한 OOS를 바탕으로 모델을 바꿨다면 그 구간을 개발 구간으로 강등하고,
+  새 기간만 독립 홀드아웃으로 표시한다.
+- `evidence_assessment`를 포트폴리오 생성 승인이나 자금 비중 제한으로 해석하지 않는다.
+- 근거 등급이 낮아도 포트폴리오는 생성하되, 성과 불확실성과 실패한 검증 항목을
+  결과에서 숨기지 않는다. 서로 다른 methodology는 별도로 검증한다.
+- 분할·상장폐지·배당·세금·유동성·시장충격 등 미모델링 항목을 함께 보고한다.
 
-**참고**: 시가총액 내림차순 정렬이 기본 적용됩니다.
-정렬을 비활성화하려면 `--no-sort-by-cap` 옵션을 사용하세요.
-
-```bash
-# 시가총액 기준 NASDAQ 100 상위 30개로 hybrid 전략 백테스트 (권장)
-uv run python backtest.py --index nasdaq100 --top 30 \
-  --rebalance monthly --start 2024-06-01 --end 2024-12-31
-```
-
-## 출력 예시
-
-```
-======================================================================
-📊 백테스트 시작: 2024-01-01 ~ 2024-12-31
-   종목: AAPL, MSFT, GOOGL
-   초기 자본: $100,000
-   전략: momentum
-   리밸런싱: weekly
-======================================================================
-
-📥 가격 데이터 로딩 중...
-📅 총 252일 중 52회 리밸런싱 예정
-
-   진행: 10% | 날짜: 2024-01-26 | 포트폴리오: $102,500
-   진행: 20% | 날짜: 2024-03-15 | 포트폴리오: $108,200
-   ...
-
-======================================================================
-📈 백테스트 결과
-======================================================================
-
-💰 포트폴리오 성과
-   초기 자본:      $        100,000
-   최종 가치:      $        125,430
-   총 수익률:              25.43%
-   연환산 수익률:          25.43%
-
-📊 벤치마크 비교 (SPY)
-   벤치마크 수익률:        22.15%
-   초과 수익 (α):          3.28%
-
-📉 위험 지표
-   Sharpe Ratio:            1.85
-   Sortino Ratio:           2.42
-   Max Drawdown:           -8.75%
-   MDD 날짜:         2024-04-19
-
-📋 거래 통계
-   총 거래 수:               45
-   승률:                   62.2%
-
-📦 최종 포지션
-   AAPL: Long 150주, Short 0주
-   MSFT: Long 80주, Short 0주
-   GOOGL: Long 0주, Short 0주
-   현금: $15,230
-
-======================================================================
-```
-
-## JSON 출력 형식
-
-```json
-{
-  "metrics": {
-    "sharpe_ratio": 1.85,
-    "sortino_ratio": 2.42,
-    "max_drawdown": -8.75,
-    "max_drawdown_date": "2024-04-19",
-    "total_return": 25.43,
-    "annualized_return": 25.43,
-    "win_rate": 62.2,
-    "total_trades": 45
-  },
-  "benchmark_return": 22.15,
-  "final_value": 125430.0,
-  "portfolio_values": [
-    {"date": "2024-01-02", "value": 100000.0},
-    {"date": "2024-01-03", "value": 100250.0},
-    ...
-  ],
-  "trade_history": [
-    {
-      "date": "2024-01-08",
-      "ticker": "AAPL",
-      "action": "buy",
-      "quantity": 50,
-      "price": 185.32,
-      "confidence": 0.72
-    },
-    ...
-  ]
-}
-```
-
-## 아키텍처
-
-```
-┌─────────────────────────────────────────────┐
-│            BacktestEngine                   │
-├─────────────────────────────────────────────┤
-│  1. 가격 데이터 로딩 (yfinance/PyKRX batch)  │
-│  2. 리밸런싱 날짜 계산                      │
-│  3. 일별 시뮬레이션 루프                    │
-│     ├─ 신호 생성 (momentum/predictor/hybrid)│
-│     ├─ 포지션 크기 계산                     │
-│     ├─ 거래 실행 (Portfolio)                │
-│     └─ 포트폴리오 가치 기록                 │
-│  4. 성과 지표 계산                          │
-│  5. 벤치마크 비교                           │
-└─────────────────────────────────────────────┘
-         │
-         ▼
-┌─────────────────────────────────────────────┐
-│            Portfolio                        │
-├─────────────────────────────────────────────┤
-│  - 현금 관리                                │
-│  - 롱/숏 포지션 관리                        │
-│  - 마진 관리                                │
-│  - 실현 손익 추적                           │
-│  - 총 가치 계산                             │
-└─────────────────────────────────────────────┘
-```
-
-## 전략 상세
-
-### 모멘텀 전략
-
-```python
-# 20일 모멘텀
-momentum = current_price / price_20days_ago - 1
-
-# 14일 RSI
-rsi = 100 - (100 / (1 + avg_gain / avg_loss))
-
-# 매수 조건
-if momentum > 0.1 and rsi < 70:
-    action = BUY
-
-# 매도 조건
-if momentum < -0.1 and rsi > 30:
-    action = SELL
-```
-
-### predict 전략
-
-predict의 앙상블 분석 결과를 **상대적 순위 기반**으로 활용:
-
-```python
-# 모든 종목 점수 계산 후 순위 결정
-ticker_scores = [(ticker, analyze_single_ticker(ticker, date)) for ticker in tickers]
-ticker_scores.sort(by_score, reverse=True)
-
-# 상대적 순위로 신호 생성
-top_40% → BUY (신뢰도: 순위에 비례)
-middle  → HOLD
-bottom_20% → SELL
-```
-
-| 순위 | 액션 | 신뢰도 |
-|------|------|--------|
-| 상위 40% | BUY | 0.5~1.0 (높은 순위일수록 높음) |
-| 중간 | HOLD | 0.5 |
-| 하위 20% | SELL | 0.3~0.6 |
-
-**장점**: 절대 임계값 대신 상대 순위 사용으로 항상 일정 수의 거래 발생
-
-### hybrid 전략 (권장)
-
-펀더멘털과 모멘텀을 50:50으로 결합한 하이브리드 전략:
-
-```python
-# 펀더멘털 점수: predict 앙상블 분석
-fundamental_score = analyze_single_ticker(ticker, date)  # 0~10
-
-# 모멘텀 점수: 가격 추세 + RSI
-momentum_score = calculate_momentum_score(ticker, price_df)  # 0~10
-  - 단기 모멘텀 (20일): 가격 추세
-  - 장기 모멘텀 (60일): 중기 추세
-  - RSI 보정: 과매수/과매도 조정
-  - 추세 보너스: 상승 추세면 가점
-
-# 하이브리드 점수
-hybrid_score = fundamental_score * 0.5 + momentum_score * 0.5
-
-# 상대 순위로 신호 생성
-top_30% → BUY
-middle  → HOLD
-bottom_20% → SELL
-```
-
-**장점**:
-- 펀더멘털만으로 놓칠 수 있는 모멘텀 주도 상승장 (TSLA, NVDA 등) 포착
-- 모멘텀만으로 빠질 수 있는 가치 함정 회피
-- 시가총액 정렬과 결합 시 최적 성과
-
-## 데이터 소스
-
-| 데이터 | 해외 | 한국 |
-|--------|------|------|
-| 가격 데이터 | Yahoo Finance (`yf.download` 배치) | FinanceDataReader / PyKRX |
-| 시가총액 | Yahoo Finance | KRX Open API / PyKRX |
-| 벤치마크 | SPY (S&P 500 ETF) | 한국 종목 시 `--benchmark` 변경 권장 |
-| 무위험 수익률 | 4.34% (미국 국채 기준) | 동일 |
-
-## 실제 백테스트 결과 예시
-
-### NASDAQ 100 상위 30 (2024 하반기, hybrid + 시가총액 정렬) - 권장 설정
-```
-💰 포트폴리오 성과
-   초기 자본:      $        100,000
-   최종 가치:      $        125,396
-   총 수익률:                25.40%
-   연환산 수익률:            47.92%
-
-📊 벤치마크 비교 (SPY)
-   벤치마크 수익률:          12.53%
-   초과 수익 (α):            12.87%
-
-📉 위험 지표
-   Sharpe Ratio:              1.34
-   Sortino Ratio:             1.77
-   Max Drawdown:            -18.07%
-
-📦 최종 포지션
-   NVDA, GOOGL, GOOG, MSFT, META, AVGO 집중 보유
-```
-
-### S&P 500 상위 50 (2024 하반기, hybrid + 시가총액 정렬)
-```
-💰 포트폴리오 성과
-   초기 자본:      $        100,000
-   최종 가치:      $        117,979
-   총 수익률:                17.98%
-   연환산 수익률:            33.11%
-
-📊 벤치마크 비교 (SPY)
-   벤치마크 수익률:          12.53%
-   초과 수익 (α):             5.45%
-
-📉 위험 지표
-   Sharpe Ratio:              1.15
-   Max Drawdown:            -16.69%
-```
-
-### 전략 비교 (NASDAQ 100 --top 100, 2024 하반기)
-
-| 전략 | 총 수익률 | 벤치마크 대비 (α) | Sharpe Ratio |
-|------|----------|------------------|--------------|
-| predictor (알파벳순) | 2.33% | **-10.19%** | 0.09 |
-| hybrid + 시가총액 정렬 | 25.40% | **+12.87%** | 1.34 |
-
-**핵심 개선 포인트**:
-1. 알파벳순(MMM, AOS...)→시가총액순(NVDA, AAPL...) 정렬
-2. 펀더멘털만→펀더멘털+모멘텀 결합으로 TSLA, NVDA 등 포착
-
-## 성능 최적화
-
-### 병렬 처리
-
-대규모 종목 분석 시 `--workers` 옵션으로 병렬 처리 워커 수를 조절합니다:
+## 테스트
 
 ```bash
-# 기본값 (10 workers)
-uv run python backtest.py --index nasdaq100 --strategy predictor ...
-
-# 더 많은 워커 사용 (빠르지만 API rate limit 주의)
-uv run python backtest.py --index sp500 --top 100 --workers 20 --strategy predictor ...
+.venv/Scripts/python.exe -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-### 성능 벤치마크
-
-| 종목 수 | 리밸런싱 | 순차 처리 예상 | 병렬 처리 (10 workers) | 속도 향상 |
-|---------|----------|---------------|----------------------|----------|
-| 10개 | 12회 | ~2.5분 | ~30초 | ~5x |
-| 100개 | 12회 | ~26분 | ~6분 | ~4x |
-| 100개 | 4회 | ~8분 | **~2분** | ~4x |
-
-### 최적화 팁
-
-1. **리밸런싱 주기**: `monthly` > `weekly` > `daily` (적을수록 빠름)
-2. **종목 수 제한**: `--top N` 옵션으로 분석 종목 제한
-3. **워커 수**: API rate limit에 따라 10~20 권장
-4. **캐시 활용**: 동일 날짜 재실행 시 캐시 적용됨
-
-## 주의사항
-
-1. **백테스트 한계**: 과거 성과가 미래 수익을 보장하지 않음
-2. **슬리피지**: 실제 거래 시 슬리피지, 수수료가 발생
-3. **유동성**: 소형주의 경우 실제 체결 어려울 수 있음
-4. **생존자 편향**: 현재 존재하는 종목만 테스트
-5. **데이터 지연**: Yahoo Finance 데이터는 약간의 지연 가능
-6. **한국 종목**: DART 재무데이터 사용 시 `DART_API_KEY` 환경변수 필요. 벤치마크 기본값이 SPY이므로, 한국 종목 백테스트 시 적절한 벤치마크로 변경을 권장합니다 (예: `--benchmark 069500` KODEX 200).
-
-## 사용 예시
-
-### 예시 1: 기본 백테스트
-```
-"AAPL, MSFT, GOOGL을 2024년 한 해 동안 백테스트해줘"
-→ uv run python backtest.py --tickers AAPL,MSFT,GOOGL --start 2024-01-01 --end 2024-12-31
-```
-
-### 예시 2: NASDAQ 100 전체 백테스트
-```
-"NASDAQ 100 전체 종목으로 predict 전략 백테스트"
-→ uv run python backtest.py --index nasdaq100 --start 2024-06-01 --end 2024-12-31 --strategy predictor --rebalance monthly
-```
-
-### 예시 3: S&P 500 상위 50개 백테스트 (권장)
-```
-"S&P 500에서 시가총액 상위 50개 종목으로 hybrid 전략 백테스트"
-→ uv run python backtest.py --index sp500 --top 50 --start 2024-06-01 --end 2024-12-31 --rebalance monthly
-```
-
-### 예시 4: 장기 백테스트
-```
-"FAANG 종목으로 3년간 월별 리밸런싱 백테스트"
-→ uv run python backtest.py --index faang --start 2022-01-01 --end 2024-12-31 --rebalance monthly
-```
-
-### 예시 5: 고자본 테스트
-```
-"50만 달러로 S&P 500 상위 10개 종목 백테스트"
-→ uv run python backtest.py --index sp500-top10 --start 2024-01-01 --end 2024-12-31 --capital 500000
-```
-
-### 예시 6: KOSPI 상위 종목 백테스트
-```
-"KOSPI 시가총액 상위 30개 종목으로 hybrid 백테스트"
-→ uv run python backtest.py --index kospi --top 30 --start 2024-06-01 --end 2024-12-31 --rebalance monthly
-```
-
-### 예시 7: 한국 특정 종목 백테스트
-```
-"삼성전자, SK하이닉스 2024년 백테스트"
-→ uv run python backtest.py --tickers 005930,000660 --start 2024-01-01 --end 2024-12-31
-```
+스크립트: [scripts/backtest.py](scripts/backtest.py),
+[scripts/walk_forward.py](scripts/walk_forward.py),
+[scripts/multifactor_walk_forward.py](scripts/multifactor_walk_forward.py),
+[scripts/ridge_walk_forward.py](scripts/ridge_walk_forward.py)

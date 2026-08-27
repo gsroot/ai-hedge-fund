@@ -1,0 +1,84 @@
+{
+  "model_id": "sec_pit_multifactor_v1",
+  "status": "portfolio-ready",
+  "portfolio_construction_eligible": true,
+  "target_total_portfolio_fraction": 1.0,
+  "weights": {
+    "V": 0.15,
+    "NVDA": 0.0913072233568675,
+    "MSFT": 0.15,
+    "TRV": 0.145022326540977,
+    "AMZN": 0.0878743257556391,
+    "JPM": 0.15,
+    "DIS": 0.13170088395974683,
+    "MRK": 0.0940952403867694
+  },
+  "cash_weight": 2.220446049250313e-16,
+  "evidence_grade": "weak",
+  "evidence_assessment": {
+    "grade": "weak",
+    "interpretation": "benchmark-edge-not-demonstrated",
+    "portfolio_construction_effect": "informational-only-does-not-block-output",
+    "checks": {
+      "complete_historical_universe": true,
+      "beats_dia_total_return": false,
+      "beats_equal_weight_total_return": false,
+      "drawdown_no_worse_than_dia": true,
+      "drawdown_no_worse_than_equal_weight": true,
+      "independent_holdout_declared": false,
+      "minimum_126_oos_days": true,
+      "outperformance_probability_vs_dia_at_least_80pct": false,
+      "outperformance_probability_vs_equal_weight_at_least_80pct": false,
+      "minimum_three_oos_years": true,
+      "paired_ci_low_above_zero_vs_dia": false,
+      "paired_ci_low_above_zero_vs_equal_weight": false
+    },
+    "grade_requirements": {
+      "preliminary": [
+        "complete_historical_universe",
+        "beats_dia_total_return",
+        "beats_equal_weight_total_return"
+      ],
+      "promising": [
+        "complete_historical_universe",
+        "beats_dia_total_return",
+        "beats_equal_weight_total_return",
+        "drawdown_no_worse_than_dia",
+        "drawdown_no_worse_than_equal_weight",
+        "independent_holdout_declared",
+        "minimum_126_oos_days",
+        "outperformance_probability_vs_dia_at_least_80pct",
+        "outperformance_probability_vs_equal_weight_at_least_80pct"
+      ],
+      "robust": [
+        "complete_historical_universe",
+        "beats_dia_total_return",
+        "beats_equal_weight_total_return",
+        "drawdown_no_worse_than_dia",
+        "drawdown_no_worse_than_equal_weight",
+        "independent_holdout_declared",
+        "minimum_126_oos_days",
+        "outperformance_probability_vs_dia_at_least_80pct",
+        "outperformance_probability_vs_equal_weight_at_least_80pct",
+        "minimum_three_oos_years",
+        "paired_ci_low_above_zero_vs_dia",
+        "paired_ci_low_above_zero_vs_equal_weight"
+      ]
+    }
+  },
+  "signal_date": "2025-11-28",
+  "execution_date": "2025-12-01",
+  "configuration": {
+    "style": "balanced",
+    "value_weight": 0.25,
+    "quality_weight": 0.25,
+    "growth_weight": 0.2,
+    "momentum_weight": 0.25,
+    "low_vol_weight": 0.05,
+    "momentum_lookback": 252,
+    "top_n": 8,
+    "weighting": "score_inverse_vol",
+    "market_filter": true
+  },
+  "validation_result": "C:\\projects\\ai-hedge-fund\\artifacts\\walk_forward\\dow_multifactor_2018_2025\\multifactor_walk_forward_results.json"
+}

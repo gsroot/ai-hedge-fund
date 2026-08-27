@@ -33,21 +33,34 @@ THIN_BORDER = Border(
 )
 
 INVESTOR_CONFIG = {
-    "buffett": {
-        "display": "Warren Buffett",
-        "short": "W.Buffett",
-        "weight": 1.0,
-    },
-    "lynch": {
-        "display": "Peter Lynch",
-        "short": "P.Lynch",
-        "weight": 0.85,
-    },
-    "fisher": {
-        "display": "Phil Fisher",
-        "short": "P.Fisher",
-        "weight": 0.82,
-    },
+    "buffett": {"display": "Warren Buffett", "short": "W.Buffett", "weight": 1.0},
+    "munger": {"display": "Charlie Munger", "short": "C.Munger", "weight": 0.95},
+    "damodaran": {"display": "Aswath Damodaran", "short": "A.Damodaran", "weight": 0.90},
+    "lynch": {"display": "Peter Lynch", "short": "P.Lynch", "weight": 0.85},
+    "graham": {"display": "Ben Graham", "short": "B.Graham", "weight": 0.85},
+    "fisher": {"display": "Phil Fisher", "short": "P.Fisher", "weight": 0.82},
+    "druckenmiller": {"display": "Stanley Druckenmiller", "short": "S.Druckenmiller", "weight": 0.80},
+    "pabrai": {"display": "Mohnish Pabrai", "short": "M.Pabrai", "weight": 0.78},
+    "burry": {"display": "Michael Burry", "short": "M.Burry", "weight": 0.75},
+    "ackman": {"display": "Bill Ackman", "short": "B.Ackman", "weight": 0.75},
+    "jhunjhunwala": {"display": "Rakesh Jhunjhunwala", "short": "R.Jhunjhunwala", "weight": 0.72},
+    "wood": {"display": "Cathie Wood", "short": "C.Wood", "weight": 0.70},
+}
+
+INVESTOR_ALIASES = {
+    "버핏": "buffett", "멍거": "munger", "다모다란": "damodaran",
+    "린치": "lynch", "그레이엄": "graham", "피셔": "fisher",
+    "드러켄밀러": "druckenmiller", "파브라이": "pabrai", "버리": "burry",
+    "애크먼": "ackman", "준준왈라": "jhunjhunwala", "우드": "wood",
+}
+
+AGENT_TO_INVESTOR = {
+    "warren-buffett-analyst": "buffett", "charlie-munger-analyst": "munger",
+    "aswath-damodaran-analyst": "damodaran", "peter-lynch-analyst": "lynch",
+    "ben-graham-analyst": "graham", "phil-fisher-analyst": "fisher",
+    "stanley-druckenmiller-analyst": "druckenmiller", "mohnish-pabrai-analyst": "pabrai",
+    "michael-burry-analyst": "burry", "bill-ackman-analyst": "ackman",
+    "rakesh-jhunjhunwala-analyst": "jhunjhunwala", "cathie-wood-analyst": "wood",
 }
 
 
@@ -92,6 +105,107 @@ def load_predict_results(path: Path, top_n: int) -> tuple[dict[str, Any], list[d
     return payload, payload["rankings"][:top_n]
 
 
+def load_investor_analyses(
+    path: Path,
+    expected_analysis_date: str,
+) -> dict[str, dict[str, dict[str, Any]]]:
+    """독립 investor-analysis 결과를 표준 ticker → investor 구조로 읽는다."""
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    raw = payload.get("analyses", payload)
+    payload_date = payload.get("analysis_date") if isinstance(payload, dict) else None
+    if payload_date and payload_date != expected_analysis_date:
+        raise ValueError(
+            f"investor-analysis 기준일({payload_date})이 predict 기준일({expected_analysis_date})과 다릅니다."
+        )
+    normalized: dict[str, dict[str, dict[str, Any]]] = {}
+    for ticker, analyses in raw.items():
+        normalized[ticker.upper()] = {}
+        for investor, result in analyses.items():
+            canonical = AGENT_TO_INVESTOR.get(investor, INVESTOR_ALIASES.get(investor, investor))
+            result_date = result.get("analysis_date") or payload_date
+            if result_date != expected_analysis_date:
+                raise ValueError(
+                    f"{ticker}/{canonical}: analysis_date가 없거나 predict 기준일과 다릅니다."
+                )
+            normalized[ticker.upper()][canonical] = result
+    return normalized
+
+
+def load_risk_snapshot(path: Path, expected_analysis_date: str) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    snapshot_date = payload.get("analysis_date")
+    if snapshot_date != expected_analysis_date:
+        raise ValueError(
+            f"risk snapshot 기준일({snapshot_date})이 predict 기준일({expected_analysis_date})과 다릅니다."
+        )
+    if not isinstance(payload.get("annualized_volatility"), dict):
+        raise ValueError("risk snapshot에 annualized_volatility가 없습니다.")
+    if not isinstance(payload.get("correlation"), dict):
+        raise ValueError("risk snapshot에 correlation이 없습니다.")
+    return payload
+
+
+def apply_risk_adjustment(
+    candidates: list[dict[str, Any]],
+    risk_snapshot: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """변동성과 후보 간 양의 상관을 원시 비중 점수에 반영한다."""
+    volatilities = risk_snapshot["annualized_volatility"]
+    correlations = risk_snapshot["correlation"]
+    adjusted: list[dict[str, Any]] = []
+    excluded: list[dict[str, Any]] = []
+    volatility_eligible = []
+    for item in candidates:
+        ticker = item["ticker"]
+        volatility = volatilities.get(ticker)
+        if not isinstance(volatility, (int, float)) or volatility <= 0:
+            item["exclusion_reason"] = "연환산 변동성 데이터 부족"
+            excluded.append(item)
+            continue
+        volatility_eligible.append(item)
+
+    candidate_tickers = [item["ticker"] for item in volatility_eligible]
+    for item in volatility_eligible:
+        ticker = item["ticker"]
+        volatility = volatilities[ticker]
+        peer_correlations = []
+        missing_peer = None
+        for peer in candidate_tickers:
+            if peer == ticker:
+                continue
+            value = correlations.get(ticker, {}).get(peer)
+            if not isinstance(value, (int, float)):
+                missing_peer = peer
+                break
+            peer_correlations.append(clamp(float(value), -1.0, 1.0))
+        if missing_peer:
+            item["exclusion_reason"] = f"상관 데이터 부족 ({missing_peer})"
+            excluded.append(item)
+            continue
+        avg_positive_correlation = (
+            sum(max(value, 0.0) for value in peer_correlations) / len(peer_correlations)
+            if peer_correlations else 0.0
+        )
+        diversification_multiplier = 1.0 - 0.5 * avg_positive_correlation
+        item["annualized_volatility"] = float(volatility)
+        item["avg_positive_correlation"] = avg_positive_correlation
+        item["raw_weight_score"] = (
+            item["raw_weight_score"]
+            / max(float(volatility), 0.10)
+            * diversification_multiplier
+        )
+        adjusted.append(item)
+    return adjusted, excluded
+
+
+def score_implied_return(stock: dict[str, Any]) -> float:
+    """검증된 기대수익률이 아닌 predict 점수 환산값을 읽는다."""
+    value = stock.get("score_implied_return_pct")
+    if value is None:
+        raise ValueError(f"{stock.get('ticker', 'unknown')}: score_implied_return_pct가 없습니다.")
+    return float(value or 0)
+
+
 def normalize_sector(sector: str | None) -> str:
     if not sector:
         return "Unknown"
@@ -119,123 +233,24 @@ def fetch_sector(ticker: str) -> str:
         return "Unknown"
 
 
-def fetch_sectors(stocks: list[dict[str, Any]]) -> dict[str, str]:
-    sectors: dict[str, str] = {}
+def fetch_sectors(stocks: list[dict[str, Any]], analysis_date: str) -> dict[str, str]:
+    sectors = {
+        stock["ticker"]: normalize_sector(stock.get("metrics", {}).get("sector"))
+        for stock in stocks
+        if stock.get("metrics", {}).get("sector")
+    }
+    # 과거 리포트에 현재 Yahoo 섹터를 섞지 않는다.
+    if analysis_date < datetime.now().strftime("%Y-%m-%d"):
+        return {stock["ticker"]: sectors.get(stock["ticker"], "Unknown") for stock in stocks}
+    missing = [stock for stock in stocks if stock["ticker"] not in sectors]
     with ThreadPoolExecutor(max_workers=8) as executor:
-        futures = {executor.submit(fetch_sector, stock["ticker"]): stock["ticker"] for stock in stocks}
+        futures = {executor.submit(fetch_sector, stock["ticker"]): stock["ticker"] for stock in missing}
         for future, ticker in futures.items():
             try:
                 sectors[ticker] = future.result()
             except Exception:
                 sectors[ticker] = "Unknown"
     return sectors
-
-
-def score_to_signal(score: float) -> str:
-    if score >= 7.0:
-        return "bullish"
-    if score <= 4.0:
-        return "bearish"
-    return "neutral"
-
-
-def score_to_confidence(score: float, signal: str) -> int:
-    if signal == "bullish":
-        return int(clamp(round(48 + (score - 5) * 13), 55, 95))
-    if signal == "bearish":
-        return int(clamp(round(48 + (5 - score) * 13), 55, 95))
-    return int(clamp(round(48 + abs(score - 5.5) * 8), 45, 70))
-
-
-def choose_warning(stock: dict[str, Any], keywords: list[str]) -> str | None:
-    for warning in stock.get("investor_warnings", []):
-        lowered = warning.lower()
-        if any(keyword in lowered for keyword in keywords):
-            return warning.replace("⚠️ ", "")
-    return None
-
-
-def synthesize_reasoning(investor: str, stock: dict[str, Any], signal: str) -> str:
-    pe = stock.get("metrics", {}).get("pe")
-    roe = stock.get("metrics", {}).get("roe")
-    rev_growth = stock.get("metrics", {}).get("revenue_growth")
-    peg = stock.get("metrics", {}).get("peg")
-    cap = stock.get("market_cap", {}).get("display", "N/A")
-    cap_category = stock.get("market_cap", {}).get("category")
-    momentum = stock.get("scores", {}).get("enhanced_momentum")
-    pieces: list[str] = []
-
-    if investor == "buffett":
-        if roe and roe >= 20:
-            pieces.append(f"ROE {roe:.1f}%")
-        if pe and pe <= 20:
-            pieces.append(f"P/E {pe:.1f}")
-        if signal == "bullish":
-            warning = choose_warning(stock, ["원자재", "과대평가"])
-            if warning:
-                pieces.append(warning)
-            pieces.append("경제적 해자와 수익성 방어력에 점수")
-        elif signal == "bearish":
-            if pe and pe > 35:
-                pieces.append(f"P/E {pe:.1f}로 안전마진 부족")
-            if roe and roe < 10:
-                pieces.append(f"ROE {roe:.1f}%로 자본효율 낮음")
-            warning = choose_warning(stock, ["원자재", "메가캡", "과대평가"])
-            if warning:
-                pieces.append(warning)
-        else:
-            pieces.append("품질은 있으나 가격 메리트가 애매함")
-
-    elif investor == "lynch":
-        if rev_growth is not None:
-            pieces.append(f"매출 성장률 {rev_growth:.1f}%")
-        if peg is not None:
-            pieces.append(f"PEG {peg:.1f}")
-        if cap_category == "mega":
-            pieces.append(f"메가캡({cap})이라 10배주 여지는 제한적")
-        if signal == "bullish":
-            pieces.append("GARP 기준에서 성장 대비 가격이 수용 가능")
-        elif signal == "bearish":
-            if rev_growth is not None and rev_growth < 5:
-                pieces.append("성장 스토리가 약함")
-            pieces.append("린치식 10배주 조건과 거리가 있음")
-        else:
-            pieces.append("성장성은 보이지만 확신할 만큼 싸지 않음")
-
-    elif investor == "fisher":
-        if rev_growth is not None:
-            pieces.append(f"매출 성장률 {rev_growth:.1f}%")
-        if roe is not None:
-            pieces.append(f"ROE {roe:.1f}%")
-        if momentum is not None:
-            pieces.append(f"모멘텀 {momentum:.1f}")
-        if signal == "bullish":
-            pieces.append("성장 품질과 실행력이 장기 보유 기준에 부합")
-        elif signal == "bearish":
-            pieces.append("혁신·성장 품질이 Fisher 기준에 못 미침")
-        else:
-            pieces.append("장기 성장성은 있으나 질적 우위가 뚜렷하지 않음")
-
-    unique_pieces = []
-    for piece in pieces:
-        if piece and piece not in unique_pieces:
-            unique_pieces.append(piece)
-    return ", ".join(unique_pieces[:3])
-
-
-def synthesize_investor_analysis(stock: dict[str, Any], investors: list[str]) -> dict[str, dict[str, Any]]:
-    analyses: dict[str, dict[str, Any]] = {}
-    for investor in investors:
-        score = stock.get("investor_scores", {}).get(investor, 5.0)
-        signal = score_to_signal(score)
-        confidence = score_to_confidence(score, signal)
-        analyses[investor] = {
-            "signal": signal,
-            "confidence": confidence,
-            "reasoning": synthesize_reasoning(investor, stock, signal),
-            "score": score,
-        }
-    return analyses
 
 
 def combined_confidence(analyses: dict[str, dict[str, Any]], investors: list[str]) -> int:
@@ -248,12 +263,38 @@ def majority_threshold(count: int) -> int:
     return math.floor(count / 2) + 1
 
 
-def build_candidates(stocks: list[dict[str, Any]], investors: list[str], sectors: dict[str, str]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def build_candidates(
+    stocks: list[dict[str, Any]],
+    investors: list[str],
+    sectors: dict[str, str],
+    independent_analyses: dict[str, dict[str, dict[str, Any]]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     candidates = []
     excluded = []
     need = majority_threshold(len(investors))
     for stock in stocks:
-        analyses = synthesize_investor_analysis(stock, investors)
+        ticker_analyses = independent_analyses.get(stock["ticker"].upper(), {})
+        missing = [investor for investor in investors if investor not in ticker_analyses]
+        if missing:
+            raise ValueError(f"{stock['ticker']}: 독립 투자자 분석 누락 - {', '.join(missing)}")
+        analyses = {investor: ticker_analyses[investor] for investor in investors}
+        insufficient_investors = []
+        for investor, analysis in analyses.items():
+            signal = analysis.get("signal")
+            confidence_value = analysis.get("confidence")
+            if signal not in {"bullish", "neutral", "bearish"}:
+                raise ValueError(f"{stock['ticker']}/{investor}: 잘못된 signal {signal!r}")
+            if not isinstance(confidence_value, (int, float)) or not 0 <= confidence_value <= 100:
+                raise ValueError(f"{stock['ticker']}/{investor}: confidence는 0~100이어야 합니다.")
+            if not isinstance(analysis.get("reasoning"), str) or not analysis["reasoning"].strip():
+                raise ValueError(f"{stock['ticker']}/{investor}: reasoning이 비어 있습니다.")
+            data_quality = analysis.get("data_quality")
+            if data_quality not in {"complete", "partial", "insufficient"}:
+                raise ValueError(
+                    f"{stock['ticker']}/{investor}: data_quality는 complete/partial/insufficient 중 하나여야 합니다."
+                )
+            if data_quality == "insufficient":
+                insufficient_investors.append(investor)
         bullish = sum(1 for investor in investors if analyses[investor]["signal"] == "bullish")
         bearish = sum(1 for investor in investors if analyses[investor]["signal"] == "bearish")
         confidence = combined_confidence(analyses, investors)
@@ -268,131 +309,105 @@ def build_candidates(stocks: list[dict[str, Any]], investors: list[str], sectors
             "consensus_ratio": consensus_ratio,
             "combined_confidence": confidence,
             "combined_signal": portfolio_signal,
-            "raw_weight_score": confidence * max(consensus_ratio, 0.01),
+            "analysis_source": "independent_investor_analysis",
+            "raw_weight_score": max(float(stock.get("total_score", 0)), 0.0) * (confidence / 100) * max(consensus_ratio, 0.01),
         }
-        if bullish >= need:
+        if insufficient_investors:
+            excluded.append({
+                **enriched,
+                "exclusion_reason": f"투자자 분석 데이터 부족 ({', '.join(insufficient_investors)})",
+            })
+        elif bullish >= need:
             candidates.append(enriched)
         else:
             excluded.append({**enriched, "exclusion_reason": f"투자자 과반 미달 ({bullish}/{len(investors)} bullish)"})
     return candidates, excluded
 
 
-def cap_and_redistribute(weights: dict[str, float], cap: float) -> dict[str, float]:
-    locked: dict[str, float] = {}
-    active = dict(weights)
-    while active:
-        total_active = sum(active.values())
-        if total_active <= 0:
-            break
-        normalized = {ticker: value / total_active * (100 - sum(locked.values())) for ticker, value in active.items()}
-        over = {ticker: value for ticker, value in normalized.items() if value > cap + 1e-9}
-        if not over:
-            locked.update(normalized)
-            break
-        for ticker, value in over.items():
-            locked[ticker] = cap
-            active.pop(ticker, None)
-    return locked
-
-
-def apply_sector_cap(positions: list[dict[str, Any]], sector_cap: float = 35.0) -> list[dict[str, Any]]:
-    remaining = {position["ticker"]: position["weight"] for position in positions}
-    meta = {position["ticker"]: position for position in positions}
-    changed = True
-    while changed:
-        changed = False
-        sector_weights: dict[str, float] = defaultdict(float)
-        for ticker, weight in remaining.items():
-            sector_weights[meta[ticker]["sector"]] += weight
-        excess_sectors = {sector: weight for sector, weight in sector_weights.items() if weight > sector_cap + 1e-9}
-        if not excess_sectors:
-            break
-        for sector, weight in excess_sectors.items():
-            members = [ticker for ticker in remaining if meta[ticker]["sector"] == sector]
-            scale = sector_cap / weight
-            freed = 0.0
-            for ticker in members:
-                old = remaining[ticker]
-                new = old * scale
-                remaining[ticker] = new
-                freed += old - new
-            other_members = [ticker for ticker in remaining if meta[ticker]["sector"] != sector and remaining[ticker] < 15 - 1e-9]
-            if other_members and freed > 0:
-                total_other = sum(remaining[ticker] for ticker in other_members)
-                for ticker in other_members:
-                    headroom = 15 - remaining[ticker]
-                    bump = freed * (remaining[ticker] / total_other) if total_other else 0
-                    remaining[ticker] += min(headroom, bump)
-            changed = True
-    total = sum(remaining.values())
-    if total > 0:
-        remaining = {ticker: value / total * 100 for ticker, value in remaining.items()}
-    for position in positions:
-        position["weight"] = remaining[position["ticker"]]
-    return positions
-
-
-def allocate_weights(candidates: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def allocate_weights(
+    candidates: list[dict[str, Any]],
+    name_cap: float = 15.0,
+    sector_cap: float = 35.0,
+    min_weight: float = 2.0,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], float]:
     if not candidates:
-        return [], []
+        return [], [], 100.0
 
-    raw = {candidate["ticker"]: candidate["raw_weight_score"] for candidate in candidates}
-    capped = cap_and_redistribute(raw, 15.0)
-    for candidate in candidates:
-        candidate["weight"] = capped.get(candidate["ticker"], 0.0)
+    def constrained_allocation(active_candidates: list[dict[str, Any]]) -> dict[str, float]:
+        allocations = {item["ticker"]: 0.0 for item in active_candidates}
+        active = {item["ticker"] for item in active_candidates if item["raw_weight_score"] > 0}
+        meta = {item["ticker"]: item for item in active_candidates}
+        remaining = 100.0
+        while active and remaining > 1e-9:
+            sector_used: dict[str, float] = defaultdict(float)
+            for ticker, weight in allocations.items():
+                sector_used[meta[ticker]["sector"]] += weight
+            active = {
+                ticker for ticker in active
+                if allocations[ticker] < name_cap - 1e-9
+                and sector_used[meta[ticker]["sector"]] < sector_cap - 1e-9
+            }
+            if not active:
+                break
+            raw_total = sum(meta[ticker]["raw_weight_score"] for ticker in active)
+            if raw_total <= 0:
+                break
+            proposed = {
+                ticker: remaining * meta[ticker]["raw_weight_score"] / raw_total
+                for ticker in active
+            }
+            fraction = 1.0
+            for ticker, amount in proposed.items():
+                if amount > 0:
+                    fraction = min(fraction, (name_cap - allocations[ticker]) / amount)
+            by_sector: dict[str, float] = defaultdict(float)
+            for ticker, amount in proposed.items():
+                by_sector[meta[ticker]["sector"]] += amount
+            for sector, amount in by_sector.items():
+                if amount > 0:
+                    fraction = min(fraction, (sector_cap - sector_used[sector]) / amount)
+            fraction = clamp(fraction, 0.0, 1.0)
+            added = 0.0
+            for ticker, amount in proposed.items():
+                increment = amount * fraction
+                allocations[ticker] += increment
+                added += increment
+            if added <= 1e-9:
+                break
+            remaining -= added
+            if fraction >= 1.0 - 1e-9:
+                break
+        return allocations
 
-    candidates = apply_sector_cap(candidates, 35.0)
-
-    included: list[dict[str, Any]] = []
+    eligible = list(candidates)
     excluded: list[dict[str, Any]] = []
-    for candidate in candidates:
-        if candidate["weight"] < 2.0:
-            candidate["exclusion_reason"] = "최소 비중 2% 미달"
-            excluded.append(candidate)
-        else:
-            included.append(candidate)
+    while eligible:
+        allocations = constrained_allocation(eligible)
+        below = [item for item in eligible if allocations.get(item["ticker"], 0.0) < min_weight - 1e-9]
+        if not below:
+            break
+        for item in below:
+            item["exclusion_reason"] = f"최소 비중 {min_weight:g}% 미달"
+            excluded.append(item)
+        eligible = [item for item in eligible if item not in below]
+    else:
+        return [], excluded, 100.0
 
-    if not included:
-        return [], excluded
-
-    total = sum(item["weight"] for item in included)
-    for item in included:
-        item["weight"] = item["weight"] / total * 100
-
-    re_capped = True
-    while re_capped:
-        re_capped = False
-        over = [item for item in included if item["weight"] > 15.0 + 1e-9]
-        if over:
-            excess = 0.0
-            for item in over:
-                excess += item["weight"] - 15.0
-                item["weight"] = 15.0
-            under = [item for item in included if item["weight"] < 15.0 - 1e-9]
-            under_total = sum(item["weight"] for item in under)
-            for item in under:
-                headroom = 15.0 - item["weight"]
-                bump = excess * (item["weight"] / under_total) if under_total else 0.0
-                item["weight"] += min(headroom, bump)
-            re_capped = True
-
-    total = sum(item["weight"] for item in included)
-    for item in included:
-        item["weight"] = round(item["weight"] / total * 100, 1)
-
-    delta = round(100.0 - sum(item["weight"] for item in included), 1)
-    if included and abs(delta) >= 0.1:
-        included[0]["weight"] = round(included[0]["weight"] + delta, 1)
-
+    for item in eligible:
+        # 내림 반올림으로 이름/섹터 상한을 절대 넘지 않게 한다.
+        item["weight"] = math.floor(allocations[item["ticker"]] * 10 + 1e-9) / 10
+    included = [item for item in eligible if item["weight"] >= min_weight]
     included.sort(key=lambda item: (-item["weight"], item["rank"]))
-    return included, excluded
+    cash_weight = round(max(0.0, 100.0 - sum(item["weight"] for item in included)), 1)
+    return included, excluded, cash_weight
 
 
-def summarize_portfolio(included: list[dict[str, Any]], top_stocks: list[dict[str, Any]], investors: list[str]) -> dict[str, Any]:
+def summarize_portfolio(included: list[dict[str, Any]], top_stocks: list[dict[str, Any]], investors: list[str], cash_weight: float) -> dict[str, Any]:
     total_names = len(top_stocks)
     included_tickers = {item["ticker"] for item in included}
-    weighted_conf = sum(item["weight"] * item["combined_confidence"] for item in included) / 100 if included else 0.0
-    weighted_return = sum(item["weight"] * item["predicted_return_1y"] for item in included) / 100 if included else 0.0
+    invested_weight = sum(item["weight"] for item in included)
+    weighted_conf = sum(item["weight"] * item["combined_confidence"] for item in included) / invested_weight if invested_weight else 0.0
+    weighted_return = sum(item["weight"] * score_implied_return(item) for item in included) / 100 if included else 0.0
     strong_buy_weight = sum(item["weight"] for item in included if item["combined_signal"] == "strong_buy")
     buy_weight = sum(item["weight"] for item in included if item["combined_signal"] == "buy")
 
@@ -408,7 +423,9 @@ def summarize_portfolio(included: list[dict[str, Any]], top_stocks: list[dict[st
         "analyzed_count": total_names,
         "included_rate": (len(included) / total_names * 100) if total_names else 0.0,
         "avg_confidence": weighted_conf,
-        "avg_return": weighted_return,
+        "score_implied_return_contribution": weighted_return,
+        "invested_weight": invested_weight,
+        "cash_weight": cash_weight,
         "strong_buy_weight": strong_buy_weight,
         "buy_weight": buy_weight,
         "agreement": agreement,
@@ -421,6 +438,23 @@ def summarize_portfolio(included: list[dict[str, Any]], top_stocks: list[dict[st
         "included_tickers": included_tickers,
         "need_consensus": majority_threshold(len(investors)),
     }
+
+
+def write_portfolio_json(
+    output_path: Path,
+    analysis_date: str,
+    included: list[dict[str, Any]],
+    cash_weight: float,
+) -> None:
+    payload = {
+        "analysis_date": analysis_date,
+        "weights": {item["ticker"]: round(item["weight"] / 100, 6) for item in included},
+        "cash_weight": round(cash_weight / 100, 6),
+        "methodology": "predict_score_x_independent_consensus_risk_adjusted_with_caps",
+        "constraints": {"max_name": 0.15, "max_sector": 0.35, "min_name": 0.02},
+    }
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
 def auto_width(ws) -> None:
@@ -470,8 +504,9 @@ def create_summary_sheet(ws, analysis_date: str, index_label: str, investor_labe
     stats = [
         ("편입 종목 수", f"{summary['included_count']} / {summary['analyzed_count']} ({summary['included_rate']:.1f}%)"),
         ("평균 신뢰도", f"{summary['avg_confidence']:.0f}%"),
-        ("평균 예상 수익률", fmt_pct(summary["avg_return"], signed=True)),
+        ("점수 환산 기여값", fmt_pct(summary["score_implied_return_contribution"], signed=True)),
         ("강력매수 비중", fmt_pct(summary["strong_buy_weight"])),
+        ("현금 비중", fmt_pct(summary["cash_weight"])),
     ]
     for row, (label, value) in enumerate(stats, start=9):
         ws[f"A{row}"] = label
@@ -516,7 +551,7 @@ def create_summary_sheet(ws, analysis_date: str, index_label: str, investor_labe
 
 
 def create_portfolio_sheet(ws, included: list[dict[str, Any]], investors: list[str]) -> None:
-    headers = ["#", "종목코드", "회사명", "비중", "신호", "신뢰도", "예상수익률", "시가총액", "P/E", "ROE", "PEG", "합의", "섹터"]
+    headers = ["#", "종목코드", "회사명", "비중", "신호", "신뢰도", "점수 환산값", "시가총액", "P/E", "ROE", "PEG", "합의", "섹터"]
     apply_header(ws, headers)
     for row, item in enumerate(included, start=2):
         ws.cell(row=row, column=1, value=row - 1)
@@ -525,7 +560,7 @@ def create_portfolio_sheet(ws, included: list[dict[str, Any]], investors: list[s
         ws.cell(row=row, column=4, value=item["weight"] / 100).number_format = "0.0%"
         ws.cell(row=row, column=5, value=portfolio_signal_text(item["combined_signal"]))
         ws.cell(row=row, column=6, value=item["combined_confidence"])
-        ws.cell(row=row, column=7, value=item["predicted_return_1y"] / 100).number_format = "+0.0%;-0.0%"
+        ws.cell(row=row, column=7, value=score_implied_return(item) / 100).number_format = "+0.0%;-0.0%"
         ws.cell(row=row, column=8, value=item["market_cap"]["display"])
         ws.cell(row=row, column=9, value=item["metrics"].get("pe"))
         roe = item["metrics"].get("roe")
@@ -537,15 +572,23 @@ def create_portfolio_sheet(ws, included: list[dict[str, Any]], investors: list[s
         ws.cell(row=row, column=12, value=f"{item['bullish_count']}/{len(investors)}")
         ws.cell(row=row, column=13, value=item["sector"])
 
-    total_row = len(included) + 2
+    cash_row = len(included) + 2
+    cash_weight = max(0.0, 100.0 - sum(item["weight"] for item in included))
+    ws.cell(row=cash_row, column=2, value="CASH")
+    ws.cell(row=cash_row, column=3, value="현금")
+    ws.cell(row=cash_row, column=4, value=cash_weight / 100).number_format = "0.0%"
+    ws.cell(row=cash_row, column=5, value="cash")
+
+    total_row = cash_row + 1
     for col in range(1, 14):
         cell = ws.cell(row=total_row, column=col)
         cell.fill = TOTAL_FILL
         cell.border = THIN_BORDER
     ws.cell(row=total_row, column=2, value="합계/평균").font = Font(bold=True)
     ws.cell(row=total_row, column=4, value=1.0).number_format = "0.0%"
-    avg_conf = sum(item["weight"] * item["combined_confidence"] for item in included) / 100 if included else 0
-    avg_ret = sum(item["weight"] * item["predicted_return_1y"] for item in included) / 100 if included else 0
+    invested_weight = sum(item["weight"] for item in included)
+    avg_conf = sum(item["weight"] * item["combined_confidence"] for item in included) / invested_weight if invested_weight else 0
+    avg_ret = sum(item["weight"] * score_implied_return(item) for item in included) / 100 if included else 0
     ws.cell(row=total_row, column=6, value=round(avg_conf))
     ws.cell(row=total_row, column=7, value=avg_ret / 100).number_format = "+0.0%;-0.0%"
 
@@ -556,7 +599,7 @@ def create_portfolio_sheet(ws, included: list[dict[str, Any]], investors: list[s
 
 
 def create_ranking_sheet(ws, top_stocks: list[dict[str, Any]], included_tickers: set[str]) -> None:
-    headers = ["순위", "종목코드", "회사명", "종합점수", "펀더멘털", "모멘텀", "앙상블", "신호", "예상수익률", "시가총액", "P/E", "P/B", "ROE", "매출성장률", "PEG", "편입여부"]
+    headers = ["순위", "종목코드", "회사명", "종합점수", "펀더멘털", "모멘텀", "앙상블", "신호", "점수 환산값", "시가총액", "P/E", "P/B", "ROE", "매출성장률", "PEG", "편입여부"]
     apply_header(ws, headers)
     for row, item in enumerate(top_stocks, start=2):
         metrics = item.get("metrics", {})
@@ -568,7 +611,7 @@ def create_ranking_sheet(ws, top_stocks: list[dict[str, Any]], included_tickers:
         ws.cell(row=row, column=6, value=item["scores"].get("enhanced_momentum"))
         ws.cell(row=row, column=7, value=item.get("ensemble_score"))
         ws.cell(row=row, column=8, value=item["signal"])
-        ws.cell(row=row, column=9, value=item["predicted_return_1y"] / 100).number_format = "+0.0%;-0.0%"
+        ws.cell(row=row, column=9, value=score_implied_return(item) / 100).number_format = "+0.0%;-0.0%"
         ws.cell(row=row, column=10, value=item["market_cap"]["display"])
         ws.cell(row=row, column=11, value=metrics.get("pe"))
         ws.cell(row=row, column=12, value=metrics.get("pb"))
@@ -712,23 +755,24 @@ def print_report(
     print(f"분석 대상    : {index_name} 상위 {len(top_stocks)}개 종목")
     print("분석 전략    : 하이브리드 (펀더멘털 70% + 모멘텀 30%)")
     print(f"투자자 관점  : {investor_names}")
-    print("데이터 소스  : Yahoo Finance (predict) + persona synthesis")
+    print("데이터 소스  : predict 결과 + 독립 investor-analysis + 가격 기반 risk snapshot")
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
     print()
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
     print("📊 포트폴리오 구성")
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
-    print(" #  종목                  비중    시총      종합신호     신뢰도  예상수익률  P/E    ROE      합의")
+    print(" #  종목                  비중    시총      종합신호     신뢰도  점수환산값  P/E    ROE      합의")
     print("──────────────────────────────────────────────────────────────────────────────────────────────")
     for idx, item in enumerate(included, start=1):
         print(
             f"{idx:<2}  {ticker_label(item, 16):<20} {item['weight']:>5.1f}%  {item['market_cap']['display']:<8} "
             f"{portfolio_signal_text(item['combined_signal']):<11} {item['combined_confidence']:>4}%  "
-            f"{fmt_pct(item['predicted_return_1y'], signed=True):>9}  {fmt_num(item['metrics'].get('pe')):>5}  "
+            f"{fmt_pct(score_implied_return(item), signed=True):>9}  {fmt_num(item['metrics'].get('pe')):>5}  "
             f"{fmt_pct(item['metrics'].get('roe')):>7}  {item['bullish_count']}/{len(investors)}"
         )
     print("──────────────────────────────────────────────────────────────────────────────────────────────")
-    print(f"    합계                 100.0%                           avg {summary['avg_confidence']:.0f}%  avg {fmt_pct(summary['avg_return'], signed=True)}")
+    print(f"    주식 합계            {summary['invested_weight']:>5.1f}%                           avg {summary['avg_confidence']:.0f}%")
+    print(f"    현금                  {summary['cash_weight']:>5.1f}%                           점수환산 기여 {fmt_pct(summary['score_implied_return_contribution'], signed=True)}")
     print()
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
     print("👥 투자자별 종목 분석 매트릭스")
@@ -755,7 +799,8 @@ def print_report(
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
     print(f"편입 종목 수         : {summary['included_count']}개 / 분석 {summary['analyzed_count']}개 ({summary['included_rate']:.1f}% 편입률)")
     print(f"평균 신뢰도          : {summary['avg_confidence']:.0f}%")
-    print(f"평균 예상 수익률     : {fmt_pct(summary['avg_return'], signed=True)}")
+    print(f"점수 환산 기여값     : {fmt_pct(summary['score_implied_return_contribution'], signed=True)} (예상수익률 아님)")
+    print(f"현금 비중            : {fmt_pct(summary['cash_weight'])}")
     print(f"강력매수 비중        : {fmt_pct(summary['strong_buy_weight'])}")
     print(f"매수 비중            : {fmt_pct(summary['buy_weight'])}")
     unanimous = summary["agreement"].get(len(investors), 0)
@@ -810,7 +855,7 @@ def print_report(
     print()
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
     print("💡 이 리포트는 교육/연구 목적이며 실제 투자 결정의 근거가 될 수 없습니다.")
-    print("   predict: Yahoo Finance | investor-analysis: predict 기반 페르소나 합성")
+    print("   predict: 다중 팩터 순위 | investor-analysis: 독립 입력 결과")
     if output_path:
         print(f"   엑셀 리포트: {output_path}")
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
@@ -819,30 +864,54 @@ def print_report(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--predict-json", required=True)
+    parser.add_argument("--investor-json", required=True, help="종목별 독립 investor-analysis 결과 JSON")
+    parser.add_argument("--risk-json", required=True, help="동일 기준일의 변동성·상관 risk snapshot JSON")
     parser.add_argument("--index", default="sp500")
     parser.add_argument("--top", type=int, default=30)
     parser.add_argument("--investors", default="buffett,lynch,fisher")
     parser.add_argument("--xlsx", default="yes")
     parser.add_argument("--output-dir", default="portfolios")
+    parser.add_argument("--portfolio-json", help="백테스트용 목표비중 JSON 저장 경로")
     args = parser.parse_args()
 
-    investors = [token.strip() for token in args.investors.split(",") if token.strip()]
+    requested = [token.strip() for token in args.investors.split(",") if token.strip()]
+    if not requested:
+        parser.error("--investors에는 최소 한 명을 지정해야 합니다.")
+    if args.top <= 0:
+        parser.error("--top은 1 이상이어야 합니다.")
+    if requested == ["all"]:
+        investors = list(INVESTOR_CONFIG)
+    else:
+        investors = [INVESTOR_ALIASES.get(token, token) for token in requested]
+    unknown = [investor for investor in investors if investor not in INVESTOR_CONFIG]
+    if unknown:
+        parser.error(f"알 수 없는 투자자: {', '.join(unknown)}")
     payload, top_stocks = load_predict_results(Path(args.predict_json), args.top)
-    analysis_date = payload.get("analysis_date") or datetime.now().strftime("%Y-%m-%d")
-    sectors = fetch_sectors(top_stocks)
+    analysis_date = payload.get("analysis_date")
+    if not analysis_date:
+        parser.error("predict JSON에 analysis_date가 없습니다.")
+    sectors = fetch_sectors(top_stocks, analysis_date)
+    independent_analyses = load_investor_analyses(Path(args.investor_json), analysis_date)
 
-    candidates, excluded_majority = build_candidates(top_stocks, investors, sectors)
-    included, excluded_weight = allocate_weights(candidates)
+    candidates, excluded_majority = build_candidates(top_stocks, investors, sectors, independent_analyses)
+    risk_snapshot = load_risk_snapshot(Path(args.risk_json), analysis_date)
+    candidates, excluded_risk = apply_risk_adjustment(candidates, risk_snapshot)
+    included, excluded_weight, cash_weight = allocate_weights(candidates)
     included_map = {item["ticker"]: item for item in included}
 
     enriched_top = []
     for stock in top_stocks:
-        base = next(candidate for candidate in candidates + excluded_majority if candidate["ticker"] == stock["ticker"])
+        base = next(
+            candidate for candidate in candidates + excluded_risk + excluded_majority
+            if candidate["ticker"] == stock["ticker"]
+        )
         if stock["ticker"] in included_map:
             base = included_map[stock["ticker"]]
         enriched_top.append(base)
 
-    summary = summarize_portfolio(included, top_stocks, investors)
+    summary = summarize_portfolio(included, top_stocks, investors, cash_weight)
+    if args.portfolio_json:
+        write_portfolio_json(Path(args.portfolio_json), analysis_date, included, cash_weight)
     output_path = None
     if args.xlsx.lower() in {"yes", "true", "1", "excel", "xlsx"}:
         investor_suffix = "_".join(sorted(investors))
@@ -855,7 +924,7 @@ def main() -> None:
             top_stocks=enriched_top,
             included=included,
             summary=summary,
-            excluded_all=excluded_majority + excluded_weight,
+            excluded_all=excluded_majority + excluded_risk + excluded_weight,
         )
 
     print_report(
@@ -864,10 +933,12 @@ def main() -> None:
         investors=investors,
         top_stocks=enriched_top,
         included=included,
-        excluded_all=excluded_majority + excluded_weight,
+        excluded_all=excluded_majority + excluded_risk + excluded_weight,
         summary=summary,
         output_path=output_path,
     )
+    if args.portfolio_json:
+        print(f"백테스트용 목표비중 JSON: {args.portfolio_json}")
 
 
 if __name__ == "__main__":

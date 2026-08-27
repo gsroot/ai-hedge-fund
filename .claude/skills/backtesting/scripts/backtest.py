@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Dict, List, Literal, Optional, Tuple
 from enum import Enum
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -122,6 +123,7 @@ class Position:
     long_cost_basis: float = 0.0
     short_cost_basis: float = 0.0
     short_margin_used: float = 0.0
+    short_proceeds: float = 0.0
 
 
 @dataclass
@@ -129,9 +131,36 @@ class Portfolio:
     """포트폴리오 상태 관리"""
     cash: float
     margin_requirement: float = 0.5
+    commission_bps: float = 5.0
+    slippage_bps: float = 5.0
+    sell_tax_bps: float = 0.0
     positions: Dict[str, Position] = field(default_factory=dict)
     realized_gains: Dict[str, Dict[str, float]] = field(default_factory=dict)
     margin_used: float = 0.0
+    transaction_costs: float = 0.0
+    last_trade: Dict[str, float] = field(default_factory=dict)
+
+    def _execution_price(self, market_price: float, is_buy: bool) -> float:
+        direction = 1.0 if is_buy else -1.0
+        return market_price * (1.0 + direction * self.slippage_bps / 10000.0)
+
+    def get_available_cash(self) -> float:
+        """숏 매도대금과 유지 증거금을 재투자할 수 없는 보수적 가용 현금."""
+        restricted_short_proceeds = sum(
+            position.short_proceeds for position in self.positions.values()
+        )
+        return max(0.0, self.cash - restricted_short_proceeds - self.margin_used)
+
+    def _record_trade(self, market_price, execution_price, fees, quantity, realized_pnl=None):
+        slippage_cost = abs(execution_price - market_price) * quantity
+        self.transaction_costs += fees + slippage_cost
+        self.last_trade = {
+            "market_price": market_price,
+            "execution_price": execution_price,
+            "fees": fees,
+            "slippage_cost": slippage_cost,
+            "realized_pnl": realized_pnl,
+        }
 
     def initialize_ticker(self, ticker: str) -> None:
         """티커 초기화"""
@@ -146,13 +175,19 @@ class Portfolio:
         if quantity <= 0:
             return 0
 
-        cost = quantity * price
+        execution_price = self._execution_price(price, is_buy=True)
+        commission_rate = self.commission_bps / 10000.0
+        cost = quantity * execution_price
+        commission = cost * commission_rate
         pos = self.positions[ticker]
 
         # 매수 가능 수량 계산
-        if cost > self.cash:
-            quantity = int(self.cash / price) if price > 0 else 0
-            cost = quantity * price
+        available_cash = self.get_available_cash()
+        if cost + commission > available_cash:
+            all_in_price = execution_price * (1.0 + commission_rate)
+            quantity = int(available_cash / all_in_price) if all_in_price > 0 else 0
+            cost = quantity * execution_price
+            commission = cost * commission_rate
 
         if quantity <= 0:
             return 0
@@ -160,11 +195,12 @@ class Portfolio:
         # 평균 매입 단가 계산
         old_shares = pos.long
         if old_shares + quantity > 0:
-            total_cost = pos.long_cost_basis * old_shares + cost
+            total_cost = pos.long_cost_basis * old_shares + cost + commission
             pos.long_cost_basis = total_cost / (old_shares + quantity)
 
         pos.long += quantity
-        self.cash -= cost
+        self.cash -= cost + commission
+        self._record_trade(price, execution_price, commission, quantity)
         return quantity
 
     def sell(self, ticker: str, quantity: int, price: float) -> int:
@@ -176,16 +212,23 @@ class Portfolio:
         if quantity <= 0:
             return 0
 
-        # 실현 손익
-        realized_gain = (price - pos.long_cost_basis) * quantity
+        execution_price = self._execution_price(price, is_buy=False)
+        gross_proceeds = execution_price * quantity
+        commission = gross_proceeds * self.commission_bps / 10000.0
+        sell_tax = gross_proceeds * self.sell_tax_bps / 10000.0
+        fees = commission + sell_tax
+
+        # 매수 원가에는 진입 수수료가 포함되어 있다.
+        realized_gain = gross_proceeds - fees - pos.long_cost_basis * quantity
         self.realized_gains[ticker]["long"] += realized_gain
 
         pos.long -= quantity
-        self.cash += quantity * price
+        self.cash += gross_proceeds - fees
 
         if pos.long == 0:
             pos.long_cost_basis = 0.0
 
+        self._record_trade(price, execution_price, fees, quantity, realized_gain)
         return quantity
 
     def short_open(self, ticker: str, quantity: int, price: float) -> int:
@@ -195,27 +238,36 @@ class Portfolio:
             return 0
 
         pos = self.positions[ticker]
-        proceeds = price * quantity
+        execution_price = self._execution_price(price, is_buy=False)
+        proceeds = execution_price * quantity
+        commission = proceeds * self.commission_bps / 10000.0
         margin_required = proceeds * self.margin_requirement
 
-        # 마진 확인
-        if margin_required > self.cash:
-            quantity = int(self.cash / (price * self.margin_requirement)) if price > 0 else 0
+        # 마진은 현금에서 사라지는 비용이 아니라 사용 가능 담보를 제한한다.
+        margin_available = self.get_available_cash()
+        if margin_required + commission > margin_available:
+            denominator = execution_price * (
+                self.margin_requirement + self.commission_bps / 10000.0
+            )
+            quantity = int(margin_available / denominator) if denominator > 0 else 0
             if quantity <= 0:
                 return 0
-            proceeds = price * quantity
+            proceeds = execution_price * quantity
+            commission = proceeds * self.commission_bps / 10000.0
             margin_required = proceeds * self.margin_requirement
 
         # 평균 숏 단가 계산
         old_shares = pos.short
         if old_shares + quantity > 0:
-            total_cost = pos.short_cost_basis * old_shares + price * quantity
+            total_cost = pos.short_cost_basis * old_shares + proceeds - commission
             pos.short_cost_basis = total_cost / (old_shares + quantity)
 
         pos.short += quantity
         pos.short_margin_used += margin_required
+        pos.short_proceeds += proceeds
         self.margin_used += margin_required
-        self.cash += proceeds - margin_required
+        self.cash += proceeds - commission
+        self._record_trade(price, execution_price, commission, quantity)
 
         return quantity
 
@@ -228,23 +280,29 @@ class Portfolio:
         if quantity <= 0:
             return 0
 
-        cover_cost = quantity * price
-        realized_gain = (pos.short_cost_basis - price) * quantity
+        execution_price = self._execution_price(price, is_buy=True)
+        cover_cost = quantity * execution_price
+        commission = cover_cost * self.commission_bps / 10000.0
+        realized_gain = pos.short_cost_basis * quantity - cover_cost - commission
 
         # 마진 해제
         portion = quantity / pos.short if pos.short > 0 else 1.0
         margin_to_release = portion * pos.short_margin_used
+        proceeds_to_release = portion * pos.short_proceeds
 
         pos.short -= quantity
         pos.short_margin_used -= margin_to_release
+        pos.short_proceeds -= proceeds_to_release
         self.margin_used -= margin_to_release
-        self.cash += margin_to_release - cover_cost
+        self.cash -= cover_cost + commission
         self.realized_gains[ticker]["short"] += realized_gain
 
         if pos.short == 0:
             pos.short_cost_basis = 0.0
             pos.short_margin_used = 0.0
+            pos.short_proceeds = 0.0
 
+        self._record_trade(price, execution_price, commission, quantity, realized_gain)
         return quantity
 
     def get_total_value(self, current_prices: Dict[str, float]) -> float:
@@ -295,7 +353,7 @@ class PerformanceMetrics:
 def calculate_performance_metrics(
     portfolio_values: List[Dict],
     trading_days: int = 252,
-    risk_free_rate: float = 0.0434,
+    risk_free_rate: float = 0.0,
 ) -> PerformanceMetrics:
     """성과 지표 계산"""
     if len(portfolio_values) < 2:
@@ -401,13 +459,32 @@ def sort_tickers_by_market_cap(tickers: List[str], top_n: int = 0) -> List[str]:
     return sorted_tickers
 
 
+def slice_price_frame_as_of(price_df: pd.DataFrame, analysis_date) -> pd.DataFrame:
+    """분석 시점까지 공개된 가격만 남긴다."""
+    if price_df.empty:
+        return price_df
+    cutoff = pd.Timestamp(analysis_date)
+    index = pd.DatetimeIndex(price_df.index)
+    if index.tz is not None and cutoff.tzinfo is None:
+        cutoff = cutoff.tz_localize(index.tz)
+    return price_df.loc[index <= cutoff]
+
+
+def _price_series(price_df: pd.DataFrame, field: str, ticker: str) -> pd.Series:
+    """단일/멀티 컬럼 가격 프레임에서 종목 시계열을 추출한다."""
+    if isinstance(price_df.columns, pd.MultiIndex):
+        series = price_df[field][ticker]
+    else:
+        series = price_df[field]
+    if isinstance(series, pd.DataFrame):
+        series = series.iloc[:, 0]
+    return series
+
+
 def calculate_momentum_score(ticker: str, price_df: pd.DataFrame, lookback_short: int = 20, lookback_long: int = 60) -> Dict:
     """모멘텀 점수 계산 (가격 추세 + RSI + 상대 강도)"""
     try:
-        if isinstance(price_df.columns, pd.MultiIndex):
-            close = price_df["Close"][ticker].dropna()
-        else:
-            close = price_df["Close"].dropna()
+        close = _price_series(price_df, "Close", ticker).dropna()
 
         if len(close) < lookback_long:
             return {"momentum_score": 0, "momentum": 0, "rsi": 50, "trend": "neutral"}
@@ -461,6 +538,29 @@ def calculate_momentum_score(ticker: str, price_df: pd.DataFrame, lookback_short
         return {"momentum_score": 0, "momentum": 0, "rsi": 50, "trend": "neutral", "error": str(e)}
 
 
+def generate_momentum_signals_from_prices(
+    tickers: List[str], price_df: pd.DataFrame, analysis_date
+) -> Dict[str, Dict]:
+    """이미 내려받은 과거 가격을 기준일로 절단해 모멘텀 신호를 만든다."""
+    snapshot = slice_price_frame_as_of(price_df, analysis_date)
+    signals = {}
+    for ticker in tickers:
+        detail = calculate_momentum_score(ticker, snapshot)
+        momentum = detail.get("short_momentum", 0.0) / 100.0
+        rsi = detail.get("rsi", 50.0)
+        if momentum > 0.1 and rsi < 70:
+            action = Action.BUY
+            confidence = min(momentum, 0.3) / 0.3
+        elif momentum < -0.1 and rsi > 30:
+            action = Action.SELL
+            confidence = min(abs(momentum), 0.3) / 0.3
+        else:
+            action = Action.HOLD
+            confidence = 0.5
+        signals[ticker] = {"action": action, "confidence": confidence, **detail}
+    return signals
+
+
 def get_benchmark_return(ticker: str, start_date: str, end_date: str) -> Optional[float]:
     """벤치마크 수익률 계산 (한국/해외 자동 분기)"""
     try:
@@ -474,7 +574,8 @@ def get_benchmark_return(ticker: str, start_date: str, end_date: str) -> Optiona
             last_close = prices[-1]["close"]
             return ((last_close - first_close) / first_close) * 100.0
 
-        df = yf.download(ticker, start=start_date, end=end_date, progress=False)
+        end_exclusive = (datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
+        df = yf.download(ticker, start=start_date, end=end_exclusive, progress=False)
         if df.empty:
             return None
 
@@ -510,7 +611,11 @@ def generate_signals_from_predictor(
         # 단일 티커 분석 래퍼 함수
         def analyze_ticker(ticker: str) -> Tuple[str, float, Dict]:
             try:
-                result = analyze_single_ticker(ticker, analysis_date, skip_news=skip_news)
+                result = analyze_single_ticker(
+                    ticker,
+                    analysis_date,
+                    skip_news=skip_news,
+                )
                 if result:
                     return (ticker, result.get("total_score", 0), result)
                 return (ticker, 0, {})
@@ -697,7 +802,11 @@ def generate_hybrid_signals(
         # 펀더멘털 분석 (병렬)
         def analyze_ticker(ticker: str) -> Tuple[str, float, Dict]:
             try:
-                result = analyze_single_ticker(ticker, analysis_date, skip_news=skip_news)
+                result = analyze_single_ticker(
+                    ticker,
+                    analysis_date,
+                    skip_news=skip_news,
+                )
                 if result:
                     return (ticker, result.get("total_score", 0), result)
                 return (ticker, 0, {})
@@ -715,11 +824,12 @@ def generate_hybrid_signals(
                 fundamental_scores[ticker] = score
                 fundamental_results[ticker] = result
 
-        # 모멘텀 분석
+        # 모멘텀 분석: 반드시 분석 기준일까지 데이터 프레임을 절단한다.
+        point_in_time_prices = slice_price_frame_as_of(price_df, analysis_date)
         momentum_scores = {}
         momentum_details = {}
         for ticker in tickers:
-            mom_data = calculate_momentum_score(ticker, price_df)
+            mom_data = calculate_momentum_score(ticker, point_in_time_prices)
             momentum_scores[ticker] = mom_data.get("momentum_score", 0)
             momentum_details[ticker] = mom_data
 
@@ -799,7 +909,8 @@ def calculate_position_size(
 
     if action == Action.BUY:
         # 현금으로 매수 가능한 최대 수량
-        max_shares = int(min(portfolio.cash, max_position_value) / price)
+        available_cash = portfolio.get_available_cash()
+        max_shares = int(min(available_cash, max_position_value) / price)
         return max(0, max_shares)
     elif action == Action.SELL:
         # 보유 중인 롱 포지션
@@ -807,7 +918,7 @@ def calculate_position_size(
         return pos.long
     elif action == Action.SHORT:
         # 마진으로 공매도 가능한 최대 수량
-        margin_available = portfolio.cash
+        margin_available = portfolio.get_available_cash()
         max_short_value = margin_available / portfolio.margin_requirement
         max_shares = int(min(max_short_value, max_position_value) / price)
         return max(0, max_shares)
@@ -834,7 +945,37 @@ class BacktestEngine:
         benchmark: str = "SPY",
         workers: int = 3,  # 병렬 처리 워커 수 (rate limiting 대응)
         skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (대량 백테스트 시 401 오류 방지)
+        commission_bps: float = 5.0,
+        slippage_bps: float = 5.0,
+        sell_tax_bps: float = 0.0,
+        risk_free_rate: float = 0.0,
+        universe_has_survivorship_bias: bool = False,
+        target_weights: Optional[Dict[str, float]] = None,
+        portfolio_formation_date: Optional[str] = None,
     ):
+        if pd.Timestamp(start_date) > pd.Timestamp(end_date):
+            raise ValueError("start_date는 end_date보다 늦을 수 없습니다.")
+        if initial_capital <= 0:
+            raise ValueError("initial_capital은 0보다 커야 합니다.")
+        if margin_requirement <= 0:
+            raise ValueError("margin_requirement는 0보다 커야 합니다.")
+        if target_weights is not None:
+            if set(target_weights) != set(tickers):
+                raise ValueError("target_weights 종목과 tickers가 일치해야 합니다.")
+            if any(not isinstance(weight, (int, float)) or weight < 0 or weight > 1 for weight in target_weights.values()):
+                raise ValueError("target_weights는 0~1 사이 소수여야 합니다.")
+            if sum(target_weights.values()) > 1.0 + 1e-9:
+                raise ValueError("target_weights 합계는 1을 넘을 수 없습니다.")
+            if not portfolio_formation_date:
+                raise ValueError("target_weights에는 portfolio_formation_date가 필요합니다.")
+            if pd.Timestamp(portfolio_formation_date) >= pd.Timestamp(start_date):
+                raise ValueError("target portfolio 백테스트 시작일은 포트폴리오 구성일보다 늦어야 합니다.")
+            strategy = "target_weights"
+        if strategy in {"predictor", "hybrid"} and any(not is_korean_ticker(t) for t in tickers):
+            raise ValueError(
+                "미국 종목의 과거 시점 재무 스냅샷이 없어 predictor/hybrid 백테스트를 차단했습니다. "
+                "미국 종목은 momentum 전략을 사용하거나 point-in-time 데이터 공급자를 연결하세요."
+            )
         self.tickers = tickers
         self.start_date = start_date
         self.end_date = end_date
@@ -845,33 +986,39 @@ class BacktestEngine:
         self.benchmark = benchmark
         self.workers = workers
         self.skip_news = skip_news
+        self.risk_free_rate = risk_free_rate
+        self.universe_has_survivorship_bias = universe_has_survivorship_bias
+        self.target_weights = target_weights
+        self.portfolio_formation_date = portfolio_formation_date
 
         self.portfolio = Portfolio(
             cash=initial_capital,
             margin_requirement=margin_requirement,
+            commission_bps=commission_bps,
+            slippage_bps=slippage_bps,
+            sell_tax_bps=sell_tax_bps,
         )
 
         self.portfolio_values: List[Dict] = []
         self.trade_history: List[Dict] = []
         self.daily_returns: List[float] = []
 
-    def _get_rebalance_dates(self) -> List[datetime]:
+    def _get_rebalance_dates(self, dates: pd.DatetimeIndex) -> List[datetime]:
         """리밸런싱 날짜 목록 생성"""
-        dates = pd.date_range(self.start_date, self.end_date, freq="B")
-
         if self.rebalance_frequency == "daily":
             return list(dates)
         elif self.rebalance_frequency == "weekly":
-            # 매주 월요일
-            return [d for d in dates if d.weekday() == 0]
+            # 각 주의 실제 첫 거래일
+            return list(pd.Series(dates, index=dates).groupby(dates.to_period("W")).first())
         elif self.rebalance_frequency == "monthly":
             # 매월 첫 거래일
             monthly = []
             current_month = None
             for d in dates:
-                if current_month != d.month:
+                month_key = (d.year, d.month)
+                if current_month != month_key:
                     monthly.append(d)
-                    current_month = d.month
+                    current_month = month_key
             return monthly
 
         return list(dates)
@@ -883,6 +1030,7 @@ class BacktestEngine:
         # 1개월 전부터 조회 (모멘텀 계산용)
         start = datetime.strptime(self.start_date, "%Y-%m-%d") - timedelta(days=60)
         start_str = start.strftime("%Y-%m-%d")
+        end_exclusive = (datetime.strptime(self.end_date, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
 
         # 한국/해외 티커 분리
         kr_tickers = [t for t in all_tickers if is_korean_ticker(t)]
@@ -895,7 +1043,7 @@ class BacktestEngine:
             df = yf.download(
                 us_tickers,
                 start=start_str,
-                end=self.end_date,
+                end=end_exclusive,
                 progress=False,
                 threads=True,
             )
@@ -951,6 +1099,8 @@ class BacktestEngine:
         print(f"   초기 자본: ${self.initial_capital:,.0f}")
         print(f"   전략: {self.strategy}")
         print(f"   리밸런싱: {self.rebalance_frequency}")
+        if self.strategy in {"predictor", "hybrid"}:
+            print("   ⚠️ DART 보고연도는 기준일에 맞추지만 이후 정정공시 버전은 분리하지 못합니다.")
         print(f"{'='*70}\n")
 
         # 가격 데이터 조회
@@ -961,9 +1111,20 @@ class BacktestEngine:
             print("❌ 가격 데이터를 가져올 수 없습니다.")
             return {"error": "No price data available"}
 
-        # 리밸런싱 날짜
-        rebalance_dates = self._get_rebalance_dates()
-        all_dates = pd.date_range(self.start_date, self.end_date, freq="B")
+        # 거래소의 실제 가격 인덱스를 사용한다. 주말만 제거한 가상 영업일은
+        # 휴장일 체결과 이전 종가 재사용을 만들 수 있다.
+        price_df = price_df.copy()
+        price_df.index = pd.DatetimeIndex(price_df.index).tz_localize(None).normalize()
+        start_ts = pd.Timestamp(self.start_date)
+        end_ts = pd.Timestamp(self.end_date)
+        all_price_dates = pd.DatetimeIndex(price_df.index.unique()).sort_values()
+        all_dates = all_price_dates[(all_price_dates >= start_ts) & (all_price_dates <= end_ts)]
+        if len(all_dates) == 0:
+            return {"error": "No trading dates in requested range"}
+
+        rebalance_dates = self._get_rebalance_dates(all_dates)
+        rebalance_set = set(rebalance_dates)
+        rebalance_number = {date: i + 1 for i, date in enumerate(rebalance_dates)}
 
         print(f"📅 총 {len(all_dates)}일 중 {len(rebalance_dates)}회 리밸런싱 예정\n")
 
@@ -973,50 +1134,73 @@ class BacktestEngine:
             "value": self.initial_capital,
         })
 
+        last_mark_prices: Dict[str, float] = {}
+
+        def exact_price(ticker: str, field: str, date: pd.Timestamp) -> Optional[float]:
+            try:
+                series = _price_series(price_df, field, ticker)
+                if date not in series.index:
+                    return None
+                value = series.loc[date]
+                if isinstance(value, pd.Series):
+                    value = value.iloc[-1]
+                if pd.isna(value) or float(value) <= 0:
+                    return None
+                return float(value)
+            except Exception:
+                return None
+
         # 백테스트 루프
         for i, current_date in enumerate(all_dates):
             current_date_str = current_date.strftime("%Y-%m-%d")
 
-            # 현재가 조회
-            current_prices = {}
-            missing_price = False
-
+            # 신호는 전 거래일 종가까지, 체결은 현재 거래일 시가로 분리한다.
+            execution_prices = {}
             available_tickers = []
             for ticker in self.tickers:
-                try:
-                    if len(self.tickers) > 1:
-                        close_series = price_df["Close"][ticker]
-                    else:
-                        close_series = price_df["Close"]
-
-                    # 해당 날짜 또는 이전 유효 가격
-                    valid_prices = close_series.loc[:current_date].dropna()
-                    if len(valid_prices) == 0:
-                        continue  # 이 티커만 건너뜀
-                    current_prices[ticker] = float(valid_prices.iloc[-1])
+                open_price = exact_price(ticker, "Open", current_date)
+                if open_price is not None:
+                    execution_prices[ticker] = open_price
                     available_tickers.append(ticker)
-                except Exception:
-                    continue  # 이 티커만 건너뜀
 
-            # 가격이 있는 종목이 전혀 없으면 건너뜀
-            if len(available_tickers) == 0:
-                continue
+            sizing_prices = {**last_mark_prices, **execution_prices}
 
             # 리밸런싱 날짜인 경우 신호 생성 및 거래 실행
-            if current_date in rebalance_dates:
-                rebalance_idx = rebalance_dates.index(current_date) + 1
+            if current_date in rebalance_set and available_tickers:
+                previous_dates = all_price_dates[all_price_dates < current_date]
+                if len(previous_dates) == 0:
+                    continue
+                signal_date = previous_dates[-1]
+                signal_date_str = signal_date.strftime("%Y-%m-%d")
+                rebalance_idx = rebalance_number[current_date]
                 print(f"\n   🔄 리밸런싱 {rebalance_idx}/{len(rebalance_dates)} ({current_date_str}) - {len(available_tickers)}개 종목 분석 중...", end="", flush=True)
 
-                if self.strategy == "predictor":
+                if self.target_weights is not None:
+                    portfolio_value = self.portfolio.get_total_value(sizing_prices)
+                    signals = {}
+                    for ticker in available_tickers:
+                        current_quantity = self.portfolio.positions.get(ticker, Position()).long
+                        target_value = portfolio_value * self.target_weights.get(ticker, 0.0)
+                        target_quantity = int(target_value / execution_prices[ticker])
+                        delta = target_quantity - current_quantity
+                        action = Action.BUY if delta > 0 else (Action.SELL if delta < 0 else Action.HOLD)
+                        signals[ticker] = {
+                            "action": action,
+                            "confidence": 1.0,
+                            "score": self.target_weights.get(ticker, 0.0),
+                            "target_weight": self.target_weights.get(ticker, 0.0),
+                            "target_quantity_delta": abs(delta),
+                        }
+                elif self.strategy == "predictor":
                     signals = generate_signals_from_predictor(
-                        available_tickers, current_date_str, max_workers=self.workers, skip_news=self.skip_news
+                        available_tickers, signal_date_str, max_workers=self.workers, skip_news=self.skip_news
                     )
                 elif self.strategy == "hybrid":
                     signals = generate_hybrid_signals(
-                        available_tickers, current_date_str, price_df, max_workers=self.workers, skip_news=self.skip_news
+                        available_tickers, signal_date_str, price_df, max_workers=self.workers, skip_news=self.skip_news
                     )
                 else:  # momentum
-                    signals = generate_momentum_signals(available_tickers, current_date_str)
+                    signals = generate_momentum_signals_from_prices(available_tickers, price_df, signal_date)
 
                 print(" 완료", flush=True)
 
@@ -1032,17 +1216,21 @@ class BacktestEngine:
                         continue
 
                     confidence = signal.get("confidence", 0.0)
-                    quantity = calculate_position_size(
-                        self.portfolio, current_prices, ticker, action, confidence,
-                    )
+                    quantity = signal.get("target_quantity_delta")
+                    if quantity is None:
+                        quantity = calculate_position_size(
+                            self.portfolio, sizing_prices, ticker, action, confidence,
+                        )
                     if quantity > 0:
-                        price = current_prices[ticker]
+                        price = execution_prices[ticker]
                         executed_qty = self.portfolio.sell(ticker, quantity, price)
                         if executed_qty > 0:
                             self.trade_history.append({
                                 "date": current_date_str, "ticker": ticker,
                                 "action": action.value, "quantity": executed_qty,
-                                "price": price, "confidence": confidence,
+                                "signal_date": signal_date_str, "confidence": confidence,
+                                "target_weight": signal.get("target_weight"),
+                                **self.portfolio.last_trade,
                             })
 
                 # BUY 신호를 점수 순으로 정렬하여 처리 (점수 높은 종목 우선)
@@ -1059,21 +1247,29 @@ class BacktestEngine:
 
                 for ticker, signal, _ in buy_signals:
                     confidence = signal.get("confidence", 0.0)
-                    quantity = calculate_position_size(
-                        self.portfolio, current_prices, ticker, Action.BUY, confidence,
-                    )
+                    quantity = signal.get("target_quantity_delta")
+                    if quantity is None:
+                        quantity = calculate_position_size(
+                            self.portfolio, sizing_prices, ticker, Action.BUY, confidence,
+                        )
                     if quantity > 0:
-                        price = current_prices[ticker]
+                        price = execution_prices[ticker]
                         executed_qty = self.portfolio.buy(ticker, quantity, price)
                         if executed_qty > 0:
                             self.trade_history.append({
                                 "date": current_date_str, "ticker": ticker,
                                 "action": Action.BUY.value, "quantity": executed_qty,
-                                "price": price, "confidence": confidence,
+                                "signal_date": signal_date_str, "confidence": confidence,
+                                "target_weight": signal.get("target_weight"),
+                                **self.portfolio.last_trade,
                             })
 
-            # 포트폴리오 가치 기록
-            total_value = self.portfolio.get_total_value(current_prices)
+            # 장 마감 가격으로 평가하되, 거래정지 종목은 마지막 관측 가격을 유지한다.
+            for ticker in self.tickers:
+                close_price = exact_price(ticker, "Close", current_date)
+                if close_price is not None:
+                    last_mark_prices[ticker] = close_price
+            total_value = self.portfolio.get_total_value(last_mark_prices)
             self.portfolio_values.append({
                 "date": current_date,
                 "value": total_value,
@@ -1085,19 +1281,28 @@ class BacktestEngine:
                 print(f"   진행: {progress*100:.0f}% | 날짜: {current_date_str} | 포트폴리오: ${total_value:,.0f}")
 
         # 성과 지표 계산
-        metrics = calculate_performance_metrics(self.portfolio_values)
+        metrics = calculate_performance_metrics(
+            self.portfolio_values,
+            risk_free_rate=self.risk_free_rate,
+        )
         metrics.total_trades = len(self.trade_history)
 
         # 승률 계산
-        if self.trade_history:
-            winning_trades = sum(1 for t in self.trade_history if self._is_winning_trade(t))
-            metrics.win_rate = (winning_trades / len(self.trade_history)) * 100
+        closed_trades = [t for t in self.trade_history if t.get("realized_pnl") is not None]
+        if closed_trades:
+            winning_trades = sum(1 for t in closed_trades if t["realized_pnl"] > 0)
+            metrics.win_rate = (winning_trades / len(closed_trades)) * 100
 
         # 벤치마크 수익률
         benchmark_return = get_benchmark_return(self.benchmark, self.start_date, self.end_date)
 
         # 결과 출력
         self._print_results(metrics, benchmark_return)
+
+        benchmark_excess_return = (
+            (metrics.total_return or 0) - benchmark_return
+            if benchmark_return is not None else None
+        )
 
         return {
             "metrics": {
@@ -1109,17 +1314,26 @@ class BacktestEngine:
                 "annualized_return": metrics.annualized_return,
                 "win_rate": metrics.win_rate,
                 "total_trades": metrics.total_trades,
+                "closed_trades": len(closed_trades),
+                "transaction_costs": self.portfolio.transaction_costs,
             },
             "benchmark_return": benchmark_return,
+            "benchmark_excess_return": benchmark_excess_return,
+            "validity": {
+                "point_in_time_prices": True,
+                "signal_execution_lag": "previous_close_to_next_open",
+                "survivorship_bias": self.universe_has_survivorship_bias,
+                "portfolio_formation_date": self.portfolio_formation_date,
+                "fundamental_data": (
+                    "not_used"
+                    if self.strategy in {"momentum", "target_weights"}
+                    else "report_year_lagged_but_revision_history_not_versioned"
+                ),
+            },
             "final_value": self.portfolio_values[-1]["value"] if self.portfolio_values else self.initial_capital,
             "portfolio_values": [{"date": pv["date"].strftime("%Y-%m-%d"), "value": pv["value"]} for pv in self.portfolio_values],
             "trade_history": self.trade_history,
         }
-
-    def _is_winning_trade(self, trade: Dict) -> bool:
-        """거래 수익 여부 판단 (간단한 휴리스틱)"""
-        # 실제로는 청산 시점 가격과 비교해야 하지만, 여기서는 간단히 처리
-        return trade.get("confidence", 0) > 0.5
 
     def _print_results(self, metrics: PerformanceMetrics, benchmark_return: Optional[float]) -> None:
         """결과 출력"""
@@ -1143,10 +1357,10 @@ class BacktestEngine:
             print(f"   연환산 수익률:           N/A")
 
         if benchmark_return is not None:
-            alpha = (metrics.total_return or 0) - benchmark_return
+            excess_return = (metrics.total_return or 0) - benchmark_return
             print(f"\n📊 벤치마크 비교 ({self.benchmark})")
             print(f"   벤치마크 수익률: {benchmark_return:>14.2f}%")
-            print(f"   초과 수익 (α):  {alpha:>15.2f}%")
+            print(f"   단순 초과 수익: {excess_return:>15.2f}%")
 
         print(f"\n📉 위험 지표")
         print(f"   Sharpe Ratio:   {metrics.sharpe_ratio:>15.2f}" if metrics.sharpe_ratio else "   Sharpe Ratio:   N/A")
@@ -1157,6 +1371,7 @@ class BacktestEngine:
 
         print(f"\n📋 거래 통계")
         print(f"   총 거래 수:     {metrics.total_trades:>15}")
+        print(f"   거래비용+슬리피지: ${self.portfolio.transaction_costs:>12,.2f}")
         if metrics.win_rate is not None:
             print(f"   승률:           {metrics.win_rate:>15.1f}%")
 
@@ -1172,34 +1387,29 @@ class BacktestEngine:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="백테스팅 시스템 - Yahoo Finance 기반",
+        description="Point-in-time 가격 기반 백테스팅 시스템 (미국: Yahoo, 한국: DART/PyKRX)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 예시:
-  # 기본 하이브리드 전략 백테스트 (시가총액 정렬 기본 적용)
+  # 기본 모멘텀 전략 백테스트
   uv run python backtest.py --tickers AAPL,MSFT,GOOGL --start 2024-01-01 --end 2024-12-31
 
-  # S&P 500 시가총액 상위 50개 백테스트
-  uv run python backtest.py --index sp500 --top 50 --rebalance monthly
-
-  # predict 전략 사용
-  uv run python backtest.py --tickers AAPL,MSFT --strategy predictor --rebalance monthly
-
-  # 모멘텀 전략 사용
-  uv run python backtest.py --index sp500 --top 50 --strategy momentum --rebalance monthly
-
-  # NASDAQ 100 전체 종목 백테스트
-  uv run python backtest.py --index nasdaq100 --rebalance monthly
+  # 현재 인덱스 구성종목 사용(생존편향을 명시적으로 인정한 탐색용 실행)
+  uv run python backtest.py --index sp500 --top 50 --acknowledge-survivorship-bias --start 2024-01-01 --end 2024-12-31
 
   # 결과 JSON 저장
-  uv run python backtest.py --tickers NVDA,TSLA --output results.json
+  uv run python backtest.py --tickers NVDA,TSLA --start 2024-01-01 --end 2024-12-31 --output results.json
         """
     )
 
     parser.add_argument("--tickers", type=str, help="분석할 종목 (콤마 구분)")
+    parser.add_argument("--weights-json", type=str,
+                       help="portfolio-report가 만든 고정 목표비중 JSON (weights는 0~1 소수)")
     parser.add_argument("--index", type=str,
                        choices=["sp500", "nasdaq100", "sp500-top10", "nasdaq-top10", "faang", "kospi", "kosdaq"],
                        help="인덱스 또는 사전 정의된 종목 그룹 (한국: kospi, kosdaq)")
+    parser.add_argument("--acknowledge-survivorship-bias", action="store_true",
+                       help="현재 인덱스 구성종목을 과거에도 존재한 것으로 사용하는 생존편향을 인정하고 탐색용 실행")
     parser.add_argument("--no-sort-by-cap", action="store_false", dest="sort_by_cap",
                        help="시가총액 정렬 비활성화 (기본: 시가총액 내림차순 정렬)")
     parser.set_defaults(sort_by_cap=True)
@@ -1208,14 +1418,18 @@ def main():
     parser.add_argument("--start", type=str, required=True, help="시작 날짜 (YYYY-MM-DD)")
     parser.add_argument("--end", type=str, required=True, help="종료 날짜 (YYYY-MM-DD)")
     parser.add_argument("--capital", type=float, default=100000, help="초기 자본 (기본: 100000)")
-    parser.add_argument("--strategy", type=str, default="hybrid",
-                       choices=["momentum", "predictor", "hybrid"],
-                       help="거래 전략: momentum(가격추세), predictor(펀더멘털), hybrid(혼합) (기본: hybrid)")
+    parser.add_argument("--strategy", type=str, default="momentum",
+                       choices=["momentum", "predictor", "hybrid", "target_weights"],
+                       help="거래 전략: momentum(가격추세), predictor/hybrid(한국 종목만) (기본: momentum)")
     parser.add_argument("--rebalance", type=str, default="weekly",
                        choices=["daily", "weekly", "monthly"],
                        help="리밸런싱 주기 (기본: weekly)")
     parser.add_argument("--benchmark", type=str, default="SPY", help="벤치마크 티커 (기본: SPY)")
     parser.add_argument("--margin", type=float, default=0.5, help="마진 요구율 (기본: 0.5)")
+    parser.add_argument("--commission-bps", type=float, default=5.0, help="편도 매매 수수료(bp, 기본: 5)")
+    parser.add_argument("--slippage-bps", type=float, default=5.0, help="편도 슬리피지(bp, 기본: 5)")
+    parser.add_argument("--sell-tax-bps", type=float, default=0.0, help="매도 거래세(bp, 기본: 0)")
+    parser.add_argument("--risk-free-rate", type=float, default=0.0, help="연 무위험수익률(소수, 기본: 0.0)")
     parser.add_argument("--workers", type=int, default=3, help="병렬 처리 워커 수 (기본: 3, rate limiting 대응)")
     parser.add_argument("--output", type=str, help="결과 JSON 저장 경로")
     parser.add_argument("--skip-news", action="store_true",
@@ -1223,8 +1437,41 @@ def main():
 
     args = parser.parse_args()
 
+    if args.index and not args.acknowledge_survivorship_bias:
+        parser.error(
+            "--index는 현재 구성종목을 사용해 생존편향이 생깁니다. "
+            "검증용이면 --tickers로 당시 유니버스를 지정하고, 탐색용이면 "
+            "--acknowledge-survivorship-bias를 추가하세요."
+        )
+    if any(value < 0 for value in (args.commission_bps, args.slippage_bps, args.sell_tax_bps)):
+        parser.error("거래비용 bp 값은 0 이상이어야 합니다.")
+    if args.capital <= 0 or args.margin <= 0:
+        parser.error("--capital과 --margin은 0보다 커야 합니다.")
+    if pd.Timestamp(args.start) > pd.Timestamp(args.end):
+        parser.error("--start는 --end보다 늦을 수 없습니다.")
+
+    target_weights = None
+    portfolio_formation_date = None
+    if args.weights_json:
+        weights_payload = json.loads(Path(args.weights_json).read_text(encoding="utf-8"))
+        target_weights = {ticker.upper(): weight for ticker, weight in weights_payload.get("weights", {}).items()}
+        portfolio_formation_date = weights_payload.get("analysis_date")
+        if not target_weights or not portfolio_formation_date:
+            parser.error("--weights-json에는 analysis_date와 비어 있지 않은 weights가 필요합니다.")
+        if args.index:
+            parser.error("--weights-json과 --index는 함께 사용할 수 없습니다.")
+        args.strategy = "target_weights"
+    elif args.strategy == "target_weights":
+        parser.error("--strategy target_weights에는 --weights-json이 필요합니다.")
+
     # 종목 리스트 결정
-    if args.tickers:
+    if target_weights is not None:
+        tickers = list(target_weights)
+        if args.tickers:
+            requested_tickers = {t.strip().upper() for t in args.tickers.split(",") if t.strip()}
+            if requested_tickers != set(tickers):
+                parser.error("--tickers와 --weights-json의 종목이 일치해야 합니다.")
+    elif args.tickers:
         tickers = [t.strip().upper() for t in args.tickers.split(",")]
     elif args.index:
         # 사전 정의 그룹
@@ -1271,6 +1518,12 @@ def main():
         print("❌ 유효한 종목이 없습니다.")
         sys.exit(1)
 
+    if args.strategy in {"predictor", "hybrid"} and any(not is_korean_ticker(t) for t in tickers):
+        parser.error(
+            "미국 종목의 과거 point-in-time 재무데이터가 없어 predictor/hybrid를 실행할 수 없습니다. "
+            "미국 종목은 --strategy momentum을 사용하세요."
+        )
+
     # 백테스트 실행
     engine = BacktestEngine(
         tickers=tickers,
@@ -1283,6 +1536,13 @@ def main():
         benchmark=args.benchmark,
         workers=args.workers,
         skip_news=args.skip_news,
+        commission_bps=args.commission_bps,
+        slippage_bps=args.slippage_bps,
+        sell_tax_bps=args.sell_tax_bps,
+        risk_free_rate=args.risk_free_rate,
+        universe_has_survivorship_bias=bool(args.index),
+        target_weights=target_weights,
+        portfolio_formation_date=portfolio_formation_date,
     )
 
     results = engine.run()

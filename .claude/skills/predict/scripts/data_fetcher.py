@@ -26,6 +26,20 @@ from rate_limiter import (
 )
 from ticker_utils import is_korean_ticker, normalize_korean_ticker, is_korean_index
 
+
+def _is_historical_snapshot(end_date: str) -> bool:
+    """요청일이 오늘보다 이전인지 판별한다.
+
+    Yahoo Finance의 ``Ticker.info``, 뉴스, 내부자 거래 API는 과거 시점
+    스냅샷을 제공하지 않는다. 과거 날짜 키로 현재 데이터를 캐시하는 일을
+    막기 위해 이 판별을 네트워크 호출과 캐시 조회보다 먼저 사용한다.
+    """
+    try:
+        requested = datetime.strptime(end_date, "%Y-%m-%d").date()
+    except (TypeError, ValueError):
+        return False
+    return requested < datetime.now().date()
+
 # ============================================================================
 # 인덱스 종목 리스트 (폴백용 하드코딩)
 # ============================================================================
@@ -163,6 +177,10 @@ def get_insider_trades(ticker: str, end_date: str, limit: int = 100) -> list:
         from korean_data_fetcher import get_insider_trades_kr
         return get_insider_trades_kr(normalize_korean_ticker(ticker), end_date, limit)
 
+    # Yahoo는 현재 내부자 거래 목록만 제공하므로 과거 시점 분석에는 사용하지 않는다.
+    if _is_historical_snapshot(end_date):
+        return []
+
     cache_path = _get_cache_path("insider_yf_v2", ticker, end_date, "")
     cached = _read_cache(cache_path)
     if cached is not None:
@@ -181,6 +199,10 @@ def get_company_news(ticker: str, end_date: str, limit: int = 50) -> list:
     if is_korean_ticker(ticker):
         from korean_data_fetcher import get_company_news_kr
         return get_company_news_kr(normalize_korean_ticker(ticker), end_date, limit)
+
+    # Yahoo 뉴스 피드는 현재 피드다. 과거 날짜 키에 저장하면 미래정보 누수가 된다.
+    if _is_historical_snapshot(end_date):
+        return []
 
     cache_path = _get_cache_path("news_yf_v2", ticker, end_date, "")
     cached = _read_cache(cache_path)
@@ -600,8 +622,17 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
 # 캐시된 데이터 조회 (재무 지표, 가격)
 # ============================================================================
 
-def get_financial_metrics(ticker, end_date, period="ttm", limit=10):
-    """캐시된 financial metrics 조회 (Yahoo Finance / 한국 DART+PyKRX)"""
+def get_financial_metrics(
+    ticker,
+    end_date,
+    period="ttm",
+    limit=10,
+):
+    """캐시된 financial metrics 조회 (Yahoo Finance / 한국 DART+PyKRX).
+
+    미국 종목의 Yahoo/financial-datasets snapshot은 현재 시점 데이터다.
+    과거 분석에서는 해당 소스를 읽거나 캐시하지 않고 빈 결과를 반환한다.
+    """
     if is_korean_ticker(ticker):
         from korean_data_fetcher import get_financial_metrics_kr
         kr_ticker = normalize_korean_ticker(ticker)
@@ -615,6 +646,9 @@ def get_financial_metrics(ticker, end_date, period="ttm", limit=10):
         if result:
             _write_cache(cache_path, result)
             return [result]
+        return []
+
+    if _is_historical_snapshot(end_date):
         return []
 
     cache_path = _get_cache_path("metrics_yf", ticker, end_date, "")

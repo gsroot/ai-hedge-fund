@@ -1,0 +1,3490 @@
+{
+  "experiment": {
+    "name": "historical_dow_cross_sectional_momentum_walk_forward",
+    "generated_at_utc": "2026-08-26T12:21:23.695993+00:00",
+    "oos_start": "2018-01-01",
+    "oos_end": "2025-12-31",
+    "training_window_years": 3,
+    "test_window": "non-overlapping calendar year",
+    "parameter_selection": "highest training Sharpe; deterministic tie-breaks",
+    "parameter_grid_size": 12,
+    "signal_timing": "previous trading close",
+    "execution_timing": "next trading open",
+    "rebalance": "monthly",
+    "weighting": "equal weight at 1/top_n; negative momentum capacity remains cash",
+    "fractional_shares": true,
+    "commission_bps_each_trade": 5.0,
+    "slippage_bps_each_trade": 5.0
+  },
+  "data": {
+    "price_source": "Yahoo Finance via yfinance",
+    "universe_source": "https://en.wikipedia.org/wiki/Historical_components_of_the_Dow_Jones_Industrial_Average",
+    "downloaded_at_utc": "2026-08-26T12:03:31.786933+00:00",
+    "data_mode": "cache",
+    "cache_path": "C:\\projects\\ai-hedge-fund\\artifacts\\walk_forward\\dow_momentum_2018_2025\\adjusted_ohlc.csv",
+    "cache_sha256": "f509684177da49db88c604c666def584d5a1d1e2fa5a3134e130a8c052cf69c5",
+    "download_start": "2013-10-08",
+    "failed_tickers": [
+      "WBA"
+    ],
+    "universe_aliases": {
+      "DD": "E.I. du Pont and DowDuPont continuous Yahoo series before 2019-04-02",
+      "RTX": "United Technologies and RTX continuous Yahoo series before 2020-08-31"
+    },
+    "minimum_universe_coverage": 0.9,
+    "average_oos_coverage": 0.9746527777777777,
+    "minimum_oos_coverage_observed": 0.9333333333333333,
+    "strict_point_in_time_scope": [
+      "historical membership effective dates",
+      "prices at or before each signal date",
+      "next-open execution"
+    ],
+    "not_vintage_versioned": [
+      "Yahoo corporate-action adjustments and later vendor corrections",
+      "Wikipedia membership page revisions"
+    ],
+    "excluded_non_point_in_time_fields": [
+      "fundamentals",
+      "news",
+      "insider data",
+      "current market cap",
+      "current sectors"
+    ]
+  },
+  "oos_strategy": {
+    "metrics": {
+      "total_return": 0.7264232978044203,
+      "cagr": 0.0708215783796784,
+      "annualized_volatility": 0.17877430540020373,
+      "sharpe_ratio": 0.4723968006575978,
+      "sortino_ratio": 0.606707665740334,
+      "max_drawdown": -0.2678134342937225,
+      "calmar_ratio": 0.26444371084837115,
+      "positive_month_rate": 0.5729166666666666,
+      "annual_returns": {
+        "2018": 0.05091154569382561,
+        "2019": 0.18200370007643185,
+        "2020": 0.05209807507566455,
+        "2021": 0.11313642157965154,
+        "2022": -0.13478668335800337,
+        "2023": 0.06796933993162724,
+        "2024": 0.11616058118853667,
+        "2025": 0.1506652801773889
+      },
+      "positive_years": 7,
+      "years_observed": 8
+    },
+    "block_bootstrap_cagr_95pct": {
+      "low": -0.03536647316540706,
+      "median": 0.06999594440278523,
+      "high": 0.18248117216791312
+    },
+    "total_turnover": 70.73111032216961,
+    "transaction_cost_fraction_of_initial_capital": 0.08836565432218005,
+    "rebalance_count": 96
+  },
+  "benchmark_dia": {
+    "metrics": {
+      "total_return": 1.2532753202225226,
+      "cagr": 0.10716266881951597,
+      "annualized_volatility": 0.1900443387935665,
+      "sharpe_ratio": 0.6312239819623574,
+      "sortino_ratio": 0.7561444274993476,
+      "max_drawdown": -0.36696073998154544,
+      "calmar_ratio": 0.29202761261301474,
+      "positive_month_rate": 0.6458333333333334,
+      "annual_returns": {
+        "2018": -0.04210542965650077,
+        "2019": 0.2502658868824781,
+        "2020": 0.09590287927960084,
+        "2021": 0.2082575105389508,
+        "2022": -0.07015363977560929,
+        "2023": 0.16019200584426985,
+        "2024": 0.14824739973786016,
+        "2025": 0.14705980239377547
+      },
+      "positive_years": 6,
+      "years_observed": 8
+    },
+    "entry_cost_fraction_of_initial_capital": 0.001
+  },
+  "comparison": {
+    "cagr_difference": -0.036341090439837576,
+    "total_return_difference": -0.5268520224181024,
+    "max_drawdown_improvement": 0.09914730568782293
+  },
+  "folds": [
+    {
+      "train_start": "2015-01-01",
+      "train_end": "2017-12-31",
+      "test_start": "2018-01-01",
+      "test_end": "2018-12-31",
+      "selected_parameters": {
+        "lookback_days": 63,
+        "skip_recent_days": 0,
+        "top_n": 5
+      },
+      "training_metrics": {
+        "total_return": 0.6739528580640406,
+        "cagr": 0.18762643890561637,
+        "annualized_volatility": 0.13933165919553087,
+        "sharpe_ratio": 1.3041913575780415,
+        "sortino_ratio": 1.8501426001782815,
+        "max_drawdown": -0.14140897993342783,
+        "calmar_ratio": 1.3268353890534157,
+        "positive_month_rate": 0.6111111111111112,
+        "annual_returns": {
+          "2015": 0.13351541018997026,
+          "2016": 0.0734333309384938,
+          "2017": 0.3757537906663586
+        },
+        "positive_years": 3,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": 0.05091154569382361,
+        "cagr": 0.05111947896351543,
+        "annualized_volatility": 0.1897016288939944,
+        "sharpe_ratio": 0.35784767784795196,
+        "sortino_ratio": 0.44904412930004267,
+        "max_drawdown": -0.1292831226586334,
+        "calmar_ratio": 0.39540721102857523,
+        "positive_month_rate": 0.5833333333333334,
+        "annual_returns": {
+          "2018": 0.05091154569382561
+        },
+        "positive_years": 1,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.6739528580640406,
+            "cagr": 0.18762643890561637,
+            "annualized_volatility": 0.13933165919553087,
+            "sharpe_ratio": 1.3041913575780415,
+            "sortino_ratio": 1.8501426001782815,
+            "max_drawdown": -0.14140897993342783,
+            "calmar_ratio": 1.3268353890534157,
+            "positive_month_rate": 0.6111111111111112,
+            "annual_returns": {
+              "2015": 0.13351541018997026,
+              "2016": 0.0734333309384938,
+              "2017": 0.3757537906663586
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 34.82802925817814,
+          "transaction_cost": 0.04060531439141516
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5549870698022183,
+            "cagr": 0.15876021306338672,
+            "annualized_volatility": 0.12419304994926281,
+            "sharpe_ratio": 1.2489050951768512,
+            "sortino_ratio": 1.6793187094341693,
+            "max_drawdown": -0.13049816845486095,
+            "calmar_ratio": 1.2165704311651053,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.057535362465222395,
+              "2016": 0.10141512362413252,
+              "2017": 0.33499871628736333
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 25.092986490712043,
+          "transaction_cost": 0.027982066507813083
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.32710487258320575,
+            "cagr": 0.09906322726689432,
+            "annualized_volatility": 0.14495915167586954,
+            "sharpe_ratio": 0.7242851845153733,
+            "sortino_ratio": 0.9862070465950507,
+            "max_drawdown": -0.1832880335574275,
+            "calmar_ratio": 0.5404784226453931,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2015": 0.011432909319987639,
+              "2016": 0.04205061530047116,
+              "2017": 0.2591554484824443
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 35.17509525398399,
+          "transaction_cost": 0.03691371424006828
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.275078602717473,
+            "cagr": 0.08449007206828418,
+            "annualized_volatility": 0.13131063819686054,
+            "sharpe_ratio": 0.6834850300642641,
+            "sortino_ratio": 0.8928235223595054,
+            "max_drawdown": -0.1805172892472252,
+            "calmar_ratio": 0.46804421017297604,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2015": -0.04699947463084375,
+              "2016": 0.07560863918765404,
+              "2017": 0.2439116521191096
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 24.706740713640198,
+          "transaction_cost": 0.02497706231549476
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.6180511735202319,
+            "cagr": 0.17423860541641245,
+            "annualized_volatility": 0.14253265141859744,
+            "sharpe_ratio": 1.1984418546777171,
+            "sortino_ratio": 1.7423094415923859,
+            "max_drawdown": -0.1617431791514864,
+            "calmar_ratio": 1.077254733896525,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.14019484034189156,
+              "2016": 0.06797531809401947,
+              "2017": 0.32877658170516866
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 26.282881114751007,
+          "transaction_cost": 0.030675394990591315
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5533724915655764,
+            "cagr": 0.15835848723963775,
+            "annualized_volatility": 0.12708686400638036,
+            "sharpe_ratio": 1.2205642284930605,
+            "sortino_ratio": 1.6801203750335425,
+            "max_drawdown": -0.13411019308123595,
+            "calmar_ratio": 1.1808087334846624,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.03429727103458924,
+              "2016": 0.14191425151433057,
+              "2017": 0.3152149537605631
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 19.52494878497466,
+          "transaction_cost": 0.02192918606724626
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.5648836732990159,
+            "cagr": 0.16121655084354458,
+            "annualized_volatility": 0.14918342597060347,
+            "sharpe_ratio": 1.076665901547647,
+            "sortino_ratio": 1.588231018210685,
+            "max_drawdown": -0.14058669131132984,
+            "calmar_ratio": 1.1467411981873152,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.10953409592166019,
+              "2016": 0.06940854506152805,
+              "2017": 0.31885714619521255
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 27.231525598130503,
+          "transaction_cost": 0.031011535795173645
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.4286208767758839,
+            "cagr": 0.1264382610062862,
+            "annualized_volatility": 0.13303064862869357,
+            "sharpe_ratio": 0.9617097103237221,
+            "sortino_ratio": 1.3023920936385678,
+            "max_drawdown": -0.13589005478143734,
+            "calmar_ratio": 0.9304452868876003,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.0029189171653596357,
+              "2016": 0.06961593013135192,
+              "2017": 0.33175184398747204
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 18.625772747407357,
+          "transaction_cost": 0.01960039209746884
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.39381586801607926,
+            "cagr": 0.11720310745603935,
+            "annualized_volatility": 0.14702769053328033,
+            "sharpe_ratio": 0.8275014541079648,
+            "sortino_ratio": 1.1309916028251714,
+            "max_drawdown": -0.130883095041057,
+            "calmar_ratio": 0.8954793391711409,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.07500084507115035,
+              "2016": 0.017138974192787648,
+              "2017": 0.2747244124210495
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.037302606075432,
+          "transaction_cost": 0.021700376961973557
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.4575552249888595,
+            "cagr": 0.1340022428240999,
+            "annualized_volatility": 0.13399787949596836,
+            "sharpe_ratio": 1.0056943775952645,
+            "sortino_ratio": 1.3611431628306856,
+            "max_drawdown": -0.13925868185655155,
+            "calmar_ratio": 0.9622541376783514,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.07549800328127554,
+              "2016": 0.02488251506907746,
+              "2017": 0.3223344918631681
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 14.678257995638935,
+          "transaction_cost": 0.015816132616391282
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.540206855178049,
+            "cagr": 0.15507229454629545,
+            "annualized_volatility": 0.1486565624661781,
+            "sharpe_ratio": 1.0443574144014705,
+            "sortino_ratio": 1.4540064374796788,
+            "max_drawdown": -0.14348549351546025,
+            "calmar_ratio": 1.080752421356008,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.11630586568905299,
+              "2016": 0.017461910043207185,
+              "2017": 0.35605618978803033
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 19.18936897602436,
+          "transaction_cost": 0.021943616359465755
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.4208145072992038,
+            "cagr": 0.12438007183901911,
+            "annualized_volatility": 0.13337517453930245,
+            "sharpe_ratio": 0.9458318026592357,
+            "sortino_ratio": 1.2937737028768663,
+            "max_drawdown": -0.12582465668712384,
+            "calmar_ratio": 0.9885190638612523,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2015": 0.06846324253310732,
+              "2016": 0.05132943910611365,
+              "2017": 0.26484984292712976
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 15.726252468730163,
+          "transaction_cost": 0.01716057361263031
+        }
+      ]
+    },
+    {
+      "train_start": "2016-01-01",
+      "train_end": "2018-12-31",
+      "test_start": "2019-01-01",
+      "test_end": "2019-12-31",
+      "selected_parameters": {
+        "lookback_days": 126,
+        "skip_recent_days": 0,
+        "top_n": 10
+      },
+      "training_metrics": {
+        "total_return": 0.5865564254931195,
+        "cagr": 0.1667981848966662,
+        "annualized_volatility": 0.13996016073524253,
+        "sharpe_ratio": 1.1726404209324832,
+        "sortino_ratio": 1.4523043019184332,
+        "max_drawdown": -0.14409288224629557,
+        "calmar_ratio": 1.1575740751133066,
+        "positive_month_rate": 0.6388888888888888,
+        "annual_returns": {
+          "2016": 0.161160850189642,
+          "2017": 0.3152149537605655,
+          "2018": 0.03888242558423283
+        },
+        "positive_years": 3,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": 0.1957115928139248,
+        "cagr": 0.1957115928139248,
+        "annualized_volatility": 0.12398362163836443,
+        "sharpe_ratio": 1.504105468115628,
+        "sortino_ratio": 1.9540788933816127,
+        "max_drawdown": -0.07377060852616912,
+        "calmar_ratio": 2.65297517160237,
+        "positive_month_rate": 0.8333333333333334,
+        "annual_returns": {
+          "2019": 0.19571159281392592
+        },
+        "positive_years": 1,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.5854302177305333,
+            "cagr": 0.16652130553410016,
+            "annualized_volatility": 0.14841282156268196,
+            "sharpe_ratio": 1.1125376793696131,
+            "sortino_ratio": 1.4041584376390348,
+            "max_drawdown": -0.12928312265863118,
+            "calmar_ratio": 1.2880359176796454,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2016": 0.09191754120143392,
+              "2017": 0.37575379066636216,
+              "2018": 0.05539873795705086
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 37.16888530101017,
+          "transaction_cost": 0.046879094568546616
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5232852736994222,
+            "cagr": 0.15103542905242495,
+            "annualized_volatility": 0.13688852388652137,
+            "sharpe_ratio": 1.0964681102508222,
+            "sortino_ratio": 1.3132040147494408,
+            "max_drawdown": -0.15395826625078246,
+            "calmar_ratio": 0.9810153928753881,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2016": 0.11978512806879515,
+              "2017": 0.33499871628736155,
+              "2018": 0.018980094308425066
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 25.10620072421402,
+          "transaction_cost": 0.03159745444300824
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.42546500859938363,
+            "cagr": 0.1257837560937216,
+            "annualized_volatility": 0.15371351658525637,
+            "sharpe_ratio": 0.8479364148468536,
+            "sortino_ratio": 1.1177223558164786,
+            "max_drawdown": -0.11182023422125487,
+            "calmar_ratio": 1.124874732821947,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2016": 0.059683072075917165,
+              "2017": 0.25915544848244276,
+              "2018": 0.06831964652691891
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 38.06792786286193,
+          "transaction_cost": 0.045182606427936825
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5184677751128455,
+            "cagr": 0.14981751673182453,
+            "annualized_volatility": 0.14205659877472923,
+            "sharpe_ratio": 1.054159586828298,
+            "sortino_ratio": 1.3048717027101162,
+            "max_drawdown": -0.11903790159311545,
+            "calmar_ratio": 1.2585698733493906,
+            "positive_month_rate": 0.7777777777777778,
+            "annual_returns": {
+              "2016": 0.09428359183211454,
+              "2017": 0.2439116521191096,
+              "2018": 0.11554259188329263
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 24.56889270940861,
+          "transaction_cost": 0.029645670581109645
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.6077560938202893,
+            "cagr": 0.17198590639290723,
+            "annualized_volatility": 0.1559426268981818,
+            "sharpe_ratio": 1.0960853452586423,
+            "sortino_ratio": 1.4153824007812759,
+            "max_drawdown": -0.13302770032711952,
+            "calmar_ratio": 1.292857848177396,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2016": 0.08588870427459172,
+              "2017": 0.32877658170516755,
+              "2018": 0.11425061721798402
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 23.903331655279832,
+          "transaction_cost": 0.029133841835702046
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5865564254931195,
+            "cagr": 0.1667981848966662,
+            "annualized_volatility": 0.13996016073524253,
+            "sharpe_ratio": 1.1726404209324832,
+            "sortino_ratio": 1.4523043019184332,
+            "max_drawdown": -0.14409288224629557,
+            "calmar_ratio": 1.1575740751133066,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2016": 0.161160850189642,
+              "2017": 0.3152149537605655,
+              "2018": 0.03888242558423283
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.933782935587676,
+          "transaction_cost": 0.027408369036488796
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.5451186726858128,
+            "cagr": 0.15652321637014732,
+            "annualized_volatility": 0.16359095943594015,
+            "sharpe_ratio": 0.9709993127313123,
+            "sortino_ratio": 1.305893558855736,
+            "max_drawdown": -0.15225542103680023,
+            "calmar_ratio": 1.0280304983841302,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2016": 0.08695479539795503,
+              "2017": 0.318857146195213,
+              "2018": 0.07783579189339118
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 25.39312309582633,
+          "transaction_cost": 0.030717803961676986
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5390927725956227,
+            "cagr": 0.15501380255338537,
+            "annualized_volatility": 0.14497547219796467,
+            "sharpe_ratio": 1.06688359566223,
+            "sortino_ratio": 1.3575494374267123,
+            "max_drawdown": -0.13961980091885806,
+            "calmar_ratio": 1.1102565791758559,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2016": 0.08646557815925604,
+              "2017": 0.33175184398747226,
+              "2018": 0.06371558075721206
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.62473924023866,
+          "transaction_cost": 0.025967122966181637
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.294585479043066,
+            "cagr": 0.09012438240229659,
+            "annualized_volatility": 0.1699231427060625,
+            "sharpe_ratio": 0.5929852860971963,
+            "sortino_ratio": 0.7593887220845253,
+            "max_drawdown": -0.20847792829792722,
+            "calmar_ratio": 0.43229699727974824,
+            "positive_month_rate": 0.5555555555555556,
+            "annual_returns": {
+              "2016": 0.03412227315819005,
+              "2017": 0.27472441242105106,
+              "2018": -0.017929792991529858
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 20.408801716862794,
+          "transaction_cost": 0.02297194030019594
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.38369696535706144,
+            "cagr": 0.11464960766905596,
+            "annualized_volatility": 0.14906324067797322,
+            "sharpe_ratio": 0.8028651648855422,
+            "sortino_ratio": 1.0124123940775915,
+            "max_drawdown": -0.1827610769532445,
+            "calmar_ratio": 0.6273196108293158,
+            "positive_month_rate": 0.6111111111111112,
+            "annual_returns": {
+              "2016": 0.04233913449938731,
+              "2017": 0.322334491863167,
+              "2018": 0.0039003799765331415
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 13.737676692798793,
+          "transaction_cost": 0.01563691603210816
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.3496120299644312,
+            "cagr": 0.1053965569356059,
+            "annualized_volatility": 0.17052070716030643,
+            "sharpe_ratio": 0.6730244492712681,
+            "sortino_ratio": 0.8863035425512902,
+            "max_drawdown": -0.21281633261277288,
+            "calmar_ratio": 0.49524656139704654,
+            "positive_month_rate": 0.5555555555555556,
+            "annual_returns": {
+              "2016": 0.03374589985826426,
+              "2017": 0.35605618978803255,
+              "2018": -0.03724129227358963
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 20.846579759910387,
+          "transaction_cost": 0.024578202140212568
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.3550873123359639,
+            "cagr": 0.10689334146026974,
+            "annualized_volatility": 0.15086747348361165,
+            "sharpe_ratio": 0.7487315423545733,
+            "sortino_ratio": 0.9620326189473697,
+            "max_drawdown": -0.1761444816913862,
+            "calmar_ratio": 0.6068503562180968,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2016": 0.06851353362869905,
+              "2017": 0.2648498429271311,
+              "2018": 0.0026475122965616826
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 14.986980547509265,
+          "transaction_cost": 0.017325541311662206
+        }
+      ]
+    },
+    {
+      "train_start": "2017-01-01",
+      "train_end": "2019-12-31",
+      "test_start": "2020-01-01",
+      "test_end": "2020-12-31",
+      "selected_parameters": {
+        "lookback_days": 63,
+        "skip_recent_days": 0,
+        "top_n": 5
+      },
+      "training_metrics": {
+        "total_return": 0.8991530561265952,
+        "cagr": 0.23908077158431418,
+        "annualized_volatility": 0.1476209451803837,
+        "sharpe_ratio": 1.5267683065220892,
+        "sortino_ratio": 1.9460630486155615,
+        "max_drawdown": -0.12928312265863084,
+        "calmar_ratio": 1.8492806073040295,
+        "positive_month_rate": 0.7222222222222222,
+        "annual_returns": {
+          "2017": 0.3618023971044304,
+          "2018": 0.0553987379570513,
+          "2019": 0.3213847851441629
+        },
+        "positive_years": 3,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": 0.048531286444217336,
+        "cagr": 0.04833490038029509,
+        "annualized_volatility": 0.270586408639317,
+        "sharpe_ratio": 0.31026436854671513,
+        "sortino_ratio": 0.3772123366256746,
+        "max_drawdown": -0.2678134342937223,
+        "calmar_ratio": 0.1804797451918867,
+        "positive_month_rate": 0.5,
+        "annual_returns": {
+          "2020": 0.048531286444218
+        },
+        "positive_years": 1,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.8991530561265952,
+            "cagr": 0.23908077158431418,
+            "annualized_volatility": 0.1476209451803837,
+            "sharpe_ratio": 1.5267683065220892,
+            "sortino_ratio": 1.9460630486155615,
+            "max_drawdown": -0.12928312265863084,
+            "calmar_ratio": 1.8492806073040295,
+            "positive_month_rate": 0.7222222222222222,
+            "annual_returns": {
+              "2017": 0.3618023971044304,
+              "2018": 0.0553987379570513,
+              "2019": 0.3213847851441629
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 36.011206784241466,
+          "transaction_cost": 0.04951538193720783
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.6314507208611873,
+            "cagr": 0.1777305452743767,
+            "annualized_volatility": 0.13481628446503632,
+            "sharpe_ratio": 1.2814116837964054,
+            "sortino_ratio": 1.530396699031147,
+            "max_drawdown": -0.15395826625078246,
+            "calmar_ratio": 1.154407292329933,
+            "positive_month_rate": 0.75,
+            "annual_returns": {
+              "2017": 0.3223870673590774,
+              "2018": 0.018980094308427953,
+              "2019": 0.21073658759400637
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 25.11264404367584,
+          "transaction_cost": 0.033006651016366934
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.46683310034405956,
+            "cagr": 0.13659919272455556,
+            "annualized_volatility": 0.15541923691368653,
+            "sharpe_ratio": 0.9018797289396593,
+            "sortino_ratio": 1.1940221420949129,
+            "max_drawdown": -0.1429594090961822,
+            "calmar_ratio": 0.955510333934386,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2017": 0.24885038245744928,
+              "2018": 0.06831964652692046,
+              "2019": 0.09943377685687804
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 38.312390543811716,
+          "transaction_cost": 0.04773431897763737
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5425071496860152,
+            "cagr": 0.15586954407478681,
+            "annualized_volatility": 0.13830522081112712,
+            "sharpe_ratio": 1.1169296482897937,
+            "sortino_ratio": 1.3698937538232308,
+            "max_drawdown": -0.11903790159311545,
+            "calmar_ratio": 1.3094110530238172,
+            "positive_month_rate": 0.8333333333333334,
+            "annual_returns": {
+              "2017": 0.23340459347318832,
+              "2018": 0.1155425918832953,
+              "2019": 0.12107706465323576
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 24.473806363053118,
+          "transaction_cost": 0.031418489531876655
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.6971351660718108,
+            "cagr": 0.19337037738709895,
+            "annualized_volatility": 0.15916924905446198,
+            "sharpe_ratio": 1.1907908065958621,
+            "sortino_ratio": 1.5130458496774764,
+            "max_drawdown": -0.1330277003271193,
+            "calmar_ratio": 1.453609864047827,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2017": 0.3153307394344822,
+              "2018": 0.11425061721798402,
+              "2019": 0.15797338979339703
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 21.87432210859384,
+          "transaction_cost": 0.030143961242907077
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.6015867578345389,
+            "cagr": 0.17048094474782993,
+            "annualized_volatility": 0.14050520066439745,
+            "sharpe_ratio": 1.1911215470645917,
+            "sortino_ratio": 1.4500283067857027,
+            "max_drawdown": -0.14409288224629557,
+            "calmar_ratio": 1.1831323108412093,
+            "positive_month_rate": 0.75,
+            "annual_returns": {
+              "2017": 0.3029340994949896,
+              "2018": 0.03888242558423305,
+              "2019": 0.1832094225468648
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 21.120362001930182,
+          "transaction_cost": 0.027957381100601073
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.7363068552374272,
+            "cagr": 0.20250631189378554,
+            "annualized_volatility": 0.16239891995358693,
+            "sharpe_ratio": 1.217274727414126,
+            "sortino_ratio": 1.5717661811362675,
+            "max_drawdown": -0.15225542103680056,
+            "calmar_ratio": 1.3300433607867348,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2017": 0.30997956555632755,
+              "2018": 0.07783579189339318,
+              "2019": 0.22972883780809594
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 22.60708503278495,
+          "transaction_cost": 0.030570128821645448
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.6430312716709461,
+            "cagr": 0.18051799464240492,
+            "annualized_volatility": 0.1451476021603197,
+            "sharpe_ratio": 1.2164228815794857,
+            "sortino_ratio": 1.4973173545845964,
+            "max_drawdown": -0.13961980091885806,
+            "calmar_ratio": 1.2929254550886762,
+            "positive_month_rate": 0.75,
+            "annual_returns": {
+              "2017": 0.3217509323214356,
+              "2018": 0.0637155807572114,
+              "2019": 0.16861291969433934
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.028103391880897,
+          "transaction_cost": 0.027229969517361938
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.4618050328950625,
+            "cagr": 0.13529556626835992,
+            "annualized_volatility": 0.16786700529880613,
+            "sharpe_ratio": 0.8401344206471799,
+            "sortino_ratio": 1.0778516159594347,
+            "max_drawdown": -0.20847792829792733,
+            "calmar_ratio": 0.6489682978574812,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2017": 0.26384374364668006,
+              "2018": -0.01792979299152897,
+              "2019": 0.1777511414030053
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 19.998701954818117,
+          "transaction_cost": 0.02465270882127222
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.6055097976971795,
+            "cagr": 0.17143838571095316,
+            "annualized_volatility": 0.147577134434139,
+            "sharpe_ratio": 1.1463698792094568,
+            "sortino_ratio": 1.4241714881611451,
+            "max_drawdown": -0.18276107695324473,
+            "calmar_ratio": 0.9380464843442118,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2017": 0.3106746779520979,
+              "2018": 0.0039003799765318092,
+              "2019": 0.22018991897873996
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 13.20105971007153,
+          "transaction_cost": 0.017246989197806997
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.6629894381166577,
+            "cagr": 0.1852914042706597,
+            "annualized_volatility": 0.17094721784013675,
+            "sharpe_ratio": 1.0802373176285263,
+            "sortino_ratio": 1.401397162600249,
+            "max_drawdown": -0.21281633261277288,
+            "calmar_ratio": 0.8706634589357585,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2017": 0.3465022008744074,
+              "2018": -0.03724129227359363,
+              "2019": 0.2828177722356837
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 23.60698723958838,
+          "transaction_cost": 0.03157027370537065
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5716706926688531,
+            "cagr": 0.16312788919750854,
+            "annualized_volatility": 0.15044130689824628,
+            "sharpe_ratio": 1.080000559502992,
+            "sortino_ratio": 1.3679502130485033,
+            "max_drawdown": -0.1761444816913864,
+            "calmar_ratio": 0.9261027517360233,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2017": 0.2563296122405889,
+              "2018": 0.0026475122965599063,
+              "2019": 0.24769857143170748
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 14.39778349668775,
+          "transaction_cost": 0.018237967099822328
+        }
+      ]
+    },
+    {
+      "train_start": "2018-01-01",
+      "train_end": "2020-12-31",
+      "test_start": "2021-01-01",
+      "test_end": "2021-12-31",
+      "selected_parameters": {
+        "lookback_days": 126,
+        "skip_recent_days": 21,
+        "top_n": 5
+      },
+      "training_metrics": {
+        "total_return": 0.6063155295672633,
+        "cagr": 0.17114396831064438,
+        "annualized_volatility": 0.2684003233848871,
+        "sharpe_ratio": 0.7230756496295311,
+        "sortino_ratio": 0.8767876176522776,
+        "max_drawdown": -0.31832584896519334,
+        "calmar_ratio": 0.5376376717976106,
+        "positive_month_rate": 0.6944444444444444,
+        "annual_returns": {
+          "2018": 0.07313991877499593,
+          "2019": 0.2297288378080944,
+          "2020": 0.21720898740176375
+        },
+        "positive_years": 3,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": 0.11219135722700169,
+        "cagr": 0.11219135722700169,
+        "annualized_volatility": 0.18029984589241,
+        "sharpe_ratio": 0.6798035471516143,
+        "sortino_ratio": 0.9865952291581064,
+        "max_drawdown": -0.09151449404011702,
+        "calmar_ratio": 1.2259408567327115,
+        "positive_month_rate": 0.5,
+        "annual_returns": {
+          "2021": 0.11219135722700013
+        },
+        "positive_years": 1,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.46745310278610197,
+            "cagr": 0.13637431840786296,
+            "annualized_volatility": 0.2074006164664355,
+            "sharpe_ratio": 0.7207897548203424,
+            "sortino_ratio": 0.8784722503079938,
+            "max_drawdown": -0.2678134342937222,
+            "calmar_ratio": 0.5092138815497043,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2018": 0.05091154569382561,
+              "2019": 0.3213847851441638,
+              "2020": 0.05674150573466452
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 35.26608876897494,
+          "transaction_cost": 0.04019263031905411
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.32150652530471424,
+            "cagr": 0.09737847504785613,
+            "annualized_volatility": 0.17072380717812155,
+            "sharpe_ratio": 0.6301803431609647,
+            "sortino_ratio": 0.7551361587664879,
+            "max_drawdown": -0.18871954855245687,
+            "calmar_ratio": 0.5159956972914685,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2018": 0.013457123119551717,
+              "2019": 0.2107365875940077,
+              "2020": 0.07699643507332077
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 24.903673163883113,
+          "transaction_cost": 0.027285231571604354
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.3154362172227001,
+            "cagr": 0.09569563527223579,
+            "annualized_volatility": 0.26185119789722605,
+            "sharpe_ratio": 0.4801643084776646,
+            "sortino_ratio": 0.5902917546286071,
+            "max_drawdown": -0.29772026509820104,
+            "calmar_ratio": 0.3214280198248219,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2018": 0.06363531271775158,
+              "2019": 0.09943377685689492,
+              "2020": 0.12488460247732958
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 36.838280906505695,
+          "transaction_cost": 0.0398417945500231
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.24934698323128845,
+            "cagr": 0.07702972807698805,
+            "annualized_volatility": 0.2442942127348593,
+            "sharpe_ratio": 0.42646098420074907,
+            "sortino_ratio": 0.48215430187026614,
+            "max_drawdown": -0.3524414610827278,
+            "calmar_ratio": 0.2185603471292699,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2018": 0.10948901477248607,
+              "2019": 0.1210770646532362,
+              "2020": 0.0044413848844182535
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 24.47168611138103,
+          "transaction_cost": 0.027352434080480152
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.48986873763934136,
+            "cagr": 0.14213121832513953,
+            "annualized_volatility": 0.2779219211818453,
+            "sharpe_ratio": 0.6180513090140687,
+            "sortino_ratio": 0.712475004857186,
+            "max_drawdown": -0.32097402053728363,
+            "calmar_ratio": 0.44281221915475827,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2018": 0.10987718996297491,
+              "2019": 0.1579733897933957,
+              "2020": 0.15924305295929675
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 21.903634816032685,
+          "transaction_cost": 0.026310358386331018
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.2734139162817668,
+            "cagr": 0.08390161626493908,
+            "annualized_volatility": 0.23921811461806014,
+            "sharpe_ratio": 0.45718943333971224,
+            "sortino_ratio": 0.5101617270631248,
+            "max_drawdown": -0.3468231539943769,
+            "calmar_ratio": 0.24191469138850918,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2018": 0.03355918265233648,
+              "2019": 0.183209422546863,
+              "2020": 0.04129221697602192
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.935274944703075,
+          "transaction_cost": 0.022954823307095716
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.6063155295672633,
+            "cagr": 0.17114396831064438,
+            "annualized_volatility": 0.2684003233848871,
+            "sharpe_ratio": 0.7230756496295311,
+            "sortino_ratio": 0.8767876176522776,
+            "max_drawdown": -0.31832584896519334,
+            "calmar_ratio": 0.5376376717976106,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2018": 0.07313991877499593,
+              "2019": 0.2297288378080944,
+              "2020": 0.21720898740176375
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 22.67027326278996,
+          "transaction_cost": 0.027414607147484813
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.322795047813625,
+            "cagr": 0.09773502204415485,
+            "annualized_volatility": 0.25399465331123006,
+            "sharpe_ratio": 0.4946834260969333,
+            "sortino_ratio": 0.5637580860453275,
+            "max_drawdown": -0.3596168886222827,
+            "calmar_ratio": 0.2717753952507195,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2018": 0.05836547900850686,
+              "2019": 0.16861291969434467,
+              "2020": 0.06951335279249649
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.878645222380257,
+          "transaction_cost": 0.02334885512632773
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.3278234719992259,
+            "cagr": 0.09912422634672269,
+            "annualized_volatility": 0.2643065661883748,
+            "sharpe_ratio": 0.49068318205033334,
+            "sortino_ratio": 0.5748346762440629,
+            "max_drawdown": -0.3390337636098556,
+            "calmar_ratio": 0.2923727279882079,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2018": -0.02373117218473475,
+              "2019": 0.17775114140300907,
+              "2020": 0.15482821225208987
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 18.81732035400604,
+          "transaction_cost": 0.020341745358744296
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.30839532653118695,
+            "cagr": 0.09373722825030262,
+            "annualized_volatility": 0.23847769009376105,
+            "sharpe_ratio": 0.4956280277676783,
+            "sortino_ratio": 0.5643072272013412,
+            "max_drawdown": -0.3095357052310047,
+            "calmar_ratio": 0.3028317142939845,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2018": -0.0016175512695051353,
+              "2019": 0.22018991897874374,
+              "2020": 0.07402555257613819
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 13.213033464882455,
+          "transaction_cost": 0.014725078079738389
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.4436030910801665,
+            "cagr": 0.13018429423726907,
+            "annualized_volatility": 0.2722891153120798,
+            "sharpe_ratio": 0.5855857538669008,
+            "sortino_ratio": 0.7285917439491392,
+            "max_drawdown": -0.28750714857069115,
+            "calmar_ratio": 0.452803677697982,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2018": -0.042886630130614556,
+              "2019": 0.28281777223561444,
+              "2020": 0.17576208784192215
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 24.30941731121039,
+          "transaction_cost": 0.0274282631317086
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.3087650862678182,
+            "cagr": 0.09384025060400458,
+            "annualized_volatility": 0.2554253964621502,
+            "sharpe_ratio": 0.4794483592618346,
+            "sortino_ratio": 0.5476123196386411,
+            "max_drawdown": -0.36021613277037645,
+            "calmar_ratio": 0.260510960134659,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2018": -0.002683963793661537,
+              "2019": 0.24769857143170282,
+              "2020": 0.05176622598922376
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 14.681475964455906,
+          "transaction_cost": 0.016352027934637435
+        }
+      ]
+    },
+    {
+      "train_start": "2019-01-01",
+      "train_end": "2021-12-31",
+      "test_start": "2022-01-01",
+      "test_end": "2022-12-31",
+      "selected_parameters": {
+        "lookback_days": 63,
+        "skip_recent_days": 0,
+        "top_n": 10
+      },
+      "training_metrics": {
+        "total_return": 0.6496062325790395,
+        "cagr": 0.18131134870289412,
+        "annualized_volatility": 0.1610741785297749,
+        "sharpe_ratio": 1.1156090192030454,
+        "sortino_ratio": 1.4101171160989379,
+        "max_drawdown": -0.18871954855245654,
+        "calmar_ratio": 0.9607449259687941,
+        "positive_month_rate": 0.6388888888888888,
+        "annual_returns": {
+          "2019": 0.22425830494619592,
+          "2020": 0.07699643507331833,
+          "2021": 0.25110270835185977
+        },
+        "positive_years": 3,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": -0.13800088597690685,
+        "cagr": -0.1385107262236961,
+        "annualized_volatility": 0.14308826953407794,
+        "sharpe_ratio": -0.9702789742702644,
+        "sortino_ratio": -1.3689727701513408,
+        "max_drawdown": -0.19906194914103492,
+        "calmar_ratio": -0.6958171906855065,
+        "positive_month_rate": 0.3333333333333333,
+        "annual_returns": {
+          "2022": -0.13800088597690696
+        },
+        "positive_years": 0,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.7827407088885352,
+            "cagr": 0.2122313122080366,
+            "annualized_volatility": 0.20308180384409827,
+            "sharpe_ratio": 1.0499794506798086,
+            "sortino_ratio": 1.3223671947685316,
+            "max_drawdown": -0.2678134342937222,
+            "calmar_ratio": 0.7924595447115385,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2019": 0.3359144045757101,
+              "2020": 0.0567415057346643,
+              "2021": 0.2628180576350705
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 35.31076710415289,
+          "transaction_cost": 0.04680064414000309
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.6496062325790395,
+            "cagr": 0.18131134870289412,
+            "annualized_volatility": 0.1610741785297749,
+            "sharpe_ratio": 1.1156090192030454,
+            "sortino_ratio": 1.4101171160989379,
+            "max_drawdown": -0.18871954855245654,
+            "calmar_ratio": 0.9607449259687941,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2019": 0.22425830494619592,
+              "2020": 0.07699643507331833,
+              "2021": 0.25110270835185977
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 25.14568372628469,
+          "transaction_cost": 0.03169333097554859
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.5293543324792673,
+            "cagr": 0.15191772395810932,
+            "annualized_volatility": 0.2555021293671587,
+            "sharpe_ratio": 0.6815528806235024,
+            "sortino_ratio": 0.8284719108971876,
+            "max_drawdown": -0.29772026509820115,
+            "calmar_ratio": 0.5102700143975762,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2019": 0.11075734709800766,
+              "2020": 0.12488460247733202,
+              "2021": 0.22399868439677095
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 35.98626728561281,
+          "transaction_cost": 0.042129463540171164
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.43973203500151015,
+            "cagr": 0.1289919859388613,
+            "annualized_volatility": 0.2373437429338943,
+            "sharpe_ratio": 0.6304260626207799,
+            "sortino_ratio": 0.7187532097875969,
+            "max_drawdown": -0.35244146108272767,
+            "calmar_ratio": 0.36599549196790826,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2019": 0.13461655394741867,
+              "2020": 0.0044413848844182535,
+              "2021": 0.2633042417272371
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 25.943027804157726,
+          "transaction_cost": 0.02928427001920971
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.4617822891065577,
+            "cagr": 0.13471891677035686,
+            "annualized_volatility": 0.27037865014667795,
+            "sharpe_ratio": 0.6034546540220618,
+            "sortino_ratio": 0.7045563571237372,
+            "max_drawdown": -0.32097402053728397,
+            "calmar_ratio": 0.419719068056812,
+            "positive_month_rate": 0.6111111111111112,
+            "annual_returns": {
+              "2019": 0.1677766211329179,
+              "2020": 0.15924305295929475,
+              "2021": 0.07981266582898106
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 26.6684326358651,
+          "transaction_cost": 0.03335123473256279
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.541696324558884,
+            "cagr": 0.1550040221639426,
+            "annualized_volatility": 0.23179091469650454,
+            "sharpe_ratio": 0.7384358038959776,
+            "sortino_ratio": 0.8334554334597319,
+            "max_drawdown": -0.34682315399437713,
+            "calmar_ratio": 0.4469252423857941,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2019": 0.19571159281392592,
+              "2020": 0.041292216976021257,
+              "2021": 0.23822558896946666
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.870633800437346,
+          "transaction_cost": 0.024789713348590387
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.6927449051301129,
+            "cagr": 0.19150677194322951,
+            "annualized_volatility": 0.2587003371309375,
+            "sharpe_ratio": 0.8069226259599168,
+            "sortino_ratio": 0.9779759221887174,
+            "max_drawdown": -0.31832584896519345,
+            "calmar_ratio": 0.6016060981719689,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2019": 0.24265967820945367,
+              "2020": 0.21720898740176087,
+              "2021": 0.11911356095069592
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 25.806246583291518,
+          "transaction_cost": 0.03511888031096461
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.5304273581375503,
+            "cagr": 0.15218670799171607,
+            "annualized_volatility": 0.24474186889272423,
+            "sharpe_ratio": 0.7018173652903764,
+            "sortino_ratio": 0.8028985051068895,
+            "max_drawdown": -0.3596168886222827,
+            "calmar_ratio": 0.42319121489191996,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2019": 0.18223150173523806,
+              "2020": 0.06951335279249626,
+              "2021": 0.21038625193573424
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.583330004374588,
+          "transaction_cost": 0.02461663837842855
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.44579352612951006,
+            "cagr": 0.13057208544691146,
+            "annualized_volatility": 0.2492751590804977,
+            "sharpe_ratio": 0.6179580898371521,
+            "sortino_ratio": 0.7218390544325396,
+            "max_drawdown": -0.3390337636098556,
+            "calmar_ratio": 0.38513003559482584,
+            "positive_month_rate": 0.6388888888888888,
+            "annual_returns": {
+              "2019": 0.1990907168006113,
+              "2020": 0.15482821225208898,
+              "2021": 0.04408738844823046
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 20.113809720765595,
+          "transaction_cost": 0.02476187260309428
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.49269856432991954,
+            "cagr": 0.14265230248342764,
+            "annualized_volatility": 0.22568480538761213,
+            "sharpe_ratio": 0.7045056703150633,
+            "sortino_ratio": 0.7986078789120569,
+            "max_drawdown": -0.3095357052310046,
+            "calmar_ratio": 0.46085895769913554,
+            "positive_month_rate": 0.6666666666666666,
+            "annual_returns": {
+              "2019": 0.23843379075088356,
+              "2020": 0.07402555257614085,
+              "2021": 0.12223732214181737
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 14.507848336439617,
+          "transaction_cost": 0.01798294603183245
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.5737471401975975,
+            "cagr": 0.16294256735828938,
+            "annualized_volatility": 0.25927100356255794,
+            "sharpe_ratio": 0.7118841114062227,
+            "sortino_ratio": 0.8915305718934445,
+            "max_drawdown": -0.28750714857069115,
+            "calmar_ratio": 0.56674266420275,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2019": 0.3077725009947596,
+              "2020": 0.1757620878419195,
+              "2021": 0.023489285350195788
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 23.849046498768335,
+          "transaction_cost": 0.0318048724874744
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.4619232223867886,
+            "cagr": 0.13475533424739905,
+            "annualized_volatility": 0.2434183147391613,
+            "sharpe_ratio": 0.6417189002478068,
+            "sortino_ratio": 0.7273718086658609,
+            "max_drawdown": -0.36021613277037645,
+            "calmar_ratio": 0.3740957774739652,
+            "positive_month_rate": 0.6944444444444444,
+            "annual_returns": {
+              "2019": 0.26674831586316183,
+              "2020": 0.05176622598922309,
+              "2021": 0.09727379745606157
+            },
+            "positive_years": 3,
+            "years_observed": 3
+          },
+          "turnover": 15.915012579497297,
+          "transaction_cost": 0.019766402405745516
+        }
+      ]
+    },
+    {
+      "train_start": "2020-01-01",
+      "train_end": "2022-12-31",
+      "test_start": "2023-01-01",
+      "test_end": "2023-12-31",
+      "selected_parameters": {
+        "lookback_days": 126,
+        "skip_recent_days": 21,
+        "top_n": 10
+      },
+      "training_metrics": {
+        "total_return": 0.27199213618317364,
+        "cagr": 0.08349807016905442,
+        "annualized_volatility": 0.2502559422593888,
+        "sharpe_ratio": 0.44601220780246886,
+        "sortino_ratio": 0.5312804731987557,
+        "max_drawdown": -0.3596168886222827,
+        "calmar_ratio": 0.2321861759300052,
+        "positive_month_rate": 0.5277777777777778,
+        "annual_returns": {
+          "2020": 0.06601639311914531,
+          "2021": 0.21038625193573846,
+          "2022": -0.014182414716825797
+        },
+        "positive_years": 2,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": 0.06737230692022433,
+        "cagr": 0.06792919217329874,
+        "annualized_volatility": 0.13472928872750664,
+        "sharpe_ratio": 0.5550876677268123,
+        "sortino_ratio": 0.8264089742050175,
+        "max_drawdown": -0.12407823194007206,
+        "calmar_ratio": 0.5474706651695966,
+        "positive_month_rate": 0.5,
+        "annual_returns": {
+          "2023": 0.06737230692022411
+        },
+        "positive_years": 1,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.010503913647301966,
+            "cagr": 0.0034891164566948074,
+            "annualized_volatility": 0.21250127385434728,
+            "sharpe_ratio": 0.12303969102101263,
+            "sortino_ratio": 0.15713701941382244,
+            "max_drawdown": -0.3051430034068796,
+            "calmar_ratio": 0.011434364929686419,
+            "positive_month_rate": 0.4722222222222222,
+            "annual_returns": {
+              "2020": 0.048531286444218,
+              "2021": 0.2628180576350718,
+              "2022": -0.23683960733608223
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 35.28339341271227,
+          "transaction_cost": 0.038822023355293736
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.15597268916867524,
+            "cagr": 0.04950019725313748,
+            "annualized_volatility": 0.16749627895282362,
+            "sharpe_ratio": 0.3724520528575077,
+            "sortino_ratio": 0.49071709100226385,
+            "max_drawdown": -0.1990619491410348,
+            "calmar_ratio": 0.24866729913343075,
+            "positive_month_rate": 0.4722222222222222,
+            "annual_returns": {
+              "2020": 0.07121978438836529,
+              "2021": 0.25110270835186066,
+              "2022": -0.137466395437836
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 24.66559520257575,
+          "transaction_cost": 0.028128980021080906
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.25346919757040687,
+            "cagr": 0.07821297911515623,
+            "annualized_volatility": 0.26502223910180606,
+            "sharpe_ratio": 0.41671909077169944,
+            "sortino_ratio": 0.5326893054301078,
+            "max_drawdown": -0.29772026509820104,
+            "calmar_ratio": 0.2627062658612043,
+            "positive_month_rate": 0.4444444444444444,
+            "annual_returns": {
+              "2020": 0.11742058166828984,
+              "2021": 0.22399868439677206,
+              "2022": -0.0835346517464689
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 36.21105651641779,
+          "transaction_cost": 0.042479503442031476
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.1323871416720559,
+            "cagr": 0.042313372783362,
+            "annualized_volatility": 0.24327104573942387,
+            "sharpe_ratio": 0.2924076124143904,
+            "sortino_ratio": 0.34634611566678586,
+            "max_drawdown": -0.35244146108272767,
+            "calmar_ratio": 0.1200578747272583,
+            "positive_month_rate": 0.5,
+            "annual_returns": {
+              "2020": 5.493642548959343e-05,
+              "2021": 0.26330424172722955,
+              "2022": -0.10367993838171508
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 25.886857413168716,
+          "transaction_cost": 0.028122183627163014
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.070981964566182,
+            "cagr": 0.02312191156084431,
+            "annualized_volatility": 0.27521216207359656,
+            "sharpe_ratio": 0.2213270843022954,
+            "sortino_ratio": 0.2658620161200007,
+            "max_drawdown": -0.32097402053728386,
+            "calmar_ratio": 0.07203670727662055,
+            "positive_month_rate": 0.4722222222222222,
+            "annual_returns": {
+              "2020": 0.15216981088132764,
+              "2021": 0.07981266582898394,
+              "2022": -0.1391702882207123
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 26.695198408200707,
+          "transaction_cost": 0.03038858309824309
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.12698085204564435,
+            "cagr": 0.040651974096836074,
+            "annualized_volatility": 0.23611775840805196,
+            "sharpe_ratio": 0.2874437640332723,
+            "sortino_ratio": 0.3354535083562623,
+            "max_drawdown": -0.346823153994377,
+            "calmar_ratio": 0.11721239954324145,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2020": 0.03675199124806472,
+              "2021": 0.2382255889694629,
+              "2022": -0.1221063974065335
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 19.32378051146523,
+          "transaction_cost": 0.021099100589294154
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.1592337735845224,
+            "cagr": 0.05048617654166976,
+            "annualized_volatility": 0.2675903709140468,
+            "sharpe_ratio": 0.3178641144193371,
+            "sortino_ratio": 0.40268460926815014,
+            "max_drawdown": -0.31832584896519345,
+            "calmar_ratio": 0.1585990478177914,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2020": 0.2134822555660829,
+              "2021": 0.11911356095069636,
+              "2022": -0.1463822502307407
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 25.515637395989057,
+          "transaction_cost": 0.030592617167912683
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.27199213618317364,
+            "cagr": 0.08349807016905442,
+            "annualized_volatility": 0.2502559422593888,
+            "sharpe_ratio": 0.44601220780246886,
+            "sortino_ratio": 0.5312804731987557,
+            "max_drawdown": -0.3596168886222827,
+            "calmar_ratio": 0.2321861759300052,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2020": 0.06601639311914531,
+              "2021": 0.21038625193573846,
+              "2022": -0.014182414716825797
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 19.11384826714052,
+          "transaction_cost": 0.021441111266679233
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.1868728202004033,
+            "cagr": 0.05876943354977904,
+            "annualized_volatility": 0.261722358201755,
+            "sharpe_ratio": 0.3499240255666157,
+            "sortino_ratio": 0.4278518287110034,
+            "max_drawdown": -0.3390337636098556,
+            "calmar_ratio": 0.173343896265766,
+            "positive_month_rate": 0.6111111111111112,
+            "annual_returns": {
+              "2020": 0.1492635525916226,
+              "2021": 0.044087388448228904,
+              "2022": -0.010882921382871058
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 19.41260727906068,
+          "transaction_cost": 0.021421304228997736
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.1534820447373677,
+            "cagr": 0.04874590855991312,
+            "annualized_volatility": 0.2340912254104065,
+            "sharpe_ratio": 0.3209687470373392,
+            "sortino_ratio": 0.38534871646631647,
+            "max_drawdown": -0.3095357052310048,
+            "calmar_ratio": 0.15748072915702668,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2020": 0.07022188157064124,
+              "2021": 0.12223732214181715,
+              "2022": -0.039599661436396594
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 13.247767228089792,
+          "transaction_cost": 0.014203411393787408
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.1747847936492939,
+            "cagr": 0.05516272016728618,
+            "annualized_volatility": 0.27408721142339687,
+            "sharpe_ratio": 0.3328279466347636,
+            "sortino_ratio": 0.43954950006301846,
+            "max_drawdown": -0.2875071485706914,
+            "calmar_ratio": 0.19186556035744254,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2020": 0.17101617085358312,
+              "2021": 0.023489285350195788,
+              "2022": -0.019805811000709328
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 21.22607496381744,
+          "transaction_cost": 0.023263580718511756
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.0834274068967491,
+            "cagr": 0.02706975216895202,
+            "annualized_volatility": 0.2533999838497759,
+            "sharpe_ratio": 0.23262391339755012,
+            "sortino_ratio": 0.2775386017891244,
+            "max_drawdown": -0.36021613277037656,
+            "calmar_ratio": 0.07514863912607687,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2020": 0.04794633275742188,
+              "2021": 0.09727379745606224,
+              "2022": -0.0577942141716169
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 14.601220635797905,
+          "transaction_cost": 0.015094148153867113
+        }
+      ]
+    },
+    {
+      "train_start": "2021-01-01",
+      "train_end": "2023-12-31",
+      "test_start": "2024-01-01",
+      "test_end": "2024-12-31",
+      "selected_parameters": {
+        "lookback_days": 126,
+        "skip_recent_days": 21,
+        "top_n": 10
+      },
+      "training_metrics": {
+        "total_return": 0.2670566931790055,
+        "cagr": 0.0824350945889254,
+        "annualized_volatility": 0.15008240313119123,
+        "sharpe_ratio": 0.6028867769779136,
+        "sortino_ratio": 0.9014595688230662,
+        "max_drawdown": -0.13770582777734564,
+        "calmar_ratio": 0.5986318510950269,
+        "positive_month_rate": 0.5,
+        "annual_returns": {
+          "2021": 0.20561389878410208,
+          "2022": -0.014182414716824243,
+          "2023": 0.06608354578611597
+        },
+        "positive_years": 2,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": 0.12232567456950472,
+        "cagr": 0.12232567456950472,
+        "annualized_volatility": 0.13310222741889732,
+        "sharpe_ratio": 0.9335570108638991,
+        "sortino_ratio": 1.2930987736122577,
+        "max_drawdown": -0.10192448716265656,
+        "calmar_ratio": 1.2001598239517344,
+        "positive_month_rate": 0.75,
+        "annual_returns": {
+          "2024": 0.12232567456950583
+        },
+        "positive_years": 1,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.1373573398449741,
+            "cagr": 0.04401453214775963,
+            "annualized_volatility": 0.173311790987012,
+            "sharpe_ratio": 0.33521664128443684,
+            "sortino_ratio": 0.48741242637131665,
+            "max_drawdown": -0.3051430034068793,
+            "calmar_ratio": 0.14424231149442554,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2021": 0.26275551067223035,
+              "2022": -0.23683960733608078,
+              "2023": 0.1802169277703154
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 35.23816312815099,
+          "transaction_cost": 0.03919475133160259
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.11624320368721563,
+            "cagr": 0.03748788479182097,
+            "annualized_volatility": 0.14367859989142226,
+            "sharpe_ratio": 0.3279570632986212,
+            "sortino_ratio": 0.4823070588799237,
+            "max_drawdown": -0.20942195888795134,
+            "calmar_ratio": 0.17900646613604834,
+            "positive_month_rate": 0.4722222222222222,
+            "annual_returns": {
+              "2021": 0.24621536246508557,
+              "2022": -0.137466395437836,
+              "2023": 0.03845983248870555
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 26.83355688517918,
+          "transaction_cost": 0.030278262168095274
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.11668274731906769,
+            "cagr": 0.03762458679586578,
+            "annualized_volatility": 0.17459898951664854,
+            "sharpe_ratio": 0.2987933183775108,
+            "sortino_ratio": 0.45087173218984794,
+            "max_drawdown": -0.22973842755036,
+            "calmar_ratio": 0.16377141254533156,
+            "positive_month_rate": 0.4722222222222222,
+            "annual_returns": {
+              "2021": 0.218953530543202,
+              "2022": -0.08353465174650077,
+              "2023": -0.0003991702713127543
+            },
+            "positive_years": 1,
+            "years_observed": 3
+          },
+          "turnover": 35.30590404866625,
+          "transaction_cost": 0.03961434371669665
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.10472608753581114,
+            "cagr": 0.033893122277283805,
+            "annualized_volatility": 0.1492161185483709,
+            "sharpe_ratio": 0.2979766275863807,
+            "sortino_ratio": 0.4358166088671699,
+            "max_drawdown": -0.22290544502407073,
+            "calmar_ratio": 0.15205156730749136,
+            "positive_month_rate": 0.5555555555555556,
+            "annual_returns": {
+              "2021": 0.2591580379070515,
+              "2022": -0.10367993838171441,
+              "2023": -0.021161031711048328
+            },
+            "positive_years": 1,
+            "years_observed": 3
+          },
+          "turnover": 26.036901426145718,
+          "transaction_cost": 0.029950237644681382
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": -0.050346567760288785,
+            "cagr": -0.01713941295099297,
+            "annualized_volatility": 0.1709925282982693,
+            "sharpe_ratio": -0.015563245769913171,
+            "sortino_ratio": -0.023431011650920795,
+            "max_drawdown": -0.31438981228327956,
+            "calmar_ratio": -0.05451643876917226,
+            "positive_month_rate": 0.4166666666666667,
+            "annual_returns": {
+              "2021": 0.08074351795949397,
+              "2022": -0.13917028822071142,
+              "2023": 0.020763786896077052
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 28.169401516022642,
+          "transaction_cost": 0.027618481368047655
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.1764411988242156,
+            "cagr": 0.05588623218962807,
+            "annualized_volatility": 0.1465008535095641,
+            "sharpe_ratio": 0.4444702621981846,
+            "sortino_ratio": 0.6615300620090018,
+            "max_drawdown": -0.18888389901927916,
+            "calmar_ratio": 0.2958761042089873,
+            "positive_month_rate": 0.4722222222222222,
+            "annual_returns": {
+              "2021": 0.2350574697222536,
+              "2022": -0.12210639740653217,
+              "2023": 0.08502857087295457
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 19.524112812487797,
+          "transaction_cost": 0.02175186194678299
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.09175910184518066,
+            "cagr": 0.02981585435441847,
+            "annualized_volatility": 0.17603259429505208,
+            "sharpe_ratio": 0.25499902415106807,
+            "sortino_ratio": 0.369814910052559,
+            "max_drawdown": -0.2844224260412904,
+            "calmar_ratio": 0.1048294776519838,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2021": 0.11219135722700013,
+              "2022": -0.14638225023074136,
+              "2023": 0.14996300307399335
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 29.410348799450684,
+          "transaction_cost": 0.029394364990888114
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.2670566931790055,
+            "cagr": 0.0824350945889254,
+            "annualized_volatility": 0.15008240313119123,
+            "sharpe_ratio": 0.6028867769779136,
+            "sortino_ratio": 0.9014595688230662,
+            "max_drawdown": -0.13770582777734564,
+            "calmar_ratio": 0.5986318510950269,
+            "positive_month_rate": 0.5,
+            "annual_returns": {
+              "2021": 0.20561389878410208,
+              "2022": -0.014182414716824243,
+              "2023": 0.06608354578611597
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 20.111085413485306,
+          "transaction_cost": 0.022943821206242818
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.11614217761543166,
+            "cagr": 0.03745645971747713,
+            "annualized_volatility": 0.1725760146489761,
+            "sharpe_ratio": 0.2994183862260271,
+            "sortino_ratio": 0.4460418886564748,
+            "max_drawdown": -0.21496909492998417,
+            "calmar_ratio": 0.17424113791648407,
+            "positive_month_rate": 0.5,
+            "annual_returns": {
+              "2021": 0.039583726132687014,
+              "2022": -0.010882921382872057,
+              "2023": 0.08545630806344251
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 20.551321327427864,
+          "transaction_cost": 0.02056856084174105
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.19148845937857994,
+            "cagr": 0.060386839337529974,
+            "annualized_volatility": 0.14758758429064883,
+            "sharpe_ratio": 0.47113373776417816,
+            "sortino_ratio": 0.7057732103355581,
+            "max_drawdown": -0.166481431161156,
+            "calmar_ratio": 0.36272417239779015,
+            "positive_month_rate": 0.5555555555555556,
+            "annual_returns": {
+              "2021": 0.11777099990516504,
+              "2022": -0.039599661436397704,
+              "2023": 0.10990216324099777
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 15.151377558385597,
+          "transaction_cost": 0.015856219058122876
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.10398743354209405,
+            "cagr": 0.033661721785319454,
+            "annualized_volatility": 0.18033874699961583,
+            "sharpe_ratio": 0.2737895977142279,
+            "sortino_ratio": 0.4076302373825711,
+            "max_drawdown": -0.24996141548106432,
+            "calmar_ratio": 0.13466767149056041,
+            "positive_month_rate": 0.4166666666666667,
+            "annual_returns": {
+              "2021": 0.018888407789501516,
+              "2022": -0.01980581100071055,
+              "2023": 0.10541508092836849
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 21.55567233824069,
+          "transaction_cost": 0.02080388296032565
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.0717827085557754,
+            "cagr": 0.02347105416692341,
+            "annualized_volatility": 0.15406786225472588,
+            "sharpe_ratio": 0.22765031682478512,
+            "sortino_ratio": 0.33514722328565866,
+            "max_drawdown": -0.20812541317890054,
+            "calmar_ratio": 0.11277360995193869,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2021": 0.09322433359185545,
+              "2022": -0.05779421417161534,
+              "2023": 0.040523012063117925
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 16.350642850209532,
+          "transaction_cost": 0.01652041124614081
+        }
+      ]
+    },
+    {
+      "train_start": "2022-01-01",
+      "train_end": "2024-12-31",
+      "test_start": "2025-01-01",
+      "test_end": "2025-12-31",
+      "selected_parameters": {
+        "lookback_days": 252,
+        "skip_recent_days": 0,
+        "top_n": 10
+      },
+      "training_metrics": {
+        "total_return": 0.2521470142337403,
+        "cagr": 0.07815564826507448,
+        "annualized_volatility": 0.14669098253122376,
+        "sharpe_ratio": 0.5863208076657359,
+        "sortino_ratio": 0.8868439165214166,
+        "max_drawdown": -0.1664814311611561,
+        "calmar_ratio": 0.46945564871687606,
+        "positive_month_rate": 0.5833333333333334,
+        "annual_returns": {
+          "2022": -0.04283238355133845,
+          "2023": 0.10990216324099933,
+          "2024": 0.17864393987361615
+        },
+        "positive_years": 2,
+        "years_observed": 3
+      },
+      "test_metrics_reset_at_fold_start": {
+        "total_return": 0.14420069175691874,
+        "cagr": 0.14543440479438852,
+        "annualized_volatility": 0.20657302701831248,
+        "sharpe_ratio": 0.7598112910436926,
+        "sortino_ratio": 1.0174330107656975,
+        "max_drawdown": -0.2209270732685451,
+        "calmar_ratio": 0.6582914562834387,
+        "positive_month_rate": 0.5833333333333334,
+        "annual_returns": {
+          "2025": 0.14420069175691919
+        },
+        "positive_years": 1,
+        "years_observed": 1
+      },
+      "training_grid": [
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.1241681271585009,
+            "cagr": 0.039947130584653934,
+            "annualized_volatility": 0.165612665740149,
+            "sharpe_ratio": 0.319302698625239,
+            "sortino_ratio": 0.45907144675638273,
+            "max_drawdown": -0.2897008181120162,
+            "calmar_ratio": 0.13789098299752786,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2022": -0.23795189377144144,
+              "2023": 0.18021692777031606,
+              "2024": 0.24993388096562552
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 33.62212552949823,
+          "transaction_cost": 0.02997951393143766
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.08784614856514295,
+            "cagr": 0.028579162449972717,
+            "annualized_volatility": 0.1367742849624737,
+            "sharpe_ratio": 0.27429644012112764,
+            "sortino_ratio": 0.4112992515713617,
+            "max_drawdown": -0.20942195888795134,
+            "calmar_ratio": 0.13646688533394746,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2022": -0.13800088597690696,
+              "2023": 0.03845983248870444,
+              "2024": 0.2152649049674935
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 26.743065870417297,
+          "transaction_cost": 0.024743899046404134
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.08453330747942123,
+            "cagr": 0.02752982080089672,
+            "annualized_volatility": 0.1711174811317397,
+            "sharpe_ratio": 0.2441512258657779,
+            "sortino_ratio": 0.3691195112560733,
+            "max_drawdown": -0.2059400300099774,
+            "calmar_ratio": 0.13367882290569227,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2022": -0.08445239209722988,
+              "2023": -0.0003991702713151968,
+              "2024": 0.18504639676195445
+            },
+            "positive_years": 1,
+            "years_observed": 3
+          },
+          "turnover": 35.75769213175984,
+          "transaction_cost": 0.03398600744606676
+        },
+        {
+          "parameters": {
+            "lookback_days": 63,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.03550161527170004,
+            "cagr": 0.011743401833722578,
+            "annualized_volatility": 0.13918995290779773,
+            "sharpe_ratio": 0.1534604627361996,
+            "sortino_ratio": 0.2258058136670094,
+            "max_drawdown": -0.22290544502407128,
+            "calmar_ratio": 0.05268333320639351,
+            "positive_month_rate": 0.5555555555555556,
+            "annual_returns": {
+              "2022": -0.10558783783459136,
+              "2023": -0.021161031711051104,
+              "2024": 0.18277417643868343
+            },
+            "positive_years": 1,
+            "years_observed": 3
+          },
+          "turnover": 25.285093430812616,
+          "transaction_cost": 0.023419569009707535
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": -0.002956853942435611,
+            "cagr": -0.0009905197167476842,
+            "annualized_volatility": 0.16236675423290453,
+            "sharpe_ratio": 0.07514123793375695,
+            "sortino_ratio": 0.10954444688340183,
+            "max_drawdown": -0.26387951045005165,
+            "calmar_ratio": -0.0037536818037078117,
+            "positive_month_rate": 0.4166666666666667,
+            "annual_returns": {
+              "2022": -0.14119596208349827,
+              "2023": 0.020763786896076164,
+              "2024": 0.13735127875653208
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 25.804855891597228,
+          "transaction_cost": 0.022444320981831974
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.023970561268894963,
+            "cagr": 0.007958888587685564,
+            "annualized_volatility": 0.1386765623331439,
+            "sharpe_ratio": 0.1264743889149938,
+            "sortino_ratio": 0.18642565217902438,
+            "max_drawdown": -0.18888389901927938,
+            "calmar_ratio": 0.04213640563864684,
+            "positive_month_rate": 0.5,
+            "annual_returns": {
+              "2022": -0.12249654062314441,
+              "2023": 0.08502857087295546,
+              "2024": 0.07546791810929432
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 20.583689542035412,
+          "transaction_cost": 0.019027971269890632
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.027259267194044146,
+            "cagr": 0.009041125926950278,
+            "annualized_volatility": 0.16868057491074273,
+            "sharpe_ratio": 0.13784789024459362,
+            "sortino_ratio": 0.19135208787870622,
+            "max_drawdown": -0.2446101282783364,
+            "calmar_ratio": 0.03696137192104565,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2022": -0.14989037243282377,
+              "2023": 0.14996300307399335,
+              "2024": 0.050802905320414204
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 28.25173949930226,
+          "transaction_cost": 0.02549145957075865
+        },
+        {
+          "parameters": {
+            "lookback_days": 126,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.16855978816164385,
+            "cagr": 0.0535136194658834,
+            "annualized_volatility": 0.14153897405166246,
+            "sharpe_ratio": 0.4390807484824173,
+            "sortino_ratio": 0.6404579357794117,
+            "max_drawdown": -0.13770582777734586,
+            "calmar_ratio": 0.38860824069413125,
+            "positive_month_rate": 0.5555555555555556,
+            "annual_returns": {
+              "2022": -0.017951319566334556,
+              "2023": 0.0660835457861153,
+              "2024": 0.11616058118853312
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 19.89007188353575,
+          "transaction_cost": 0.0202047884489726
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.12952972747339708,
+            "cagr": 0.0416043965169155,
+            "annualized_volatility": 0.17822671456427133,
+            "sharpe_ratio": 0.31752919948200237,
+            "sortino_ratio": 0.46271211704061493,
+            "max_drawdown": -0.17362278140441523,
+            "calmar_ratio": 0.2396252161172756,
+            "positive_month_rate": 0.5277777777777778,
+            "annual_returns": {
+              "2022": -0.01663350435792288,
+              "2023": 0.08545630806344184,
+              "2024": 0.05820524839967889
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 20.53214594540404,
+          "transaction_cost": 0.02014918575480849
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 0,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.2521470142337403,
+            "cagr": 0.07815564826507448,
+            "annualized_volatility": 0.14669098253122376,
+            "sharpe_ratio": 0.5863208076657359,
+            "sortino_ratio": 0.8868439165214166,
+            "max_drawdown": -0.1664814311611561,
+            "calmar_ratio": 0.46945564871687606,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2022": -0.04283238355133845,
+              "2023": 0.10990216324099933,
+              "2024": 0.17864393987361615
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 14.463728831126083,
+          "transaction_cost": 0.014291866704218914
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 5
+          },
+          "metrics": {
+            "total_return": 0.084835202123823,
+            "cagr": 0.02762553410332491,
+            "annualized_volatility": 0.1810402979163145,
+            "sharpe_ratio": 0.24112699205142693,
+            "sortino_ratio": 0.33828025044457144,
+            "max_drawdown": -0.22252472415354396,
+            "calmar_ratio": 0.12414590876770644,
+            "positive_month_rate": 0.4722222222222222,
+            "annual_returns": {
+              "2022": -0.025717655619232893,
+              "2023": 0.1054150809283676,
+              "2024": 0.007287748097972946
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 20.744652716017775,
+          "transaction_cost": 0.019563714699087992
+        },
+        {
+          "parameters": {
+            "lookback_days": 252,
+            "skip_recent_days": 21,
+            "top_n": 10
+          },
+          "metrics": {
+            "total_return": 0.13554109517848634,
+            "cagr": 0.04345629287873232,
+            "annualized_volatility": 0.15151972827918028,
+            "sharpe_ratio": 0.3564438483131761,
+            "sortino_ratio": 0.5224377873352489,
+            "max_drawdown": -0.19632896946275769,
+            "calmar_ratio": 0.22134427230809506,
+            "positive_month_rate": 0.5833333333333334,
+            "annual_returns": {
+              "2022": -0.06195425273787025,
+              "2023": 0.04052301206311659,
+              "2024": 0.16339487850971968
+            },
+            "positive_years": 2,
+            "years_observed": 3
+          },
+          "turnover": 16.169432708010532,
+          "transaction_cost": 0.015222501858802712
+        }
+      ]
+    }
+  ],
+  "validity": {
+    "lookahead_bias_controlled": true,
+    "non_overlapping_oos_folds": true,
+    "historical_membership_used": true,
+    "current_constituent_survivorship_bias": false,
+    "fundamental_point_in_time_tested": false,
+    "vendor_vintage_archive_used": false,
+    "investment_claim": "research evidence only; not a highest-return guarantee"
+  },
+  "cost_sensitivity": {
+    "0": {
+      "total_cost_bps_each_rebalance_leg": 0.0,
+      "metrics": {
+        "total_return": 1.1004997715485438,
+        "cagr": 0.09746456014282412,
+        "annualized_volatility": 0.1782385474280832,
+        "sharpe_ratio": 0.6111810851585529,
+        "sortino_ratio": 0.7876583452459005,
+        "max_drawdown": -0.2660534884532668,
+        "calmar_ratio": 0.3663344566893138,
+        "positive_month_rate": 0.59375,
+        "annual_returns": {
+          "2018": 0.06470623686975818,
+          "2019": 0.19216204183950447,
+          "2020": 0.06407989785132928,
+          "2021": 0.27869334389037426,
+          "2022": -0.12970812739876703,
+          "2023": 0.07566708768239416,
+          "2024": 0.12395529599199095,
+          "2025": 0.155912768046087
+        },
+        "positive_years": 7,
+        "years_observed": 8
+      },
+      "transaction_cost_fraction_of_initial_capital": 0.0,
+      "selected_parameters": [
+        {
+          "test_year": "2018",
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        {
+          "test_year": "2019",
+          "lookback_days": 126,
+          "skip_recent_days": 0,
+          "top_n": 10
+        },
+        {
+          "test_year": "2020",
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        {
+          "test_year": "2021",
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        {
+          "test_year": "2022",
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 10
+        },
+        {
+          "test_year": "2023",
+          "lookback_days": 126,
+          "skip_recent_days": 21,
+          "top_n": 10
+        },
+        {
+          "test_year": "2024",
+          "lookback_days": 126,
+          "skip_recent_days": 21,
+          "top_n": 10
+        },
+        {
+          "test_year": "2025",
+          "lookback_days": 252,
+          "skip_recent_days": 0,
+          "top_n": 10
+        }
+      ]
+    },
+    "25": {
+      "total_cost_bps_each_rebalance_leg": 25.0,
+      "metrics": {
+        "total_return": 0.552510501144482,
+        "cagr": 0.05666832736874161,
+        "annualized_volatility": 0.1788242335926895,
+        "sharpe_ratio": 0.39789851718027347,
+        "sortino_ratio": 0.5112118743639168,
+        "max_drawdown": -0.2749846954006673,
+        "calmar_ratio": 0.20607811386074726,
+        "positive_month_rate": 0.5729166666666666,
+        "annual_returns": {
+          "2018": 0.030544789616541834,
+          "2019": 0.16692031392304552,
+          "2020": 0.034375188224156084,
+          "2021": 0.09616824847078598,
+          "2022": -0.14627962197978406,
+          "2023": 0.056524828931769244,
+          "2024": 0.10456881426083098,
+          "2025": 0.14283367412196823
+        },
+        "positive_years": 7,
+        "years_observed": 8
+      },
+      "transaction_cost_fraction_of_initial_capital": 0.20887722308382742,
+      "selected_parameters": [
+        {
+          "test_year": "2018",
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        {
+          "test_year": "2019",
+          "lookback_days": 126,
+          "skip_recent_days": 0,
+          "top_n": 10
+        },
+        {
+          "test_year": "2020",
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        {
+          "test_year": "2021",
+          "lookback_days": 126,
+          "skip_recent_days": 21,
+          "top_n": 5
+        },
+        {
+          "test_year": "2022",
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 10
+        },
+        {
+          "test_year": "2023",
+          "lookback_days": 126,
+          "skip_recent_days": 21,
+          "top_n": 10
+        },
+        {
+          "test_year": "2024",
+          "lookback_days": 126,
+          "skip_recent_days": 21,
+          "top_n": 10
+        },
+        {
+          "test_year": "2025",
+          "lookback_days": 252,
+          "skip_recent_days": 0,
+          "top_n": 10
+        }
+      ]
+    }
+  },
+  "fixed_grid_oos_diagnostics": {
+    "warning": "OOS diagnostic only; these rows must not be used to select a winner.",
+    "results": [
+      {
+        "parameters": {
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        "metrics": {
+          "total_return": 1.3520216271182366,
+          "cagr": 0.11312927399887651,
+          "annualized_volatility": 0.18365214330418217,
+          "sharpe_ratio": 0.6758101689418142,
+          "sortino_ratio": 0.8948753612415508,
+          "max_drawdown": -0.30514300340687983,
+          "calmar_ratio": 0.37074182509775305,
+          "positive_month_rate": 0.59375,
+          "annual_returns": {
+            "2018": 0.05091154569382561,
+            "2019": 0.3213847851441638,
+            "2020": 0.05674150573466452,
+            "2021": 0.26281805763507027,
+            "2022": -0.23683960733608356,
+            "2023": 0.1802169277703145,
+            "2024": 0.24993388096562463,
+            "2025": 0.12738329148768823
+          },
+          "positive_years": 7,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 63,
+          "skip_recent_days": 0,
+          "top_n": 10
+        },
+        "metrics": {
+          "total_return": 0.9873056384833023,
+          "cagr": 0.08987271706007971,
+          "annualized_volatility": 0.15500029171274135,
+          "sharpe_ratio": 0.6330473144857455,
+          "sortino_ratio": 0.8365896024525777,
+          "max_drawdown": -0.20942195888795134,
+          "calmar_ratio": 0.4291465782161125,
+          "positive_month_rate": 0.5833333333333334,
+          "annual_returns": {
+            "2018": 0.013457123119551717,
+            "2019": 0.2107365875940077,
+            "2020": 0.07699643507332077,
+            "2021": 0.25110270835186177,
+            "2022": -0.13746639543783812,
+            "2023": 0.03845983248870377,
+            "2024": 0.21526490496748996,
+            "2025": 0.10424567065167079
+          },
+          "positive_years": 7,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 63,
+          "skip_recent_days": 21,
+          "top_n": 5
+        },
+        "metrics": {
+          "total_return": 0.8014660073407702,
+          "cagr": 0.07654628138857889,
+          "annualized_volatility": 0.21287473491568418,
+          "sharpe_ratio": 0.45307757803081294,
+          "sortino_ratio": 0.5927746879137039,
+          "max_drawdown": -0.29772026509820104,
+          "calmar_ratio": 0.2571080653959871,
+          "positive_month_rate": 0.5520833333333334,
+          "annual_returns": {
+            "2018": 0.06363531271775158,
+            "2019": 0.09943377685689492,
+            "2020": 0.12488460247732958,
+            "2021": 0.22399868439677162,
+            "2022": -0.08353465174647068,
+            "2023": -0.0003991702713151968,
+            "2024": 0.18504639676201085,
+            "2025": 0.030617030790738964
+          },
+          "positive_years": 6,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 63,
+          "skip_recent_days": 21,
+          "top_n": 10
+        },
+        "metrics": {
+          "total_return": 0.7199264948230202,
+          "cagr": 0.07031578417550155,
+          "annualized_volatility": 0.19196099092693697,
+          "sharpe_ratio": 0.450319001026008,
+          "sortino_ratio": 0.5521085217580194,
+          "max_drawdown": -0.3524414610827278,
+          "calmar_ratio": 0.19951053420186704,
+          "positive_month_rate": 0.625,
+          "annual_returns": {
+            "2018": 0.10948901477248607,
+            "2019": 0.1210770646532362,
+            "2020": 0.0044413848844182535,
+            "2021": 0.2633042417272369,
+            "2022": -0.10367993838171397,
+            "2023": -0.021161031711047995,
+            "2024": 0.18277417643868343,
+            "2025": 0.05012901528002822
+          },
+          "positive_years": 6,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 126,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        "metrics": {
+          "total_return": 0.7750679765722279,
+          "cagr": 0.07455667757207118,
+          "annualized_volatility": 0.21909237963603456,
+          "sharpe_ratio": 0.43829068241154046,
+          "sortino_ratio": 0.5455375649821801,
+          "max_drawdown": -0.32097402053728363,
+          "calmar_ratio": 0.23228259236454574,
+          "positive_month_rate": 0.53125,
+          "annual_returns": {
+            "2018": 0.10987718996297491,
+            "2019": 0.1579733897933957,
+            "2020": 0.15924305295929675,
+            "2021": 0.07981266582898394,
+            "2022": -0.13917028822071353,
+            "2023": 0.020763786896103698,
+            "2024": 0.13735127875653053,
+            "2025": 0.10403144075078363
+          },
+          "positive_years": 7,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 126,
+          "skip_recent_days": 0,
+          "top_n": 10
+        },
+        "metrics": {
+          "total_return": 0.8480603413856016,
+          "cagr": 0.07999665730205341,
+          "annualized_volatility": 0.19127244440591587,
+          "sharpe_ratio": 0.49843284901282725,
+          "sortino_ratio": 0.6015068838603145,
+          "max_drawdown": -0.3468231539943769,
+          "calmar_ratio": 0.2306554691655633,
+          "positive_month_rate": 0.6041666666666666,
+          "annual_returns": {
+            "2018": 0.03355918265233648,
+            "2019": 0.183209422546863,
+            "2020": 0.04129221697602192,
+            "2021": 0.2382255889694631,
+            "2022": -0.1221063974065344,
+            "2023": 0.08502857087295479,
+            "2024": 0.0754679181092952,
+            "2025": 0.14410599916042766
+          },
+          "positive_years": 7,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 126,
+          "skip_recent_days": 21,
+          "top_n": 5
+        },
+        "metrics": {
+          "total_return": 0.993228660513539,
+          "cagr": 0.09027923295082596,
+          "annualized_volatility": 0.2174301985914536,
+          "sharpe_ratio": 0.5064137278026639,
+          "sortino_ratio": 0.6480744784146769,
+          "max_drawdown": -0.31832584896519334,
+          "calmar_ratio": 0.28360635256076033,
+          "positive_month_rate": 0.59375,
+          "annual_returns": {
+            "2018": 0.07313991877499593,
+            "2019": 0.2297288378080944,
+            "2020": 0.21720898740176375,
+            "2021": 0.1191135609506957,
+            "2022": -0.14638225023074214,
+            "2023": 0.14996300307399513,
+            "2024": 0.050802905320415315,
+            "2025": 0.07493829874141578
+          },
+          "positive_years": 7,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 126,
+          "skip_recent_days": 21,
+          "top_n": 10
+        },
+        "metrics": {
+          "total_return": 1.2132070198155507,
+          "cagr": 0.1046761673677874,
+          "annualized_volatility": 0.2002547058404818,
+          "sharpe_ratio": 0.597586077345587,
+          "sortino_ratio": 0.727958751064972,
+          "max_drawdown": -0.3596168886222827,
+          "calmar_ratio": 0.2910768951058141,
+          "positive_month_rate": 0.6145833333333334,
+          "annual_returns": {
+            "2018": 0.05836547900850686,
+            "2019": 0.16861291969434467,
+            "2020": 0.06951335279249649,
+            "2021": 0.21038625193573668,
+            "2022": -0.014182414716825575,
+            "2023": 0.06608354578611575,
+            "2024": 0.11616058118854888,
+            "2025": 0.17839533472658586
+          },
+          "positive_years": 7,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 252,
+          "skip_recent_days": 0,
+          "top_n": 5
+        },
+        "metrics": {
+          "total_return": 0.6876886514447549,
+          "cagr": 0.06778098228887042,
+          "annualized_volatility": 0.2215632332615594,
+          "sharpe_ratio": 0.40712735096746455,
+          "sortino_ratio": 0.519760391159239,
+          "max_drawdown": -0.3390337636098556,
+          "calmar_ratio": 0.19992398859386065,
+          "positive_month_rate": 0.5625,
+          "annual_returns": {
+            "2018": -0.02373117218473475,
+            "2019": 0.17775114140300907,
+            "2020": 0.15482821225208987,
+            "2021": 0.044087388448230014,
+            "2022": -0.010882921382871391,
+            "2023": 0.0854563080634434,
+            "2024": 0.05820524839968022,
+            "2025": 0.0714827409436738
+          },
+          "positive_years": 6,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 252,
+          "skip_recent_days": 0,
+          "top_n": 10
+        },
+        "metrics": {
+          "total_return": 1.126612050856009,
+          "cagr": 0.09916496277976083,
+          "annualized_volatility": 0.19403601038664367,
+          "sharpe_ratio": 0.584635489064715,
+          "sortino_ratio": 0.7303130208028246,
+          "max_drawdown": -0.3095357052310047,
+          "calmar_ratio": 0.3203667980912076,
+          "positive_month_rate": 0.6145833333333334,
+          "annual_returns": {
+            "2018": -0.0016175512695051353,
+            "2019": 0.22018991897874374,
+            "2020": 0.07402555257613819,
+            "2021": 0.1222373221418167,
+            "2022": -0.03959966143639759,
+            "2023": 0.10990216324099755,
+            "2024": 0.1786439398736146,
+            "2025": 0.15277605938504402
+          },
+          "positive_years": 6,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 252,
+          "skip_recent_days": 21,
+          "top_n": 5
+        },
+        "metrics": {
+          "total_return": 0.9042370391743209,
+          "cagr": 0.08405685671217022,
+          "annualized_volatility": 0.22803751025126626,
+          "sharpe_ratio": 0.46794419076138155,
+          "sortino_ratio": 0.6153873586463066,
+          "max_drawdown": -0.28750714857069115,
+          "calmar_ratio": 0.29236440599842217,
+          "positive_month_rate": 0.5833333333333334,
+          "annual_returns": {
+            "2018": -0.042886630130614556,
+            "2019": 0.28281777223561444,
+            "2020": 0.17576208784192215,
+            "2021": 0.023489285350194455,
+            "2022": -0.019805811000816687,
+            "2023": 0.10541508092836782,
+            "2024": 0.007287748097973612,
+            "2025": 0.18086117590458595
+          },
+          "positive_years": 6,
+          "years_observed": 8
+        }
+      },
+      {
+        "parameters": {
+          "lookback_days": 252,
+          "skip_recent_days": 21,
+          "top_n": 10
+        },
+        "metrics": {
+          "total_return": 1.0025577175662157,
+          "cagr": 0.09091737821150914,
+          "annualized_volatility": 0.20559581663162474,
+          "sharpe_ratio": 0.5263052416185153,
+          "sortino_ratio": 0.6495941538643039,
+          "max_drawdown": -0.36021613277037645,
+          "calmar_ratio": 0.25239674167915566,
+          "positive_month_rate": 0.6354166666666666,
+          "annual_returns": {
+            "2018": -0.002683963793661537,
+            "2019": 0.24769857143170282,
+            "2020": 0.05176622598922376,
+            "2021": 0.09727379745606268,
+            "2022": -0.057794214171616676,
+            "2023": 0.04052301206311637,
+            "2024": 0.16339487850972145,
+            "2025": 0.222598134798891
+          },
+          "positive_years": 6,
+          "years_observed": 8
+        }
+      }
+    ]
+  }
+}

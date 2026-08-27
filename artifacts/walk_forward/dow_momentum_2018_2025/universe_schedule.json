@@ -1,0 +1,121 @@
+{
+  "source": "https://en.wikipedia.org/wiki/Historical_components_of_the_Dow_Jones_Industrial_Average",
+  "initial_effective_date": "2013-09-23",
+  "initial_members": [
+    "AXP",
+    "BA",
+    "CAT",
+    "CSCO",
+    "CVX",
+    "DD",
+    "DIS",
+    "GE",
+    "GS",
+    "HD",
+    "IBM",
+    "INTC",
+    "JNJ",
+    "JPM",
+    "KO",
+    "MCD",
+    "MMM",
+    "MRK",
+    "MSFT",
+    "NKE",
+    "PFE",
+    "PG",
+    "RTX",
+    "T",
+    "TRV",
+    "UNH",
+    "V",
+    "VZ",
+    "WMT",
+    "XOM"
+  ],
+  "changes": [
+    {
+      "effective_date": "2015-03-19",
+      "added": [
+        "AAPL"
+      ],
+      "removed": [
+        "T"
+      ]
+    },
+    {
+      "effective_date": "2017-09-01",
+      "added": [],
+      "removed": []
+    },
+    {
+      "effective_date": "2018-06-26",
+      "added": [
+        "WBA"
+      ],
+      "removed": [
+        "GE"
+      ]
+    },
+    {
+      "effective_date": "2019-04-02",
+      "added": [
+        "DOW"
+      ],
+      "removed": [
+        "DD"
+      ]
+    },
+    {
+      "effective_date": "2020-04-06",
+      "added": [],
+      "removed": []
+    },
+    {
+      "effective_date": "2020-08-31",
+      "added": [
+        "AMGN",
+        "CRM",
+        "HON"
+      ],
+      "removed": [
+        "PFE",
+        "RTX",
+        "XOM"
+      ]
+    },
+    {
+      "effective_date": "2024-02-26",
+      "added": [
+        "AMZN"
+      ],
+      "removed": [
+        "WBA"
+      ]
+    },
+    {
+      "effective_date": "2024-11-08",
+      "added": [
+        "NVDA",
+        "SHW"
+      ],
+      "removed": [
+        "DOW",
+        "INTC"
+      ]
+    },
+    {
+      "effective_date": "2026-06-29",
+      "added": [
+        "GOOGL"
+      ],
+      "removed": [
+        "VZ"
+      ]
+    }
+  ],
+  "aliases": {
+    "DD": "E.I. du Pont and DowDuPont continuous Yahoo series before 2019-04-02",
+    "RTX": "United Technologies and RTX continuous Yahoo series before 2020-08-31"
+  }
+}

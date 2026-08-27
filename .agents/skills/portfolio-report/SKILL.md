@@ -1,165 +1,121 @@
 ---
 name: portfolio-report
 description: |
-  predict 순위 결과의 상위 종목을 investor-analysis로 심층 분석하여 투자 리포트 및 포트폴리오를 구성하는 오케스트레이터 스킬.
-  세 스킬 조합: predict (순위 산정) → investor-analysis (투자자 관점 분석) → xlsx (엑셀 리포트 생성).
-  사용 시점: "투자 리포트 만들어줘", "포트폴리오 구성해줘", "상위 종목 분석 리포트",
-  "predict 결과로 투자 분석", "순위표 기반 포트폴리오", "엑셀 투자 리포트",
-  "상위 30개 종목 버핏 관점으로 분석", "투자 포트폴리오 엑셀로 만들어줘"
+  predict 상대 순위와 독립 investor-analysis 결과를 결합해 제약식 포트폴리오와
+  선택적 엑셀 리포트를 만든다. 사용 시점: "투자 리포트", "포트폴리오 구성",
+  "상위 종목 심층 분석", "버핏·린치 관점 포트폴리오", "엑셀 투자 리포트".
 ---
 
 # Portfolio Report
 
-predict 순위표의 상위 N개 종목에 대해 선택한 투자자 관점으로 심층 분석 후 포트폴리오를 구성하는 오케스트레이터.
+`predict → investor-analysis → portfolio-report` 순서로 사용한다. predict의
+투자자 점수를 별도의 심층 분석인 것처럼 복제하지 않는다.
 
-## 인자 (Arguments)
+이 경로는 설명 가능한 연구 후보를 만드는 휴리스틱이며, SEC 다중팩터
+워크포워드와 동일한 methodology가 아니다. 다른 전략의 좋은 백테스트를 이
+리포트의 검증 근거로 전용하지 않는다. 수익률 최대화 또는 실전 배포를 주장하려면
+이 정확한 `predict + investor-analysis + risk adjustment + caps` 파이프라인 자체를
+point-in-time으로 다시 실행한 독립 OOS 결과가 필요하다.
 
-```
-/portfolio-report [top-n] [investors] [xlsx]
-```
+## 입력
 
-| 인자 | 위치 | 설명 | 기본값 |
-|------|------|------|--------|
-| `top-n` | `$0` | 분석할 상위 종목 수 | `30` |
-| `investors` | `$1` | 투자자 관점 (콤마 구분) | `buffett,lynch,fisher` |
-| `xlsx` | `$2` | 엑셀 리포트 생성 여부 | `yes` |
+- 상위 종목 수: 기본 30
+- 투자자: 기본 `buffett,lynch,fisher`; `all`은 12명
+- 엑셀: 기본 생성
+- `predict JSON`: 필수
+- 종목별 독립 `investor-analysis JSON`: 필수
+- 동일 기준일의 변동성·상관 `risk JSON`: 필수
 
-### 인자 해석 규칙
+지원 식별자:
 
-**top-n** (`$0`):
-- 숫자만 입력: `30`, `50`, `10`
-- "상위 N개" 형태도 허용: `상위 50개` → 50
-- 비어있거나 `$0` 그대로이면 기본값 `30`
-
-**investors** (`$1`):
-- 콤마 구분 투자자 식별자:
-  - `buffett` → warren-buffett-analyst
-  - `lynch` → peter-lynch-analyst
-  - `fisher` → phil-fisher-analyst
-  - `munger` → charlie-munger-analyst
-  - `graham` → ben-graham-analyst
-  - `wood` → cathie-wood-analyst
-  - `burry` → michael-burry-analyst
-  - `ackman` → bill-ackman-analyst
-  - `druckenmiller` → stanley-druckenmiller-analyst
-  - `damodaran` → aswath-damodaran-analyst
-  - `pabrai` → mohnish-pabrai-analyst
-  - `jhunjhunwala` → rakesh-jhunjhunwala-analyst
-  - `all` → 12명 전원
-- 한국어도 허용: `버핏,린치,피셔` → `buffett,lynch,fisher`
-- 비어있거나 `$1` 그대로이면 기본값 `buffett,lynch,fisher`
-
-**xlsx** (`$2`):
-- `yes`, `true`, `1`, `엑셀`, `excel` → 엑셀 생성
-- `no`, `false`, `0`, `없이` → 엑셀 미생성
-- 비어있거나 `$2` 그대로이면 기본값 `yes`
-
-### 사용 예시
-
-```
-/portfolio-report                          → 상위 30개, 버핏/린치/피셔, 엑셀 O
-/portfolio-report 50                       → 상위 50개, 버핏/린치/피셔, 엑셀 O
-/portfolio-report 20 buffett,munger,graham → 상위 20개, 버핏/멍거/그레이엄, 엑셀 O
-/portfolio-report 30 all                   → 상위 30개, 12명 전원, 엑셀 O
-/portfolio-report 10 lynch,fisher no       → 상위 10개, 린치/피셔, 엑셀 X
-```
-
----
+`buffett,munger,damodaran,lynch,graham,fisher,druckenmiller,pabrai,burry,ackman,jhunjhunwala,wood`
 
 ## 워크플로우
 
-### Phase 1: 종목 선별 (predict)
+1. `predict`로 후보 유니버스의 상대 순위를 JSON으로 저장한다.
+2. 상위 N개 각각을 선택한 투자자 관점에서 독립 분석한다.
+3. 분석 결과를 다음 구조로 저장한다.
 
-predict 스킬을 사용하여 순위 산정 실행.
+```json
+{
+  "analysis_date": "YYYY-MM-DD",
+  "analyses": {
+    "AAPL": {
+      "buffett": {"signal": "bullish", "confidence": 78, "reasoning": "...", "data_quality": "complete"},
+      "lynch": {"signal": "neutral", "confidence": 61, "reasoning": "...", "data_quality": "partial"}
+    }
+  }
+}
+```
 
-1. predict 스킬에 사용자가 이전에 지정한 인덱스/티커 조건 전달 (없으면 `--index sp500` 기본)
-2. 하이브리드 전략으로 전체 종목 분석 실행
-3. 결과에서 **상위 N개 종목의 티커 목록**을 추출
-4. 각 종목의 predict 점수, 신호, 예상 수익률을 기록
+4. predict 후보의 기준일까지 가격으로 risk snapshot을 만든다.
 
-**중요**: predict 결과가 이미 현재 대화에 존재하면 재실행하지 않고 기존 결과를 사용.
+```bash
+uv run python .agents/skills/portfolio-report/scripts/build_risk_snapshot.py \
+  --predict-json results.json --top 30 --output risk.json
+```
 
-Phase 1에서 종목별로 수집하는 데이터:
+5. 리포트 생성기를 실행한다. 요청 투자자 중 하나라도 종목별 분석이 누락되면
+   생성기는 실패한다. 임의 중립값이나 predict 점수로 보충하지 않는다.
 
-| 필드 | 출처 | 설명 |
-|------|------|------|
-| `rank` | predict | 전체 순위 |
-| `ticker` | predict | 종목 코드 |
-| `company_name` | predict | 회사명 |
-| `total_score` | predict | 전략별 최종 점수 |
-| `ensemble_score` | predict | 투자자 앙상블 점수 |
-| `signal` | predict | strong_buy/buy/hold/weak_sell/sell |
-| `predicted_return_1y` | predict | 1년 후 예상 수익률 (%) |
-| `market_cap.display` | predict | 시가총액 표시 문자열 |
-| `market_cap.category` | predict | mega/large/mid/small |
-| `metrics.pe` | predict | P/E |
-| `metrics.pb` | predict | P/B |
-| `metrics.roe` | predict | ROE (%) |
-| `metrics.revenue_growth` | predict | 매출 성장률 (%) |
-| `metrics.peg` | predict | PEG |
-| `scores.fundamental` | predict | 펀더멘털 점수 |
-| `scores.enhanced_momentum` | predict | 모멘텀 점수 |
-| `investor_scores` | predict | 5인 투자자 점수 (buffett/lynch/graham/fisher/druckenmiller) |
-| `investor_consensus` | predict | 합의도 (level, std, bullish/bearish 리스트) |
-| `investor_warnings` | predict | 철학 불일치 경고 |
+```bash
+uv run python .agents/skills/portfolio-report/scripts/generate_portfolio_report.py \
+  --predict-json results.json \
+  --investor-json investor_results.json \
+  --risk-json risk.json \
+  --top 30 \
+  --investors buffett,lynch,fisher \
+  --xlsx yes \
+  --portfolio-json portfolios/portfolio.json \
+  --output-dir portfolios
+```
 
-### Phase 2: 투자자 관점 심층 분석 (investor-analysis 스킬)
+## 포트폴리오 규칙
 
-상위 N개 종목 각각에 대해 선택된 투자자 에이전트 호출.
+1. 선택 투자자의 과반이 `bullish`인 종목만 후보에 남긴다.
+2. 원시 비중 점수는 `predict total_score × 독립 분석 confidence × bullish 합의율`을
+   연환산 변동성과 후보 간 평균 양의 상관으로 조정한다.
+3. 단일 종목 최대 15%, 단일 섹터 최대 35%, 최소 종목 비중 2%다.
+4. 상한 때문에 100%를 투자할 수 없으면 남은 비중은 현금이다. 제약을 깨면서
+   다시 100%로 정규화하지 않는다.
+5. 과거 분석일에는 현재 Yahoo 섹터를 끼워 넣지 않는다. predict JSON에 당시 섹터가
+   없으면 `Unknown`으로 두며 Unknown 묶음에도 섹터 상한을 적용한다.
+6. `score_implied_return_pct`는 예상수익률이 아니다. 리포트에서는 “점수 환산값”과
+   “점수 환산 기여값”으로만 표시한다.
 
-**호출 방법**: Task 도구로 투자자 에이전트 호출 (예: `warren-buffett-analyst`, `peter-lynch-analyst`)
+## 12개 투자자 가중치
 
-상세 동작 방식은 [investor-analysis SKILL.md](../investor-analysis/SKILL.md) 참조.
+가중치는 합의 신뢰도에만 사용한다. 역사적 성과를 정밀 추정한 값으로 해석하지 않는다.
 
-Phase 2에서 종목별 × 투자자별로 수집하는 데이터:
+| 투자자 | 가중치 | 투자자 | 가중치 |
+|---|---:|---|---:|
+| Buffett | 1.00 | Munger | 0.95 |
+| Damodaran | 0.90 | Lynch | 0.85 |
+| Graham | 0.85 | Fisher | 0.82 |
+| Druckenmiller | 0.80 | Pabrai | 0.78 |
+| Burry | 0.75 | Ackman | 0.75 |
+| Jhunjhunwala | 0.72 | Wood | 0.70 |
 
-| 필드 | 출처 | 설명 |
-|------|------|------|
-| `signal` | investor-analysis | bullish/bearish/neutral |
-| `confidence` | investor-analysis | 0-100 신뢰도 |
-| `reasoning` | investor-analysis | 분석 근거 요약 (1-2문장) |
+## 결과 확인
 
-### Phase 3: 포트폴리오 구성
+- 종목별 비중 `<= 15%`
+- 섹터 합계 `<= 35%`
+- 주식 비중 + 현금 비중 `= 100%`
+- 모든 투자자 분석의 `analysis_source = independent_investor_analysis`
+- 과거 결과라면 섹터·재무 데이터의 기준 시점 확인
+- 실제 자금 투입 전 `backtesting`으로 고정 유니버스와 비용을 반영해 검증
+- `backtesting.evidence_assessment`는 근거 설명에 사용하되 포트폴리오 생성을 차단하거나
+  목표비중을 자동 축소하지 않음
 
-분석 결과를 종합하여 포트폴리오 구성.
+구성일 이후 데이터가 존재할 때는 생성된 목표비중 자체를 검증한다.
 
-1. **종목 필터링**: 투자자 과반수 이상 bullish인 종목만 포트폴리오에 포함
-2. **비중 산정**: 종합 confidence 기반 비례 배분 (confidence 합계 = 100%)
-3. **최대 비중 제한**: 단일 종목 최대 15%
-4. **최소 비중 제한**: 단일 종목 최소 2% (미만이면 제외)
-5. **섹터 분산**: 단일 섹터 최대 35%
+```bash
+uv run python .agents/skills/backtesting/scripts/backtest.py \
+  --weights-json portfolios/portfolio.json \
+  --start YYYY-MM-DD --end YYYY-MM-DD --rebalance monthly
+```
 
-Phase 3에서 종목별로 산출하는 데이터:
+`--start`는 portfolio JSON의 `analysis_date`보다 반드시 늦어야 한다.
 
-| 필드 | 산출 방식 | 설명 |
-|------|-----------|------|
-| `weight` | confidence 비례 배분 → 제한 적용 | 포트폴리오 비중 (%) |
-| `combined_signal` | 투자자 과반 신호 | 종합 신호 |
-| `combined_confidence` | 투자자 confidence 가중 평균 | 종합 신뢰도 (0-100) |
-| `bullish_count` | bullish 투자자 수 | 매수 의견 수 |
-| `bearish_count` | bearish 투자자 수 | 매도 의견 수 |
-| `consensus_ratio` | bullish_count / 총 투자자 수 | 합의 비율 |
-| `sector` | market_cap.category 기반 | 섹터 분류 |
-
-### Phase 4: 엑셀 리포트 생성 (xlsx 스킬)
-
-**호출 방법**: xlsx 스킬 사용 (openpyxl 기반)
-
-xlsx 인자가 `yes`일 때만 실행.
-
-반드시 상세 형식 문서([references/excel_report_spec.md](references/excel_report_spec.md))를 참조하여 portfolios/ 경로에 형식에 맞게 엑셀 리포트 생성.
-
----
-
-## 표준 출력 형식
-
-분석 완료 후 Section 1~8 순서로 콘솔에 리포트 출력.
-
-상세 형식은 [references/output_format_spec.md](references/output_format_spec.md) 참조.
-
----
-
-## 주의사항
-
-- predict 실행은 종목 수에 따라 수 분 소요될 수 있음
-- investor-analysis는 종목당 투자자 수만큼 LLM 호출 발생 → 비용 주의
+스크립트: [scripts/build_risk_snapshot.py](scripts/build_risk_snapshot.py),
+[scripts/generate_portfolio_report.py](scripts/generate_portfolio_report.py)
