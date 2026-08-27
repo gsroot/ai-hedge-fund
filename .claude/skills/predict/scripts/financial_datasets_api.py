@@ -12,8 +12,14 @@ import os
 import json
 import urllib.request
 import urllib.error
+from pathlib import Path
+
+from dotenv import load_dotenv
 
 from cache import _get_cache_path, _read_cache, _write_cache, cache_stats
+
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 _API_BASE = "https://api.financialdatasets.ai"
 _API_KEY: str | None = None  # 지연 초기화

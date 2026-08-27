@@ -6,7 +6,13 @@ LLM을 사용하여 뉴스 헤드라인의 sentiment를 분석합니다.
 import json
 import os
 import sys
+from pathlib import Path
 from typing import Dict, Any
+
+from dotenv import load_dotenv
+
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 def analyze_news_sentiment(news_data: dict, ticker: str) -> dict:
     """

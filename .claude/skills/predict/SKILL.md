@@ -78,6 +78,8 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
 
 ## 데이터 시점 규칙
 
+- 프로젝트 루트 `.env`는 데이터 모듈이 자동으로 로드한다. 이미 설정된 프로세스
+  환경변수는 `.env` 값으로 덮어쓰지 않는다.
 - 일반 `predict`는 오늘 기준 라이브 선별 도구다.
 - 미국 Yahoo `Ticker.info`, 뉴스, 내부자 API는 과거 스냅샷이 아니다.
   과거 기준일 분석이나 백테스트에서는 현재 값을 과거 날짜로 캐시하지 않는다.
@@ -85,6 +87,8 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
   SEC Company Facts를 실제 `filed` 날짜로 거르는 경우에만 허용한다. 이 데이터로
   순위 성과를 검증할 때는 `backtesting`의 `multifactor_walk_forward.py`를 사용한다.
 - 한국 DART 연간 재무자료는 기준일 당시 공시되었을 가능성이 높은 최근 사업연도만 사용한다.
+- 한국 뉴스는 Naver Search API와 네이버 증권 폴백 모두 발행일을 검증해
+  `news_date <= analysis_date`인 기사만 사용한다. 날짜를 검증할 수 없는 기사는 제외한다.
 - 인덱스 목록과 시가총액 정렬은 현재 기준이다. 이 결과만으로 과거 초과성과를 주장하지 않는다.
 - 데이터가 누락된 종목은 결과에서 빠질 수 있으며, 성공 종목만으로 전체 유니버스 성과를 추론하지 않는다.
 

@@ -26,13 +26,17 @@ import time
 import threading
 from collections import deque
 from datetime import datetime, timedelta
+from email.utils import parsedate_to_datetime
+from pathlib import Path
 from typing import Optional
 
 import pandas as pd
 import requests
 
 from dotenv import load_dotenv
-load_dotenv()
+
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 
 # ============================================================================
@@ -935,6 +939,30 @@ def _get_company_name(ticker: str) -> str:
         return ticker
 
 
+def _parse_news_datetime(value: object) -> Optional[datetime]:
+    """Parse supported Naver/DART date formats; return None when unverifiable."""
+    text = str(value or "").strip()
+    if not text:
+        return None
+    try:
+        return parsedate_to_datetime(text)
+    except (TypeError, ValueError, OverflowError):
+        pass
+    for date_format in (
+        "%Y%m%d%H%M",
+        "%Y%m%d",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+        "%Y-%m-%d",
+        "%Y.%m.%d",
+    ):
+        try:
+            return datetime.strptime(text, date_format)
+        except ValueError:
+            continue
+    return None
+
+
 def _fetch_naver_news_api(query: str, end_date: str, limit: int = 30) -> list:
     """
     네이버 검색 API로 뉴스 가져오기
@@ -959,6 +987,7 @@ def _fetch_naver_news_api(query: str, end_date: str, limit: int = 30) -> list:
         return []
 
     try:
+        cutoff_date = datetime.strptime(end_date, "%Y-%m-%d").date()
         url = "https://openapi.naver.com/v1/search/news.json"
         headers = {
             "X-Naver-Client-Id": client_id,
@@ -980,14 +1009,12 @@ def _fetch_naver_news_api(query: str, end_date: str, limit: int = 30) -> list:
             title = item.get("title", "").replace("<b>", "").replace("</b>", "")
             description = item.get("description", "").replace("<b>", "").replace("</b>", "")
 
-            # 날짜 파싱 (RFC 822 형식: "Mon, 06 Jan 2025 09:00:00 +0900")
+            # RFC 822 발행일을 검증하고 기준일 이후 또는 날짜 불명 기사는 제외한다.
             pub_date = item.get("pubDate", "")
-            try:
-                from email.utils import parsedate_to_datetime
-                dt = parsedate_to_datetime(pub_date)
-                date_str = dt.strftime("%Y-%m-%d %H:%M:%S")
-            except Exception:
-                date_str = pub_date
+            published_at = _parse_news_datetime(pub_date)
+            if published_at is None or published_at.date() > cutoff_date:
+                continue
+            date_str = published_at.strftime("%Y-%m-%d %H:%M:%S")
 
             news_list.append({
                 "title": title,
@@ -1005,7 +1032,11 @@ def _fetch_naver_news_api(query: str, end_date: str, limit: int = 30) -> list:
         return []
 
 
-def _fetch_naver_finance_news(ticker: str, limit: int = 20) -> list:
+def _fetch_naver_finance_news(
+    ticker: str,
+    end_date: str,
+    limit: int = 20,
+) -> list:
     """
     네이버 증권 종목 뉴스 API로 뉴스 가져오기 (API 키 불필요)
 
@@ -1014,6 +1045,7 @@ def _fetch_naver_finance_news(ticker: str, limit: int = 20) -> list:
 
     Args:
         ticker: 6자리 종목코드
+        end_date: 기준 날짜 (YYYY-MM-DD)
         limit: 최대 조회 건수
 
     Returns:
@@ -1023,6 +1055,7 @@ def _fetch_naver_finance_news(ticker: str, limit: int = 20) -> list:
     import html as html_mod
 
     try:
+        cutoff_date = datetime.strptime(end_date, "%Y-%m-%d").date()
         page_size = min(limit, 30)
         url = f"https://api.stock.naver.com/news/stock/{ticker}"
         params = {"pageSize": page_size, "page": 1}
@@ -1049,11 +1082,12 @@ def _fetch_naver_finance_news(ticker: str, limit: int = 20) -> list:
 
                 # datetime 형식: "202601281052" → "2026-01-28 10:52"
                 raw_dt = item.get("datetime", "")
-                date_str = raw_dt
-                if len(raw_dt) >= 12:
-                    date_str = f"{raw_dt[:4]}-{raw_dt[4:6]}-{raw_dt[6:8]} {raw_dt[8:10]}:{raw_dt[10:12]}"
-                elif len(raw_dt) >= 8:
-                    date_str = f"{raw_dt[:4]}-{raw_dt[4:6]}-{raw_dt[6:8]}"
+                published_at = _parse_news_datetime(raw_dt)
+                if published_at is None or published_at.date() > cutoff_date:
+                    continue
+                date_str = published_at.strftime(
+                    "%Y-%m-%d %H:%M" if len(str(raw_dt)) >= 12 else "%Y-%m-%d"
+                )
 
                 office_id = item.get("officeId", "")
                 article_id = item.get("articleId", "")
@@ -1153,15 +1187,21 @@ def get_company_news_kr(ticker: str, end_date: str, limit: int = 50) -> list:
     news_limit = max(5, int(limit * 0.6))
     disclosure_limit = max(5, limit - news_limit)
 
-    # 1. 네이버 뉴스 (API 또는 스크래핑)
+    cutoff_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+    # 1. 네이버 뉴스 (검색 API 또는 네이버 증권 공개 JSON 폴백)
     company_name = _get_company_name(ticker)
 
     # 네이버 검색 API 시도
     naver_news = _fetch_naver_news_api(company_name, end_date, limit=news_limit)
 
-    # API 키가 없거나 결과가 부족하면 네이버 금융 스크래핑으로 폴백
+    # API 키가 없거나 결과가 부족하면 네이버 증권 공개 JSON API로 폴백
     if len(naver_news) < 3:
-        finance_news = _fetch_naver_finance_news(ticker, limit=news_limit)
+        finance_news = _fetch_naver_finance_news(
+            ticker,
+            end_date,
+            limit=news_limit,
+        )
         # 중복 제거 (제목 기준)
         existing_titles = {n["title"] for n in naver_news}
         for n in finance_news:
@@ -1174,6 +1214,17 @@ def get_company_news_kr(ticker: str, end_date: str, limit: int = 50) -> list:
     # 2. DART 공시 (항상 포함)
     dart_news = _fetch_dart_disclosures(ticker, end_date, limit=disclosure_limit)
     all_news.extend(dart_news)
+
+    # 모든 공급자 결과에 방어적으로 기준일을 다시 적용한다. 날짜를 검증할 수 없는
+    # 항목도 과거 분석에 섞지 않는다.
+    all_news = [
+        item
+        for item in all_news
+        if (
+            (published_at := _parse_news_datetime(item.get("date"))) is not None
+            and published_at.date() <= cutoff_date
+        )
+    ]
 
     # 날짜 역순 정렬 (최신순)
     def _parse_date_for_sort(item):

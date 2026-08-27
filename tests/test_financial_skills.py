@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pandas as pd
 import numpy as np
@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PREDICT_SCRIPTS = ROOT / ".agents" / "skills" / "predict" / "scripts"
 PORTFOLIO_REPORT_SCRIPTS = (
     ROOT / ".agents" / "skills" / "portfolio-report" / "scripts"
+)
+INVESTOR_ANALYSIS_SCRIPTS = (
+    ROOT / ".agents" / "skills" / "investor-analysis" / "scripts"
 )
 
 
@@ -81,9 +84,92 @@ predict_data = load_module(
     "financial_skill_predict_data",
     PREDICT_SCRIPTS / "data_fetcher.py",
 )
+korean_data = load_module(
+    "financial_skill_korean_data",
+    PREDICT_SCRIPTS / "korean_data_fetcher.py",
+)
 
 
 class PointInTimeTests(unittest.TestCase):
+    def test_api_modules_load_project_root_dotenv_without_override(self):
+        module_paths = (
+            PREDICT_SCRIPTS / "korean_data_fetcher.py",
+            PREDICT_SCRIPTS / "financial_datasets_api.py",
+            PREDICT_SCRIPTS / "sec_point_in_time.py",
+            INVESTOR_ANALYSIS_SCRIPTS / "analyze_news_sentiment.py",
+        )
+
+        for index, module_path in enumerate(module_paths):
+            with self.subTest(module=module_path.name):
+                with patch("dotenv.load_dotenv") as mocked_load:
+                    load_module(f"dotenv_probe_{index}", module_path)
+                mocked_load.assert_called_once_with(ROOT / ".env", override=False)
+
+    def test_naver_search_news_excludes_future_and_unverifiable_dates(self):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {
+            "items": [
+                {
+                    "title": "past",
+                    "description": "past article",
+                    "pubDate": "Tue, 31 Dec 2024 10:00:00 +0900",
+                },
+                {
+                    "title": "cutoff",
+                    "description": "cutoff article",
+                    "pubDate": "Wed, 01 Jan 2025 23:59:00 +0900",
+                },
+                {
+                    "title": "future",
+                    "description": "future article",
+                    "pubDate": "Thu, 02 Jan 2025 00:01:00 +0900",
+                },
+                {
+                    "title": "unknown",
+                    "description": "unknown date",
+                    "pubDate": "not-a-date",
+                },
+            ]
+        }
+
+        with patch.dict(
+            "os.environ",
+            {"NAVER_CLIENT_ID": "client", "NAVER_CLIENT_SECRET": "secret"},
+        ), patch.object(korean_data.requests, "get", return_value=response):
+            news = korean_data._fetch_naver_news_api(
+                "테스트",
+                "2025-01-01",
+                limit=30,
+            )
+
+        self.assertEqual([item["title"] for item in news], ["past", "cutoff"])
+        self.assertTrue(all(item["date"][:10] <= "2025-01-01" for item in news))
+
+    def test_naver_finance_fallback_excludes_future_news(self):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = [
+            {
+                "items": [
+                    {"title": "past", "datetime": "202412311200"},
+                    {"title": "cutoff", "datetime": "202501012359"},
+                    {"title": "future", "datetime": "202501020001"},
+                    {"title": "unknown", "datetime": "bad-date"},
+                ]
+            }
+        ]
+
+        with patch.object(korean_data.requests, "get", return_value=response):
+            news = korean_data._fetch_naver_finance_news(
+                "005930",
+                "2025-01-01",
+                limit=20,
+            )
+
+        self.assertEqual([item["title"] for item in news], ["past", "cutoff"])
+        self.assertTrue(all(item["date"][:10] <= "2025-01-01" for item in news))
+
     def test_price_snapshot_excludes_future_rows(self):
         dates = pd.date_range("2024-01-01", periods=5, freq="D")
         frame = pd.DataFrame(

@@ -18,6 +18,11 @@ from typing import Any, Iterable
 
 import httpx
 import pandas as pd
+from dotenv import load_dotenv
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 
 SEC_COMPANYFACTS_URL = (
