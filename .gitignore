@@ -76,6 +76,7 @@ app/backend/alembic/versions/__pycache__/
 
 # Cache directories
 docs_cache/
+.agents/skills/predict/scripts/.cache/
 .claude/skills/predict/scripts/.cache/
 
 # Beads / Dolt files (added by bd init)
