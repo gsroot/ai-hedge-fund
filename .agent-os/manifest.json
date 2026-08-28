@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.1",
+  "system": {
+    "name": "Agent OS",
+    "implementation": "codex-agent-os",
+    "owner": "local"
+  },
+  "project": {
+    "name": "AI Hedge Fund",
+    "path": "C:/projects/ai-hedge-fund",
+    "type": "Educational investment research and portfolio reporting system",
+    "stage": "validation",
+    "north_star": "시점 일치 데이터와 독립된 분석 관점을 사용해 재현 가능하고 위험이 명시된 연구 보고서를 만든다.",
+    "current_outcome": "KRX와 S&P 500 파이프라인의 provider 준비도, 시점 일치 팩터, 뉴스 증거 게이트를 통과한 경우에만 순위와 설명을 생성한다."
+  },
+  "workflow": {
+    "work_id": "point-in-time-evidence-gates",
+    "specification_system": "openspec",
+    "spec_status": "proposed",
+    "active_change": "point-in-time-evidence-gates",
+    "task_system": "beads",
+    "beads_root": "ai-hedge-fund-yv5",
+    "next_gate": "필수 provider 표본 호출과 point-in-time/OOS 검증을 재현하고, 실패 시 prior-only 또는 unvalidated로 중단하는 계약을 전체 산출물에 적용한다."
+  },
+  "evidence": {
+    "canonical_docs": [
+      "README.md",
+      ".agents/skills/predict/SKILL.md",
+      ".agents/skills/predict/references/news_validation_contract.md",
+      ".agents/skills/backtesting/references/factor_evidence_contract.md",
+      ".agents/skills/investor-analysis/SKILL.md",
+      ".agents/skills/portfolio-report/SKILL.md"
+    ],
+    "metrics": [
+      "시점 일치 데이터 가용률",
+      "OOS 팩터 검증 통과율",
+      "뉴스 증거 게이트 통과율",
+      "제약 위반 없는 포트폴리오 비율"
+    ],
+    "release_state": "교육·연구용 로컬 산출물이며 실제 투자 주문이나 성과 보장은 범위 밖이다. 현재 provider 증거 강화가 진행 중이다."
+  },
+  "risk": {
+    "high_risk_surfaces": [
+      "실제 금융 주문·자금 이동",
+      "미래정보 누수와 survivorship bias",
+      "provider 실패를 실제 0 또는 중립 신호로 오인",
+      "검증되지 않은 투자 성과 주장",
+      "API 키와 유료 데이터 사용"
+    ],
+    "unresolved_gates": [
+      "현재 provider 자격 증명과 표본 호출",
+      "전체 기간 point-in-time/OOS 재현",
+      "뉴스 이벤트의 독립 검증",
+      "산출물별 데이터 시점과 한계 표시"
+    ]
+  },
+  "lifecycle": {
+    "planning": { "status": "passed", "evidence": ["README.md", ".agents/skills/backtesting/references/factor_evidence_contract.md"] },
+    "implementation": { "status": "in_progress", "evidence": ["portfolios/krx_20260827", "portfolios/sp500_20260827"] },
+    "local_runtime": { "status": "in_progress", "evidence": ["provider별 외부 증거 게이트가 남아 있음"] },
+    "device": { "status": "not_applicable", "evidence": [] },
+    "deployment": { "status": "not_applicable", "evidence": [] },
+    "public_release": { "status": "not_applicable", "evidence": [] },
+    "user_validation": { "status": "blocked", "evidence": ["필수 provider 및 OOS 검증 전에는 순위 품질을 주장할 수 없음"] }
+  }
+}

@@ -1,0 +1,33 @@
+schema: spec-driven
+
+context: |
+  Language: ko-KR
+  All artifacts must be written in ko-KR.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+  AI Hedge Fund is an educational research system, not a live-trading or return-
+  guarantee product. Ground changes in provider behavior and point-in-time data.
+  Preserve the workflow predict -> independent investor-analysis -> risk snapshot
+  -> portfolio-report and separate missing evidence from neutral market evidence.
+
+rules:
+  proposal:
+    - Include Non-goals, the as-of time, providers, expected evidence, failure states, and portfolio constraints.
+    - Explicitly exclude live trading, fund movement, and performance guarantees.
+  specs:
+    - Cover provider timeout, missing credentials, stale or revised data, point-in-time alignment, OOS validation, and serialization when relevant.
+  design:
+    - Cite current code and stored evidence; do not use generated reports alone as proof that the pipeline is sound.
+    - Keep investor analyses independent until the aggregation step and record uncertainty.
+  tasks:
+    - Add exact input, intermediate evidence, and output assertions for persisted-field or ranking changes.
+    - Keep paid provider activation, external publication, and financial actions outside the plan without explicit authorization.
+
+operations:
+  apply:
+    guidance:
+      - Preserve unrelated generated outputs and dirty work; use explicit paths for any later staging.
+      - Run focused tests, deterministic constraint checks, and git diff --check.
+  archive:
+    guidance:
+      - Record implementation, local reproduction, provider validation, report generation, and public sharing separately.
+      - Fail closed when point-in-time, OOS, provider readiness, or news evidence gates are missing.

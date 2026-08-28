@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "ai_hedge_fund",
+  "project_id": "70b3c645-0a83-495a-a7a8-4af191a32617"
+}

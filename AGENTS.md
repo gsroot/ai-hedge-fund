@@ -1,92 +1,35 @@
-<claude-mem-context>
-# Memory Context
+# AI Hedge Fund repository instructions
 
-# [ai-hedge-fund] recent context, 2026-04-28 12:13pm GMT+9
+## 제품·안전 경계
 
-Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
-Format: ID TIME TYPE TITLE
-Fetch details: get_observations([IDs]) | Search: mem-search skill
+- 이 저장소는 교육·연구용 proof of concept다. 실제 거래, 자금 이동, 투자 자문, 수익 보장으로 취급하지 않는다.
+- 가격·재무·뉴스·구성 종목은 시점에 따라 변한다. 분석 전에 기준 시각과 provider를 확인하고, 현재성이 필요한 사실은 공식 또는 1차 출처로 다시 검증한다.
+- 누락·timeout·자격 증명 실패를 실제 0, 중립 신호, 부정 신호로 바꾸지 않는다. 증거가 부족하면 `prior_only`, `unvalidated` 또는 중단 상태를 명시한다.
+- 미래정보 누수, survivorship bias, 수정 후 데이터, 시점이 다른 팩터·뉴스를 섞지 않는다. 포트폴리오 품질 주장은 point-in-time과 OOS 증거가 있을 때만 허용한다.
 
-Stats: 50 obs (16,544t read) | 663,603t work | 98% savings
+## 필수 분석 흐름
 
-### Apr 28, 2026
-1472 10:39a 🔵 Batch price download completed: 487/493 tickers succeeded, 6 failed
-1473 " 🔵 Sector stats complete (11 sectors, 478 tickers); ensemble analysis at 20% progress
-1474 10:43a 🔵 Ensemble analysis throughput: ~175 tickers per 30 seconds with cache active
-1475 10:44a 🔵 Ensemble analysis at 86% complete — sustained ~150 tickers per 30-second window
-1476 " 🟣 S&P 500 predict analysis completed — full 493-ticker results saved to JSON
-1477 " 🔵 Investor consensus divergence: 203/493 tickers have high disagreement (std ≥ 2.5)
-1478 10:45a 🔵 JSON output schema confirmed — per-ticker record includes 15 fields with full factor decomposition
-1524 10:46a 🔵 SP500 report generator script created and validated — full pipeline confirmed
-1479 10:47a 🔵 Deep JSON analysis: 19/30 top picks have LOW investor consensus; Lynch leads coverage with 121 bullish signals
-1480 10:50a 🟣 KRX Stock Prediction Analysis Triggered
-1481 " 🟣 KRX 350-Stock Prediction Analysis Completed Successfully
-1482 10:52a 🔵 KRX Predict JSON Output Schema Confirmed
-1483 " 🔵 market_cap Field is a Dict with value/display/category, Currently Null
-1484 " 🔵 Critical: Only Druckenmiller Scores Non-Zero — All Other Investor Personas Return 0.0
-1485 10:53a 🔵 investor_scores Key Names Are Short-Form, Not Full Names — Earlier Analysis Used Wrong Keys
-1486 " 🔵 predicted_return_1y Stored as Decimal Multiplier (13.1 = 1310%), Not Percentage
-1487 " 🔵 Corrected: predicted_return_1y Is Already a Percentage (13.1 = 13.1%), Not a Multiplier
-1488 " 🔵 Munger Persona Missing — Only Buffett, Fisher, Druckenmiller Generate Non-Zero Scores
-1489 10:54a 🔵 Top 30 KRX Buy Picks: Enhanced Momentum Dominates, P/E Uniformly Missing, Druckenmiller-Only for 22/30
-S446 predict --index sp500 — Full S&P 500 hybrid stock analysis with formatted 8-section report output (Apr 28 at 10:55 AM)
-S444 predict --index krx: KRX 350종목 하이브리드 전략 분석 및 결과 검수 (Apr 28 at 10:55 AM)
-1490 10:55a 🟣 predict --index sp500 executed on 493 S&P 500 stocks
-1491 " 🔵 predict skill output format spec: 8-section structured report
-1492 " 🔵 S&P 500 predict run: 6 delisted symbols fail on Yahoo Finance
-1493 " 🔵 S&P 500 predict results: 126 buy signals, MU top pick at +18.7%
-1494 " 🔵 predict skill output format spec loaded from references/output_format.md
-1497 " 🟣 S&P 500 Hybrid Stock Prediction Run — 493 Stocks Analyzed
-1498 " 🔵 6 S&amp;P 500 Symbols Delisted / Not Found on Yahoo Finance
-1499 " 🔵 S&amp;P 500 Top 30 Buy Recommendations — Semiconductor &amp; Financials Dominate
-S445 portfolio-report --index krx: Generate KRX portfolio report (.txt + .xlsx) from 2026-04-28 predict results (Apr 28 at 10:55 AM)
-1500 10:59a 🔵 portfolio-report Skill — Excel Report Spec (6-Sheet Structure)
-1501 " 🔵 portfolio-report Skill — Console Output Format Spec (8-Section)
-1495 11:01a 🔵 portfolio-report Skill Uses 711-Line generate_krx_report.py Pattern with 6-Sheet Excel Output
-1496 11:02a 🟣 generate_krx_report_20260428.py Created from 20260424 Template
-1508 " 🔵 User questions portfolio-report investor scoring architecture
-S448 User asked about parallel investor agent architecture → session explained deterministic scoring design, built top-30 context extraction, and displayed completed KRX portfolio report (Apr 28 at 11:02 AM)
-1511 " 🟣 Top-30 stock context extraction for parallel investor agent dispatch
-S447 User asked architectural question: "shouldn't the 3 investor agents be called in parallel with the top 30 stock list?" — followed by re-execution of already-completed portfolio-report generation (Apr 28 at 11:03 AM)
-1502 11:07a 🔵 investor-analysis data_fetcher.py Tested — MU Financial Profile Revealed
-1503 " 🔵 investor-analysis Parallel Data Fetch — ALL and MTCH Financial Profiles
-1504 11:08a 🔴 data_fetcher.py Korean Header Line Breaks Direct JSON Pipe Parsing
-1505 " 🔵 ADI and ALL Detailed Financial Profiles for investor-analysis
-1506 " 🔵 26-Ticker Parallel Financial Fetch — Full SP500 Top-30 Profile Complete
-1507 11:09a 🔵 data_fetcher.py stdout Contamination Affects Python subprocess.run capture_output Too
-S449 KRX 포트폴리오 리포트 생성 — 30개 종목 대상 버핏·린치·피셔 3명 투자자 에이전트 병렬 분석 (portfolio-report --index krx) (Apr 28 at 11:10 AM)
-1509 11:10a 🟣 Peter Lynch Sub-Agent Completed — 30-Stock LLM Investor Analysis in 140 Seconds
-1510 " 🔵 NVDA FY2026 Financials — $215.9B Revenue, $120B Net Income, $96.7B FCF
-S450 IT/반도체 추천 종목 조회 → SP500 상위 30개 Buffett/Lynch/Fisher 3인 LLM 분석 → v2 포트폴리오 리포트 생성 (Apr 28 at 11:11 AM)
-1529 11:13a 🔵 User Interest: IT/반도체 종목 추천 결과 회상
-1530 12:11p 🔴 OpenDartReader 무제한 타임아웃 패치 적용
-1531 " 🟣 KRX Open API 기반 시가총액 상위 N종목 조회 함수 추가
-1532 " ✅ ai-hedge-fund 포트폴리오 리포트 및 분석 결과 파일 다수 신규 생성
-1533 " 🔵 AGENTS.md는 claude-mem 컨텍스트 파일 — 세션 관측 히스토리 포함
-1534 " 🔵 포트폴리오 리포트 스크립트 두 가지 아키텍처 — 알고리즘 vs LLM 에이전트 신호
-1535 12:12p ✅ korean_data_fetcher 개선사항 커밋 완료 — 8179e2a
-1536 " ✅ 포트폴리오 리포트 및 결과물 10개 파일 커밋 — 427bd8d
-1537 " ✅ ai-hedge-fund 커밋 세션 완료 — origin/main 대비 2커밋 앞선 상태
-S452 ai-hedge-fund 변경 내용 파악 및 커밋 — korean_data_fetcher 개선과 포트폴리오 리포트 정리 (Apr 28 at 12:12 PM)
-**Investigated**: - git status / git diff --stat / git log로 변경 범위 파악
-    - .claude/skills와 .agents/skills의 korean_data_fetcher.py diff 확인 (두 파일 내용 동일)
-    - AGENTS.md 내용 확인 (claude-mem 자동 생성 메모리 덤프, 108줄)
-    - portfolios/ 신규 스크립트 5종 헤더 검토 (알고리즘 기반 v1 vs LLM 에이전트 기반 v2 구조 파악)
+- 포트폴리오 요청은 `predict -> 독립 investor-analysis -> risk snapshot -> portfolio-report` 순서를 유지한다.
+- 투자자 관점은 서로 독립적으로 산출한 뒤 결합한다. 한 에이전트의 결론을 다른 에이전트의 입력 결론으로 사용하지 않는다.
+- 뉴스는 `.agents/skills/predict/references/news_validation_contract.md`, 팩터는 `.agents/skills/backtesting/references/factor_evidence_contract.md`의 게이트를 따른다.
+- 순위, 추천, 예상 수익에는 데이터 기준일, provider, 실패·대체 경로, 불확실성, 제약 조건을 함께 표시한다.
 
-**Learned**: - korean_data_fetcher.py는 .agents/와 .claude/ 두 경로에 미러링되며 항상 동기화 상태 유지
-    - OpenDartReader는 내부 requests.get에 timeout이 없어 무제한 블로킹 가능 — monkey-patch로 해결
-    - 포트폴리오 리포트는 알고리즘 팩터 점수 기반(v1)과 LLM 에이전트 90회 호출 기반(v2/agents) 두 아키텍처로 분기됨
-    - AGENTS.md는 소스코드가 아닌 claude-mem 세션 메모리 덤프 — .gitignore 후보
-    - portfolios/generate_sp500_report_20260428_v2.py는 839줄로 dataclass 기반의 가장 정교한 구조
+## Agent OS 제어면
 
-**Completed**: - 커밋 8179e2a: fix(predict) — OpenDartReader 15초 타임아웃 monkey-patch, KRX Open API 기반 시총 상위 N 폴백 함수 추가 (2파일, 116줄)
-    - 커밋 427bd8d: feat(portfolios) — KRX/S&P 500 리포트 스크립트 5종, xlsx 4종, predict JSON 1종 추가 (10파일, 27,602줄)
-    - main 브랜치가 origin/main 대비 +2 커밋 상태 (push 대기)
-    - AGENTS.md는 의도적으로 커밋 제외, untracked 유지
+- 중요한 분석·파이프라인 변경은 먼저 `.agent-os/manifest.json`을 읽는다. 현재 목표·생명주기·다음 게이트의 기준 문서는 이 매니페스트다.
+- 변경 의도와 수용 기준은 OpenSpec, 여러 세션의 실행 의존성은 Beads를 기준으로 관리한다. OpenSpec change를 아카이브하기 전 `verify`를 수행한다.
+- 장기 작업은 `bd prime`, `bd ready`, `bd show <id>`로 복구하고, 수행 전 claim, 완료 후 close한다. 동일한 실행 상태를 다른 체크리스트에 중복 기록하지 않는다.
+- 구현, 로컬 재현, 외부 provider 검증, 보고서 생성, 공개 공유를 별도 상태와 증거로 보고한다.
+- 현재 장기 결과의 식별자는 `.agent-os/manifest.json`의 `workflow.work_id`다. Beads 루트의 external reference와 OpenSpec change를 이 ID에 연결하고, 시작·인계·완료 전 `py -3 C:\Users\gsr27\.codex\agent-os\scripts\doctor.py --repo .`의 경고를 확인한다.
 
-**Next Steps**: - 세션 완료 상태 — push 여부는 사용자 판단
-    - AGENTS.md의 .gitignore 추가 여부 결정 가능
+## 구현·검증
 
+- 명령과 구조를 추정하지 말고 `pyproject.toml`, 기존 스크립트, 테스트, skill 문서를 먼저 확인한다.
+- 변경 범위에 맞는 테스트와 정적 검사를 실행하고 `git diff --check`를 확인한다.
+- 생성 보고서만 보고 파이프라인이 맞다고 판단하지 않는다. 입력 스냅샷, 중간 증거, 제약 검사, 직렬화 결과를 함께 검증한다.
+- `.env`, API 키, 유료 provider 응답 원문, 개인 데이터는 커밋하지 않는다.
 
-Access 664k tokens of past work via get_observations([IDs]) or mem-search skill.
-</claude-mem-context>
+## Git
+
+- 이 저장소는 unrelated dirty change가 많을 수 있다. 사용자 변경을 보존하고 요청한 경로만 명시적으로 스테이징한다.
+- 커밋 전 `git diff --cached --stat`과 cached diff를 확인한다. 사용자가 요청하지 않으면 push, PR, 실제 외부 게시를 하지 않는다.
