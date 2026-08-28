@@ -532,6 +532,92 @@ class PointInTimeTests(unittest.TestCase):
                 analysis_date="2026-01-02",
             )
 
+    def test_invalid_factor_evidence_serializes_prior_only_fallback(self):
+        priors = {factor: 1 / 7 for factor in factor_evidence_policy.FACTOR_NAMES}
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "wrong-scope.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "factor_spec_id": "predict_factor_v1",
+                        "validation_end": "2025-12-31",
+                        "applicability": {
+                            "market_scope": "us",
+                            "indices": ["sp500"],
+                        },
+                        "validity": {
+                            "point_in_time": True,
+                            "signal_before_execution": True,
+                            "execution_before_label_end": True,
+                            "independent_holdout": True,
+                        },
+                        "factors": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = factor_evidence_policy.load_factor_weight_policy_safe(
+                priors,
+                path,
+                market_scope="krx",
+                index="krx",
+                analysis_date="2026-01-02",
+            )
+
+        self.assertEqual(result["mode"], "prior_only")
+        self.assertEqual(
+            result["fallback_reason"],
+            "invalid_factor_evidence_fallback_to_prior_only",
+        )
+        self.assertTrue(
+            all(item["grade"] == "unvalidated" for item in result["factors"].values())
+        )
+        self.assertEqual(result["evidence_error"]["kind"], "ValueError")
+
+    def test_all_contradicted_factors_fall_back_to_prior_with_reason(self):
+        priors = {factor: 1 / 7 for factor in factor_evidence_policy.FACTOR_NAMES}
+        contradicted = {
+            "data_coverage": 1.0,
+            "oos_periods": 40,
+            "mean_rank_ic": -0.05,
+            "rank_ic_ci_low": -0.10,
+            "positive_ic_rate": 0.35,
+            "net_top_vs_universe_total_return": -0.08,
+            "ablation_net_total_return_delta": -0.02,
+        }
+        result = factor_evidence_policy.build_factor_weight_policy(
+            priors,
+            {
+                "schema_version": 1,
+                "factor_spec_id": "predict_factor_v1",
+                "validation_end": "2025-12-31",
+                "applicability": {"market_scope": "krx", "indices": ["krx"]},
+                "validity": {
+                    "point_in_time": True,
+                    "signal_before_execution": True,
+                    "execution_before_label_end": True,
+                    "independent_holdout": True,
+                },
+                "factors": {
+                    factor: {"metrics": contradicted}
+                    for factor in factor_evidence_policy.FACTOR_NAMES
+                },
+            },
+            market_scope="krx",
+            index="krx",
+            analysis_date="2026-01-02",
+        )
+
+        self.assertEqual(result["effective_weights"], priors)
+        self.assertEqual(
+            result["fallback_reason"],
+            "all_factors_contradicted_fallback_to_prior_relative_weights",
+        )
+        self.assertTrue(
+            all(item["grade"] == "contradicted" for item in result["factors"].values())
+        )
+
     def test_factor_panel_rejects_lookahead_timing(self):
         rows = []
         for index in range(5):
@@ -1779,7 +1865,29 @@ class AllocationConstraintTests(unittest.TestCase):
             self.assertTrue(output.exists())
             self.assertGreater(output.stat().st_size, 0)
             portfolio_report.write_portfolio_json(
-                weights_output, "2024-01-01", included, cash, regime
+                weights_output,
+                "2024-01-01",
+                included,
+                cash,
+                regime,
+                portfolio_report.build_research_provenance(
+                    {
+                        "analysis_date": "2024-01-01",
+                        "factor_weight_policy": {
+                            "factor_spec_id": "predict_factor_v1",
+                            "mode": "prior_only",
+                        },
+                        "provider_readiness_policy": {
+                            "all_samples_ready": False,
+                            "requested_as_of": "2024-01-01",
+                        },
+                        "news_sentiment_policy": {
+                            "ranking_policy": "risk_and_explanation_only",
+                            "ranking_contribution_applied": False,
+                        },
+                    },
+                    {"analysis_date": "2024-01-01"},
+                ),
             )
             weights_payload = json.loads(weights_output.read_text(encoding="utf-8"))
             self.assertAlmostEqual(
@@ -1790,6 +1898,19 @@ class AllocationConstraintTests(unittest.TestCase):
             self.assertEqual(weights_payload["market_regime"]["regime"], "risk_on")
             self.assertEqual(
                 weights_payload["constraints"]["market_cash_target"], 0.05
+            )
+            self.assertEqual(
+                weights_payload["research_provenance"]["workflow"],
+                [
+                    "predict",
+                    "independent_investor_analysis",
+                    "risk_snapshot",
+                    "portfolio_report",
+                ],
+            )
+            self.assertEqual(
+                weights_payload["research_provenance"]["factor_evidence_mode"],
+                "prior_only",
             )
         self.assertAlmostEqual(summary["invested_weight"] + summary["cash_weight"], 100.0, places=1)
 

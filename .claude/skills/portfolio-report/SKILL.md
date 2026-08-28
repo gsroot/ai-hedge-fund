@@ -121,6 +121,10 @@ uv run python .agents/skills/portfolio-report/scripts/generate_portfolio_report.
 - 실제 자금 투입 전 `backtesting`으로 고정 유니버스와 비용을 반영해 검증
 - `backtesting.evidence_assessment`는 근거 설명에 사용하되 포트폴리오 생성을 차단하거나
   목표비중을 자동 축소하지 않음
+- portfolio JSON의 `research_provenance`에
+  `predict -> independent_investor_analysis -> risk_snapshot -> portfolio_report` 순서,
+  factor evidence mode, provider 상태, news ranking policy, 검증 범위와 미검증 한계가
+  포함됨. 기존 provenance 없는 snapshot은 새 계약 통과 결과로 소급 표기하지 않음
 
 구성일 이후 데이터가 존재할 때는 생성된 목표비중 자체를 검증한다.
 

@@ -42,7 +42,8 @@ import config
 from cache import clear_cache, get_cache_stats, cache_stats
 from data_fetcher import get_index_tickers, sort_tickers_by_market_cap
 from analysis import run_batch_analysis
-from factor_evidence import load_factor_weight_policy
+from factor_evidence import load_factor_weight_policy_safe
+from provider_readiness import load_provider_readiness_policy
 from reporting import print_results
 from ticker_utils import is_korean_index, is_korean_ticker
 
@@ -103,6 +104,13 @@ def main():
             "미지정 시 사전 가중치를 유지하되 미검증으로 표시"
         ),
     )
+    parser.add_argument(
+        "--provider-readiness-json",
+        help=(
+            "provider_readiness_v1 표본 감사 JSON. 미지정 시 provider 상태를 "
+            "not_provided로 기록하고 missing evidence를 0으로 취급하지 않음"
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -148,15 +156,20 @@ def main():
     is_kr = (args.index and is_korean_index(args.index)) or (args.tickers and all(is_korean_ticker(t.strip()) for t in args.tickers.split(',')))
     data_source = "DART + PyKRX" if is_kr else "Yahoo Finance"
     try:
-        factor_weight_policy = load_factor_weight_policy(
+        factor_weight_policy = load_factor_weight_policy_safe(
             config.FACTOR_WEIGHTS,
             args.factor_evidence_json,
             market_scope="krx" if is_kr else "us",
             index=args.index or "custom",
             analysis_date=end_date,
         )
+        provider_readiness_policy = load_provider_readiness_policy(
+            args.provider_readiness_json,
+            market_scope="krx" if is_kr else "sp500",
+            analysis_date=end_date,
+        )
     except (OSError, json.JSONDecodeError, ValueError) as exc:
-        parser.error(f"팩터 검증 JSON을 적용할 수 없습니다: {exc}")
+        parser.error(f"증거 JSON을 적용할 수 없습니다: {exc}")
     effective_factor_weights = factor_weight_policy["effective_weights"]
 
     print(f"\n{'='*60}")
@@ -213,6 +226,7 @@ def main():
             "methodology": strategy_methods.get(args.strategy, "Multi-factor analysis"),
             "factor_weights": effective_factor_weights,
             "factor_weight_policy": factor_weight_policy,
+            "provider_readiness_policy": provider_readiness_policy,
             "news_sentiment_policy": {
                 "classifier_policy_id": "news_event_v2",
                 "ranking_policy": "risk_and_explanation_only",

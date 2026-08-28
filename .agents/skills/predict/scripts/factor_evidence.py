@@ -304,3 +304,33 @@ def load_factor_weight_policy(
         analysis_date=analysis_date,
         source=str(path.resolve()),
     )
+
+
+def load_factor_weight_policy_safe(
+    prior_weights: dict[str, Any],
+    evidence_path: str | Path | None,
+    *,
+    market_scope: str,
+    index: str,
+    analysis_date: str,
+) -> dict[str, Any]:
+    """Fail closed to prior-only while preserving an explicit invalid-evidence state."""
+    try:
+        return load_factor_weight_policy(
+            prior_weights,
+            evidence_path,
+            market_scope=market_scope,
+            index=index,
+            analysis_date=analysis_date,
+        )
+    except (OSError, json.JSONDecodeError, ValueError) as error:
+        policy = default_factor_weight_policy(prior_weights)
+        policy.update(
+            source=(str(Path(evidence_path).resolve()) if evidence_path is not None else None),
+            fallback_reason="invalid_factor_evidence_fallback_to_prior_only",
+            evidence_error={
+                "kind": type(error).__name__,
+                "message": str(error)[:300],
+            },
+        )
+        return policy

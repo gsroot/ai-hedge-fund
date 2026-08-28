@@ -479,6 +479,7 @@ def write_portfolio_json(
     included: list[dict[str, Any]],
     cash_weight: float,
     market_regime: dict[str, Any] | None = None,
+    research_provenance: dict[str, Any] | None = None,
 ) -> None:
     payload = {
         "analysis_date": analysis_date,
@@ -495,9 +496,62 @@ def write_portfolio_json(
                 if market_regime else 0.0
             ),
         },
+        "research_provenance": research_provenance or {
+            "workflow": [
+                "predict",
+                "independent_investor_analysis",
+                "risk_snapshot",
+                "portfolio_report",
+            ],
+            "evidence_mode": "legacy_or_not_provided",
+            "limitations": [
+                "provider, factor OOS, and news validation provenance was not supplied",
+                "educational research only; no orders, capital movement, or return guarantee",
+            ],
+        },
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def build_research_provenance(
+    predict_payload: dict[str, Any],
+    risk_snapshot: dict[str, Any],
+) -> dict[str, Any]:
+    factor_policy = predict_payload.get("factor_weight_policy") or {}
+    provider_policy = predict_payload.get("provider_readiness_policy") or {}
+    news_policy = predict_payload.get("news_sentiment_policy") or {}
+    limitations = [
+        "educational research only; no orders, capital movement, or return guarantee"
+    ]
+    if factor_policy.get("mode") != "evidence_shrunk":
+        limitations.append("predict factors are prior_only or lack applicable OOS evidence")
+    if not provider_policy.get("all_samples_ready"):
+        limitations.append("one or more applicable providers are missing, failed, or unsampled")
+    if news_policy.get("ranking_contribution_applied") is not True:
+        limitations.append("news is risk_and_explanation_only and does not change ranking")
+    return {
+        "workflow": [
+            "predict",
+            "independent_investor_analysis",
+            "risk_snapshot",
+            "portfolio_report",
+        ],
+        "analysis_date": predict_payload.get("analysis_date"),
+        "risk_as_of": risk_snapshot.get("analysis_date"),
+        "factor_evidence_mode": factor_policy.get("mode", "not_provided"),
+        "factor_spec_id": factor_policy.get("factor_spec_id"),
+        "provider_readiness": provider_policy,
+        "news_ranking_policy": news_policy.get(
+            "ranking_policy", "risk_and_explanation_only"
+        ),
+        "validation_scope": {
+            "factor_validation_end": factor_policy.get("validation_end"),
+            "provider_requested_as_of": provider_policy.get("requested_as_of"),
+            "news_accuracy_validated": news_policy.get("accuracy_validated", False),
+        },
+        "limitations": limitations,
+    }
 
 
 def auto_width(ws) -> None:
@@ -991,6 +1045,7 @@ def main() -> None:
             included,
             cash_weight,
             market_regime,
+            build_research_provenance(payload, risk_snapshot),
         )
     output_path = None
     if args.xlsx.lower() in {"yes", "true", "1", "excel", "xlsx"}:

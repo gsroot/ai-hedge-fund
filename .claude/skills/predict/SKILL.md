@@ -64,6 +64,29 @@ uv run python .agents/skills/predict/scripts/analyze_stocks.py \
 - 검증 JSON은 `backtesting` 스킬의
   `references/factor_evidence_contract.md`와 `scripts/factor_evidence.py`로 생성한다.
 
+## Provider 준비도 증거
+
+순위 전에 KRX와 S&P provider의 자격 증명 이름, 표본 응답, 필수 필드, as-of,
+revision과 quota 상태를 감사한다. key 값은 산출물에 포함하지 않는다.
+
+```bash
+uv run python .agents/skills/predict/scripts/provider_readiness.py \
+  --as-of YYYY-MM-DD \
+  --output artifacts/evidence/provider_readiness_YYYYMMDD.json
+
+uv run python .agents/skills/predict/scripts/analyze_stocks.py \
+  --index krx \
+  --provider-readiness-json artifacts/evidence/provider_readiness_YYYYMMDD.json \
+  --output results.json
+```
+
+- credential missing, auth, timeout, quota, schema, empty, stale, unavailable을 서로 다른
+  상태로 기록하며 실제 팩터 값 0으로 바꾸지 않는다.
+- 표본이 모두 성공해도 current universe·metadata·수정 가격을 historical membership이나
+  재무 vintage 근거로 승격하지 않는다.
+- snapshot이 없거나 적용 provider가 실패하면 `provider_readiness_policy`를
+  `missing_evidence_requires_prior_or_explanation_only`로 직렬화한다.
+
 ## 현재 LLM 뉴스 분석
 
 KRX의 `fundamental` 또는 `hybrid` 분석은 기본 정량 순위를 만든 뒤 상위 후보의
@@ -157,6 +180,12 @@ uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply 
     "factor_spec_id": "predict_factor_v1",
     "mode": "prior_only|evidence_shrunk"
   },
+  "provider_readiness_policy": {
+    "contract_id": "provider_readiness_v1",
+    "mode": "not_provided|sampled",
+    "all_samples_ready": false,
+    "ranking_policy": "missing_evidence_requires_prior_or_explanation_only"
+  },
   "rankings": [
   {
   "ticker": "AAPL",
@@ -208,6 +237,7 @@ uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply 
 - [scripts/analyze_stocks.py](scripts/analyze_stocks.py): CLI
 - [scripts/analysis.py](scripts/analysis.py): 종합 점수
 - [scripts/factor_evidence.py](scripts/factor_evidence.py): 팩터 근거 검증·수축 정책
+- [scripts/provider_readiness.py](scripts/provider_readiness.py): provider 인벤토리·실제 표본·실패 상태
 - [scripts/data_fetcher.py](scripts/data_fetcher.py): 데이터·시점 차단
 - [scripts/sec_point_in_time.py](scripts/sec_point_in_time.py): SEC 제출일 기준 재무 스냅샷
 - [scripts/news_sentiment_enrichment.py](scripts/news_sentiment_enrichment.py): 상위 후보 뉴스 작업·검증·재순위

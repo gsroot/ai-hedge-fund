@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "contract_id": "provider_readiness_v1",
+  "generated_at": "2026-08-28T08:09:07.464852+00:00",
+  "requested_as_of": "2026-08-27",
+  "ranking_policy": "fail_closed_missing_evidence_not_zero",
+  "inventory": [
+    {
+      "provider_id": "dart",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "corporate_registry",
+        "financial_statements",
+        "disclosures",
+        "major_shareholders"
+      ],
+      "credential_env": [
+        "DART_API_KEY"
+      ],
+      "required_fields": [
+        "status",
+        "corp_name",
+        "stock_code",
+        "corp_cls"
+      ],
+      "observation_timing": "filing receipt/publication time; amended filings require a separate vintage",
+      "revision_policy": "revisions must retain original and amended receipt timestamps",
+      "quota": "provider-managed daily quota; status 020 is classified as quota_exceeded",
+      "historical_ranking_use": "conditional_on_filing_vintage"
+    },
+    {
+      "provider_id": "krx_open_api",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "daily_ohlcv",
+        "market_cap",
+        "listed_shares"
+      ],
+      "credential_env": [
+        "KRX_API_KEY"
+      ],
+      "required_fields": [
+        "ISU_CD",
+        "TDD_CLSPRC",
+        "MKTCAP",
+        "LIST_SHRS"
+      ],
+      "observation_timing": "official daily market row for basDd",
+      "revision_policy": "snapshot by requested trade date; corrections are not versioned by this endpoint",
+      "quota": "provider-managed; client uses one request per second",
+      "historical_ranking_use": "prices_only_after_trade_date_alignment"
+    },
+    {
+      "provider_id": "finance_data_reader",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "daily_adjusted_ohlcv",
+        "current_listed_universe"
+      ],
+      "credential_env": [],
+      "required_fields": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "observation_timing": "trade-date price rows; current listing is query-time only",
+      "revision_policy": "adjusted history may revise and has no explicit vintage identifier",
+      "quota": "upstream-dependent and undocumented",
+      "historical_ranking_use": "prices_only; current listing is not historical membership"
+    },
+    {
+      "provider_id": "pykrx",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "daily_raw_ohlcv",
+        "valuation",
+        "market_cap",
+        "current_index_membership"
+      ],
+      "credential_env": [],
+      "required_fields": [
+        "시가",
+        "고가",
+        "저가",
+        "종가",
+        "거래량"
+      ],
+      "observation_timing": "trade-date rows; index membership call exposes current/requested provider state",
+      "revision_policy": "no explicit vintage identifier for corrections or membership revisions",
+      "quota": "upstream-dependent; client throttling required",
+      "historical_ranking_use": "prices_and_valuations_only_after_as_of_checks; membership needs archived vintage"
+    },
+    {
+      "provider_id": "naver_news",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "current_news_search"
+      ],
+      "credential_env": [
+        "NAVER_CLIENT_ID",
+        "NAVER_CLIENT_SECRET"
+      ],
+      "required_fields": [
+        "title",
+        "link",
+        "pubDate"
+      ],
+      "observation_timing": "search result publication time observed at query time",
+      "revision_policy": "current search feed; no historical result-set vintage",
+      "quota": "provider-managed daily/search quota",
+      "historical_ranking_use": "not_allowed_without_archived_point_in_time_corpus"
+    },
+    {
+      "provider_id": "yahoo_chart",
+      "market_scope": [
+        "sp500"
+      ],
+      "roles": [
+        "daily_ohlcv",
+        "current_security_metadata"
+      ],
+      "credential_env": [],
+      "required_fields": [
+        "meta.symbol",
+        "timestamp",
+        "indicators.quote"
+      ],
+      "observation_timing": "chart timestamps; current metadata is query-time only",
+      "revision_policy": "adjusted history may revise; raw download has no explicit vintage identifier",
+      "quota": "undocumented public endpoint rate limits",
+      "historical_ranking_use": "prices_only; current metadata is not point-in-time evidence"
+    },
+    {
+      "provider_id": "wikipedia_sp500",
+      "market_scope": [
+        "sp500"
+      ],
+      "roles": [
+        "current_constituent_universe"
+      ],
+      "credential_env": [],
+      "required_fields": [
+        "Symbol",
+        "Security",
+        "GICS Sector"
+      ],
+      "observation_timing": "page state observed at query time",
+      "revision_policy": "page history must be captured separately for historical membership",
+      "quota": "public page; no service guarantee",
+      "historical_ranking_use": "current_universe_only; never backfill prior periods"
+    }
+  ],
+  "samples": [
+    {
+      "provider_id": "dart",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "corporate_registry",
+        "financial_statements",
+        "disclosures",
+        "major_shareholders"
+      ],
+      "credential_requirements": [
+        "DART_API_KEY"
+      ],
+      "credentials_configured": true,
+      "missing_credentials": [],
+      "required_fields": [
+        "status",
+        "corp_name",
+        "stock_code",
+        "corp_cls"
+      ],
+      "observation_timing": "filing receipt/publication time; amended filings require a separate vintage",
+      "revision_policy": "revisions must retain original and amended receipt timestamps",
+      "quota": "provider-managed daily quota; status 020 is classified as quota_exceeded",
+      "historical_ranking_use": "conditional_on_filing_vintage",
+      "observed_at": "2026-08-28T08:08:59.147074+00:00",
+      "data_as_of": "2026-08-28T08:08:59.147074+00:00",
+      "sample_size": 1,
+      "status": "ready",
+      "missing_fields": [],
+      "error": null,
+      "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+    },
+    {
+      "provider_id": "krx_open_api",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "daily_ohlcv",
+        "market_cap",
+        "listed_shares"
+      ],
+      "credential_requirements": [
+        "KRX_API_KEY"
+      ],
+      "credentials_configured": true,
+      "missing_credentials": [],
+      "required_fields": [
+        "ISU_CD",
+        "TDD_CLSPRC",
+        "MKTCAP",
+        "LIST_SHRS"
+      ],
+      "observation_timing": "official daily market row for basDd",
+      "revision_policy": "snapshot by requested trade date; corrections are not versioned by this endpoint",
+      "quota": "provider-managed; client uses one request per second",
+      "historical_ranking_use": "prices_only_after_trade_date_alignment",
+      "observed_at": "2026-08-28T08:08:59.259795+00:00",
+      "data_as_of": "2026-08-27",
+      "sample_size": 944,
+      "status": "ready",
+      "missing_fields": [],
+      "error": null,
+      "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+    },
+    {
+      "provider_id": "finance_data_reader",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "daily_adjusted_ohlcv",
+        "current_listed_universe"
+      ],
+      "credential_requirements": [],
+      "credentials_configured": true,
+      "missing_credentials": [],
+      "required_fields": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "observation_timing": "trade-date price rows; current listing is query-time only",
+      "revision_policy": "adjusted history may revise and has no explicit vintage identifier",
+      "quota": "upstream-dependent and undocumented",
+      "historical_ranking_use": "prices_only; current listing is not historical membership",
+      "observed_at": "2026-08-28T08:09:01.031983+00:00",
+      "data_as_of": "2026-08-28",
+      "sample_size": 11,
+      "status": "ready",
+      "missing_fields": [],
+      "error": null,
+      "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+    },
+    {
+      "provider_id": "pykrx",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "daily_raw_ohlcv",
+        "valuation",
+        "market_cap",
+        "current_index_membership"
+      ],
+      "credential_requirements": [],
+      "credentials_configured": true,
+      "missing_credentials": [],
+      "required_fields": [
+        "시가",
+        "고가",
+        "저가",
+        "종가",
+        "거래량"
+      ],
+      "observation_timing": "trade-date rows; index membership call exposes current/requested provider state",
+      "revision_policy": "no explicit vintage identifier for corrections or membership revisions",
+      "quota": "upstream-dependent; client throttling required",
+      "historical_ranking_use": "prices_and_valuations_only_after_as_of_checks; membership needs archived vintage",
+      "observed_at": "2026-08-28T08:09:01.429496+00:00",
+      "data_as_of": null,
+      "sample_size": 0,
+      "status": "empty_sample",
+      "missing_fields": [
+        "시가",
+        "고가",
+        "저가",
+        "종가",
+        "거래량"
+      ],
+      "error": null,
+      "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+    },
+    {
+      "provider_id": "naver_news",
+      "market_scope": [
+        "krx"
+      ],
+      "roles": [
+        "current_news_search"
+      ],
+      "credential_requirements": [
+        "NAVER_CLIENT_ID",
+        "NAVER_CLIENT_SECRET"
+      ],
+      "credentials_configured": true,
+      "missing_credentials": [],
+      "required_fields": [
+        "title",
+        "link",
+        "pubDate"
+      ],
+      "observation_timing": "search result publication time observed at query time",
+      "revision_policy": "current search feed; no historical result-set vintage",
+      "quota": "provider-managed daily/search quota",
+      "historical_ranking_use": "not_allowed_without_archived_point_in_time_corpus",
+      "observed_at": "2026-08-28T08:09:06.723560+00:00",
+      "data_as_of": null,
+      "sample_size": 0,
+      "status": "auth_failed",
+      "missing_fields": [],
+      "error": {
+        "kind": "auth_failed",
+        "http_status": 401
+      },
+      "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+    },
+    {
+      "provider_id": "yahoo_chart",
+      "market_scope": [
+        "sp500"
+      ],
+      "roles": [
+        "daily_ohlcv",
+        "current_security_metadata"
+      ],
+      "credential_requirements": [],
+      "credentials_configured": true,
+      "missing_credentials": [],
+      "required_fields": [
+        "meta.symbol",
+        "timestamp",
+        "indicators.quote"
+      ],
+      "observation_timing": "chart timestamps; current metadata is query-time only",
+      "revision_policy": "adjusted history may revise; raw download has no explicit vintage identifier",
+      "quota": "undocumented public endpoint rate limits",
+      "historical_ranking_use": "prices_only; current metadata is not point-in-time evidence",
+      "observed_at": "2026-08-28T08:09:06.785759+00:00",
+      "data_as_of": "2026-08-27",
+      "sample_size": 11,
+      "status": "ready",
+      "missing_fields": [],
+      "error": null,
+      "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+    },
+    {
+      "provider_id": "wikipedia_sp500",
+      "market_scope": [
+        "sp500"
+      ],
+      "roles": [
+        "current_constituent_universe"
+      ],
+      "credential_requirements": [],
+      "credentials_configured": true,
+      "missing_credentials": [],
+      "required_fields": [
+        "Symbol",
+        "Security",
+        "GICS Sector"
+      ],
+      "observation_timing": "page state observed at query time",
+      "revision_policy": "page history must be captured separately for historical membership",
+      "quota": "public page; no service guarantee",
+      "historical_ranking_use": "current_universe_only; never backfill prior periods",
+      "observed_at": "2026-08-28T08:09:07.096181+00:00",
+      "data_as_of": null,
+      "sample_size": 0,
+      "status": "unavailable",
+      "missing_fields": [],
+      "error": {
+        "kind": "unavailable",
+        "message": "HTTPError: HTTP Error 403: Forbidden"
+      },
+      "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+    }
+  ],
+  "summary": {
+    "ready": 4,
+    "not_ready": 3,
+    "all_required_ready": false
+  }
+}
