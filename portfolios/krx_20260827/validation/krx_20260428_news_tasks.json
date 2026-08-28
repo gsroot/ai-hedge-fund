@@ -1,0 +1,3568 @@
+{
+  "schema_version": 1,
+  "analysis_date": "2026-04-28",
+  "index": "custom",
+  "source": "predict_top_candidate_news",
+  "candidate_pool": 60,
+  "article_limit": 5,
+  "tasks": [
+    {
+      "ticker": "062040",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[산일전기] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417000523",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[산일전기] 결산실적공시예고(안내공시)",
+          "date": "2026-04-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260415800069",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[산일전기] [기재정정]사업보고서 (2025.12)",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403003697",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[산일전기] [기재정정]주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403003569",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[산일전기] 최대주주등소유주식변동신고서",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327801727",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 1,
+      "company_name": "산일전기"
+    },
+    {
+      "ticker": "483650",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[달바글로벌] [기재정정]의결권대리행사권유참고서류",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000819",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[달바글로벌] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000612",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[달바글로벌] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000603",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[달바글로벌] 주주총회소집공고",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000562",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[달바글로벌] 결산실적공시예고(안내공시)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800306",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 2,
+      "company_name": "달바글로벌"
+    },
+    {
+      "ticker": "000660",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[SK하이닉스] 자기교환사채만기전취득결정",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800513",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[SK하이닉스] [기재정정]특수관계인과의내부거래",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423000751",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[SK하이닉스] 동일인등출자계열회사와의상품ㆍ용역거래변경",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423000249",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[SK하이닉스] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423800001",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[SK하이닉스] 현금ㆍ현물배당결정",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422800788",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 3,
+      "company_name": "SK하이닉스"
+    },
+    {
+      "ticker": "082920",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[비츠로셀] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000273",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[비츠로셀] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403003275",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[비츠로셀] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-25",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260325001026",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[비츠로셀] 정기주주총회결과",
+          "date": "2026-03-25",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260325900722",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[비츠로셀] 사업보고서 (2025.12)",
+          "date": "2026-03-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317000858",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 4,
+      "company_name": "비츠로셀"
+    },
+    {
+      "ticker": "171090",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[선익시스템] [기재정정]현금ㆍ현물배당결정",
+          "date": "2026-04-20",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420900313",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[선익시스템] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-04-14",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260414900187",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[선익시스템] 정기주주총회결과",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326900608",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[선익시스템] 전환사채(해외전환사채포함)발행후만기전사채취득",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323901895",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[선익시스템] 전환가액의조정",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323900416",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 5,
+      "company_name": "선익시스템"
+    },
+    {
+      "ticker": "005930",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[삼성전자] 자기주식취득결과보고서",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000778",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[삼성전자] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000758",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[삼성전자] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423000164",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[삼성전자] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417000682",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[삼성전자] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417000440",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 6,
+      "company_name": "삼성전자"
+    },
+    {
+      "ticker": "023160",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "세운철강 퓨트로닉 시작으로 문화재단에 총 35억원 기부 부산 기업인들이 지역 클래식 문화 활성화를 위해 35억원을 기부했다. 부산시에 따르면 20일 오후 시청사에서 지역 기업인이 참여하는 기부금 전달식이 열린다. 전달식에서는 지역 기업이 부산의...",
+          "date": "2026-04-20 10:59",
+          "publisher": "매일경제",
+          "link": "https://n.news.naver.com/mnews/article/009/0005668374",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "[태광] 기업설명회(IR)개최",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403900721",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[태광] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004468",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[태광] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331000354",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[태광] 정기주주총회결과",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330901119",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 7,
+      "company_name": "태광"
+    },
+    {
+      "ticker": "101490",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[에스앤에스텍] 교환청구권행사",
+          "date": "2026-04-14",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260414900756",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[에스앤에스텍] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406003462",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[에스앤에스텍] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-25",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260325001084",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[에스앤에스텍] 정기주주총회결과",
+          "date": "2026-03-25",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260325900783",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[에스앤에스텍] 사업보고서 (2025.12)",
+          "date": "2026-03-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316000487",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 8,
+      "company_name": "에스앤에스텍"
+    },
+    {
+      "ticker": "053610",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "반도체 프로브카드 제조 기업인 피엠티가 대규모 유상증자로 자금을 조달한다. 회사는 수년간 실적악화와 차입 확대, 현금유출 등이 이어진 가운데 첨단장비 도입과 생산 인프라 고도화를 위한 시설투자에 나섰다. 이번 조달이 생산능력 확충을...",
+          "date": "2026-04-10 16:37",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000082559",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "[프로텍] 정기주주총회결과",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327900818",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[프로텍] 사업보고서 (2025.12)",
+          "date": "2026-03-19",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319000272",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[프로텍] 감사보고서제출",
+          "date": "2026-03-18",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318901650",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[프로텍] 주주총회소집공고",
+          "date": "2026-03-12",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260312000287",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 9,
+      "company_name": "프로텍"
+    },
+    {
+      "ticker": "278470",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[에이피알] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800363",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[에이피알] 결산실적공시예고(안내공시)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800348",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[에이피알] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800354",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[에이피알] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401800230",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[에이피알] 기업가치제고계획(자율공시)",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331804449",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 10,
+      "company_name": "에이피알"
+    },
+    {
+      "ticker": "042700",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[한미반도체] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427000030",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[한미반도체] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423800155",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[한미반도체] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410800116",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[한미반도체] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410800112",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[한미반도체] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004398",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 11,
+      "company_name": "한미반도체"
+    },
+    {
+      "ticker": "039030",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[이오테크닉스] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004380",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[이오테크닉스] 기업가치제고계획(자율공시)              (기업가치 제고 계획)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401901119",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[이오테크닉스] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331004648",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[이오테크닉스] 정기주주총회결과",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331903747",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[이오테크닉스] 감사보고서제출",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323902190",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 12,
+      "company_name": "이오테크닉스"
+    },
+    {
+      "ticker": "079550",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[LIG디펜스앤에어로스페이스] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423800410",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[LIG디펜스앤에어로스페이스] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422800471",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[LIG디펜스앤에어로스페이스] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410000873",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[LIG디펜스앤에어로스페이스] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004056",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[LIG디펜스앤에어로스페이스] 동일인등출자계열회사와의상품ㆍ용역거래",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331003313",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 13,
+      "company_name": "LIG디펜스앤에어로스페이스"
+    },
+    {
+      "ticker": "017960",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[한국카본] [기재정정]단일판매ㆍ공급계약체결(자율공시)",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800673",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[한국카본] 유상증자결정(종속회사의주요경영사항)",
+          "date": "2026-04-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260413800116",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[한국카본] 타법인주식및출자증권취득결정",
+          "date": "2026-04-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260413800090",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[한국카본] 최대주주등소유주식변동신고서",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406800763",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[한국카본] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406003460",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 14,
+      "company_name": "한국카본"
+    },
+    {
+      "ticker": "388210",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[씨엠티엑스] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000812",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[씨엠티엑스] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000806",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[씨엠티엑스] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000801",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[씨엠티엑스] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000792",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[씨엠티엑스] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000788",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 15,
+      "company_name": "씨엠티엑스"
+    },
+    {
+      "ticker": "031980",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[피에스케이홀딩스] [기재정정]임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260415000376",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[피에스케이홀딩스] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260415000187",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[피에스케이홀딩스] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401002332",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[피에스케이홀딩스] 정기주주총회결과",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330901297",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[피에스케이홀딩스] 기업가치제고계획(자율공시)",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330900872",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 16,
+      "company_name": "피에스케이홀딩스"
+    },
+    {
+      "ticker": "103590",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[일진전기] 임원ㆍ주요주주특정증권등거래계획보고서",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417000475",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[일진전기] [기재정정]단일판매ㆍ공급계약체결(자율공시)",
+          "date": "2026-04-07",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260407800998",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[일진전기] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004346",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[일진전기] 최대주주등소유주식변동신고서",
+          "date": "2026-03-19",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319800637",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[일진전기] 대표이사(대표집행임원)변경(안내공시)",
+          "date": "2026-03-19",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319800592",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 17,
+      "company_name": "일진전기"
+    },
+    {
+      "ticker": "443060",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[HD현대마린솔루션] 현금ㆍ현물배당결정",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800484",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[HD현대마린솔루션] 현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800431",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[HD현대마린솔루션] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800289",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[HD현대마린솔루션] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800172",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[HD현대마린솔루션] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401003593",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 18,
+      "company_name": "HD현대마린솔루션"
+    },
+    {
+      "ticker": "082740",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[한화엔진] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800531",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[한화엔진] 결산실적공시예고(안내공시)",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800056",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[한화엔진] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-08",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260408001892",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[한화엔진] [기재정정]타법인주식및출자증권취득결정(종속회사의주요경영사항)",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331804128",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[한화엔진] 단일판매ㆍ공급계약체결",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330801097",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 19,
+      "company_name": "한화엔진"
+    },
+    {
+      "ticker": "229640",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[LS에코에너지] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-14",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260414800130",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[LS에코에너지] 최대주주등소유주식변동신고서",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406800166",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[LS에코에너지] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406000096",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[LS에코에너지] 투자판단관련주요경영사항",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326800067",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[LS에코에너지] 정기주주총회결과",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324800291",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 20,
+      "company_name": "LS에코에너지"
+    },
+    {
+      "ticker": "402340",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[SK스퀘어] 자기교환사채만기전취득결정(자회사의 주요경영사항)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800519",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[SK스퀘어] 현금ㆍ현물배당결정(자회사의 주요경영사항)",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422800790",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[SK스퀘어] 현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정(자회사의 주요경영사항)",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422800749",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[SK스퀘어] 주요사항보고서(자기주식처분결정)(자회사의 주요경영사항)",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422800746",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[SK스퀘어] 자기주식처분결과보고서",
+          "date": "2026-04-07",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260407003248",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 21,
+      "company_name": "SK스퀘어"
+    },
+    {
+      "ticker": "298040",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[효성중공업] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800859",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[효성중공업] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800834",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[효성중공업] 주주명부폐쇄기간또는기준일설정",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800734",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[효성중공업] 주주총회소집결의",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800722",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[효성중공업] 단일판매ㆍ공급계약해지",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800636",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 22,
+      "company_name": "효성중공업"
+    },
+    {
+      "ticker": "007660",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[이수페타시스] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423000602",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[이수페타시스] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-02",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260402001734",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[이수페타시스] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004039",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[이수페타시스] 정기주주총회결과",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331803028",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[이수페타시스] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330801405",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 23,
+      "company_name": "이수페타시스"
+    },
+    {
+      "ticker": "403870",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[HPSP] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403003381",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[HPSP] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-02",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260402003179",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[HPSP] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004400",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[HPSP] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327001185",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[HPSP] 정기주주총회결과",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327901580",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 24,
+      "company_name": "HPSP"
+    },
+    {
+      "ticker": "267260",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[HD현대일렉트릭] 현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800286",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[HD현대일렉트릭] 현금ㆍ현물배당결정",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800285",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[HD현대일렉트릭] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800282",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[HD현대일렉트릭] 동일인등출자계열회사와의상품ㆍ용역거래",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000274",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[HD현대일렉트릭] 최대주주등소유주식변동신고서",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800431",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 25,
+      "company_name": "HD현대일렉트릭"
+    },
+    {
+      "ticker": "071970",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[HD현대마린엔진] 단일판매ㆍ공급계약체결",
+          "date": "2026-04-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260415800047",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[HD현대마린엔진] 단일판매ㆍ공급계약체결",
+          "date": "2026-04-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260413800060",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[HD현대마린엔진] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004107",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[HD현대마린엔진] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327001480",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[HD현대마린엔진] 단일판매ㆍ공급계약체결",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327800130",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 26,
+      "company_name": "HD현대마린엔진"
+    },
+    {
+      "ticker": "014620",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[성광벤드] 기업설명회(IR)개최",
+          "date": "2026-04-08",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260408900406",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[성광벤드] 기업설명회(IR)개최",
+          "date": "2026-04-08",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260408900395",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[성광벤드] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004431",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[성광벤드] 정기주주총회결과",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327902504",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[성광벤드] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327000510",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 27,
+      "company_name": "성광벤드"
+    },
+    {
+      "ticker": "033100",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[제룡전기] 정기주주총회결과",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324900844",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[제룡전기] 기업가치제고계획(자율공시)",
+          "date": "2026-03-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317900500",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[제룡전기] 감사보고서제출",
+          "date": "2026-03-11",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260311901144",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[제룡전기] 주주총회소집공고",
+          "date": "2026-03-09",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260309001169",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[제룡전기] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-03-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260306000734",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 28,
+      "company_name": "제룡전기"
+    },
+    {
+      "ticker": "213420",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[덕산네오룩스] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427000715",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[덕산네오룩스] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004689",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[덕산네오룩스] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327001603",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[덕산네오룩스] 대표이사변경",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326902613",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[덕산네오룩스] 정기주주총회결과",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326902502",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 29,
+      "company_name": "덕산네오룩스"
+    },
+    {
+      "ticker": "322000",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[HD현대에너지솔루션] 단일판매ㆍ공급계약체결",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331801669",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[HD현대에너지솔루션] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323000476",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[HD현대에너지솔루션] 정기주주총회결과",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323800447",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[HD현대에너지솔루션] 사업보고서 (2025.12)",
+          "date": "2026-03-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260313001045",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[HD현대에너지솔루션] 감사보고서제출",
+          "date": "2026-03-12",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260312801091",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 30,
+      "company_name": "HD현대에너지솔루션"
+    },
+    {
+      "ticker": "080220",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[제주반도체] 증권발행결과(자율공시)",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410900739",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[제주반도체] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-09",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260409002767",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[제주반도체] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403001699",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[제주반도체] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331003259",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[제주반도체] 대표이사변경",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331901692",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 31,
+      "company_name": "제주반도체"
+    },
+    {
+      "ticker": "089970",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[브이엠] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260415900316",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[브이엠] 주식매수선택권행사",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410900837",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[브이엠] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004562",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[브이엠] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330001481",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[브이엠] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330001462",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 32,
+      "company_name": "브이엠"
+    },
+    {
+      "ticker": "420770",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[기가비스] 단일판매ㆍ공급계약체결",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424900333",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[기가비스] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424900330",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[기가비스] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327001501",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[기가비스] 기업가치제고계획(자율공시)",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327902339",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[기가비스] 정기주주총회결과",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327902224",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 33,
+      "company_name": "기가비스"
+    },
+    {
+      "ticker": "004800",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[효성] 타인에대한채무보증결정(자회사의 주요경영사항)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800997",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[효성] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800931",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[효성] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800916",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[효성] 금전대여결정(자회사의 주요경영사항)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800888",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[효성] 단일판매ㆍ공급계약체결(자회사의 주요경영사항)",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800693",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 34,
+      "company_name": "효성"
+    },
+    {
+      "ticker": "058470",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[리노공업] 임원ㆍ주요주주특정증권등거래계획보고서",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424000538",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[리노공업] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004385",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[리노공업] [기재정정]현금ㆍ현물배당결정",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326900778",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[리노공업] 기업가치제고계획(자율공시)",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326900771",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[리노공업] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326000465",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 35,
+      "company_name": "리노공업"
+    },
+    {
+      "ticker": "131290",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[티에스이] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-09",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260409001776",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[티에스이] 정기주주총회결과",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326901746",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[티에스이] 사업보고서 (2025.12)",
+          "date": "2026-03-18",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318000738",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[티에스이] 감사보고서제출",
+          "date": "2026-03-18",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318900695",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[티에스이] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-03-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260310002379",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 36,
+      "company_name": "티에스이"
+    },
+    {
+      "ticker": "064760",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "티씨케이(064760)가 올해 1분기 매출액 953억 9200만원, 영업이익 285억 5400만원을 달성했다고 28일 공시했다. 매출액은 전년 동기 대비 21.73%, 영업이익은 21.65% 각각 오른 수치다.",
+          "date": "2026-04-28 14:20",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006268306",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "[티씨케이] 영업(잠정)실적(공정공시)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428900313",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "삼성전자가 역대 최대 분기 실적을 기록하면서 증권가는 반도체 업종에 주목한다. 메모리 가격 상승 흐름, 공급 부족 등 업황이 양호한 상황으로 SK하이닉스를 비롯해 반도체 소부장(소재·부품·장비)에 대한 비중을 확대해야 한다는...",
+          "date": "2026-04-07 16:47",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005341044",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "[티씨케이] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406003755",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[티씨케이] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004537",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 37,
+      "company_name": "티씨케이"
+    },
+    {
+      "ticker": "028050",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[삼성E&A] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800518",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[삼성E&A] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423800261",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[삼성E&A] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800522",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[삼성E&A] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260416000508",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[삼성E&A] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260416800516",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 38,
+      "company_name": "삼성E&A"
+    },
+    {
+      "ticker": "232140",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "와이씨(232140)는 삼성전자와 421억6000만원 규모의 반도체 장비 업그레이드(MT6133 LPE-B Upgrade) 공급계약을 체결했다고 13일 공시했다. 이는 최근 매출액 대비 15.46%에 해당하는 규모다. 계약기간은 2026년 4월10일부터...",
+          "date": "2026-04-13 14:11",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006256314",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "[와이씨] 단일판매ㆍ공급계약체결",
+          "date": "2026-04-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260413900196",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "기업 지배구조(Governance)를 분석합니다. 샘씨엔에스가 전환사채(CB) 물량 부담을 사실상 털어냈다. 이런 가운데 오너 2세 최유진 대표가 경영 전면에 복귀했다. 최 대표는 전문성과 경험을 갖춘 만큼, 단단한 입지를 구축할 것으로 기대된다. 특히...",
+          "date": "2026-04-01 15:36",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000082009",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "[와이씨] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327900717",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "와이씨(232140)는 기존 최명배·장성진 공동 대표이사 체제에서 경영 효율성 제고와 책임 경영 강화를 위해 최명배·장성진 각자 대표이사 체제로 전환한다고 26일 공시했다.",
+          "date": "2026-03-26 18:06",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006243696",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 39,
+      "company_name": "와이씨"
+    },
+    {
+      "ticker": "052690",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[한전기술] 단일판매ㆍ공급계약체결",
+          "date": "2026-04-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260416800301",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[한전기술] 주주명부폐쇄기간또는기준일설정",
+          "date": "2026-04-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260413800489",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[한전기술] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-02",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260402002037",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[한전기술] 기업가치제고계획(자율공시)              (고배당기업 표시를 위한 재공시)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401801513",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[한전기술] [기재정정]정기주주총회결과",
+          "date": "2026-03-31",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331804753",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 40,
+      "company_name": "한전기술"
+    },
+    {
+      "ticker": "077970",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[STX엔진] 단일판매ㆍ공급계약체결",
+          "date": "2026-03-25",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260325800277",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[STX엔진] 단일판매ㆍ공급계약체결",
+          "date": "2026-03-25",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260325800267",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[STX엔진] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324800299",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[STX엔진] 사업보고서 (2025.12)",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323000690",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[STX엔진] 감사보고서제출",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323800635",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 41,
+      "company_name": "STX엔진"
+    },
+    {
+      "ticker": "353200",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[대덕전자] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-21",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260421000463",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[대덕전자] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-21",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260421000462",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[대덕전자] 최대주주등소유주식변동신고서",
+          "date": "2026-04-21",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260421800598",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[대덕전자] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800424",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[대덕전자] 결산실적공시예고(안내공시)",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800422",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 42,
+      "company_name": "대덕전자"
+    },
+    {
+      "ticker": "375500",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[DL이앤씨] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800253",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[DL이앤씨] 결산실적공시예고(안내공시)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800252",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[DL이앤씨] 투자판단관련주요경영사항",
+          "date": "2026-04-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260424800004",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[DL이앤씨] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-20",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420000255",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[DL이앤씨] 단일판매ㆍ공급계약체결",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417800065",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 43,
+      "company_name": "DL이앤씨"
+    },
+    {
+      "ticker": "095610",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[테스] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004600",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[테스] 기업설명회(IR)개최",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324901117",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[테스] 기업가치제고계획(자율공시)",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323901029",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[테스] 대표이사변경",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323900988",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[테스] 정기주주총회결과",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323900980",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 44,
+      "company_name": "테스"
+    },
+    {
+      "ticker": "489790",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[한화비전] 결산실적공시예고(안내공시)",
+          "date": "2026-04-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260415800327",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[한화비전] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401003916",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[한화비전] [첨부정정]사업보고서 (2025.12)",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330000608",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[한화비전] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324000915",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[한화비전] 정기주주총회결과",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324801259",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 45,
+      "company_name": "한화비전"
+    },
+    {
+      "ticker": "005850",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[에스엘] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004087",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[에스엘] 기업가치제고계획(자율공시)",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327801560",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[에스엘] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326001059",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[에스엘] 정기주주총회결과",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326802061",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[에스엘] 사업보고서 (2025.12)",
+          "date": "2026-03-18",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318000781",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 46,
+      "company_name": "에스엘"
+    },
+    {
+      "ticker": "009150",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[삼성전기] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410800293",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[삼성전기] 결산실적공시예고(안내공시)",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410800291",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[삼성전기] 최대주주등소유주식변동신고서",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406800556",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[삼성전기] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-02",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260402001748",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[삼성전기] 최대주주등소유주식변동신고서",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326803048",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 47,
+      "company_name": "삼성전기"
+    },
+    {
+      "ticker": "066970",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[엘앤에프] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423800511",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[엘앤에프] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423000423",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[엘앤에프] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260416000456",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[엘앤에프] 풍문또는보도에대한해명",
+          "date": "2026-04-10",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260410800346",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[엘앤에프] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-07",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260407002968",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 48,
+      "company_name": "엘앤에프"
+    },
+    {
+      "ticker": "084370",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[유진테크] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000018",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[유진테크] [기재정정]현금ㆍ현물배당결정",
+          "date": "2026-04-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260415900402",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[유진테크] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403002993",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[유진테크] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004550",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[유진테크] 정기주주총회결과",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327903210",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 49,
+      "company_name": "유진테크"
+    },
+    {
+      "ticker": "010120",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[엘에스일렉트릭] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423000200",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[엘에스일렉트릭] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-21",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260421800196",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[엘에스일렉트릭] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-21",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260421800193",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[엘에스일렉트릭] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-21",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260421800175",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[엘에스일렉트릭] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-20",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420000136",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 50,
+      "company_name": "LS ELECTRIC"
+    },
+    {
+      "ticker": "000990",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[DB하이텍] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422000587",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[DB하이텍] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422000570",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[DB하이텍] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-09",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260409002205",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[DB하이텍] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004378",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[DB하이텍] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401003823",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 51,
+      "company_name": "DB하이텍"
+    },
+    {
+      "ticker": "450080",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[에코프로머티] [기재정정]최대주주등소유주식변동신고서",
+          "date": "2026-04-22",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260422800138",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[에코프로머티] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-08",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260408003151",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[에코프로머티] [기재정정]정기주주총회결과",
+          "date": "2026-04-07",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260407800901",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[에코프로머티] 결산실적공시예고(안내공시)",
+          "date": "2026-04-07",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260407800259",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[에코프로머티] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-07",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260407800257",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 52,
+      "company_name": "에코프로머티"
+    },
+    {
+      "ticker": "017670",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[SK텔레콤] 주요사항보고서(자기주식처분결정)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427000740",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[SK텔레콤] 현금ㆍ현물배당결정",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427801018",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[SK텔레콤] 현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427801013",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[SK텔레콤] 최대주주등소유주식변동신고서",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327800570",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[SK텔레콤] 자기주식처분결과보고서",
+          "date": "2026-03-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327000540",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 53,
+      "company_name": "SK텔레콤"
+    },
+    {
+      "ticker": "112610",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[씨에스윈드] 최대주주등소유주식변동신고서",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800883",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[씨에스윈드] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427000682",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[씨에스윈드] 결산실적공시예고(안내공시)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427800472",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[씨에스윈드] [기재정정]단일판매ㆍ공급계약체결(자율공시)",
+          "date": "2026-04-21",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260421800625",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[씨에스윈드] 최대주주등소유주식변동신고서",
+          "date": "2026-04-20",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420800651",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 54,
+      "company_name": "씨에스윈드"
+    },
+    {
+      "ticker": "440110",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[파두] 연결재무제표기준영업(잠정)실적(공정공시)",
+          "date": "2026-04-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260427900174",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[파두] [기재정정]임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260423000701",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[파두] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417000659",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[파두] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417000645",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[파두] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-17",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260417000633",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 55,
+      "company_name": "파두"
+    },
+    {
+      "ticker": "036830",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "삼성SDI(006400)가 28일 1분기 영업손실 규모를 전년 동기보다 대폭 줄였다는 소식에 장중 6% 강세다. 이차전지 소재·부품주도 동반 상승하고 있다. 한국거래소에 따르면 이날 오후 1시 26분 삼성SDI는 전일 대비 3만 9000원(6.14%) 오른 67만...",
+          "date": "2026-04-28 13:43",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0008916235",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "'2026 한경스타워즈 실전투자대회(상반기)'가 7주차에 들어서면서 선두 경쟁이 한층 치열해졌다. KB증권 금메달팀(둔촌역PB센터 범기원 과장·김진규 대리)과 나상하 메리츠증권 도곡WM센터 1지점 차장이 1위를 놓고 박빙 승부를 이어가고...",
+          "date": "2026-04-24 08:01",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005279081",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[솔브레인홀딩스] [기재정정]현금ㆍ현물배당결정",
+          "date": "2026-04-09",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260409900982",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[솔브레인홀딩스] 지주회사의자회사편입ㆍ탈퇴",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401900563",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[솔브레인홀딩스] 정기주주총회결과",
+          "date": "2026-03-26",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260326900825",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 56,
+      "company_name": "솔브레인홀딩스"
+    },
+    {
+      "ticker": "083450",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[GST] 주주총회소집공고",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000460",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[GST] 의결권대리행사권유참고서류",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000457",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[GST] [기재정정]주주총회소집결의",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428900419",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[GST] 주주명부폐쇄기간또는기준일설정",
+          "date": "2026-04-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260406901021",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[GST] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-03",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260403002419",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 57,
+      "company_name": "GST"
+    },
+    {
+      "ticker": "161890",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[한국콜마] 주식등의대량보유상황보고서(일반)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000759",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[한국콜마] 최대주주등소유주식변동신고서",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800777",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[한국콜마] 임원ㆍ주요주주특정증권등소유상황보고서",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000719",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[한국콜마] 기업설명회(IR)개최(안내공시)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800339",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[한국콜마] 결산실적공시예고(안내공시)",
+          "date": "2026-04-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428800320",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 58,
+      "company_name": "한국콜마"
+    },
+    {
+      "ticker": "319660",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[피에스케이] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-04-01",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260401004404",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[피에스케이] 대표이사변경",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330902143",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[피에스케이] 기업가치제고계획(자율공시)",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330901878",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[피에스케이] 정기주주총회결과",
+          "date": "2026-03-30",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330901873",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[피에스케이] 사업보고서 (2025.12)",
+          "date": "2026-03-23",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323000017",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 59,
+      "company_name": "피에스케이"
+    },
+    {
+      "ticker": "417200",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사가 해당 종목에 미치는 심리를 positive, negative, neutral 중 하나로 분류하고 confidence 0-100과 간단한 reasoning을 반환한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[LS머트리얼즈] 독립이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324000849",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "[LS머트리얼즈] 기업가치제고계획(자율공시)",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324901045",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "[LS머트리얼즈] 정기주주총회결과",
+          "date": "2026-03-24",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324901017",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "[LS머트리얼즈] 감사보고서제출",
+          "date": "2026-03-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316901288",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "[LS머트리얼즈] 의결권대리행사권유참고서류",
+          "date": "2026-02-27",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260227007570",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 60,
+      "company_name": "LS머트리얼즈"
+    }
+  ],
+  "no_news_tickers": [],
+  "classification_contract": {
+    "source": "active_skill_llm",
+    "analysis_date": "2026-04-28",
+    "results": [
+      {
+        "ticker": "string",
+        "classifications": [
+          {
+            "article_index": "integer",
+            "sentiment": "positive|negative|neutral",
+            "confidence": "number 0-100",
+            "reasoning": "string"
+          }
+        ]
+      }
+    ]
+  }
+}

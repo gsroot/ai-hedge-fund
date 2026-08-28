@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "status": "frozen_awaiting_future_prices_and_independent_gold_labels",
+  "frozen_on": "2026-08-27",
+  "analysis_date": "2026-08-27",
+  "inputs": {
+    "tasks": {
+      "path": "portfolios/krx_20260827/krx_news_tasks.json",
+      "sha256": "D477FFD7044B351CC1640BCB2F3267FFC8212DF7157BBCFA80FA475DD204FC2C"
+    },
+    "classifications": {
+      "path": "portfolios/krx_20260827/krx_news_classifications.json",
+      "sha256": "192FD24E5D56E61C788498EA408A281DFB7036B8B010C63F9073596B19BCA70C"
+    }
+  },
+  "event_study": {
+    "signal_cutoff": "article publication timestamp/date at or before analysis_date",
+    "entry": "next actual trading-day open after each article date",
+    "horizons_trading_days": [1, 5, 20],
+    "benchmark": "^KS11",
+    "deduplication": "confidence-weighted collapse by ticker and article date",
+    "neutral_abnormal_return_bands": {"1": 0.01, "5": 0.025, "20": 0.05},
+    "transaction_costs": "not applicable to single-event label direction; required for portfolio backtest"
+  },
+  "semantic_gold_set": {
+    "required": true,
+    "minimum_total": 90,
+    "sampling": "stratified with at least 30 predicted positive, 30 neutral, and 30 negative articles",
+    "reviewer": "independent human reviewer blinded to predicted label and future return",
+    "metrics": ["accuracy", "macro_f1", "per_class_precision", "per_class_recall", "confusion_matrix"]
+  },
+  "precommitted_pass_criteria": {
+    "semantic_macro_f1_min": 0.70,
+    "semantic_each_class_recall_min": 0.60,
+    "minimum_directional_events": 50,
+    "directional_hit_rate_wilson_95_lower_bound_min": 0.50,
+    "positive_mean_abnormal_return_gt_zero": true,
+    "negative_mean_abnormal_return_lt_zero": true,
+    "positive_minus_negative_mean_abnormal_return_gt_zero": true,
+    "must_beat_all_neutral_baseline": true,
+    "required_horizons": [5, 20]
+  },
+  "decision_rule": "accuracy_validated may become true only after both semantic gold-set criteria and frozen future event-study criteria pass without changing labels, thresholds, sample, or horizons"
+}

@@ -1,0 +1,246 @@
+{
+  "analysis_date": "2026-08-27",
+  "investor": "lynch",
+  "analyses": {
+    "257720": {
+      "signal": "bullish",
+      "confidence": 76,
+      "reasoning": "실리콘투는 P/E 17.36배에서 매출 61.4%, 이익 39.6% 성장, ROE 36.9%와 ROIC 27.2%를 기록해 성장 대비 가격이 매력적인 fast grower 후보다. 영업이익률 18.4%, 유동비율 4.55배도 좋지만 D/E 0.55배로 Lynch 선호 기준 0.3배를 넘고, 최근 5건 중 4건이 주가 5.5% 하락을 다룬 부정 뉴스이며 정식 PEG와 다년 EPS CAGR이 없어 확신은 제한했다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "214450": {
+      "signal": "bullish",
+      "confidence": 72,
+      "reasoning": "파마리서치는 매출 53.2%, 이익 89.2% 성장과 영업이익률 40.0%, ROIC 17.9%로 성장 스토리와 수익성이 강하다. P/E 30.83배와 P/B 7.27배는 절대적으로 높지만 성장률이 유지된다면 감당 가능한 범위다. 다만 D/E 0.44배이고 최근 뉴스는 약세·법적 분쟁 가능성을 언급했으며 정식 PEG와 다년 EPS 성장 자료가 없어 bullish 강도를 낮췄다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "462870": {
+      "signal": "bullish",
+      "confidence": 86,
+      "reasoning": "시프트업은 이해하기 쉬운 게임 IP 사업에서 매출 31.4%, 이익 29.4% 성장 중이고 P/E 10.68배, P/B 1.94배로 가격 부담이 낮다. 영업이익률 61.6%, 순이익률 65.0%, 유동비율 8.19배, D/E 0.18배는 수익성과 재무 건전성이 모두 우수하다. 핵심 IP의 일본 대형 유통사 협업과 글로벌 퍼블리싱 관계도 story stock 근거를 보강하지만 IP 집중 위험과 정식 PEG·다년 성장 자료 부재는 남는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "095610": {
+      "signal": "bullish",
+      "confidence": 68,
+      "reasoning": "테스는 매출 46.3%, 이익 33.4% 성장, 영업이익률 16.5%와 D/E 0.24배로 fast grower와 건전한 재무구조 조건을 충족한다. 반도체 후공정 수요와 목표주가 상향 뉴스도 사업 성장 스토리를 지지한다. 다만 P/E 34.26배와 P/B 5.37배는 높은 편이고 ROE 14.5%가 아주 강하지 않으며, 검색 뉴스 2건이 동음이의어로 무관하고 정식 PEG·다년 EPS CAGR이 없다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "052400": {
+      "signal": "bullish",
+      "confidence": 77,
+      "reasoning": "코나아이는 P/E 5.97배에서 매출 30.8% 성장, ROE 28.9%, ROIC 26.2%, 영업이익률 28.8%를 내는 전형적인 저평가 성장 후보로 보인다. 지역화폐 인프라에 스테이블코인·STO를 결합하려는 뉴스는 이해 가능한 기존 사업 위에 신규 성장축을 더하는 명확한 이야기다. 반면 D/E 1.17배와 유동비율 1.35배는 Lynch 선호 재무 기준에 크게 못 미치고 장기 모멘텀도 -29.1%라서 balance-sheet 위험을 감안했다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "171090": {
+      "signal": "neutral",
+      "confidence": 58,
+      "reasoning": "선익시스템은 P/E 7.95배, 매출 356.7%, 이익 443.9% 성장, ROE 67.1%와 수주잔고 6420억원이라는 강한 턴어라운드 단서를 갖고 있다. 그러나 이런 단년도 급증은 낮은 기저나 대형 수주 인식의 영향일 수 있고, D/E 1.54배와 유동비율 1.39배는 Lynch의 저부채 fast grower 기준에 정면으로 어긋난다. 장기 모멘텀도 -9.6%이며 다년 EPS 성장과 수주 매출화 지속성을 확인하지 못해 관망으로 판단했다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "039200": {
+      "signal": "neutral",
+      "confidence": 57,
+      "reasoning": "오스코텍은 글로벌 독점 라이선스와 375억원 계약금 수령 덕분에 매출 193.6%, 이익 3521.4% 성장과 높은 이익률이 나타났고 D/E 0.23배로 재무 부담도 낮다. 하지만 바이오 라이선스 수익은 반복성이 낮을 수 있고 P/B 7.37배, 자산회전율 0.43배이며 장기 모멘텀은 -18.1%다. 파이프라인별 성공확률과 반복 매출, 다년 EPS CAGR이 없어 Lynch식 지속 가능한 fast grower인지 판별하기 부족하다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "003230": {
+      "signal": "bullish",
+      "confidence": 79,
+      "reasoning": "삼양식품은 불닭이라는 이해하기 쉬운 글로벌 소비재 브랜드를 바탕으로 매출 36.1%, 이익 43.3% 성장, ROE 30.6%, 영업이익률 22.3%를 기록했다. P/E 23.05배는 싸다고 할 수 없지만 성장률과 브랜드의 해외 확장 뉴스가 가격을 정당화하며, 영국 외식 체인 협업과 글로벌 캠페인은 story stock의 질을 높인다. D/E 0.73배와 RSI 70.9의 과열, 정식 PEG·다년 EPS CAGR 부재 때문에 최고 확신은 주지 않았다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "062040": {
+      "signal": "bullish",
+      "confidence": 78,
+      "reasoning": "산일전기는 매출 50.3%, 이익 78.0% 성장, ROIC 23.6%, 영업이익률 35.6%에 D/E 0.16배로 성장성과 재무 건전성이 함께 좋다. 초고압 변압기 진출, 데이터센터 패키지 수주, 미국 전력장비 규제의 반사수혜라는 구체적 성장 이야기도 있다. 다만 P/E 32.88배와 P/B 8.95배, 단기 수익률 61.3% 및 RSI 67.2는 기대가 이미 많이 반영됐음을 뜻하고 정식 PEG·다년 EPS 추세는 없다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "101490": {
+      "signal": "bullish",
+      "confidence": 75,
+      "reasoning": "에스앤에스텍은 P/E 14.31배, P/B 2.64배에서 매출 38.5%, 이익 91.6% 성장하며 ROE 19.1%, 영업이익률 20.7%를 낸다. D/E 0.29배와 유동비율 3.55배는 Lynch의 건전성 기준에도 부합하고 차세대 CNT 펠리클 개발은 명확한 제품 성장 스토리다. 다만 장기 모멘텀 -34.2%와 뉴스의 주가 하락 보도, 정식 PEG·다년 EPS CAGR 부재로 성장 지속성 확인이 필요하다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "036830": {
+      "signal": "neutral",
+      "confidence": 52,
+      "reasoning": "솔브레인홀딩스는 P/E 1.83배와 P/B 0.50배, ROE 25.4%만 보면 강한 asset play처럼 보인다. 그러나 영업이익률 1.6%와 ROIC 0.3%에 비해 순이익률 89.0%, 이익 성장 796.2%가 지나치게 벌어져 지분법·일회성 이익 가능성을 배제할 수 없다. 단기 수익률 61.5%, RSI 71.5와 과열 뉴스까지 있어 영업 기반 성장의 지속성과 지주사 자산가치를 별도 검증하기 전에는 관망이 타당하다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "089970": {
+      "signal": "bullish",
+      "confidence": 66,
+      "reasoning": "브이엠은 매출 105.5% 성장, 영업이익률 17.1%, 유동비율 3.28배로 반도체 공정 투자 회복의 fast grower 후보이며 목표주가 상향과 차세대 공정 수혜 뉴스가 스토리를 뒷받침한다. P/E 23.35배는 성장률 대비 과도해 보이지 않지만 이익 성장 857.3%는 낮은 기저 영향이 클 수 있다. D/E 0.40배, 기관 순매도와 정식 PEG·다년 EPS CAGR 부재를 반영해 중간 수준의 bullish로 제한했다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "483650": {
+      "signal": "bullish",
+      "confidence": 68,
+      "reasoning": "달바글로벌은 매출 68.2%, 이익 413.0% 성장, ROE 39.8%, ROIC 39.2%와 자산회전율 2.04배로 브랜드 확장과 자본 효율이 매우 강하다. D/E 0.29배, 유동비율 4.46배도 Lynch 선호 기준에 부합한다. 다만 P/B 10.99배와 P/E 25.34배, 차익실현 및 주식매수선택권 추가상장 뉴스는 기대와 희석 위험을 보여 주며 상장 이력이 짧아 다년 EPS CAGR을 확인하지 못했다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "041830": {
+      "signal": "neutral",
+      "confidence": 56,
+      "reasoning": "인바디는 체성분 분석이라는 이해하기 쉬운 틈새 사업과 D/E 0.13배, 유동비율 6.48배의 튼튼한 재무구조를 갖췄고 비만 치료제 확산에 따른 모니터링 수요 증가라는 새 성장 이야기도 있다. 그러나 현재 매출 성장 14.4%에 이익은 8.3% 감소했고 ROE 9.4%, ROIC 8.7%로 Lynch식 fast grower에는 미달한다. P/E 20.81배도 현 성장률 대비 싸지 않아 실적 전망의 현실화 전까지 관망한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "058470": {
+      "signal": "bullish",
+      "confidence": 76,
+      "reasoning": "리노공업은 매출 33.9%, 이익 34.1% 성장, 영업이익률 47.5%, 순이익률 40.8%로 고품질 성장의 특징이 뚜렷하다. D/E 0.08배와 유동비율 9.72배는 매우 보수적인 재무구조이며 AI 데이터센터 수혜라는 성장 스토리도 확인된다. P/E 26.86배와 P/B 6.47배는 프리미엄이고 장기 모멘텀 -28.7%, 뉴스 방향 혼재, 정식 PEG·다년 EPS CAGR 부재가 감점 요인이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "425420": {
+      "signal": "neutral",
+      "confidence": 55,
+      "reasoning": "티에프이는 매출 51.8% 성장, 영업이익률 17.1%, D/E 0.32배로 반도체 테스트 소켓의 성장 국면에 올라탄 모습이다. 그러나 이익 성장 1146.7%는 낮은 기저 가능성이 크고 P/E 28.80배, 단기 수익률 87.9%, RSI 86.4는 Lynch가 경계할 기대 과열 구간이다. 차익실현과 기관 순매도 뉴스도 혼재하며 다년 EPS 성장 자료가 없어 현재 가격에서 추격할 근거가 부족하다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "000660": {
+      "signal": "bullish",
+      "confidence": 84,
+      "reasoning": "SK하이닉스는 P/E 7.78배에서 매출 46.8%, 이익 116.9% 성장, ROE 35.6%, ROIC 26.5%, 영업이익률 48.6%를 기록해 가격과 성장의 조합이 매우 강하다. 엔비디아 호실적과 AI 메모리 수요 장기화, 용인 클러스터 투자는 이해 가능한 HBM 성장 스토리를 지지한다. 다만 메모리는 전형적인 cyclical이고 D/E 0.46배, 장기 모멘텀 -25.9%이며 초대형 시가총액 때문에 10배주 잠재력은 제한적이라는 점을 반영했다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "006730": {
+      "signal": "neutral",
+      "confidence": 52,
+      "reasoning": "서부T&D는 P/E 7.18배, P/B 0.65배에 호텔 점유율 상승과 관광객 증가라는 자산주·회복주 이야기가 있고 매출도 37.2% 성장했다. 하지만 ROE 8.4%, ROIC 2.8%, 자산회전율 0.08배로 자본 효율이 낮고 유동비율 0.47배, D/E 1.35배는 재무 위험이 크다. 최대주주 주식담보 계약 정정 공시까지 있어 숨은 자산가치가 부채 위험을 충분히 상쇄하는지 확인 전에는 중립이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "071970": {
+      "signal": "bullish",
+      "confidence": 71,
+      "reasoning": "HD현대마린엔진은 P/E 9.30배에서 매출 27.4%, 이익 117.9% 성장, ROE 33.8%, 영업이익률 18.9%를 기록해 회복 국면의 cyclical로서 가격 매력이 있다. 그룹의 미국 빅테크 데이터센터용 발전 엔진 공급과 추가 수주 기대는 성장 스토리를 제공한다. 다만 D/E 0.67배이고 직접적인 회사 뉴스는 대부분 중립적이며, 조선·엔진 업황의 순환성과 다년 EPS 성장 부재 때문에 확신을 낮췄다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "032190": {
+      "signal": "neutral",
+      "confidence": 48,
+      "reasoning": "다우데이타는 P/E 3.03배, P/B 0.45배, 배당수익률 2.76%와 매출 48.7% 성장만 보면 저평가 asset play 후보다. 하지만 영업이익률 8.9%, 순이익률 6.6%, 유동비율 0.99배, D/E 9.85배로 재무구조가 Lynch 기준에서 크게 벗어난다. IT 컨설팅 고도화 뉴스는 긍정적이나 이상주문 의혹 뉴스가 있고, 금융 계열 연결효과를 분리할 세그먼트 자료와 정식 PEG가 없어 단순 저평가로 매수하기 어렵다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "192820": {
+      "signal": "neutral",
+      "confidence": 54,
+      "reasoning": "코스맥스는 K뷰티 ODM이라는 이해 가능한 성장 스토리, ROE 21.4%와 상반기 매출 20.2% 증가 뉴스가 강점이다. 반면 원시 연간 매출 성장률은 10.7%, 영업이익률 8.2%에 그치고 P/E 17.31배, D/E 2.47배와 유동비율 0.81배는 재무 안전성이 약하다. 단기 51.4%, 장기 65.6%, RSI 83.3의 과열까지 겹쳐 성장 확인 없이 추격하기보다 관망이 적절하다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "251970": {
+      "signal": "neutral",
+      "confidence": 57,
+      "reasoning": "펌텍코리아는 화장품 용기 시장의 높은 점유율과 2분기 매출 10.8%, 영업이익 11.4% 성장이라는 이해 가능한 stalwart 스토리를 갖고 있고 D/E 0.28배, 유동비율 2.65배로 건전하다. 그러나 P/E 20.19배에 매출 10.2%, 이익 10.1%, ROE 8.1%여서 성장 대비 가격이 비싸며 단순 비율상 P/E를 이익성장률로 나눈 값도 약 2.0이다. 장기 수익률 63.8%와 과열 뉴스까지 반영하면 좋은 회사와 좋은 매수가격은 구분해야 한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "278470": {
+      "signal": "bullish",
+      "confidence": 75,
+      "reasoning": "에이피알은 매출 111.3%, 이익 169.2% 성장, ROE 65.0%, ROIC 53.5%, 영업이익률 23.9%로 fast grower의 핵심 조건을 강하게 충족한다. 북미·유럽 수출 물류 확대와 상반기 매출 1.36조원 뉴스는 글로벌 브랜드 확장 스토리를 구체화한다. 다만 P/E 37.87배, P/B 25.22배와 RSI 74.8은 높은 기대를 반영했고 D/E 0.73배도 Lynch 선호보다 높아, 성장률 둔화 시 밸류에이션 압축 위험이 크다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "326030": {
+      "signal": "bullish",
+      "confidence": 67,
+      "reasoning": "SK바이오팜은 P/E 17.25배에서 매출 29.1%, ROE 30.7%, ROIC 17.6%, 영업이익률 28.9%를 내며 상업화 단계 바이오 기업으로서 수익성이 확인된다. 엑스코프리 허가와 차세대 뇌전증 파이프라인 도입은 명확한 story stock 근거다. 그러나 이익 성장 11.6% 기준 가격 여유는 크지 않고 D/E 0.45배, 1.1조원 규모 후보물질 도입 부담과 임상·허가 위험, 정식 PEG·다년 EPS CAGR 부재를 감안했다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "073240": {
+      "signal": "neutral",
+      "confidence": 51,
+      "reasoning": "금호타이어는 P/E 4.30배, P/B 0.85배, ROE 16.8%로 전형적인 저평가 cyclical 후보이고 외국인 순매수와 공장 이전 가능성 뉴스도 있다. 하지만 매출 성장 3.7%, 이익 성장 7.2%로 slow grower에 가깝고 D/E 1.47배, 유동비율 1.14배로 재무 여력이 약하다. 글로벌 순위 하락 뉴스와 타이어 업황의 순환성을 고려하면 싼 가격만으로 성장주 매수 신호를 내기 어렵다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "080220": {
+      "signal": "bullish",
+      "confidence": 70,
+      "reasoning": "제주반도체는 P/E 11.48배에서 매출 86.2%, 이익 103.5% 성장, ROE 17.4%를 기록해 성장 대비 가격이 낮다. 유동비율 2.83배와 D/E 0.48배도 과도하지 않고 AI 데이터센터·인프라 밸류체인 편입 뉴스가 수요 스토리를 지지한다. 다만 뉴스 2건은 제주 행정구역 기사로 무관하고 나머지도 ETF 편입 중심의 간접 근거이며 장기 모멘텀 -23.8%, 정식 PEG·다년 EPS CAGR 부재가 약점이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "213420": {
+      "signal": "bullish",
+      "confidence": 67,
+      "reasoning": "덕산네오룩스는 P/E 11.14배, P/B 1.61배에서 매출 62.2%, 이익 17.9% 성장하고 유동비율 3.63배를 유지해 성장 대비 가격이 합리적이다. 자사주 매입 여력과 FCF 기반 주주환원 후보라는 뉴스도 asset play 성격을 보강한다. 다만 ROE 11.5%, ROIC 7.8%는 질적으로 강하지 않고 D/E 0.52배, 장기 모멘텀 -10.6%이며 일부 뉴스가 OLED 소재 회사를 HBM 후공정 소재로 잘못 묘사해 근거 신뢰도를 낮췄다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "023590": {
+      "signal": "neutral",
+      "confidence": 48,
+      "reasoning": "다우기술은 P/E 2.30배, P/B 0.43배, 배당수익률 4.66%와 매출 50.5% 성장으로 매우 싼 asset play처럼 보이며 알림톡 AI의 고객 발송 효율 개선이라는 제품 뉴스도 긍정적이다. 그러나 영업이익률 8.9%, 순이익률 6.6%, 유동비율 0.98배, D/E 10.07배는 Lynch식 재무 안전성에서 크게 벗어난다. 금융 계열 연결효과와 지주 구조를 분리한 자료, 반복 가능한 EPS 성장과 정식 PEG가 없어 낮은 배수만으로 bullish 판단을 내리지 않았다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "241710": {
+      "signal": "bearish",
+      "confidence": 66,
+      "reasoning": "코스메카코리아는 K뷰티 ODM 3사의 상반기 합산 매출 25% 성장과 외국인 매수라는 산업 스토리는 좋지만, 회사 원시 지표상 매출은 22.2% 성장하는 동안 이익 성장률은 7.7%에 그쳤다. P/E 32.22배, P/B 5.76배, D/E 0.88배는 그 성장률 대비 비싸고 단순 P/E 대 이익성장 비율도 약 4.17이다. 단기 71.8%, 장기 96.0%, RSI 86.3과 월간 주가 76% 상승 뉴스는 기대 과열과 조정 위험을 강하게 시사한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "119850": {
+      "signal": "bearish",
+      "confidence": 69,
+      "reasoning": "지엔씨에너지는 데이터센터 전력 수요라는 이해 가능한 성장 스토리와 ROIC 16.0%, 영업이익률 18.8%를 갖고 있다. 그러나 P/E 19.05배에 매출 성장 16.0%, 이익 성장 3.0%로 성장 대비 가격이 높고 D/E 0.67배도 Lynch 선호 기준을 넘는다. 장기 수익률 139.3%, 단기 69.7%로 이미 크게 오른 가운데 뉴스도 업종 내 약세와 기관 순매수가 혼재해, 정식 PEG와 다년 EPS 성장 확인 전에는 하방 위험이 더 크다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-08-27",
+      "analysis_source": "independent_investor_analysis"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "analysis_date": "2026-08-27",
+  "weights": {
+    "462870": 0.15,
+    "003230": 0.103,
+    "257720": 0.092,
+    "101490": 0.081,
+    "214450": 0.079,
+    "000660": 0.077,
+    "326030": 0.077,
+    "278470": 0.07,
+    "483650": 0.063,
+    "058470": 0.061,
+    "062040": 0.053,
+    "071970": 0.053
+  },
+  "cash_weight": 0.041,
+  "methodology": "predict_consensus_risk_adjusted_caps_dynamic_market_cash",
+  "market_regime": {
+    "formula_version": "market-regime-cash-v1",
+    "benchmark": "^KS11",
+    "as_of_date": "2026-08-26",
+    "data_quality": "complete",
+    "observations": 267,
+    "regime": "fear_recovery",
+    "target_cash_weight": 0.0356,
+    "target_equity_weight": 0.9644,
+    "scores": {
+      "overheat": 0.281258,
+      "fear": 0.595514,
+      "outlook": 0.953509
+    },
+    "components": {
+      "overheat": {
+        "distance_above_200d": 0.603422,
+        "rsi": 0.0,
+        "six_month_momentum": 0.240352
+      },
+      "fear": {
+        "drawdown": 0.786543,
+        "rsi": 0.0,
+        "realized_volatility": 1.0
+      },
+      "outlook": {
+        "price_vs_200d": 1.0,
+        "50d_vs_200d": 1.0,
+        "six_month_momentum": 0.860528
+      }
+    },
+    "metrics": {
+      "close": 6808.2099609375,
+      "sma_50": 7237.21783203125,
+      "sma_200": 5969.425971679688,
+      "distance_to_sma_200": 0.1405133413559685,
+      "sma_50_to_sma_200": 0.2123808664964193,
+      "momentum_126": 0.17210554352943874,
+      "rsi_14": 54.49678034969589,
+      "drawdown_from_252d_peak": -0.2530393593947864,
+      "realized_volatility_20": 0.8363171391847557
+    },
+    "rationale": [
+      "낙폭·과매도·실현변동성의 공포 점수가 현금 확대 폭을 상쇄",
+      "200일 추세·50/200일 추세·6개월 모멘텀이 긍정적이라 현금 축소"
+    ]
+  },
+  "constraints": {
+    "max_name": 0.15,
+    "max_sector": 0.35,
+    "min_name": 0.02,
+    "market_cash_target": 0.0356
+  }
+}
