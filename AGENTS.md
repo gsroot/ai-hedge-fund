@@ -17,10 +17,10 @@
 ## Agent OS 제어면
 
 - 중요한 분석·파이프라인 변경은 먼저 `.agent-os/manifest.json`을 읽는다. 현재 목표·생명주기·다음 게이트의 기준 문서는 이 매니페스트다.
-- 변경 의도와 수용 기준은 OpenSpec, 여러 세션의 실행 의존성은 Beads를 기준으로 관리한다. OpenSpec change를 아카이브하기 전 `verify`를 수행한다.
-- 장기 작업은 `bd prime`, `bd ready`, `bd show <id>`로 복구하고, 수행 전 claim, 완료 후 close한다. 동일한 실행 상태를 다른 체크리스트에 중복 기록하지 않는다.
+- 변경 의도·수용 기준·여러 세션의 실행 순서는 OpenSpec change의 산출물과 `tasks`를 기준으로 관리한다. OpenSpec change를 아카이브하기 전 `verify`를 수행하고 동일한 실행 상태를 다른 체크리스트에 중복 기록하지 않는다.
+- 장기 작업은 매니페스트의 `work_id`, `active_change`, `next_gate`와 OpenSpec tasks, Git 근거로 복구한다. 별도 작업 그래프는 독립된 근거와 명시적 승인 없이 도입하지 않는다.
 - 구현, 로컬 재현, 외부 provider 검증, 보고서 생성, 공개 공유를 별도 상태와 증거로 보고한다.
-- 현재 장기 결과의 식별자는 `.agent-os/manifest.json`의 `workflow.work_id`다. Beads 루트의 external reference와 OpenSpec change를 이 ID에 연결하고, 시작·인계·완료 전 `py -3 C:\Users\gsr27\.codex\agent-os\scripts\doctor.py --repo .`의 경고를 확인한다.
+- 현재 장기 결과의 식별자는 `.agent-os/manifest.json`의 `workflow.work_id`다. 승인된 OpenSpec change와 Git 근거를 이 ID에 연결하고, 외부 게이트 때문에 제안 전이면 `active_change`를 비우고 `next_gate`에 진입 조건을 기록한다. 시작·인계·완료 전 `py -3 C:\Users\gsr27\.codex\agent-os\scripts\doctor.py --repo .`의 경고를 확인한다.
 
 ## 구현·검증
 
