@@ -16,7 +16,7 @@
   "workflow": {
     "work_id": "point-in-time-evidence-gates",
     "specification_system": "openspec",
-    "spec_status": "applying",
+    "spec_status": "applied",
     "active_change": "point-in-time-evidence-gates",
     "task_system": "beads",
     "beads_root": "ai-hedge-fund-yv5",
