@@ -1,0 +1,17 @@
+{
+  "status": "passed_numerical_and_artifact_checks",
+  "forecast_accuracy_validated": false,
+  "original_portfolio_unchanged": true,
+  "common_daily_returns": 318,
+  "point_forecast_is_null": true,
+  "outperformance_probability_is_null": true,
+  "sha256": {
+    "aligned_daily_returns.csv": "4637c8e23b80638d03825d5397c7b9588dc502f87f90fd0f1972d2ebcad9ac6a",
+    "assessment.json": "ad7ad2122c84480a878767f2c65fe2ef2f6e9e6263afcea748a6da1396e59fb6",
+    "assess_gap.py": "ba92521230dc791e00f90ea768136eddead7b8131d94bf40812014165a4c92cd",
+    "price_inputs.json": "a362cb178976f2619a612348352ba5b4dd8ab684c293fbdbb14527becf6b55de",
+    "README.md": "4419481efa2ae1de5dc9b0a3df7f2e474cd3bdf30075bc49c316e31fc2f7b9a4",
+    "research_protocol.json": "a21041010268d21e6adf98ff6041b1e8c6373ed096dc7f1494d28c1ce504dc26",
+    "run.log": "ea60b4b1d7118eaed53b36f6f1ec56eeaa1e6edc81f86ee43b6de014f17565ab"
+  }
+}

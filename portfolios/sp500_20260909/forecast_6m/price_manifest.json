@@ -1,0 +1,45 @@
+{
+  "observed_at_utc": "2026-09-09T11:24:15.355402+00:00",
+  "source": "Yahoo Finance via yfinance",
+  "start": "2021-09-08",
+  "end_exclusive": "2026-09-09",
+  "price_semantics": "Adj Close, current split/dividend revisions; total-return proxy, no historical provider vintages",
+  "use": "risk estimation for already-selected holdings only; no historical selection alpha claim",
+  "tickers": {
+    "ADBE": {
+      "source": "https://finance.yahoo.com/quote/ADBE/history/",
+      "rows": 1255,
+      "first": "2021-09-08",
+      "last": "2026-09-08",
+      "sha256": "0729e62d0164f1abad07fd26ce5462859f10df77c11fef6b877811f1b566b8c1"
+    },
+    "INCY": {
+      "source": "https://finance.yahoo.com/quote/INCY/history/",
+      "rows": 1255,
+      "first": "2021-09-08",
+      "last": "2026-09-08",
+      "sha256": "ff328d24195943e2b3feb778161aecb7a8b3080a9b149bde6dac9bcf72bddd98"
+    },
+    "NVDA": {
+      "source": "https://finance.yahoo.com/quote/NVDA/history/",
+      "rows": 1255,
+      "first": "2021-09-08",
+      "last": "2026-09-08",
+      "sha256": "2fdfffd66338530788942964a567337647179faac1d8abf59e1ffc29c483c33c"
+    },
+    "GDDY": {
+      "source": "https://finance.yahoo.com/quote/GDDY/history/",
+      "rows": 1255,
+      "first": "2021-09-08",
+      "last": "2026-09-08",
+      "sha256": "913165f419230d6cb27aee48949b684a24ac9767ba0dbd03364f326aa3b7a83d"
+    },
+    "SPY": {
+      "source": "https://finance.yahoo.com/quote/SPY/history/",
+      "rows": 1255,
+      "first": "2021-09-08",
+      "last": "2026-09-08",
+      "sha256": "ee7bb9a065af5d9a89231bf57ec37817e46f875537d4a6239b3096ed026214d7"
+    }
+  }
+}

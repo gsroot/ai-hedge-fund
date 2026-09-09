@@ -1,0 +1,46 @@
+{
+  "analysis_date": "2026-09-09",
+  "horizon_end": "2027-03-09",
+  "horizon_trading_days_approx": 126,
+  "benchmark": "^KS11",
+  "purpose": "Conditional return-gap and risk assessment of existing weights; not selection-strategy validation",
+  "fixed_weights_source": "../portfolio.json",
+  "equity_alpha_status": "unvalidated; do not extrapolate historical intercept or predict score into returns",
+  "comparison": "KOSPI price index; dividends, trading costs, tax and cash yield require separate assumptions",
+  "data_request_start": "2020-01-01",
+  "price_cutoff": "2026-09-09",
+  "risk_windows_trading_days": [
+    63,
+    126,
+    252,
+    "all_common"
+  ],
+  "methods": [
+    "Current holdings daily-return exposure and covariance only",
+    "Common-day price alignment without forward-fill",
+    "Moving-block bootstrap for sensitivity of risk parameters, not validated future intervals",
+    "Exact buy-and-hold cash-drag and required-stock-outperformance scenarios"
+  ],
+  "cash_annual_sensitivity": [
+    0,
+    0.03
+  ],
+  "kospi_six_month_scenarios": [
+    -0.2,
+    -0.1,
+    0,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "bootstrap_seed": 20260909,
+  "bootstrap_samples": 2000,
+  "block_length": 20,
+  "no_independent_holdout_claim": true,
+  "limitations": [
+    "Latest 266-day diagnostics already observed before this protocol; this is exploratory analysis",
+    "Current selected holdings are conditioned on selection date; historical returns cannot validate stock-selection alpha",
+    "Cash policy rate is not an available or guaranteed deposit yield",
+    "Risk scaling and bootstrap do not validate return-forecast accuracy"
+  ]
+}

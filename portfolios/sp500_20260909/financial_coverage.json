@@ -1,0 +1,11 @@
+{
+  "tickers": 503,
+  "missing_field_counts": {
+    "price_to_earnings_ratio": 0,
+    "return_on_equity": 34,
+    "revenue_growth": 1,
+    "free_cash_flow": 33,
+    "sector": 1
+  },
+  "not_imputed_to_zero": true
+}

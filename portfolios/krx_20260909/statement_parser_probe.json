@@ -1,0 +1,130 @@
+{
+  "periods": {
+    "2025": {
+      "revenue": 333605938000000.0,
+      "operating_income": 43601051000000.0,
+      "net_income": 45206805000000.0,
+      "assets": 566942110000000.0,
+      "liabilities": 130621773000000.0,
+      "equity": 436320337000000.0,
+      "cash": 57856378000000.0,
+      "operating_cash_flow": 85315148000000.0,
+      "ppe_acquisitions": 47522179000000.0,
+      "intangible_acquisitions": 4630970000000.0,
+      "rd_expense": null,
+      "operating_margin": 0.1306962677624761,
+      "cfo_minus_ppe": 37792969000000.0,
+      "fcf_after_ppe_and_intangibles": 33161999000000.0
+    },
+    "2024": {
+      "revenue": 300870903000000.0,
+      "operating_income": 32725961000000.0,
+      "net_income": 34451351000000.0,
+      "assets": 514531948000000.0,
+      "liabilities": 112339878000000.0,
+      "equity": 402192070000000.0,
+      "cash": 53705579000000.0,
+      "operating_cash_flow": 72982621000000.0,
+      "ppe_acquisitions": 51406355000000.0,
+      "intangible_acquisitions": 2335284000000.0,
+      "rd_expense": null,
+      "operating_margin": 0.10877077402197313,
+      "cfo_minus_ppe": 21576266000000.0,
+      "fcf_after_ppe_and_intangibles": 19240982000000.0
+    },
+    "2023": {
+      "revenue": 258935494000000.0,
+      "operating_income": 6566976000000.0,
+      "net_income": 15487100000000.0,
+      "assets": 455905980000000.0,
+      "liabilities": 92228115000000.0,
+      "equity": 363677865000000.0,
+      "cash": 69080893000000.0,
+      "operating_cash_flow": 44137427000000.0,
+      "ppe_acquisitions": 57611292000000.0,
+      "intangible_acquisitions": 2922875000000.0,
+      "rd_expense": null,
+      "operating_margin": 0.02536143615753196,
+      "cfo_minus_ppe": -13473865000000.0,
+      "fcf_after_ppe_and_intangibles": -16396740000000.0
+    }
+  },
+  "matched_accounts": {
+    "revenue": [
+      {
+        "account_id": "ifrs-full_Revenue",
+        "account_nm": "매출액",
+        "sj_div": "IS"
+      }
+    ],
+    "operating_income": [
+      {
+        "account_id": "dart_OperatingIncomeLoss",
+        "account_nm": "영업이익",
+        "sj_div": "IS"
+      }
+    ],
+    "net_income": [
+      {
+        "account_id": "ifrs-full_ProfitLoss",
+        "account_nm": "당기순이익",
+        "sj_div": "IS"
+      },
+      {
+        "account_id": "ifrs-full_ProfitLoss",
+        "account_nm": "당기순이익",
+        "sj_div": "CIS"
+      }
+    ],
+    "assets": [
+      {
+        "account_id": "ifrs-full_Assets",
+        "account_nm": "자산총계",
+        "sj_div": "BS"
+      }
+    ],
+    "liabilities": [
+      {
+        "account_id": "ifrs-full_Liabilities",
+        "account_nm": "부채총계",
+        "sj_div": "BS"
+      }
+    ],
+    "equity": [
+      {
+        "account_id": "ifrs-full_Equity",
+        "account_nm": "자본총계",
+        "sj_div": "BS"
+      }
+    ],
+    "cash": [
+      {
+        "account_id": "ifrs-full_CashAndCashEquivalents",
+        "account_nm": "현금및현금성자산",
+        "sj_div": "BS"
+      }
+    ],
+    "operating_cash_flow": [
+      {
+        "account_id": "ifrs-full_CashFlowsFromUsedInOperatingActivities",
+        "account_nm": "영업활동현금흐름",
+        "sj_div": "CF"
+      }
+    ],
+    "ppe_acquisitions": [
+      {
+        "account_id": "ifrs-full_PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities",
+        "account_nm": "유형자산의 취득",
+        "sj_div": "CF"
+      }
+    ],
+    "intangible_acquisitions": [
+      {
+        "account_id": "ifrs-full_PurchaseOfIntangibleAssetsClassifiedAsInvestingActivities",
+        "account_nm": "무형자산의 취득",
+        "sj_div": "CF"
+      }
+    ],
+    "rd_expense": []
+  }
+}

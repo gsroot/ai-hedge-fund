@@ -1,0 +1,246 @@
+{
+  "analysis_date": "2026-09-09",
+  "investor": "fisher",
+  "analyses": {
+    "000500": {
+      "signal": "bearish",
+      "confidence": 74,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 30.3%, 2026H1 매출은 전년 동기 대비 27.3% 증가했고 영업마진도 3.52%에서 3.92%로 개선됐다. 그러나 반기 CFO가 -1,743억원이고 유·무형자산 취득 후 현금은 -1,975억원으로 성장의 현금전환이 약하다. 네이버 현재 PER 122.97배는 낮은 마진과 회수 불확실성에 비해 부담이 크다. R&D 규모·고객 유지력·경영진 실사는 미확인이며, 가격과 재무기간이 달라 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "000660": {
+      "signal": "bullish",
+      "confidence": 64,
+      "reasoning": "DART상 2025년 매출은 46.8% 증가하고 영업마진은 35.45%에서 48.59%로 확대됐다. 2026H1도 매출 230.8% 증가, 마진 74.42%로 성장성이 강하며 CFO 91.74조원에서 유·무형 취득을 차감해도 72.75조원이 남는다. 다만 2023년 영업적자와 대비되는 급증을 장기 정상수익으로 외삽하지 않는다. 네이버 현재 PER 8.27배와 DART 기간은 달라 PEG를 미산출하며, R&D 효율·고객 집중도·경영진 실사도 미확인이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "001450": {
+      "signal": "neutral",
+      "confidence": 55,
+      "reasoning": "DART 원문 보험수익은 2025년 14.14조원으로 3.1%, 2026H1에는 7.19조원으로 3.6% 증가해 고성장 근거는 약하다. 보험손익/보험수익은 2025년 5.72%로 전년 10.46%보다 낮았지만 반기는 8.59%에서 12.53%로 회복돼 추세가 혼재한다. 네이버 현재 PER 3.70배는 낮아도 지속적 재투자 수익성을 확정하기 어렵다. 보험 CFO는 일반기업 FCF로 해석하지 않으며 CSM·지급여력·고객 및 경영진 실사는 미확인이다. 재무기간 차이로 PEG도 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "003230": {
+      "signal": "bullish",
+      "confidence": 72,
+      "reasoning": "DART상 2023~25년 매출 CAGR 40.4%와 영업마진 12.37%에서 22.29%로의 확대가 성장 품질을 지지한다. 2025년 유형자산 취득 4,490억원으로 유·무형 취득 후 현금은 -1,521억원이었지만, 2026H1 매출 37.2% 증가와 마진 23.80%에 동반해 해당 현금이 1,628억원으로 회복됐다. 재투자를 감당하는 현금창출은 긍정적이다. 네이버 현재 PER 19.54배와 DART 기간이 달라 PEG는 미산출하며, R&D·고객 재구매·경영진 실사는 미확인이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "005830": {
+      "signal": "neutral",
+      "confidence": 56,
+      "reasoning": "DART 원문 보험수익은 2025년 16.43조원으로 4.7% 증가했지만 보험손익은 1.15조원으로 33.4% 줄었다. 2026H1에는 보험수익 4.7%, 보험손익 15.9% 증가로 개선됐으나 보험손익/보험수익 9.82%만으로 장기 성장 전환을 확정하기 어렵다. 네이버 현재 PER 7.06배의 가격 부담은 제한적이다. 보험자산 운용이 섞인 CFO를 제조업 FCF로 보지 않으며 CSM·지급여력·재투자 수익성과 경영진 실사는 미확인이다. DART와 평가기간 차이로 PEG는 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "007660": {
+      "signal": "neutral",
+      "confidence": 62,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 26.9%, 영업마진은 9.21%에서 18.82%로 개선됐다. 2026H1 매출 45.8% 증가와 마진 20.03%도 우호적이지만 CFO는 -496억원, 유·무형 취득 후 현금은 -1,287억원으로 생산투자와 성장의 현금회수가 균형을 이루지 못했다. 네이버 현재 PER 41.02배에는 지속적 고성장 기대가 필요해 판단을 유보한다. R&D 효율·고객 집중도·경영진 실사는 미확인이며 DART와 가격의 기간 차이로 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "008930": {
+      "signal": "neutral",
+      "confidence": 57,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 4.3%로 낮지만 2026H1 매출 7.6% 증가와 영업마진 9.20%에서 12.85%로의 개선은 긍정적이다. 반기 순이익 860억원에 CFO는 184억원에 그쳐 현금전환이 약하고, 원문에는 건물·건설중자산 취득만 약 55억원이 확인돼 재투자 부담도 존재한다. 네이버 현재 PER 25.37배를 뒷받침할 지속 성장 근거는 아직 제한적이다. R&D 효율과 경영진·고객 실사는 미확인이며 평가기간이 달라 PEG를 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "031980": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART상 2023~25년 매출 CAGR 48.1%와 달리 2025년 매출은 3.6% 감소하고 영업마진도 41.06%에서 35.33%로 낮아져 성장의 연속성은 불분명하다. 2026H1 매출 14.4% 증가와 마진 30.50%는 전년 동기보다 개선됐지만 CFO는 460억원에서 274억원으로 줄었다. 유형자산 취득은 13억원이며 무형자산 누락을 0으로 보지 않는다. 네이버 현재 PER 31.87배는 부담이다. R&D·고객·경영진 실사와 동일기간 PEG 검증은 미완료다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "035900": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART상 2023~25년 매출 CAGR 20.4%에도 영업마진은 29.91%에서 18.89%로 내려 성장의 수익성이 약해졌다. 2026H1 매출 증가도 3.5%에 그치고 마진은 전년 동기 20.34%에서 17.44%로 하락했다. 반기 유·무형 취득 후 현금 263억원은 양수지만 순이익 536억원보다 작다. 네이버 현재 PER 12.71배의 완충과 성장 둔화가 맞서 판단을 유보한다. R&D에 대응하는 콘텐츠 재투자 효과·고객 지속성·경영진 실사는 미확인이며 기간 차이로 PEG를 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "036830": {
+      "signal": "bearish",
+      "confidence": 66,
+      "reasoning": "DART상 2023~25년 매출 및 지분법손익 CAGR은 -2.4%이며 영업마진도 11.90%에서 1.59%로 악화됐다. 2025년 순이익 4,956억원에는 중단영업이익 4,452억원이 포함돼 반복 성장으로 볼 수 없다. 2026H1 매출 및 지분법손익은 39.8% 증가했지만 CFO -1,275억원과 유형자산 취득 595억원이 현금 부담을 보여준다. 네이버 현재 PER 1.56배만으로 저평가를 확정하지 않는다. R&D·재투자 효율·경영진 실사는 미확인이며 기간 차이로 PEG도 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "039200": {
+      "signal": "neutral",
+      "confidence": 59,
+      "reasoning": "DART상 2025년 매출은 193.6% 늘고 영업흑자로 전환했으며, 원문 연구개발비 276억원은 매출의 27.7%로 투입 규모가 확인된다. 2026H1 매출도 371.0% 증가하고 마진 50.95%, CFO 978억원을 기록했지만 2025년 CFO는 순이익 544억원 대비 83억원에 그쳐 현금회수 시점 변동이 크다. R&D 지출이 반복 매출과 개발 성공으로 이어지는지는 미확인이다. 네이버 현재 PER 14.15배와 DART 기간이 달라 PEG를 미산출하며 고객·경영진 실사도 없다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "041510": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 10.6%이고 2025년 영업마진은 8.82%에서 15.58%로 회복됐다. 2026H1 매출도 17.7% 늘었지만 마진은 전년 동기 15.01%에서 14.55%로 소폭 낮아졌다. 반기 CFO 436억원에서 유·무형 취득을 뺀 현금은 275억원으로 재투자는 감당하지만 고성장과 마진 확대가 동시에 지속된다고 보기는 이르다. 네이버 현재 PER 13.95배와 DART 기간은 다르다. 콘텐츠 재투자 효과·고객·경영진 실사는 미확인이며 PEG는 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "053610": {
+      "signal": "neutral",
+      "confidence": 61,
+      "reasoning": "DART상 2023~25년 매출 CAGR 21.5%, 2026H1 매출 증가율 47.3%와 영업마진 13.44%에서 27.57%로의 확대는 긍정적이다. 그러나 2025년 유형자산 취득 359억원으로 유·무형 취득 후 현금이 -68억원이었고, 2026H1에도 CFO -52억원과 해당 현금 -117억원이 이어졌다. 네이버 현재 PER 7.43배가 낮아도 성장의 현금회수를 확인해야 한다. R&D 효율·수주 반복성·경영진 실사는 미확인이며 DART와 가격의 기간 차이로 PEG를 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "062040": {
+      "signal": "bullish",
+      "confidence": 66,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 53.0%이며 영업마진은 21.72%에서 35.59%로 높아졌다. 2026H1에도 매출 38.5% 증가, 마진 37.37%로 성장과 수익성이 유지됐고 CFO 901억원에서 유·무형 취득을 차감한 현금 805억원은 재투자를 감당한다. 다만 네이버 현재 PER 35.62배와 PBR 9.70배는 지속 성장에 대한 기대가 높다. R&D 효율·수주 지속성·고객 및 경영진 실사는 미확인이며 DART와 평가기간이 달라 PEG는 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "078930": {
+      "signal": "neutral",
+      "confidence": 57,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 -1.4%이고 영업마진도 14.44%에서 11.66%로 낮아져 장기 성장주 근거가 약하다. 2026H1 매출 17.2% 증가와 마진 20.88% 회복, 유·무형 취득 후 현금 8,193억원은 긍정적이지만 반기 회복을 구조적 성장으로 외삽하지 않는다. 네이버 현재 PER 4.95배는 가격 부담을 낮춘다. 유형자산 취득 7,365억원의 장기 수익률·R&D 효과·경영진 실사는 미확인이고 DART와 평가기간 차이로 PEG는 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "083650": {
+      "signal": "bullish",
+      "confidence": 64,
+      "reasoning": "DART상 2023~25년 매출 CAGR 45.2%와 영업마진 4.11%에서 9.75%로의 확대가 확인된다. 2026H1 매출도 89.5% 증가하고 마진이 전년 동기 10.78%에서 14.00%로 개선됐으며, CFO 672억원에서 유·무형 취득 후 541억원이 남아 재투자와 현금창출이 함께 나타난다. 다만 네이버 현재 PER 39.66배는 성장 지속 요구가 크다. R&D 효율·수주 잔고의 질·고객 및 경영진 실사는 미확인이고 기간 차이로 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "095340": {
+      "signal": "neutral",
+      "confidence": 63,
+      "reasoning": "DART상 2023~25년 매출 CAGR 25.3%와 영업마진 7.66%에서 27.27%로의 확대는 우수하다. 2026H1 매출 69.4% 증가, 마진 31.82%와 CFO 388억원도 긍정적이며 유·무형 취득 후 현금 303억원이 재투자 여력을 보여준다. 다만 네이버 현재 PER 52.09배에는 상당한 장기 성장 기대가 포함돼 좋은 실적만으로 가격 매력을 확정하기 어렵다. R&D 효율·고객 지속성·경영진 실사는 미확인이며 DART와 가격의 기간 차이로 PEG를 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "096770": {
+      "signal": "neutral",
+      "confidence": 56,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 2.3%, 2025년 영업마진은 0.56%였으며 유·무형 취득 후 현금은 3년 연속 음수였다. 2026H1에는 매출 31.5% 증가, 마진 10.57%와 해당 현금 4,744억원으로 회복돼 변화는 긍정적이나 지속성 검증은 필요하다. 반기 유형자산 취득도 1.81조원으로 자본 요구가 크다. 네이버 현재 PER는 결측, PBR는 1.00배이며 이를 성장 저평가로 단정하지 않는다. R&D·투자 회수율·경영진 실사와 동일기간 PEG는 미확인이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "101490": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART상 2023~25년 매출 CAGR 27.3%와 영업마진 16.66%에서 20.67%로의 개선은 긍정적이다. 그러나 2026H1 매출 증가율은 8.0%로 둔화되고 마진은 전년 동기 21.23%에서 19.49%로 낮아졌다. 유형자산 취득 307억원이 CFO 229억원을 넘어 유·무형 취득 후 현금은 -79억원이며 2025년에도 -176억원이었다. 네이버 현재 PER 13.80배와 투자 회수 불확실성이 맞선다. R&D·고객·경영진 실사는 미확인이고 기간 차이로 PEG는 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "124500": {
+      "signal": "neutral",
+      "confidence": 61,
+      "reasoning": "DART상 2023~25년 매출 CAGR 77.5%, 2026H1 매출 증가율 92.2%는 높지만 마진은 전년 동기 1.91%에서 1.93%로 거의 제자리다. 2025년 CFO 2,382억원과 달리 2026H1에는 -1,883억원이며 유·무형 취득 후 현금도 -1,916억원으로 회계상 성장과 현금회수가 분리된다. 네이버 현재 PER 10.52배만으로 충분한 성장 품질을 인정하기 어렵다. R&D·매출 구성과 반복성·경영진 실사는 미확인이고 DART와 가격의 기간 차이로 PEG를 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "128940": {
+      "signal": "neutral",
+      "confidence": 63,
+      "reasoning": "DART 원문 경상개발비는 2025년 1,958억원, 2026H1 1,092억원으로 각각 매출의 12.65%, 12.70%여서 지속 투입이 확인된다. 반기 매출은 14.4% 늘고 마진은 15.88%에서 21.48%로 확대됐으며 유·무형 취득 후 현금 1,695억원도 긍정적이다. 다만 2023~25년 매출 CAGR은 1.9%로 낮아 개발 지출의 지속적 성장 전환은 아직 불확실하다. 네이버 현재 PER 29.19배는 부담이며 개발 성공·경영진 실사는 미확인이다. 기간 차이로 PEG를 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "214150": {
+      "signal": "neutral",
+      "confidence": 63,
+      "reasoning": "DART상 2023~25년 매출 CAGR 36.7%와 약 50%의 영업마진은 강점이다. 그러나 2026H1 매출이 20.1% 늘어도 마진은 전년 동기 50.99%에서 42.11%로 낮아졌고 CFO는 533억원에서 155억원으로 줄었다. 유·무형 취득 후 현금도 80억원에 그쳐 성장의 현금전환과 마진 회복을 더 확인해야 한다. 네이버 현재 PER 14.97배가 완충하지만 R&D 효율·고객 유지·경영진 실사는 미확인이다. DART와 가격의 기간 차이로 PEG를 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "214450": {
+      "signal": "bullish",
+      "confidence": 66,
+      "reasoning": "DART상 2023~25년 매출 CAGR 43.3%와 영업마진 35.35%에서 39.98%로의 확대는 성장 품질을 지지한다. 2026H1도 매출 26.1% 증가와 마진 38.10%를 유지하고 유·무형 취득 후 현금 423억원을 창출했다. 다만 반기 CFO 643억원은 순이익 1,050억원보다 적고 마진도 전년 동기 39.07%보다 낮아 추적이 필요하다. 네이버 현재 PER 22.80배와 DART 기간은 달라 PEG를 미산출하며 R&D 효율·고객 및 경영진 실사는 미확인이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "257720": {
+      "signal": "neutral",
+      "confidence": 62,
+      "reasoning": "DART상 2023~25년 매출 CAGR 80.4%, 2026H1 매출 증가율 46.6%와 마진 19.69%는 성장성을 보여준다. 그러나 2025년 순이익 1,686억원에 CFO는 11억원, 2026H1 순이익 1,267억원에 CFO는 135억원에 그친다. 반기 유·무형 취득 후 현금도 -230억원으로 외형 성장의 현금전환이 취약하다. 네이버 현재 PER 13.24배가 낮아도 회수 구조 확인이 우선이다. R&D·반복 고객·경영진 실사는 미확인이며 기간 차이로 PEG를 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "326030": {
+      "signal": "bullish",
+      "confidence": 66,
+      "reasoning": "DART상 2023~25년 매출 CAGR 41.1%와 영업적자에서 2025년 마진 28.86%로의 전환은 긍정적이다. 2026H1에도 매출 48.2% 증가와 마진 39.31%로 개선됐고 유·무형 취득 후 현금 922억원을 창출했다. 다만 CFO 961억원은 순이익 1,878억원의 약 절반이며 실제 R&D 비용·개발 성공 가능성·매출 집중도는 확인되지 않았다. 네이버 현재 PER 16.37배와 DART 기간이 달라 PEG는 미산출하며 고객·경영진 실사도 미완료다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "327260": {
+      "signal": "bearish",
+      "confidence": 69,
+      "reasoning": "DART상 2025년 매출 44.0% 증가와 영업흑자 전환, 2026H1 매출 58.9% 증가와 마진 18.82%는 회복을 보여준다. 그러나 반기 순이익 86억원에 CFO는 2억원뿐이며 유형자산 취득 38억원 등으로 유·무형 취득 후 현금은 -38억원이다. 2023~24년 영업손익이 적자였던 점과 네이버 현재 PER 61.13배를 함께 보면 성장의 지속성과 현금회수 대비 가격 부담이 크다. R&D·고객·경영진 실사는 미확인이며 기간 차이로 PEG를 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "402340": {
+      "signal": "neutral",
+      "confidence": 54,
+      "reasoning": "DART상 2026H1 영업수익은 10.4% 감소했지만 영업이익 27.51조원에는 지분법손익 27.58조원이 반영돼 일반 영업마진으로 해석하면 왜곡된다. CFO는 2,608억원이고 유·무형 취득 후 현금 2,388억원이 남지만 투자자산의 현금 배분과 본체 재투자 수익률은 별도로 확인해야 한다. 네이버 현재 PER 4.58배·PBR 2.73배만으로 성장 저평가를 확정하지 않는다. 투자기업별 장기 성장·R&D 효과·경영진 실사는 미확인이며 기간 차이로 PEG도 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "425420": {
+      "signal": "neutral",
+      "confidence": 59,
+      "reasoning": "DART상 2025년 매출은 51.8% 증가했지만 2023~25년 CAGR은 17.9%로 연도별 변동이 크다. 2026H1 매출 40.0% 증가에도 영업마진은 전년 동기 14.65%에서 14.28%로 낮아졌고 CFO 82억원보다 유·무형 취득 107억원이 커 차감 현금은 -25억원이다. 2025년에도 같은 현금이 음수여서 투자 회수 확인이 필요하다. 네이버 현재 PER 29.78배는 성장 지속을 요구한다. R&D·고객·경영진 실사는 미확인이고 기간 차이로 PEG를 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "462870": {
+      "signal": "bearish",
+      "confidence": 66,
+      "reasoning": "DART상 2023~25년 매출 CAGR은 32.2%였지만 영업마진은 65.88%에서 61.59%로 낮아졌다. 2026H1 매출은 33.4%, 영업이익은 47.5% 감소했고 마진도 전년 동기 61.10%에서 48.16%로 내려 지속 성장 가정이 약해졌다. 유·무형 취득 후 현금 407억원은 양수지만 전년 동기 779억원보다 작다. 네이버 현재 PER 10.08배의 낮은 가격만으로 회복을 확정하지 않는다. R&D 효과·제품별 반복 매출·경영진 실사는 미확인이고 기간 차이로 PEG를 미산출한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "483650": {
+      "signal": "bullish",
+      "confidence": 70,
+      "reasoning": "DART상 2023~25년 매출 CAGR 60.9%와 영업마진 16.16%에서 19.52%로의 개선이 확인된다. 2026H1에도 매출 47.9% 증가, 마진 25.78%로 전년 동기보다 확대됐고 CFO 813억원은 순이익 744억원을 웃돈다. 유·무형 취득 후 현금 803억원으로 재투자와 현금창출의 조합이 좋다. 다만 네이버 현재 PER 20.71배·PBR 8.98배는 성장 기대를 반영한다. R&D 효율·고객 재구매·경영진 실사는 미확인이고 기간 차이로 PEG를 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    }
+  }
+}

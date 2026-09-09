@@ -1,0 +1,347 @@
+{
+  "ticker": "003230",
+  "company_name": "삼양식품",
+  "analysis_date": "2026-09-09",
+  "observed_at": "2026-09-09T10:10:13.404348+00:00",
+  "data_quality": "partial",
+  "source_notes": [
+    "Predict scores and investor opinions are not included.",
+    "Valuation is Naver current snapshot fallback; its earnings period is not assumed to equal 2025 annual growth.",
+    "KRX market capitalization and universe use 2026-09-08 close; prices are separately dated.",
+    "DART extracts are current filed snapshots, not a vintage archive or OOS evidence.",
+    "Null means missing or ambiguous, never zero."
+  ],
+  "statements": {
+    "annual_2025": {
+      "provider": "OpenDART",
+      "business_year": 2025,
+      "report_code": "11011",
+      "as_of": "2026-09-09",
+      "status": "ready",
+      "fs_div": "CFS",
+      "receipts": [
+        "20260318001082"
+      ],
+      "currencies": [
+        "KRW"
+      ],
+      "source_urls": [
+        "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001082"
+      ],
+      "excluded_after_cutoff_or_undated": 0,
+      "periods": {
+        "2025": {
+          "revenue": 2351785163786.0,
+          "operating_income": 524188406060.0,
+          "net_income": 388673674725.0,
+          "assets": 2196495586892.0,
+          "liabilities": 924955585739.0,
+          "equity": 1271540001153.0,
+          "cash": 332840576772.0,
+          "operating_cash_flow": 309287213625.0,
+          "ppe_acquisitions": 448988219606.0,
+          "intangible_acquisitions": 12384146085.0,
+          "rd_expense": null,
+          "operating_margin": 0.2228895794274593,
+          "cfo_minus_ppe": -139701005981.0,
+          "fcf_after_ppe_and_intangibles": -152085152066.0
+        },
+        "2024": {
+          "revenue": 1728015003746.0,
+          "operating_income": 344569150443.0,
+          "net_income": 271255665463.0,
+          "assets": 1594782196967.0,
+          "liabilities": 766748854360.0,
+          "equity": 828033342607.0,
+          "cash": 334820783660.0,
+          "operating_cash_flow": 357904674484.0,
+          "ppe_acquisitions": 228450369489.0,
+          "intangible_acquisitions": 4971461980.0,
+          "rd_expense": null,
+          "operating_margin": 0.19940171219349437,
+          "cfo_minus_ppe": 129454304995.0,
+          "fcf_after_ppe_and_intangibles": 124482843015.0
+        },
+        "2023": {
+          "revenue": 1192914607980.0,
+          "operating_income": 147514090779.0,
+          "net_income": 126591199633.0,
+          "assets": 1170302770895.0,
+          "liabilities": 593512454782.0,
+          "equity": 576790316113.0,
+          "cash": 218684811276.0,
+          "operating_cash_flow": 168099691095.0,
+          "ppe_acquisitions": 44996342023.0,
+          "intangible_acquisitions": 4387836682.0,
+          "rd_expense": null,
+          "operating_margin": 0.12365855006905337,
+          "cfo_minus_ppe": 123103349072.0,
+          "fcf_after_ppe_and_intangibles": 118715512390.0
+        }
+      },
+      "matched_accounts": {
+        "revenue": [
+          {
+            "account_id": "ifrs-full_Revenue",
+            "account_nm": "매출액",
+            "sj_div": "CIS"
+          }
+        ],
+        "operating_income": [
+          {
+            "account_id": "dart_OperatingIncomeLoss",
+            "account_nm": "영업이익",
+            "sj_div": "CIS"
+          }
+        ],
+        "net_income": [
+          {
+            "account_id": "ifrs-full_ProfitLoss",
+            "account_nm": "당기순이익",
+            "sj_div": "CIS"
+          }
+        ],
+        "assets": [
+          {
+            "account_id": "ifrs-full_Assets",
+            "account_nm": "자산총계",
+            "sj_div": "BS"
+          }
+        ],
+        "liabilities": [
+          {
+            "account_id": "ifrs-full_Liabilities",
+            "account_nm": "부채총계",
+            "sj_div": "BS"
+          }
+        ],
+        "equity": [
+          {
+            "account_id": "ifrs-full_Equity",
+            "account_nm": "자본총계",
+            "sj_div": "BS"
+          }
+        ],
+        "cash": [
+          {
+            "account_id": "ifrs-full_CashAndCashEquivalents",
+            "account_nm": "현금및현금성자산",
+            "sj_div": "BS"
+          }
+        ],
+        "operating_cash_flow": [
+          {
+            "account_id": "ifrs-full_CashFlowsFromUsedInOperatingActivities",
+            "account_nm": "영업활동현금흐름",
+            "sj_div": "CF"
+          }
+        ],
+        "ppe_acquisitions": [
+          {
+            "account_id": "ifrs-full_PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities",
+            "account_nm": "유형자산의 취득",
+            "sj_div": "CF"
+          }
+        ],
+        "intangible_acquisitions": [
+          {
+            "account_id": "ifrs-full_PurchaseOfIntangibleAssetsClassifiedAsInvestingActivities",
+            "account_nm": "무형자산의 취득",
+            "sj_div": "CF"
+          }
+        ],
+        "rd_expense": []
+      }
+    },
+    "half_year_2026": {
+      "provider": "OpenDART",
+      "business_year": 2026,
+      "report_code": "11012",
+      "as_of": "2026-09-09",
+      "status": "ready",
+      "fs_div": "CFS",
+      "receipts": [
+        "20260814003053"
+      ],
+      "currencies": [
+        "KRW"
+      ],
+      "source_urls": [
+        "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003053"
+      ],
+      "excluded_after_cutoff_or_undated": 0,
+      "periods": {
+        "2026H1": {
+          "revenue": 1484714694859.0,
+          "operating_income": 353313697185.0,
+          "net_income": 282054263527.0,
+          "assets": 2748714795404.0,
+          "liabilities": 1200447488534.0,
+          "equity": 1548267306870.0,
+          "cash": 630597456886.0,
+          "operating_cash_flow": 268261537370.0,
+          "ppe_acquisitions": 103332626669.0,
+          "intangible_acquisitions": 2116229928.0,
+          "rd_expense": null,
+          "operating_margin": 0.23796740101542094,
+          "cfo_minus_ppe": 164928910701.0,
+          "fcf_after_ppe_and_intangibles": 162812680773.0
+        },
+        "2025H1": {
+          "revenue": 1082090816109.0,
+          "operating_income": 254076409179.0,
+          "net_income": 183034248554.0,
+          "assets": null,
+          "liabilities": null,
+          "equity": null,
+          "cash": null,
+          "operating_cash_flow": 129199722198.0,
+          "ppe_acquisitions": 324933473808.0,
+          "intangible_acquisitions": 5142092040.0,
+          "rd_expense": null,
+          "operating_margin": 0.23480137285760555,
+          "cfo_minus_ppe": -195733751610.0,
+          "fcf_after_ppe_and_intangibles": -200875843650.0
+        }
+      },
+      "matched_accounts": {
+        "revenue": [
+          {
+            "account_id": "ifrs-full_Revenue",
+            "account_nm": "매출액",
+            "sj_div": "CIS"
+          }
+        ],
+        "operating_income": [
+          {
+            "account_id": "dart_OperatingIncomeLoss",
+            "account_nm": "영업이익",
+            "sj_div": "CIS"
+          }
+        ],
+        "net_income": [
+          {
+            "account_id": "ifrs-full_ProfitLoss",
+            "account_nm": "반기순이익",
+            "sj_div": "CIS"
+          }
+        ],
+        "assets": [
+          {
+            "account_id": "ifrs-full_Assets",
+            "account_nm": "자산총계",
+            "sj_div": "BS"
+          }
+        ],
+        "liabilities": [
+          {
+            "account_id": "ifrs-full_Liabilities",
+            "account_nm": "부채총계",
+            "sj_div": "BS"
+          }
+        ],
+        "equity": [
+          {
+            "account_id": "ifrs-full_Equity",
+            "account_nm": "자본총계",
+            "sj_div": "BS"
+          }
+        ],
+        "cash": [
+          {
+            "account_id": "ifrs-full_CashAndCashEquivalents",
+            "account_nm": "현금및현금성자산",
+            "sj_div": "BS"
+          }
+        ],
+        "operating_cash_flow": [
+          {
+            "account_id": "ifrs-full_CashFlowsFromUsedInOperatingActivities",
+            "account_nm": "영업활동 현금흐름",
+            "sj_div": "CF"
+          }
+        ],
+        "ppe_acquisitions": [
+          {
+            "account_id": "ifrs-full_PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities",
+            "account_nm": "유형자산의 취득",
+            "sj_div": "CF"
+          }
+        ],
+        "intangible_acquisitions": [
+          {
+            "account_id": "ifrs-full_PurchaseOfIntangibleAssetsClassifiedAsInvestingActivities",
+            "account_nm": "무형자산의 취득",
+            "sj_div": "CF"
+          }
+        ],
+        "rd_expense": []
+      }
+    }
+  },
+  "metrics": {
+    "ticker": "003230",
+    "company_name": "삼양식품",
+    "report_period": "2026-09-09",
+    "price_to_earnings_ratio": 19.54,
+    "price_to_book_ratio": 6.23,
+    "price_to_sales_ratio": null,
+    "peg_ratio": null,
+    "enterprise_value_to_ebitda": null,
+    "enterprise_value": null,
+    "enterprise_value_to_revenue": null,
+    "return_on_equity": 0.3056716063769607,
+    "return_on_assets": 0.17695172120740107,
+    "return_on_invested_capital": 0.24915365954806848,
+    "gross_margin": null,
+    "operating_margin": 0.2228895794274593,
+    "net_margin": 0.16526750857603728,
+    "ebitda": null,
+    "ebitda_margins": null,
+    "revenue_growth": 0.3609749676292091,
+    "earnings_growth": 0.4328684123945648,
+    "earnings_per_share_growth": null,
+    "current_ratio": 1.5715160155800263,
+    "quick_ratio": null,
+    "debt_to_equity": 0.7274294044231986,
+    "interest_coverage": null,
+    "cash_ratio": null,
+    "operating_cash_flow_ratio": null,
+    "asset_turnover": 1.0706987884795762,
+    "debt_to_assets": null,
+    "dividend_yield": 0.0038,
+    "payout_ratio": null,
+    "market_cap": 9725122365000.0,
+    "shares_outstanding": null,
+    "float_shares": null,
+    "free_cash_flow": null,
+    "free_cash_flow_yield": null,
+    "free_cash_flow_per_share": null,
+    "operating_cashflow": null,
+    "total_debt": null,
+    "total_cash": null,
+    "total_cash_per_share": null,
+    "total_revenue": null,
+    "revenue_per_share": null,
+    "earnings_per_share": 64729.0,
+    "forward_eps": null,
+    "book_value_per_share": 203212.0,
+    "held_percent_insiders": null,
+    "held_percent_institutions": null,
+    "short_ratio": null,
+    "short_percent_of_float": null,
+    "beta": null,
+    "52_week_high": null,
+    "52_week_low": null,
+    "52_week_change": null,
+    "50_day_average": null,
+    "200_day_average": null,
+    "sector": null,
+    "industry": null,
+    "research_and_development": null,
+    "research_and_development_ratio": null
+  },
+  "sector": "Consumer Staples",
+  "sector_provider": "Yahoo Finance current metadata",
+  "valuation_source_url": "https://m.stock.naver.com/stock/003230/total"
+}

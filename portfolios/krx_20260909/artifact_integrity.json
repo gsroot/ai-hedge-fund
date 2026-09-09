@@ -1,0 +1,14 @@
+{
+  "sha256": {
+    "portfolio.json": "6581d41a77210f79a7597e916e95b4b25200c8d1f05b0afabb5faf64a7b189bc",
+    "krx_final.json": "2c3f281a57f89899643fdd7328e4ea5a1c58502ff2d525763345560033247745",
+    "investor_results.json": "edcbd238d8c44f82893e8321fb802750762814e028558f206aecb72617e1bbea",
+    "krx_risk.json": "3d0ebb8b6744a32abfd580970cd82d7dbc597d183f10c5c56d1182bc2b283386",
+    "README.md": "17466c761e9b6b2dbb2700724e2f31dfe3cb326bf92b5af4b126a001418612d7",
+    "KRX_연구포트폴리오_20260909.xlsx": "989ee17f82694f40bf5259bdac792d20002f5ab551ad4f41665a02702c3d9136"
+  },
+  "json_files_parsed": 114,
+  "credential_scan": "no matched configured secrets",
+  "xlsx_formula_errors": 0,
+  "ticker_strings_preserved": true
+}

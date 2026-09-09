@@ -1,0 +1,52 @@
+{
+  "observed_on": "2026-09-09",
+  "scope": "Selected issuer releases only. Does not validate every provider field or the full pipeline.",
+  "observations": [
+    {
+      "ticker": "CF",
+      "source": "https://www.cfindustries.com/newsroom/2026/1h-2026-earnings",
+      "published_on": "2026-08-05",
+      "financial_period_end": "2026-06-30",
+      "evidence_type": "external_primary_source",
+      "facts": {
+        "q2_net_earnings_usd": 727000000,
+        "q2_diluted_eps_usd": 4.73,
+        "first_half_litigation_settlement_gain_usd_approx": 170000000,
+        "issuer_reported_ttm_operating_cash_flow_usd": 2980000000,
+        "issuer_reported_ttm_free_cash_flow_usd": 1820000000,
+        "yahoo_current_free_cash_flow_usd": 1276749952
+      },
+      "limitation": "Issuer FCF definition includes Blue Point One joint-venture cash flows. Yahoo FCF differs; definitions and reporting windows have not been fully reconciled. Do not replace one measure with the other or present provider FCF as issuer-confirmed."
+    },
+    {
+      "ticker": "PSX",
+      "source": "https://investor.phillips66.com/financial-information/news-releases/news-release-details/2026/Phillips-66-Delivers-Strong-Second-Quarter-Results-and-Operating-Performance/default.aspx",
+      "published_on": "2026-08-05",
+      "financial_period_end": "2026-06-30",
+      "evidence_type": "external_primary_source",
+      "facts": {
+        "q2_earnings_usd": 3847000000,
+        "q2_diluted_eps_usd": 9.55,
+        "q2_operating_cash_flow_usd": 7259000000,
+        "q2_operating_cash_flow_ex_working_capital_usd": 4317000000,
+        "q2_total_debt_usd": 20565000000
+      },
+      "limitation": "Quarterly reported values are distinct from Yahoo TTM/current values. Working capital materially affects quarterly operating cash flow."
+    },
+    {
+      "ticker": "MU",
+      "source": "https://investors.micron.com/news/press-release/2026/Micron-Technology-Inc--Reports-Record-Results-for-the-Third-Quarter-of-Fiscal-2026/default.aspx",
+      "failed_source": "https://investors.micron.com/node/50671/pdf (404; recovered via issuer HTML release)",
+      "published_on": "2026-06-24",
+      "financial_period_end": "2026-05-28",
+      "evidence_type": "external_primary_source",
+      "facts": {
+        "fiscal_q3_revenue_usd": 41460000000,
+        "fiscal_q3_operating_cash_flow_usd": 25390000000,
+        "fiscal_q3_adjusted_free_cash_flow_usd": 18300000000,
+        "yahoo_current_free_cash_flow_usd": 7639499776
+      },
+      "limitation": "Issuer quarterly adjusted FCF and Yahoo current freeCashflow are different measures/windows. Full reconciliation is unverified; do not infer an error magnitude or replace inputs."
+    }
+  ]
+}

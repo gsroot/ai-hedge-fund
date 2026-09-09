@@ -1,0 +1,33 @@
+{
+  "provider_id": "krx_open_api",
+  "market_scope": [
+    "krx"
+  ],
+  "roles": [
+    "daily_ohlcv",
+    "market_cap",
+    "listed_shares"
+  ],
+  "credential_requirements": [
+    "KRX_API_KEY"
+  ],
+  "credentials_configured": true,
+  "missing_credentials": [],
+  "required_fields": [
+    "ISU_CD",
+    "TDD_CLSPRC",
+    "MKTCAP",
+    "LIST_SHRS"
+  ],
+  "observation_timing": "official daily market row for basDd",
+  "revision_policy": "snapshot by requested trade date; corrections are not versioned by this endpoint",
+  "quota": "provider-managed; client uses one request per second",
+  "historical_ranking_use": "prices_only_after_trade_date_alignment",
+  "observed_at": "2026-09-09T09:58:38.598101+00:00",
+  "data_as_of": "2026-09-08",
+  "sample_size": 943,
+  "status": "ready",
+  "missing_fields": [],
+  "error": null,
+  "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+}

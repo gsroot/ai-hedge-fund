@@ -1,0 +1,246 @@
+{
+  "analysis_date": "2026-09-09",
+  "investor": "lynch",
+  "analyses": {
+    "000500": {
+      "signal": "bearish",
+      "confidence": 77,
+      "reasoning": "DART상 2025 매출 47.4%, 2026H1 매출 27.3%·영업이익 41.8% 증가로 성장 자체는 확인된다. 그러나 H1 순익 425억원에 영업현금은 -1,743억원이며 부채총계/자본도 2.13배다. 현금으로 전환되지 않은 확장을 안정적 고성장으로 보긴 어렵다. 이 비율은 이자부 차입금 비율과 다르며 현금 유출 원인은 미확인이다. 9/9 네이버 PER 122.97배는 확인된 성장에 비해 부담이 크고, 실적 기간이 달라 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "000660": {
+      "signal": "neutral",
+      "confidence": 59,
+      "reasoning": "DART의 2023 영업손실 이후 급증한 실적은 경기순환형 회복으로 보수적으로 분류한다. 2026H1 매출 131.90조원·영업이익 98.15조원, 영업현금 91.74조원은 강하지만 금융수익도 82.92조원으로 순익 성장의 반복성을 따로 봐야 한다. 부채총계/자본은 0.33배이나 이는 차입금 비율은 아니다. 9/9 네이버 PER 8.27배만으로 정상 이익 대비 저평가를 단정하기 어렵고, 현재 배수와 과거 성장의 기간 차이로 PEG 판단은 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "001450": {
+      "signal": "neutral",
+      "confidence": 39,
+      "reasoning": "DART 원계정의 2026H1 보험수익은 7.19조원으로 전년 6.94조원보다 완만히 늘고, 보험손익은 5,958억→9,007억원으로 회복했다. 다만 2025 보험손익은 1.43조→0.81조원으로 감소해 꾸준한 고성장으로 분류하지 않는다. 9/9 네이버 PER 3.70배는 낮지만 보험부채를 일반 차입금처럼 해석하거나 영업현금 1.39조원을 자유현금으로 볼 수 없다. K-ICS·준비금 적정성의 핵심 근거가 없어 insufficient_data이며, 기간이 다른 PEG도 미확정이다.",
+      "data_quality": "insufficient",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "003230": {
+      "signal": "bullish",
+      "confidence": 74,
+      "reasoning": "DART 매출은 2023년 1.19조원에서 2025년 2.35조원으로 늘고 2026H1에도 37.2%, 영업이익은 39.1% 증가해 반복 성장 후보로 본다. H1 영업현금 2,683억원은 순익 2,820억원에 근접하고 유형·무형자산 취득 차감 후에도 1,628억원이 남는다. 다만 2025 해당 현금흐름은 -1,521억원으로 투자 부담이 있었고 H1 부채총계/자본은 0.78배다. 9/9 네이버 PER 19.54배와 성장의 조합은 우호적이나 기간이 달라 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "005830": {
+      "signal": "neutral",
+      "confidence": 40,
+      "reasoning": "DART 원계정에서 2026H1 보험수익은 8.48조원으로 전년 8.11조원보다 늘고 보험손익은 7,191억→8,335억원으로 개선됐다. 그러나 2025 보험손익은 1.72조→1.15조원으로 줄었고 H1 순익 증가는 3.0%라 고성장보다는 완만한 회복형이다. 9/9 네이버 PER 7.06배는 낮아도 영업현금 6.29조원은 보험계정 특성상 일반 FCF가 아니다. K-ICS·준비금 적정성 부족으로 insufficient_data이며, 일반 부채 기준과 기간 불일치 PEG는 적용하지 않는다.",
+      "data_quality": "insufficient",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "007660": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART의 2025 매출 30.0% 증가에 이어 2026H1 매출 45.8%·영업이익 60.8% 증가로 고성장 후보의 외형은 이어진다. 반면 H1 순익 1,102억원에도 영업현금은 -496억원, 유형·무형 취득 차감 후 -1,287억원으로 현금전환은 악화됐다. 부채총계/자본 0.71배와 현금 1,444억원을 함께 보며 자금 회수 확인이 필요하다. 9/9 네이버 PER 41.02배가 요구하는 성장 지속성을 아직 단정할 수 없고, DART와 기간이 달라 PEG는 미확정이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "008930": {
+      "signal": "neutral",
+      "confidence": 57,
+      "reasoning": "DART상 2025 매출 증가 5.7%, 2026H1 7.6%는 완만한 성장형이며 순익 급증을 그대로 고성장률로 쓰지 않는다. H1 영업이익은 50.3% 늘었지만 순익 860억원 중 영업현금은 184억원에 그쳤다. 부채총계/자본 0.44배는 전년 말보다 개선됐으나 현금전환의 반복성은 약하다. 취득 계정은 개별 자산으로 나뉘어 요약 FCF가 비어 있으며 이를 0으로 간주하지 않았다. 9/9 네이버 PER 25.37배에서 성장 대비 매력은 유보하고, 기간 불일치로 PEG는 계산하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "031980": {
+      "signal": "neutral",
+      "confidence": 58,
+      "reasoning": "DART에서 2025 매출 -3.6%·영업이익 -17.0% 이후 2026H1 매출 14.4%·영업이익 27.7% 증가해 지속 고성장보다 회복형으로 본다. H1 영업현금 274억원은 순익 444억원보다 적지만 부채총계/자본 0.20배, 현금 1,506억원은 완충 역할을 한다. 원자료에 H1 유형자산 취득 13억원은 있으나 무형자산 취득 누락으로 완전한 FCF는 확정하지 않는다. 9/9 네이버 PER 31.87배는 회복 지속 확인을 요구하며 기간이 달라 PEG도 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "035900": {
+      "signal": "neutral",
+      "confidence": 61,
+      "reasoning": "DART의 2025 매출 36.6% 증가는 강했지만 2026H1 증가율은 3.5%로 둔화되고 영업이익은 11.3% 감소했다. 성장 지속보다 이익 회복 여부를 확인할 단계다. H1 영업현금 296억원·유형 및 무형 취득 차감 후 263억원은 흑자이며 현금 2,738억원은 부채총계 2,221억원보다 많다. 다만 순익의 현금전환은 55% 수준이고 향후 사업별 반복 매출은 자료에 없다. 9/9 네이버 PER 12.71배만으로 성장 저평가를 단정하지 않으며 기간이 달라 PEG는 미확정이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "036830": {
+      "signal": "neutral",
+      "confidence": 55,
+      "reasoning": "DART 원계정에서 2025 순익 4,956억원 중 중단영업이익이 4,453억원이므로 796% 순익 증가를 반복 성장으로 보지 않는다. 2026H1 영업이익은 334억원으로 회복했지만 금융수익도 1,017억원이며 영업현금은 -1,275억원이다. 부채총계/자본 0.35배와 낮은 배수는 자산형 후보의 단서이나 현금전환과 계속영업 이익의 정상화가 필요하다. 9/9 네이버 PER 1.56배는 성장 저평가의 충분한 근거가 아니고, 실적 기간이 달라 PEG는 계산하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "039200": {
+      "signal": "neutral",
+      "confidence": 46,
+      "reasoning": "DART상 2023·2024 영업적자에서 2025 영업이익 521억원으로 전환했고 2026H1 매출 563억원·영업이익 287억원을 기록해 흑자전환형으로 분류한다. H1 영업현금 978억원과 부채총계/자본 0.19배는 개선 근거다. 그러나 2025 영업현금은 83억원에 그쳤고 매출의 반복 계약·일회성 대가 구분은 제공 자료로 확인되지 않아 고성장을 외삽하지 않는다. 9/9 네이버 PER 14.15배의 매력은 조건부이며, 비교기간 적자와 실적 시점 차이로 PEG는 성립하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "041510": {
+      "signal": "neutral",
+      "confidence": 59,
+      "reasoning": "DART의 2026H1 매출 17.7%·영업이익 14.0% 증가는 완만한 성장 근거다. 순익 76.8% 감소는 원계정의 관계기업·공동기업투자손익이 전년 2,274억원에서 66억원으로 줄어든 점과 구분해 해석한다. H1 영업현금 436억원과 취득 차감 후 275억원은 양수지만 순익 전환율은 66%이며 부채총계/자본은 0.45배다. 9/9 네이버 PER 13.95배는 낮아 보여도 투자손익을 제외한 정상 성장률·배수는 미확인이고, 기간이 다른 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "053610": {
+      "signal": "neutral",
+      "confidence": 59,
+      "reasoning": "DART에서 2025 매출 35.4%, 2026H1 매출 47.3%·영업이익 202.2% 증가로 회복이 강하다. 하지만 H1 순익 539억원에는 원자료상 금융자산처분이익 284억원이 섞여 있고 영업현금은 -52억원이다. 부채총계/자본 0.24배와 현금 1,384억원은 버팀목이나 2025와 H1의 취득 차감 현금흐름이 모두 음수라 반복 성장의 질은 유보한다. 9/9 네이버 PER 7.43배가 정상 이익에 기반한 저평가인지 불명확하며 기간 불일치로 PEG는 계산하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "062040": {
+      "signal": "bullish",
+      "confidence": 68,
+      "reasoning": "DART 매출은 2023년 2,145억원에서 2025년 5,020억원으로 늘고 2026H1에도 매출 38.5%·영업이익 40.4% 증가해 고성장 후보로 본다. H1 영업현금 901억원은 순익의 90%이고 유형·무형 취득 후 805억원이 남으며 부채총계/자본도 0.14배다. 다만 2024 현금전환은 약했고 수주나 고객별 반복성은 자료에 없어 현재 성장 속도를 장기 확정하지 않는다. 9/9 네이버 PER 35.62배의 가격 부담을 반영했으며 실적 기간이 다른 PEG는 미확정이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "078930": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART의 2023~2025 영업이익 감소 뒤 2026H1 영업이익이 130.8% 증가해 경기순환형 회복으로 분류한다. H1 영업현금 1.62조원과 유형·무형 취득 차감 후 8,193억원은 양호하지만 과거 감소와 최근 급반등을 안정적 고성장으로 연결할 수는 없다. 부채총계/자본 0.80배는 차입금 비율과 다르며 정상 이익과 투자 부담의 지속 확인이 필요하다. 9/9 네이버 PER 4.95배는 관심 근거이나 주기 정상화 가치가 미검증이고 기간이 달라 PEG는 미확정이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "083650": {
+      "signal": "bearish",
+      "confidence": 70,
+      "reasoning": "DART상 2025 매출 91.3%, 2026H1 매출 89.5%·영업이익 146.1% 증가로 외형 성장은 뚜렷하다. 그러나 H1 금융원가가 205억에서 796억원으로 늘어 순익은 34.1% 감소했다. 영업현금 672억원은 양호해도 부채총계/자본 4.45배와 금융원가 부담은 Lynch의 보수적 재무 기준에 불리하다. 부채총계 전부를 이자부 차입금으로 보지는 않는다. 9/9 네이버 PER 39.66배에서 위험 보상이 충분하다고 보기 어렵고, 기간이 다른 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "095340": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART의 2025 매출 26.2% 증가와 2026H1 매출 69.4%·영업이익 117.0% 증가는 고성장 후보의 근거다. H1 영업현금 388억원은 순익의 97%이며 취득 차감 후에도 303억원이 남고 부채총계/자본은 0.12배로 낮다. 다만 2025 순익 증가율은 2.6%에 그쳐 최근 가속이 반복되는지는 더 봐야 한다. 9/9 네이버 PER 52.09배는 지속적인 높은 성장을 요구하므로 좋은 현금전환만으로 가격 매력을 확정하지 않고, 실적 기간이 다른 PEG는 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "096770": {
+      "signal": "neutral",
+      "confidence": 52,
+      "reasoning": "DART상 2024·2025 순손실 뒤 2026H1 영업이익 5.65조원·순익 9,696억원으로 회복했지만 아직 흑자전환형이다. H1 영업현금 2.51조원과 취득 차감 후 4,744억원은 개선 근거이나 2023~2025 해당 현금흐름은 모두 음수였다. 부채총계/자본 1.70배와 큰 투자 부담을 고려하면 한 반기의 호전을 안정 성장으로 보기 어렵다. 9/9 네이버 PER는 누락이고 PBR 1.00배만 있어 적정 성장 가격을 확정할 수 없으며 손실 기저의 PEG도 적용하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "101490": {
+      "signal": "neutral",
+      "confidence": 61,
+      "reasoning": "DART의 2025 매출 38.5%·영업이익 70.9% 증가와 달리 2026H1 매출은 8.0% 증가, 영업이익은 0.8% 감소해 성장 속도가 둔화했다. H1 영업현금 229억원은 순익의 86%지만 유형·무형 취득 차감 후 -79억원이고 2025에도 -176억원이었다. 부채총계/자본 0.24배는 완충 근거이나 투자의 이익 기여는 확인되지 않는다. 9/9 네이버 PER 13.80배는 과도하지 않아 보여도 반복 고성장 판단은 유보하며, 기간이 다른 PEG는 계산하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "124500": {
+      "signal": "neutral",
+      "confidence": 59,
+      "reasoning": "DART에서 2025 매출 78.8%, 2026H1 매출 92.2%·영업이익 94.0% 증가로 확장이 이어진다. 그러나 H1 순익 1,098억원에도 영업현금은 -1,883억원이고 현금은 전년 말 3,972억에서 1,672억원으로 줄었다. 부채총계/자본은 1.46배이며 H1 영업이익률은 약 1.9%라 높은 외형 성장만으로 이익의 질을 낙관하기 어렵다. 9/9 네이버 PER 10.52배는 낮지만 현금 회수·반복성이 미확인이고, DART와 실적 기간이 달라 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "128940": {
+      "signal": "neutral",
+      "confidence": 62,
+      "reasoning": "DART상 2025 매출 증가율 3.5%에서 2026H1 14.4%로 개선되고 영업이익도 54.6% 늘어 완만한 성장의 가속 가능성이 보인다. H1 영업현금 2,164억원은 순익 1,352억원을 웃돌고 유형·무형 취득 후 1,695억원이 남으며 부채총계/자본은 0.47배다. 다만 2023~2025 매출 정체를 감안하면 최근 반기만으로 지속 고성장을 단정하지 않는다. 9/9 네이버 PER 29.19배는 반복 가속의 확인을 요구하고, 현재 배수와 DART 기간 차이로 PEG는 유보한다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "214150": {
+      "signal": "neutral",
+      "confidence": 64,
+      "reasoning": "DART의 2025 매출 38.6%·영업이익 39.3% 증가에 비해 2026H1 매출은 20.1% 늘어도 영업이익은 0.8% 줄어 성장의 이익 전환이 약해졌다. H1 영업현금 155억원은 순익 587억원의 26%이고 취득 차감 후 현금도 80억원에 그친다. 부채총계/자본은 0.40배로 심각한 부담을 단정할 수준은 아니지만 2025의 강한 현금전환이 반복되지 않았다. 9/9 네이버 PER 14.97배만으로 고성장 저평가를 확정하지 않고, 기간 불일치 PEG도 적용하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "214450": {
+      "signal": "bullish",
+      "confidence": 67,
+      "reasoning": "DART 매출은 2023년 2,610억원에서 2025년 5,363억원으로 늘고 2026H1에도 매출 26.1%·영업이익 23.0% 증가해 고성장 후보의 반복 근거가 있다. H1 부채총계/자본 0.40배에 현금 2,203억원, 유형·무형 취득 차감 후 423억원을 확보했다. 다만 영업현금 643억원은 순익의 61%이며 전년 동기보다 줄어 성장 둔화와 현금전환을 추적해야 한다. 9/9 네이버 PER 22.80배는 조건부로 수용 가능하나 기간이 달라 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "257720": {
+      "signal": "neutral",
+      "confidence": 62,
+      "reasoning": "DART의 2025 매출 61.4%, 2026H1 매출 46.6%·영업이익 47.6% 증가로 고성장은 이어진다. 그러나 2025 순익 1,686억원에 영업현금은 11억원, H1 순익 1,267억원에도 영업현금은 135억원뿐이다. 2023~2025와 최근 반기 모두 유형·무형 취득 차감 현금흐름이 음수라 회계이익의 반복성과 현금전환을 구분한다. H1 부채총계/자본 0.40배가 이를 해소하진 않는다. 9/9 네이버 PER 13.24배의 매력은 유보하며 기간이 다른 PEG는 미확정이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "326030": {
+      "signal": "bullish",
+      "confidence": 64,
+      "reasoning": "DART상 2023 영업적자에서 2024·2025 흑자를 이어가고 2026H1 매출 48.2%·영업이익 113.4% 증가해 흑자전환 뒤 성장형으로 옮겨가는 후보로 본다. H1 영업현금 961억원, 유형·무형 취득 차감 후 922억원과 부채총계/자본 0.39배는 개선 근거다. 다만 영업현금은 순익의 51%이고 매출 구성별 반복성·영업 외 이익의 지속은 미확인이다. 9/9 네이버 PER 16.37배와 개선 조합은 우호적이나 기간이 달라 PEG는 확정하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "327260": {
+      "signal": "bearish",
+      "confidence": 73,
+      "reasoning": "DART의 2024 영업적자 이후 2025 흑자전환, 2026H1 매출 58.9%·영업이익 213.1% 증가로 회복은 확인된다. 하지만 H1 순익 86억원에도 영업현금은 2억원이며 유형·무형 취득 후 -37억원이고 현금은 전년 말 313억에서 37억원으로 줄었다. 부채총계/자본 0.33배만으로 현금전환의 취약성을 상쇄하기 어렵다. 9/9 네이버 PER 61.13배는 짧은 흑자 이력에 높은 기대를 얹은 가격으로 판단하며, 적자 기저와 기간 차이로 PEG는 계산하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "402340": {
+      "signal": "neutral",
+      "confidence": 40,
+      "reasoning": "DART 원계정의 2026H1 지분법손익 27.58조원이 영업이익 27.51조원을 지배하므로 매출 성장주가 아닌 투자자산형 후보로 본다. 영업수익은 10.4% 줄고 영업현금은 2,608억원으로 순익 27.05조원과 크게 다르다. 부채총계/자본 0.07배는 완충 근거지만 지분법이익을 즉시 사용 가능한 현금으로 보지 않는다. 9/9 네이버 PER 4.58배에도 보유자산 시가·할인·현금 회수 근거가 없어 insufficient_data이며 기간과 이익 성격이 다른 PEG는 적용하지 않는다.",
+      "data_quality": "insufficient",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "425420": {
+      "signal": "neutral",
+      "confidence": 60,
+      "reasoning": "DART의 2024 매출·영업이익 하락 후 2025 매출 51.8%, 2026H1 매출 40.0%·영업이익 36.5% 증가해 회복을 동반한 성장 후보로 본다. H1 영업현금 82억원은 순익의 88%이나 유형·무형 취득 차감 후 -25억원으로 2024·2025에 이어 투자 후 현금 부족이 남았다. 부채총계/자본 0.32배는 비교적 완만하지만 투자의 향후 수익은 확인되지 않는다. 9/9 네이버 PER 29.78배에 지속 성장의 증거를 더 요구하며, 기간이 다른 PEG는 미확정이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "462870": {
+      "signal": "neutral",
+      "confidence": 61,
+      "reasoning": "DART상 2025 매출 31.4% 성장과 달리 2026H1 매출은 33.4%, 영업이익은 47.5% 줄어 고성장의 반복성이 끊겼다. 순익 1.8% 증가는 금융수익이 170억에서 514억원으로 늘어난 점과 구분한다. H1 영업현금 460억원·취득 차감 후 407억원, 부채총계/자본 0.13배는 버틸 근거지만 향후 매출 회복은 미검증이다. 9/9 네이버 PER 10.08배는 낮아도 본업의 반복 성장 확인 전 판단을 유보하고, 실적 기간이 다른 PEG는 계산하지 않는다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "483650": {
+      "signal": "bullish",
+      "confidence": 74,
+      "reasoning": "DART 매출은 2023년 2,008억원에서 2025년 5,197억원으로 늘고 2026H1에도 매출 47.9%·영업이익 55.8% 증가해 반복 고성장 후보로 본다. H1 영업현금 813억원은 순익 744억원을 웃돌고 유형·무형 취득 후 803억원이 남으며 부채총계/자본은 0.35배다. 다만 2025 순익 413% 증가에는 낮은 기저가 있어 장기 성장률로 사용하지 않고 사업별 반복성은 미확인이다. 9/9 네이버 PER 20.71배는 조건부로 우호적이나 기간 차이로 PEG는 미확정이다.",
+      "data_quality": "partial",
+      "analysis_date": "2026-09-09",
+      "analysis_source": "independent_investor_analysis"
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "analysis_date": "2026-09-09",
+  "weights": {
+    "ADBE": 0.15,
+    "INCY": 0.15,
+    "NVDA": 0.12,
+    "GDDY": 0.079
+  },
+  "cash_weight": 0.501,
+  "methodology": "predict_consensus_risk_adjusted_caps_dynamic_market_cash",
+  "market_regime": {
+    "formula_version": "market-regime-cash-v1",
+    "benchmark": "SPY",
+    "as_of_date": "2026-09-08",
+    "data_quality": "complete",
+    "observations": 275,
+    "regime": "risk_on",
+    "target_cash_weight": 0.0992,
+    "target_equity_weight": 0.9008,
+    "scores": {
+      "overheat": 0.10181,
+      "fear": 0.0,
+      "outlook": 0.762711
+    },
+    "components": {
+      "overheat": {
+        "distance_above_200d": 0.18781,
+        "rsi": 0.0,
+        "six_month_momentum": 0.11762
+      },
+      "fear": {
+        "drawdown": 0.0,
+        "rsi": 0.0,
+        "realized_volatility": 0.0
+      },
+      "outlook": {
+        "price_vs_200d": 0.781714,
+        "50d_vs_200d": 0.829988,
+        "six_month_momentum": 0.676431
+      }
+    },
+    "metrics": {
+      "close": 765.9600219726562,
+      "sma_50": 757.5966015625,
+      "sma_200": 710.4250692749024,
+      "distance_to_sma_200": 0.07817144284398037,
+      "sma_50_to_sma_200": 0.06639902549574073,
+      "momentum_126": 0.13528611098647092,
+      "rsi_14": 48.47928736061795,
+      "drawdown_from_252d_peak": -0.01532367824771641,
+      "realized_volatility_20": 0.08322349110179303
+    },
+    "rationale": [
+      "200일 추세·50/200일 추세·6개월 모멘텀이 긍정적이라 현금 축소"
+    ]
+  },
+  "constraints": {
+    "max_name": 0.15,
+    "max_sector": 0.35,
+    "min_name": 0.02,
+    "market_cash_target": 0.0992
+  },
+  "research_provenance": {
+    "workflow": [
+      "predict",
+      "independent_investor_analysis",
+      "risk_snapshot",
+      "portfolio_report"
+    ],
+    "analysis_date": "2026-09-09",
+    "risk_as_of": "2026-09-09",
+    "factor_evidence_mode": "prior_only",
+    "factor_spec_id": "predict_factor_v1",
+    "provider_readiness": {
+      "schema_version": 1,
+      "contract_id": "provider_readiness_v1",
+      "mode": "sampled",
+      "source": "C:\\projects\\ai-hedge-fund\\portfolios\\sp500_20260909\\provider_readiness.json",
+      "market_scope": "sp500",
+      "analysis_date": "2026-09-09",
+      "requested_as_of": "2026-09-09",
+      "all_samples_ready": false,
+      "provider_status": {
+        "yahoo_chart": {
+          "status": "ready",
+          "data_as_of": "2026-09-08",
+          "sample_size": 9,
+          "historical_ranking_use": "prices_only; current metadata is not point-in-time evidence",
+          "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+        },
+        "wikipedia_sp500": {
+          "status": "unavailable",
+          "data_as_of": null,
+          "sample_size": 0,
+          "historical_ranking_use": "current_universe_only; never backfill prior periods",
+          "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+        }
+      },
+      "ranking_policy": "missing_evidence_requires_prior_or_explanation_only"
+    },
+    "news_ranking_policy": "risk_and_explanation_only",
+    "validation_scope": {
+      "factor_validation_end": null,
+      "provider_requested_as_of": "2026-09-09",
+      "news_accuracy_validated": false
+    },
+    "limitations": [
+      "educational research only; no orders, capital movement, or return guarantee",
+      "predict factors are prior_only or lack applicable OOS evidence",
+      "one or more applicable providers are missing, failed, or unsampled",
+      "news is risk_and_explanation_only and does not change ranking"
+    ],
+    "input_provenance": {
+      "universe_snapshot": "sp500_constituents_20260909.json",
+      "current_universe_count": 503,
+      "secondary_check": "ssga_membership_crosscheck.json",
+      "secondary_check_as_of": "2026-09-04",
+      "secondary_match": true,
+      "direct_provider_audit": "wikipedia_sp500 initial 403 retained in provider_readiness.json",
+      "recovery": "requests HTTP response + pandas.read_html, current page retrieved 2026-09-09",
+      "financial_source": "Yahoo Finance current snapshot",
+      "financial_field_coverage": "financial_coverage.json",
+      "primary_source_spot_checks": "primary_source_spot_checks.json",
+      "valuation_policy": "trailing PE when available; forward PE fallback. Mixed horizons are not directly comparable.",
+      "factor_oos_status": "unvalidated",
+      "news_ranking_contribution": false
+    },
+    "exact_pipeline_oos_validated": false
+  }
+}

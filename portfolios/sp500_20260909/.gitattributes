@@ -1,0 +1,4 @@
+# Preserve the exact recorded bytes used by the snapshot SHA-256 checks.
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Captured terminal output retains its original spacing.
+*.log -whitespace

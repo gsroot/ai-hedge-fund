@@ -1,0 +1,3 @@
+{"kind":"notice","message":"Cell search matched 0 entries."}
+Inspect result written to file: C:\projects\ai-hedge-fund\outputs\01a08599-dd56-71d0-8f8e-c239feafefd1\sp500_20260909_portfolio.xlsx.inspect.ndjson
+{"output":"C:\\projects\\ai-hedge-fund\\outputs\\01a08599-dd56-71d0-8f8e-c239feafefd1\\sp500_20260909_portfolio.xlsx","sheets":4,"independentAnalyses":90,"rankingRows":503,"total":1}

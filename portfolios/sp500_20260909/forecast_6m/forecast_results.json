@@ -1,0 +1,231 @@
+{
+  "generated_at_utc": "2026-09-09T11:26:05.571323+00:00",
+  "interpretation": "unvalidated conditional prior; not a performance claim or a calibrated probability forecast",
+  "forecast_start": "2026-09-09",
+  "forecast_end_label": "2027-03-09",
+  "weights": {
+    "ADBE": 0.15,
+    "INCY": 0.15,
+    "NVDA": 0.12,
+    "GDDY": 0.079
+  },
+  "cash_weight": 0.501,
+  "risk_windows": [
+    {
+      "requested_daily_returns": 252,
+      "actual_daily_returns": 252,
+      "first_return_date": "2025-09-08",
+      "last_return_date": "2026-09-08",
+      "portfolio_beta": 0.37073405536690374,
+      "equity_sleeve_beta": 0.7429540187713501,
+      "stock_betas": {
+        "ADBE": 0.3524648562406526,
+        "INCY": 0.47732890768768677,
+        "NVDA": 1.9234055446813372,
+        "GDDY": 0.1956496888087645
+      },
+      "annual_tracking_error": 0.13025644017980242,
+      "six_month_active_return_sd_sqrt_time": 0.09210521214435817,
+      "annual_portfolio_volatility": 0.11283682243947114,
+      "annual_market_volatility": 0.12798194661901657,
+      "annual_residual_volatility": 0.10237629334669258,
+      "centered_block_bootstrap_shock_quantiles": {
+        "0.025": -0.14009170408915736,
+        "0.1": -0.09495007834279207,
+        "0.5": -0.0020787567634786863,
+        "0.9": 0.09854258248655387,
+        "0.975": 0.15343585340257523
+      },
+      "bootstrap": {
+        "samples": 20000,
+        "block_days": 20,
+        "horizon_days": 126,
+        "seed": 20261161,
+        "calibrated_predictive_interval": false
+      }
+    },
+    {
+      "requested_daily_returns": 756,
+      "actual_daily_returns": 756,
+      "first_return_date": "2023-09-01",
+      "last_return_date": "2026-09-08",
+      "portfolio_beta": 0.5075420895658519,
+      "equity_sleeve_beta": 1.017118415963631,
+      "stock_betas": {
+        "ADBE": 0.8712568053686477,
+        "INCY": 0.5123209430944519,
+        "NVDA": 2.0474882847227707,
+        "GDDY": 0.6874282674639844
+      },
+      "annual_tracking_error": 0.11470855651491539,
+      "six_month_active_return_sd_sqrt_time": 0.081111198171817,
+      "annual_portfolio_volatility": 0.1162367828425914,
+      "annual_market_volatility": 0.15296342494933898,
+      "annual_residual_volatility": 0.08650860089219978,
+      "centered_block_bootstrap_shock_quantiles": {
+        "0.025": -0.11723433207970817,
+        "0.1": -0.077915707712224,
+        "0.5": -0.00027128057562971777,
+        "0.9": 0.07851289532091713,
+        "0.975": 0.12258864207886631
+      },
+      "bootstrap": {
+        "samples": 20000,
+        "block_days": 20,
+        "horizon_days": 126,
+        "seed": 20261665,
+        "calibrated_predictive_interval": false
+      }
+    },
+    {
+      "requested_daily_returns": 1260,
+      "actual_daily_returns": 1254,
+      "first_return_date": "2021-09-09",
+      "last_return_date": "2026-09-08",
+      "portfolio_beta": 0.5845891088784452,
+      "equity_sleeve_beta": 1.1715212602774452,
+      "stock_betas": {
+        "ADBE": 1.2018903543512254,
+        "INCY": 0.5206618197694153,
+        "NVDA": 2.136070266488982,
+        "GDDY": 0.8845297567300183
+      },
+      "annual_tracking_error": 0.1120951125999648,
+      "six_month_active_return_sd_sqrt_time": 0.07926321425730472,
+      "annual_portfolio_volatility": 0.1325776100478052,
+      "annual_market_volatility": 0.1721123400435379,
+      "annual_residual_volatility": 0.08633333401997348,
+      "centered_block_bootstrap_shock_quantiles": {
+        "0.025": -0.12000384698559631,
+        "0.1": -0.07910228731778382,
+        "0.5": -0.00011377223232301153,
+        "0.9": 0.0783518827035834,
+        "0.975": 0.12352170431177065
+      },
+      "bootstrap": {
+        "samples": 20000,
+        "block_days": 20,
+        "horizon_days": 126,
+        "seed": 20262169,
+        "calibrated_predictive_interval": false
+      }
+    }
+  ],
+  "ensemble_portfolio_beta": 0.4876217512704002,
+  "six_month_market_prior": 0.043503713457695437,
+  "six_month_risk_free_proxy": 0.02,
+  "scenarios": {
+    "no_interest": {
+      "cash_return": 0.0,
+      "baseline": {
+        "market_return": 0.043503713457695437,
+        "portfolio_return": 0.021440921917599123,
+        "gap_percentage_points": -2.206279154009631,
+        "window_sensitivity_gap_pp": [
+          -2.4810086451342332,
+          -2.1594589616819664,
+          -1.978369855212694
+        ]
+      },
+      "market_sensitivity": [
+        {
+          "market_return": -0.2,
+          "portfolio_return": -0.09729678527948804,
+          "gap_percentage_points": 10.270321472051197
+        },
+        {
+          "market_return": -0.1,
+          "portfolio_return": -0.048534610152448025,
+          "gap_percentage_points": 5.146538984755198
+        },
+        {
+          "market_return": 0.0,
+          "portfolio_return": 0.00022756497459199693,
+          "gap_percentage_points": 0.022756497459199693
+        },
+        {
+          "market_return": 0.05,
+          "portfolio_return": 0.024608652538112008,
+          "gap_percentage_points": -2.5391347461887994
+        },
+        {
+          "market_return": 0.1,
+          "portfolio_return": 0.04898974010163202,
+          "gap_percentage_points": -5.101025989836798
+        },
+        {
+          "market_return": 0.2,
+          "portfolio_return": 0.09775191522867205,
+          "gap_percentage_points": -10.224808477132797
+        }
+      ],
+      "equity_sleeve_return_to_match_market_at_market_plus_5pct": 0.10020040080160321
+    },
+    "short_rate_like": {
+      "cash_return": 0.02,
+      "baseline": {
+        "market_return": 0.043503713457695437,
+        "portfolio_return": 0.031460921917599124,
+        "gap_percentage_points": -1.2042791540096311,
+        "window_sensitivity_gap_pp": [
+          -1.4790086451342332,
+          -1.1574589616819662,
+          -0.9763698552126943
+        ]
+      },
+      "market_sensitivity": [
+        {
+          "market_return": -0.2,
+          "portfolio_return": -0.08727678527948804,
+          "gap_percentage_points": 11.272321472051198
+        },
+        {
+          "market_return": -0.1,
+          "portfolio_return": -0.038514610152448024,
+          "gap_percentage_points": 6.1485389847551986
+        },
+        {
+          "market_return": 0.0,
+          "portfolio_return": 0.010247564974591996,
+          "gap_percentage_points": 1.0247564974591996
+        },
+        {
+          "market_return": 0.05,
+          "portfolio_return": 0.03462865253811201,
+          "gap_percentage_points": -1.5371347461887994
+        },
+        {
+          "market_return": 0.1,
+          "portfolio_return": 0.05900974010163202,
+          "gap_percentage_points": -4.0990259898367984
+        },
+        {
+          "market_return": 0.2,
+          "portfolio_return": 0.10777191522867205,
+          "gap_percentage_points": -9.222808477132796
+        }
+      ],
+      "equity_sleeve_return_to_match_market_at_market_plus_5pct": 0.08012024048096193
+    }
+  },
+  "portfolio_only_cost_sensitivity_pp": {
+    "10_bps_one_way": {
+      "entry_only": 0.0499,
+      "entry_plus_exit_at_unchanged_notional": 0.0998
+    },
+    "25_bps_one_way": {
+      "entry_only": 0.12475,
+      "entry_plus_exit_at_unchanged_notional": 0.2495
+    }
+  },
+  "alpha_sensitivity": {
+    "a_10_percentage_point_equity_sleeve_outperformance_changes_portfolio_gap_pp": 4.99
+  },
+  "input_hashes": {
+    "assumptions.json": "6ae3bafaa9ba4be006b7f5d310d1365b9748fa552a8156f254d76300ca945a26",
+    "price_manifest.json": "bb10dcbcb41c3e47ce38bb7f93a6498b8e48a54c866187b1c519e6f22c485755"
+  },
+  "forecast_calibrated": false,
+  "accuracy_estimate": null,
+  "calculation_checks_passed": true
+}

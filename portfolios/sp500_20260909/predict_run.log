@@ -1,0 +1,121 @@
+c:\projects\ai-hedge-fund\.venv\Lib\site-packages\pandas\core\dtypes\cast.py:1060: RuntimeWarning: invalid value encountered in cast
+  if (arr.astype(int) == arr).all():
+c:\projects\ai-hedge-fund\.venv\Lib\site-packages\pandas\core\dtypes\cast.py:1084: RuntimeWarning: invalid value encountered in cast
+  if (arr.astype(int) == arr).all():
+📋 SP500 티커 목록: 캐시에서 로드 (503개)
+
+============================================================
+🔍 AI Hedge Fund - 종목 분석 시스템 (Yahoo Finance)
+============================================================
+분석 날짜: 2026-09-09
+평가 기간 라벨: 1Y (점수 기반, 수익률 예측 아님)
+분석 전략: 하이브리드
+팩터 가중치 정책: prior_only
+대상 종목: 503개
+
+분석 시작: 503개 종목 (Workers: 3, 캐시: 활성화, 전략: 하이브리드)
+📊 가격 데이터 배치 다운로드 중... (503개 해외 종목)
+   ✅ 503개 종목 가격 데이터 로드 완료
+📊 섹터 통계 계산을 위한 재무 지표 수집 중... (503개 종목)
+   ✅ 11개 섹터 통계 계산 완료 (총 503개 종목)
+📈 투자자 앙상블 분석 중... (503개 종목)
+   진행: 25/503 (5%)
+   진행: 50/503 (10%)
+   진행: 75/503 (15%)
+   진행: 100/503 (20%)
+   진행: 125/503 (25%)
+   진행: 150/503 (30%)
+   진행: 175/503 (35%)
+   진행: 200/503 (40%)
+   진행: 225/503 (45%)
+   진행: 250/503 (50%)
+   진행: 275/503 (55%)
+   진행: 300/503 (60%)
+   진행: 325/503 (65%)
+   진행: 350/503 (70%)
+   진행: 375/503 (75%)
+   진행: 400/503 (80%)
+   진행: 425/503 (84%)
+   진행: 450/503 (89%)
+   진행: 475/503 (94%)
+   진행: 500/503 (99%)
+   진행: 503/503 (100%)
+
+================================================================================================================================================================
+📈 TOP 30 매수 추천 종목 (하이브리드 분석 (펀더멘털 70% + 모멘텀 30%))
+================================================================================================================================================================
+순위   종목                       시총         점수     펀더     모멘     앙상블    신호           점수환산     P/E     ROE     강세 투자자              
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+1    CF(CF Industries…)       $20B       7.96   8.4    7.0    7.8    🔵 매수         +17.3%   10.0    30%     lynch, graham, druckenmiller
+2    PSX(Phillips 66)         $104B      7.89   6.2    10.0   6.6    🔵 매수         +17.1%   14.8    24%     lynch, druckenmiller
+3    MU(Micron Techno…)       $1130B     7.49   7.7    7.0    8.6    🔵 매수         +15.7%   22.6    67%     buffett, lynch, fisher
+4    HIG(The Hartford …)      $37B       7.34   8.2    2.5    8.1    🔵 매수         +15.2%   9.4     22%     buffett, lynch, graham
+5    CINF(Cincinnati Fi…)     $26B       7.31   8.2    2.5    8.1    🔵 매수         +15.1%   8.0     22%     buffett, lynch, graham
+6    APA(APA Corporati…)      $15B       7.30   7.6    6.5    7.2    🔵 매수         +15.1%   9.2     27%     lynch, graham, druckenmiller
+7    MPC(Marathon Petr…)      $112B      7.22   6.5    9.0    6.2    🔵 매수         +14.8%   13.8    42%     lynch, druckenmiller
+8    ADBE(Adobe Inc.)         $102B      7.16   7.5    5.5    7.5    🔵 매수         +14.5%   14.7    63%     buffett, lynch, fisher
+9    DELL(Dell Technolo…)     $345B      7.15   4.8    10.0   5.3    🔵 매수         +14.5%   31.1    N/A     lynch, druckenmiller
+10   VLO(Valero Energy…)      $110B      7.07   6.2    9.0    6.1    🔵 매수         +14.2%   16.0    28%     lynch, druckenmiller
+11   CRM(Salesforce, I…)      $205B      7.03   6.2    9.0    7.3    🔵 매수         +14.1%   22.8    19%     lynch, druckenmiller, fisher
+12   ALL(Allstate Corp…)      $64B       7.02   7.7    3.5    7.5    🔵 매수         +14.1%   5.1     46%     buffett, lynch, graham
+13   COP(ConocoPhillips)      $162B      6.80   6.7    7.0    6.5    🔵 매수         +13.3%   17.9    14%     lynch, druckenmiller
+14   NVDA(NVIDIA Corpor…)     $5451B     6.79   7.3    5.5    8.1    🔵 매수         +13.3%   28.6    117%    buffett, lynch, fisher
+15   GDDY(GoDaddy Inc.)       $12B       6.71   6.9    5.5    7.4    🔵 매수         +13.0%   13.8    443%    buffett, lynch, fisher
+16   VEEV(Veeva Systems…)     $43B       6.71   5.7    9.0    6.5    🔵 매수         +13.0%   43.5    14%     buffett, druckenmiller, fisher
+17   NEM(Newmont Corpo…)      $134B      6.69   5.7    9.0    5.7    🔵 매수         +12.9%   16.0    26%     druckenmiller       
+18   INCY(Incyte Corpor…)     $25B       6.66   7.6    4.5    7.5    🔵 매수         +12.8%   15.8    31%     buffett, lynch, fisher
+19   HOOD(Robinhood Mar…)     $105B      6.62   5.2    10.0   6.1    🔵 매수         +12.7%   51.9    24%     druckenmiller, fisher
+20   PYPL(PayPal Holdin…)     $45B       6.61   6.8    5.5    6.6    🔵 매수         +12.6%   10.1    24%     buffett, lynch, graham
+21   WDC(Western Digit…)      $172B      6.54   7.6    4.0    7.9    🔵 매수         +12.4%   17.7    131%    buffett, lynch, fisher
+22   TROW(T. Rowe Price…)     $23B       6.51   7.2    2.5    7.0    🔵 매수         +12.3%   11.0    19%     buffett, graham, fisher
+23   SMCI(Super Micro C…)     $26B       6.46   7.3    9.5    7.5    🔵 매수         +12.1%   12.3    22%     lynch, druckenmiller
+24   EOG(EOG Resources…)      $76B       6.45   7.7    3.5    7.4    🔵 매수         +12.1%   11.3    22%     lynch, graham, fisher
+25   SNDK(Sandisk Corpo…)     $254B      6.33   6.7    5.5    7.7    🔵 매수         +11.7%   23.6    92%     buffett, lynch, fisher
+26   TRV(The Travelers…)      $76B       6.28   6.6    4.5    6.6    🔵 매수         +11.5%   9.8     26%     buffett, graham     
+27   REGN(Regeneron Pha…)     $83B       6.25   6.2    6.5    6.9    🔵 매수         +11.4%   20.1    14%     buffett, fisher     
+28   GPN(Global Paymen…)      $24B       6.23   5.2    7.5    5.1    🔵 매수         +11.3%   42.4    2%      lynch, druckenmiller
+29   GEN(Gen Digital I…)      $18B       6.21   6.1    7.0    6.5    🔵 매수         +11.2%   17.4    42%     buffett             
+30   IVZ(Invesco Ltd)         $14B       6.20   6.5    5.5    6.8    🔵 매수         +11.2%   9.9     -1%     lynch, graham       
+
+==================================================================================================================================
+📊 분석 요약
+   - 총 분석 종목: 503개
+   - 매수 추천 (strong_buy + buy): 89개
+   - 매도/회피 권장: 53개
+   - 매수 추천 종목 평균 점수 환산값: +10.2% (예상수익률 아님)
+   - 매수 추천 종목 평균 앙상블 점수: 6.46
+
+🔍 투자자 합의도 분석 (상위 30개)
+   - 높은 합의 (std<1.5): 4개
+   - 보통 합의 (std<2.5): 11개
+   - 낮은 합의 (std≥2.5): 15개 → PSX(Phillips 66), HIG(The Hartford …), CINF(Cincinnati Fi…), ADBE(Adobe Inc.), DELL(Dell Technolo…), ALL(Allstate Corp…), NVDA(NVIDIA Corpor…), VEEV(Veeva Systems…)
+
+👥 투자자별 강세 종목 (점수 ≥ 7)
+   - Warren Buffett: MU(Micron Techno…), HIG(The Hartford …), CINF(Cincinnati Fi…), ADBE(Adobe Inc.), ALL(Allstate Corp…) 외 22개
+   - Peter Lynch: CF(CF Industries…), PSX(Phillips 66), MU(Micron Techno…), HIG(The Hartford …), CINF(Cincinnati Fi…) 외 34개
+   - Ben Graham: CF(CF Industries…), HIG(The Hartford …), CINF(Cincinnati Fi…), APA(APA Corporati…), ALL(Allstate Corp…) 외 12개
+   - Druckenmiller: CF(CF Industries…), PSX(Phillips 66), APA(APA Corporati…), MPC(Marathon Petr…), DELL(Dell Technolo…) 외 11개
+   - Phil Fisher: CF(CF Industries…), MU(Micron Techno…), CINF(Cincinnati Fi…), ADBE(Adobe Inc.), CRM(Salesforce, I…) 외 19개
+
+⚠️ 투자 철학 불일치 경고 (알고리즘 vs 실제 투자자)
+   (알고리즘 점수가 높지만 실제 투자자 철학과 충돌 가능성)
+   - CF(CF Industries…): ⚠️ Buffett 높은점수(6.0) but 원자재/에너지 (철학 충돌)
+   - PSX(Phillips 66): ⚠️ 투자자 의견 분산 심함 (std=3.1): lynch(10.0) vs buffett(3.3)
+   - MU(Micron Techno…): ⚠️ Lynch 높은점수(10.0) but 메가캡($1130B, 10배 어려움)
+   - HIG(The Hartford …): ⚠️ 투자자 의견 분산 심함 (std=3.1): buffett(10.0) vs druckenmiller(2.8)
+   - CINF(Cincinnati Fi…): ⚠️ 투자자 의견 분산 심함 (std=3.1): buffett(10.0) vs druckenmiller(2.2)
+   - APA(APA Corporati…): ⚠️ Buffett 높은점수(6.0) but 원자재/에너지 (철학 충돌)
+   - ADBE(Adobe Inc.): ⚠️ 투자자 의견 분산 심함 (std=2.7): fisher(10.0) vs druckenmiller(3.2)
+   - DELL(Dell Technolo…): ⚠️ Lynch 높은점수(10.0) but 메가캡($345B, 10배 어려움)
+   - DELL(Dell Technolo…): ⚠️ 투자자 의견 분산 심함 (std=4.4): lynch(10.0) vs buffett(0.6)
+   - CRM(Salesforce, I…): ⚠️ Lynch 높은점수(7.9) but 메가캡($205B, 10배 어려움)
+   - ALL(Allstate Corp…): ⚠️ 투자자 의견 분산 심함 (std=2.8): buffett(10.0) vs druckenmiller(2.8)
+
+📏 시가총액별 매수 추천 분포
+   - 메가캡 (>$200B): 12개 (MU(Micron Techno…), DELL(Dell Technolo…), CRM(Salesforce, I…), NVDA(NVIDIA Corpor…), SNDK(Sandisk Corpo…) 외 7개)
+   - 대형주 ($10B-$200B): 76개 (CF(CF Industries…), PSX(Phillips 66), HIG(The Hartford …), CINF(Cincinnati Fi…), APA(APA Corporati…) 외 71개)
+   - 중형주 ($2B-$10B): 1개 (PODD(Insulet Corpo…))
+
+💾 캐시 통계: 503/2515 히트 (20%), API 호출 2012회 절감
+
+결과 저장됨: portfolios/sp500_20260909/sp500_predict.json

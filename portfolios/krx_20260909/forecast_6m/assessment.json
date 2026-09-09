@@ -1,0 +1,280 @@
+{
+  "as_of": "2026-09-09",
+  "horizon_end": "2027-03-09",
+  "horizon_trading_days_approx": 126,
+  "benchmark": "^KS11",
+  "portfolio_sha256": "6581d41a77210f79a7597e916e95b4b25200c8d1f05b0afabb5faf64a7b189bc",
+  "point_forecast_excess_return": null,
+  "calibrated_outperformance_probability": null,
+  "accuracy_status": "unvalidated",
+  "reason": "No independent same-pipeline six-month OOS alpha evidence; current joint history is too short for reliable calibration",
+  "cash_weight": 0.25,
+  "price_ranges": {
+    "003230": {
+      "first": "2020-01-02",
+      "last": "2026-09-09",
+      "observations": 1642
+    },
+    "062040": {
+      "first": "2024-07-29",
+      "last": "2026-09-09",
+      "observations": 514
+    },
+    "214450": {
+      "first": "2020-01-02",
+      "last": "2026-09-09",
+      "observations": 1642
+    },
+    "483650": {
+      "first": "2025-05-22",
+      "last": "2026-09-09",
+      "observations": 319
+    },
+    "326030": {
+      "first": "2020-07-02",
+      "last": "2026-09-09",
+      "observations": 1518
+    },
+    "^KS11": {
+      "first": "2020-01-02",
+      "last": "2026-09-09",
+      "observations": 1640
+    }
+  },
+  "common_observations": 318,
+  "available_nonoverlapping_six_month_blocks": 2,
+  "six_month_blocks_after_one_126_day_training_block": 1,
+  "risk_diagnostics": {
+    "63": {
+      "observations": 63,
+      "first_return": "2026-06-11",
+      "last_return": "2026-09-09",
+      "beta": 0.1482035976552036,
+      "correlation": 0.30542058482764894,
+      "portfolio_annualized_volatility": 0.35876428910083313,
+      "benchmark_annualized_volatility": 0.7393477670317872,
+      "active_annualized_volatility": 0.7164637833061,
+      "active_six_month_sqrt_time_scale": 0.5066163996503125,
+      "residual_six_month_sqrt_time_scale": 0.2415629875196408,
+      "historical_daily_intercept_not_forecast": 0.0013510353755183824
+    },
+    "126": {
+      "observations": 126,
+      "first_return": "2026-03-10",
+      "last_return": "2026-09-09",
+      "beta": 0.23237088693428268,
+      "correlation": 0.4283463096378148,
+      "portfolio_annualized_volatility": 0.3555683136848,
+      "benchmark_annualized_volatility": 0.655445167854005,
+      "active_annualized_volatility": 0.5969759113376036,
+      "active_six_month_sqrt_time_scale": 0.4221257151118387,
+      "residual_six_month_sqrt_time_scale": 0.22719110219564675,
+      "historical_daily_intercept_not_forecast": 0.0010794661381572134
+    },
+    "252": {
+      "observations": 252,
+      "first_return": "2025-08-28",
+      "last_return": "2026-09-09",
+      "beta": 0.31457680316028996,
+      "correlation": 0.506997610920581,
+      "portfolio_annualized_volatility": 0.33125852166892045,
+      "benchmark_annualized_volatility": 0.5338832278667733,
+      "active_annualized_volatility": 0.4641498015069429,
+      "active_six_month_sqrt_time_scale": 0.32820347213194934,
+      "residual_six_month_sqrt_time_scale": 0.20189838982371752,
+      "historical_daily_intercept_not_forecast": -0.0007614624385530725
+    },
+    "all_common": {
+      "observations": 318,
+      "first_return": "2025-05-23",
+      "last_return": "2026-09-09",
+      "beta": 0.32285713809440886,
+      "correlation": 0.4836113713828342,
+      "portfolio_annualized_volatility": 0.32160839669984137,
+      "benchmark_annualized_volatility": 0.4817408674754597,
+      "active_annualized_volatility": 0.43087418025804747,
+      "active_six_month_sqrt_time_scale": 0.3046740546986602,
+      "residual_six_month_sqrt_time_scale": 0.1990493633733463,
+      "historical_daily_intercept_not_forecast": 0.00018189799314647357
+    }
+  },
+  "individual_risk": {
+    "003230": {
+      "beta_252": 0.13878598169717496,
+      "weight": 0.15
+    },
+    "062040": {
+      "beta_252": 0.9936113729639491,
+      "weight": 0.15
+    },
+    "214450": {
+      "beta_252": 0.3688254190365702,
+      "weight": 0.15
+    },
+    "483650": {
+      "beta_252": 0.16068367923404397,
+      "weight": 0.15
+    },
+    "326030": {
+      "beta_252": 0.4352722348035283,
+      "weight": 0.15
+    }
+  },
+  "bootstrap_sensitivity": {
+    "scope": "Parameter sensitivity under resampling, not a future prediction interval or accuracy score",
+    "samples": 2000,
+    "block_length": 20,
+    "beta_quantiles_05_50_95": [
+      0.2223302842421783,
+      0.32753114726376314,
+      0.4668869471911372
+    ],
+    "six_month_risk_scale_quantiles_05_50_95": [
+      0.23525818148055425,
+      0.3011024016183078,
+      0.3729289403020363
+    ]
+  },
+  "scenarios": [
+    {
+      "market_return": -0.2,
+      "cash_annual_rate_assumption": 0,
+      "cash_six_month_return": 0.0,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": -0.15000000000000002,
+      "portfolio_minus_kospi": 0.04999999999999999,
+      "required_equity_basket_outperformance_to_match_kospi": -0.06666666666666667,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.0875,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.125
+    },
+    {
+      "market_return": -0.1,
+      "cash_annual_rate_assumption": 0,
+      "cash_six_month_return": 0.0,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": -0.07500000000000001,
+      "portfolio_minus_kospi": 0.024999999999999994,
+      "required_equity_basket_outperformance_to_match_kospi": -0.03333333333333333,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.0625,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.1
+    },
+    {
+      "market_return": 0,
+      "cash_annual_rate_assumption": 0,
+      "cash_six_month_return": 0.0,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.0,
+      "portfolio_minus_kospi": 0.0,
+      "required_equity_basket_outperformance_to_match_kospi": 0.0,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.037500000000000006,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.07500000000000001
+    },
+    {
+      "market_return": 0.05,
+      "cash_annual_rate_assumption": 0,
+      "cash_six_month_return": 0.0,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.037500000000000006,
+      "portfolio_minus_kospi": -0.012499999999999997,
+      "required_equity_basket_outperformance_to_match_kospi": 0.016666666666666666,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.02500000000000001,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.06250000000000001
+    },
+    {
+      "market_return": 0.1,
+      "cash_annual_rate_assumption": 0,
+      "cash_six_month_return": 0.0,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.07500000000000001,
+      "portfolio_minus_kospi": -0.024999999999999994,
+      "required_equity_basket_outperformance_to_match_kospi": 0.03333333333333333,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.012500000000000011,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.05000000000000002
+    },
+    {
+      "market_return": 0.2,
+      "cash_annual_rate_assumption": 0,
+      "cash_six_month_return": 0.0,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.15000000000000002,
+      "portfolio_minus_kospi": -0.04999999999999999,
+      "required_equity_basket_outperformance_to_match_kospi": 0.06666666666666667,
+      "portfolio_gap_if_basket_outperforms_by_5pp": -0.012499999999999983,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.025000000000000022
+    },
+    {
+      "market_return": -0.2,
+      "cash_annual_rate_assumption": 0.03,
+      "cash_six_month_return": 0.014889156509221957,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": -0.14627771087269453,
+      "portfolio_minus_kospi": 0.05372228912730548,
+      "required_equity_basket_outperformance_to_match_kospi": -0.07162971883640731,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.09122228912730548,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.1287222891273055
+    },
+    {
+      "market_return": -0.1,
+      "cash_annual_rate_assumption": 0.03,
+      "cash_six_month_return": 0.014889156509221957,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": -0.07127771087269452,
+      "portfolio_minus_kospi": 0.028722289127305484,
+      "required_equity_basket_outperformance_to_match_kospi": -0.03829638550307399,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.06622228912730549,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.1037222891273055
+    },
+    {
+      "market_return": 0,
+      "cash_annual_rate_assumption": 0.03,
+      "cash_six_month_return": 0.014889156509221957,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.0037222891273054892,
+      "portfolio_minus_kospi": 0.0037222891273054892,
+      "required_equity_basket_outperformance_to_match_kospi": -0.004963052169740652,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.041222289127305495,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.0787222891273055
+    },
+    {
+      "market_return": 0.05,
+      "cash_annual_rate_assumption": 0.03,
+      "cash_six_month_return": 0.014889156509221957,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.041222289127305495,
+      "portfolio_minus_kospi": -0.008777710872694508,
+      "required_equity_basket_outperformance_to_match_kospi": 0.011703614496926015,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.028722289127305498,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.0662222891273055
+    },
+    {
+      "market_return": 0.1,
+      "cash_annual_rate_assumption": 0.03,
+      "cash_six_month_return": 0.014889156509221957,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.0787222891273055,
+      "portfolio_minus_kospi": -0.021277710872694505,
+      "required_equity_basket_outperformance_to_match_kospi": 0.02837028116359268,
+      "portfolio_gap_if_basket_outperforms_by_5pp": 0.0162222891273055,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.053722289127305506
+    },
+    {
+      "market_return": 0.2,
+      "cash_annual_rate_assumption": 0.03,
+      "cash_six_month_return": 0.014889156509221957,
+      "equity_basket_outperformance_assumption": 0,
+      "portfolio_return": 0.1537222891273055,
+      "portfolio_minus_kospi": -0.0462777108726945,
+      "required_equity_basket_outperformance_to_match_kospi": 0.06170361449692602,
+      "portfolio_gap_if_basket_outperforms_by_5pp": -0.008777710872694494,
+      "portfolio_gap_if_basket_outperforms_by_10pp": 0.02872228912730551
+    }
+  ],
+  "assumptions": [
+    "Current weights applied to individual daily returns only to estimate current exposure, not to backtest selection performance",
+    "Scenarios use initial weights held over six months; no assumed interim rebalance",
+    "KOSPI price returns; stock dividends, trading costs and tax omitted and must be added for realized total-return comparison",
+    "Cash 0% and 3% annual rates are sensitivities, not offered rates",
+    "Square-root time scaling is descriptive; not a calibrated confidence interval or guaranteed loss bound",
+    "Historical regression intercept is not extrapolated; its sign changes across windows"
+  ]
+}

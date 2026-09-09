@@ -1,0 +1,12 @@
+{
+  "checked_at_utc": "2026-09-09T10:23:21.209721+00:00",
+  "workbook": "C:\\projects\\ai-hedge-fund\\outputs\\01a08599-dd56-71d0-8f8e-c239feafefd1\\sp500_20260909_portfolio.xlsx",
+  "sha256": "dd3710998055f139efe44f09eeea13acba09da0b3ec31f00c10ffadc1c7dbd00",
+  "status": "pass",
+  "sheet_count": 4,
+  "rankings_matched": 503,
+  "independent_analyses_matched": 90,
+  "weights_and_cached_total_matched": true,
+  "formula_error_cells": [],
+  "native_excel_execution": "not_performed"
+}

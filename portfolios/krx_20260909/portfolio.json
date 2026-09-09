@@ -1,0 +1,309 @@
+{
+  "analysis_date": "2026-09-09",
+  "weights": {
+    "003230": 0.15,
+    "062040": 0.15,
+    "214450": 0.15,
+    "483650": 0.15,
+    "326030": 0.15
+  },
+  "cash_weight": 0.25,
+  "methodology": "predict_consensus_risk_adjusted_caps_dynamic_market_cash",
+  "market_regime": {
+    "formula_version": "market-regime-cash-v1",
+    "benchmark": "^KS11",
+    "as_of_date": "2026-09-08",
+    "data_quality": "complete",
+    "observations": 267,
+    "regime": "risk_on",
+    "target_cash_weight": 0.0778,
+    "target_equity_weight": 0.9222,
+    "scores": {
+      "overheat": 0.423659,
+      "fear": 0.520589,
+      "outlook": 1.0
+    },
+    "components": {
+      "overheat": {
+        "distance_above_200d": 0.611845,
+        "rsi": 0.174991,
+        "six_month_momentum": 0.484143
+      },
+      "fear": {
+        "drawdown": 0.713577,
+        "rsi": 0.0,
+        "realized_volatility": 0.848188
+      },
+      "outlook": {
+        "price_vs_200d": 1.0,
+        "50d_vs_200d": 1.0,
+        "six_month_momentum": 1.0
+      }
+    },
+    "metrics": {
+      "close": 6954.52001953125,
+      "sma_50": 6883.185263671875,
+      "sma_200": 6090.963470458984,
+      "distance_to_sma_200": 0.14177667511231884,
+      "sma_50_to_sma_200": 0.13006510333794408,
+      "momentum_126": 0.24524292841271933,
+      "rsi_14": 63.49981221110581,
+      "drawdown_from_252d_peak": -0.23698699677359525,
+      "realized_volatility_20": 0.4544564977661123
+    },
+    "rationale": [
+      "가격의 장기 추세 이격·RSI·6개월 상승률이 과열 현금 확대 요인",
+      "낙폭·과매도·실현변동성의 공포 점수가 현금 확대 폭을 상쇄",
+      "200일 추세·50/200일 추세·6개월 모멘텀이 긍정적이라 현금 축소"
+    ]
+  },
+  "constraints": {
+    "max_name": 0.15,
+    "max_sector": 0.35,
+    "min_name": 0.02,
+    "market_cash_target": 0.0778
+  },
+  "research_provenance": {
+    "workflow": [
+      "predict",
+      "independent_investor_analysis",
+      "risk_snapshot",
+      "portfolio_report"
+    ],
+    "analysis_date": "2026-09-09",
+    "risk_as_of": "2026-09-09",
+    "factor_evidence_mode": "prior_only",
+    "factor_spec_id": "predict_factor_v1",
+    "provider_readiness": {
+      "schema_version": 1,
+      "contract_id": "provider_readiness_v1",
+      "mode": "sampled",
+      "source": "C:\\projects\\ai-hedge-fund\\portfolios\\krx_20260909\\provider_readiness.json",
+      "market_scope": "krx",
+      "analysis_date": "2026-09-09",
+      "requested_as_of": "2026-09-09",
+      "all_samples_ready": false,
+      "provider_status": {
+        "dart": {
+          "status": "ready",
+          "data_as_of": "2026-09-09T09:57:55.305303+00:00",
+          "sample_size": 1,
+          "historical_ranking_use": "conditional_on_filing_vintage",
+          "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+        },
+        "krx_open_api": {
+          "status": "empty_sample",
+          "data_as_of": "2026-09-09",
+          "sample_size": 0,
+          "historical_ranking_use": "prices_only_after_trade_date_alignment",
+          "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+        },
+        "finance_data_reader": {
+          "status": "ready",
+          "data_as_of": "2026-09-09",
+          "sample_size": 11,
+          "historical_ranking_use": "prices_only; current listing is not historical membership",
+          "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+        },
+        "pykrx": {
+          "status": "empty_sample",
+          "data_as_of": null,
+          "sample_size": 0,
+          "historical_ranking_use": "prices_and_valuations_only_after_as_of_checks; membership needs archived vintage",
+          "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+        },
+        "naver_news": {
+          "status": "auth_failed",
+          "data_as_of": null,
+          "sample_size": 0,
+          "historical_ranking_use": "not_allowed_without_archived_point_in_time_corpus",
+          "ranking_evidence_value": "missing_evidence_not_numeric_zero"
+        }
+      },
+      "ranking_policy": "missing_evidence_requires_prior_or_explanation_only"
+    },
+    "news_ranking_policy": "risk_and_explanation_only",
+    "validation_scope": {
+      "factor_validation_end": null,
+      "provider_requested_as_of": "2026-09-09",
+      "news_accuracy_validated": false
+    },
+    "limitations": [
+      "educational research only; no orders, capital movement, or return guarantee",
+      "predict factors are prior_only or lack applicable OOS evidence",
+      "one or more applicable providers are missing, failed, or unsampled",
+      "news is risk_and_explanation_only and does not change ranking",
+      "KRX index membership failed; the existing fallback selects market cap top 200 KOSPI and top 150 KOSDAQ, including some preferred shares.",
+      "KRX market cap uses 2026-09-08; current valuation uses a dated Naver snapshot, annual factors mainly use 2025 DART filings.",
+      "Predict annual metrics omit some cash-flow and R&D fields; independent analysis separately considers complete DART annual and half-year statements where available.",
+      "Independent analyst confidence is heuristic, not a calibrated probability of profit.",
+      "API/news missing evidence and current metadata do not establish historical or out-of-sample performance."
+    ],
+    "universe": {
+      "kind": "current_market_cap_proxy_not_official_index_membership",
+      "as_of": "2026-09-08",
+      "kospi": 200,
+      "kosdaq": 150,
+      "total": 350
+    },
+    "data_quality": "partial",
+    "price_ranges": {
+      "000500": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "000660": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "001450": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "003230": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "005830": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "007660": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "008930": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "031980": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "035900": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "036830": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "039200": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "041510": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "053610": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "062040": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "078930": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "083650": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "095340": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "096770": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "101490": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "124500": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "128940": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "214150": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "214450": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "257720": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "326030": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "327260": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "402340": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "425420": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "462870": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "483650": {
+        "first": "2025-08-05",
+        "last": "2026-09-09",
+        "observations": 268
+      },
+      "^KS11": {
+        "first": "2025-08-05",
+        "last": "2026-09-08",
+        "observations": 267
+      }
+    },
+    "benchmark_as_of": "2026-09-08"
+  }
+}

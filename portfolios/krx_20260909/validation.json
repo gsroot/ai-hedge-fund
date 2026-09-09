@@ -1,0 +1,195 @@
+{
+  "status": "passed_local_artifact_checks",
+  "portfolio_quality_validated": false,
+  "universe_count": 350,
+  "ranked_count": 350,
+  "independent_opinions": 90,
+  "included_count": 5,
+  "weights_total": 1.0,
+  "sector_weights": {
+    "Consumer Staples": 0.3,
+    "Industrials": 0.15,
+    "Healthcare": 0.3
+  },
+  "cash_weight": 0.25,
+  "market_cash_target": 0.0778,
+  "price_dates": {
+    "000500": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "000660": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "001450": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "003230": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "005830": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "007660": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "008930": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "031980": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "035900": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "036830": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "039200": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "041510": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "053610": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "062040": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "078930": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "083650": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "095340": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "096770": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "101490": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "124500": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "128940": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "214150": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "214450": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "257720": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "326030": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "327260": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "402340": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "425420": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "462870": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "483650": {
+      "first": "2025-08-05",
+      "last": "2026-09-09",
+      "observations": 268
+    },
+    "^KS11": {
+      "first": "2025-08-05",
+      "last": "2026-09-08",
+      "observations": 267
+    }
+  },
+  "checks": [
+    "input universe",
+    "news preserves rank and score",
+    "90 independent opinions",
+    "filing and price as-of cutoffs",
+    "raw price volatility recomputation",
+    "raw price correlation recomputation",
+    "correlation symmetry and bounds",
+    "majority and insufficient-data exclusions",
+    "single name cap",
+    "sector cap",
+    "minimum weights",
+    "serialized total",
+    "cash floor"
+  ],
+  "unverified": [
+    "factor OOS",
+    "full pipeline OOS",
+    "independent human news labels and holdout",
+    "realized performance",
+    "native Excel application execution"
+  ]
+}
