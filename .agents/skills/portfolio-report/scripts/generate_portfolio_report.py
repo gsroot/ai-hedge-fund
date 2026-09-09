@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -483,6 +484,7 @@ def write_portfolio_json(
 ) -> None:
     payload = {
         "analysis_date": analysis_date,
+        "decision_mode": "legacy_score_allocation",
         "weights": {item["ticker"]: round(item["weight"] / 100, 6) for item in included},
         "cash_weight": round(cash_weight / 100, 6),
         "methodology": "predict_consensus_risk_adjusted_caps_dynamic_market_cash",
@@ -976,7 +978,7 @@ def print_report(
             print(f"  {item['ticker']:<6}: predict 합의도 {item['investor_consensus']['level']} (std={item['investor_consensus']['std']})")
     print()
     print("══════════════════════════════════════════════════════════════════════════════════════════════")
-    print("💡 이 리포트는 교육/연구 목적이며 실제 투자 결정의 근거가 될 수 없습니다.")
+    print("💡 현재 자료와 가정에 따른 연구 목적의 추천이며 미래 성과는 미확정입니다. 방식: legacy 점수 배분")
     print("   predict: 다중 팩터 순위 | investor-analysis: 독립 입력 결과")
     if output_path:
         print(f"   엑셀 리포트: {output_path}")
@@ -994,6 +996,8 @@ def main() -> None:
     parser.add_argument("--xlsx", default="yes")
     parser.add_argument("--output-dir", default="portfolios")
     parser.add_argument("--portfolio-json", help="백테스트용 목표비중 JSON 저장 경로")
+    parser.add_argument("--decision-json", help="현재 AI가 작성한 최종 투자 판단 JSON (새 기본 스킬 흐름)")
+    parser.add_argument("--snapshot-dir", help="추천별 변경 불가능한 스냅샷 디렉터리")
     args = parser.parse_args()
 
     requested = [token.strip() for token in args.investors.split(",") if token.strip()]
@@ -1012,6 +1016,21 @@ def main() -> None:
     analysis_date = payload.get("analysis_date")
     if not analysis_date:
         parser.error("predict JSON에 analysis_date가 없습니다.")
+    if args.decision_json:
+        script_dir = str(Path(__file__).resolve().parent)
+        if script_dir not in sys.path:
+            sys.path.insert(0, script_dir)
+        from decision_report import run_decision_report
+
+        try:
+            independent_analyses = load_investor_analyses(Path(args.investor_json), analysis_date)
+            risk_snapshot = load_risk_snapshot(Path(args.risk_json), analysis_date)
+            result = run_decision_report(args, payload, independent_analyses, risk_snapshot, investors)
+        except (ValueError, KeyError, TypeError, FileExistsError) as exc:
+            parser.error(str(exc))
+        if result["status"] not in {"ready", "conditional"}:
+            raise SystemExit(2)
+        return
     sectors = fetch_sectors(top_stocks, analysis_date)
     independent_analyses = load_investor_analyses(Path(args.investor_json), analysis_date)
 

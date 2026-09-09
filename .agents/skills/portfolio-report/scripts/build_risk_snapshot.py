@@ -42,6 +42,21 @@ def _price_row_date(row: dict) -> object | None:
     return row.get("date") or row.get("time")
 
 
+def _bounded_closes(rows, analysis_date, start_date=None):
+    cutoff = pd.Timestamp(analysis_date).date()
+    start = pd.Timestamp(start_date).date() if start_date else None
+    values = {}
+    for row in rows:
+        day = _price_row_date(row)
+        value = row.get("close")
+        if day is None or value is None:
+            continue
+        stamp = pd.Timestamp(day)
+        if stamp.date() <= cutoff and (start is None or stamp.date() >= start) and math.isfinite(float(value)) and float(value) > 0:
+            values[pd.Timestamp(stamp.date())] = float(value)
+    return pd.Series(values, dtype=float).sort_index()
+
+
 def build_risk_snapshot(
     tickers: list[str],
     analysis_date: str,
@@ -54,13 +69,11 @@ def build_risk_snapshot(
     close_series = {}
     dropped = {}
     for ticker in tickers:
-        rows = get_prices(ticker, start_date, analysis_date)
-        values = {
-            pd.Timestamp(_price_row_date(row)): float(row["close"])
-            for row in rows
-            if _price_row_date(row) and row.get("close") is not None
-        }
-        series = pd.Series(values, dtype=float).sort_index()
+        try:
+            series = _bounded_closes(get_prices(ticker, start_date, analysis_date), analysis_date, start_date)
+        except Exception as exc:
+            dropped[ticker] = f"provider_error:{type(exc).__name__}"
+            continue
         if len(series) < min_observations + 1:
             dropped[ticker] = f"가격 관측치 부족 ({len(series)})"
             continue
@@ -95,15 +108,9 @@ def build_risk_snapshot(
         }
         for ticker in correlation_df.columns
     }
-    benchmark_rows = get_prices(benchmark, start_date, analysis_date)
-    benchmark_closes = pd.Series(
-        {
-            pd.Timestamp(_price_row_date(row)): float(row["close"])
-            for row in benchmark_rows
-            if _price_row_date(row) and row.get("close") is not None
-        },
-        dtype=float,
-    ).sort_index()
+    benchmark_closes = close_series.get(benchmark)
+    if benchmark_closes is None:
+        benchmark_closes = _bounded_closes(get_prices(benchmark, start_date, analysis_date), analysis_date, start_date)
     market_regime = assess_market_regime(
         benchmark_closes,
         benchmark=benchmark,
@@ -127,6 +134,7 @@ def main() -> None:
     parser.add_argument("--lookback-days", type=int, default=400)
     parser.add_argument("--min-observations", type=int, default=60)
     parser.add_argument("--benchmark", help="시장 국면 벤치마크. 생략 시 predict 인덱스에 따라 선택")
+    parser.add_argument("--extra-tickers", default="", help="독립 분석할 ETF 등 추가 대상, 콤마 구분")
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
@@ -135,6 +143,7 @@ def main() -> None:
     if not analysis_date:
         parser.error("predict JSON에 analysis_date가 없습니다.")
     tickers = [item["ticker"] for item in payload.get("rankings", [])[: args.top]]
+    tickers = list(dict.fromkeys(tickers + [t.strip().upper() for t in args.extra_tickers.split(",") if t.strip()]))
     if not tickers:
         parser.error("predict JSON에 분석할 rankings가 없습니다.")
     if args.lookback_days <= 0 or args.min_observations < 2:

@@ -1,6 +1,8 @@
 # AI Hedge Fund
 
-This is a proof of concept for an AI-powered hedge fund.  The goal of this project is to explore the use of AI to make trading decisions.  This project is for **educational** purposes only and is not intended for real trading or investment.
+This is a research proof of concept for AI-assisted investment decisions. The portfolio skills recommend stocks, ETFs and cash allocations from current evidence and user constraints, seeking better long-term compounding decisions. The system does not execute trades or guarantee returns.
+
+The default portfolio skill combines independent analyses with explicit investment judgment. Scores inform research; they do not automatically set weights. Recommendations record price assumptions, alternatives, sizing reasons and review conditions. Historical performance evidence is reported separately from the current recommendation. See [portfolio-report](.agents/skills/portfolio-report/SKILL.md) for the decision workflow and prospective evaluation. Existing score-allocation reports remain reproducible through the legacy CLI path.
 
 This system employs several agents working together:
 
@@ -33,8 +35,8 @@ Note: the system does not actually make any trades.
 
 This project is for **educational and research purposes only**.
 
-- Not intended for real trading or investment
-- No investment advice or guarantees provided
+- Research recommendations support decisions; this system does not execute trades or move funds
+- No regulated advisory service or future performance guarantees provided
 - Creator assumes no liability for financial losses
 - Consult a financial advisor for investment decisions
 - Past performance does not indicate future results

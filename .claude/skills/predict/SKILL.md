@@ -14,6 +14,11 @@ description: |
 학습·캘리브레이션된 미래 수익률 예측이 아니다. 이를 “예상수익률”이나
 “1년 뒤 수익률”로 보고하지 않는다.
 
+순위는 조사 우선순위이며 최종 투자 비중을 결정하지 않는다. 포트폴리오 요청에서는
+독립 investor-analysis와 risk snapshot을 거쳐 portfolio-report의 명시적 판단 경로로
+종목·ETF·현금을 비교한다. `prior_only`나 OOS 부재만으로 현재 추천을 중단하지 않는다.
+ETF는 회사 전용 팩터 순위에 강제로 넣지 않고 별도 대안으로 분석한다.
+
 ## 입력 해석
 
 - 인덱스: `sp500`, `nasdaq100`, `kospi`, `kosdaq`, `kospi200`, `kosdaq150`, `krx`

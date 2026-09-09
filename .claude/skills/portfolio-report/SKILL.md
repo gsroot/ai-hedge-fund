@@ -1,141 +1,101 @@
 ---
 name: portfolio-report
 description: |
-  predict 상대 순위와 독립 investor-analysis 결과를 결합해 제약식 포트폴리오와
-  시장 국면에 따른 동적 현금비중, 선택적 엑셀 리포트를 만든다.
-  사용 시점: "투자 리포트", "포트폴리오 구성",
-  "상위 종목 심층 분석", "버핏·린치 관점 포트폴리오", "엑셀 투자 리포트".
+  현재 자료와 독립 투자 분석으로 개별 주식·ETF·현금의 최선이라고 판단하는 비중을
+  추천하고 선택 근거·가격 가정·재검토 조건과 보고서·사후 평가를 남긴다.
+  사용 시점: 포트폴리오 구성, 투자 비중 추천, 현금 비중 판단, 엑셀 투자 리포트.
 ---
 
 # Portfolio Report
 
-`predict → investor-analysis → portfolio-report` 순서로 사용한다. predict의
-투자자 점수를 별도의 심층 분석인 것처럼 복제하지 않는다.
+사용자의 자금 사용 조건과 위험 감내 범위 안에서 **장기 복리 성과를 최대한 높일
+현재의 선택**을 추천한다. 개별 종목·ETF·현금과 목표 비중을 끝까지 판단한다.
+어느 자산 유형도 자동 우선하지 않는다. 기존 포트폴리오를 유지하는 결정도 대안이다.
 
-이 경로는 설명 가능한 연구 후보를 만드는 휴리스틱이며, SEC 다중팩터
-워크포워드와 동일한 methodology가 아니다. 다른 전략의 좋은 백테스트를 이
-리포트의 검증 근거로 전용하지 않는다. 수익률 최대화 또는 실전 배포를 주장하려면
-이 정확한 `predict + investor-analysis + risk adjustment + caps` 파이프라인 자체를
-point-in-time으로 다시 실행한 독립 OOS 결과가 필요하다.
+현재 추천과 실증 성과의 입증은 별개다. `prior_only`, OOS 부재, 미래 수익을 보장할
+수 없다는 이유만으로 추천을 거절하거나 주식 비중을 자동 줄이지 않는다. 정량 순위·
+confidence·설명 길이를 예상 수익이나 최적 비중의 증거로 삼지 않는다.
+선택한 안을 그 시점의 가장 추천하는 안으로 제시하고 판단을 바꿀 조건도 설명한다.
 
-## 입력
+## 새 추천 흐름
 
-- 상위 종목 수: 기본 30
-- 투자자: 기본 `buffett,lynch,fisher`; `all`은 12명
-- 엑셀: 기본 생성
-- `predict JSON`: 필수
-- 종목별 독립 `investor-analysis JSON`: 필수
-- 동일 기준일의 변동성·상관·시장 국면 `risk JSON`: 필수
+`predict -> independent investor-analysis -> risk snapshot -> portfolio-report` 순서를 지킨다.
+새 추천을 만들 때 [판단 입력 계약](references/decision_contract.md)을 읽는다.
 
-지원 식별자:
-
-`buffett,munger,damodaran,lynch,graham,fisher,druckenmiller,pabrai,burry,ackman,jhunjhunwala,wood`
-
-## 워크플로우
-
-1. `predict`로 후보 유니버스의 상대 순위를 JSON으로 저장한다.
-2. 상위 N개 각각을 선택한 투자자 관점에서 독립 분석한다.
-3. 분석 결과를 다음 구조로 저장한다.
-
-```json
-{
-  "analysis_date": "YYYY-MM-DD",
-  "analyses": {
-    "AAPL": {
-      "buffett": {"signal": "bullish", "confidence": 78, "reasoning": "...", "data_quality": "complete"},
-      "lynch": {"signal": "neutral", "confidence": 61, "reasoning": "...", "data_quality": "partial"}
-    }
-  }
-}
-```
-
-4. predict 후보와 해당 시장 벤치마크의 기준일까지 가격으로 risk snapshot을 만든다.
-   `sp500=SPY`, `nasdaq100=QQQ`, `kospi/kospi200/krx=^KS11`,
-   `kosdaq/kosdaq150=^KQ11`을 기본 사용한다. custom 유니버스는 `--benchmark`를
-   명시한다.
+1. 대화에서 알려진 목표·사용 시점·필요액·통화·손실 제약·기존 보유를 정리한다.
+   전략의 장기 목표와 평가 기간을 구분하고 알려진 지출 제약을 보존한다.
+   미상 값은 가정과 조건부 배분으로 명시하고 중요한 부족 정보만 질문한다.
+2. `predict`로 요청 유니버스의 순위를 저장한다. 순위는 조사 우선순위이며 최종 비중이 아니다.
+   ETF는 별도 후보로 추가하고 운용사 자료로 구성·보수·통화·집중도·레버리지를 확인한다.
+   ETF에 개별 기업용 ROE 등의 지표를 강제로 적용하지 않는다.
+3. 선택한 투자자 관점에서 후보를 독립 분석한다. 기본은 `buffett,lynch,fisher`이며 필요한
+   관점은 바꿀 수 있다. 다른 관점의 결론이나 최종 비중을 보면서 작성하지 않는다.
+   [분석 JSON 형식](references/decision_contract.md#독립-분석)을 따른다.
+4. 같은 기준일로 주식·편입/비교 ETF의 위험 스냅샷을 만든다.
 
 ```bash
 uv run python .agents/skills/portfolio-report/scripts/build_risk_snapshot.py \
-  --predict-json results.json --top 30 --output risk.json
+  --predict-json results.json --top 30 --extra-tickers SPY,VOO \
+  --benchmark SPY --output risk.json
 ```
 
-5. 리포트 생성기를 실행한다. 요청 투자자 중 하나라도 종목별 분석이 누락되면
-   생성기는 실패한다. 임의 중립값이나 predict 점수로 보충하지 않는다.
+5. 현재 스킬을 실행하는 AI가 원자료·독립 의견·위험을 종합해 `decision.json`을 작성한다.
+   별도 외부 LLM API를 추가로 호출할 필요는 없다. 기업 공시/IR·운용사 자료를 우선하고
+   자료 기준일·공시일·조회일과 출처를 남긴다. [예시 JSON](references/decision_example.json)은
+   가상 테스트 자료다. 실제 종목·가격·목표 비중으로 교체하며 예시 숫자를 추천으로 복제하지 않는다.
+6. 검증기와 보고서 생성기를 실행한다. 위반이 있으면 이유를 확인하고 판단안을 수정한다.
+   유효한 선택을 코드가 점수 공식으로 덮어쓰거나 잔액을 현금으로 자동 확정하지 않는다.
 
 ```bash
 uv run python .agents/skills/portfolio-report/scripts/generate_portfolio_report.py \
-  --predict-json results.json \
-  --investor-json investor_results.json \
-  --risk-json risk.json \
-  --top 30 \
-  --investors buffett,lynch,fisher \
-  --xlsx yes \
-  --portfolio-json portfolios/portfolio.json \
-  --output-dir portfolios
+  --predict-json results.json --investor-json investor_results.json --risk-json risk.json \
+  --decision-json decision.json --investors buffett,lynch,fisher \
+  --portfolio-json portfolios/current.json --output-dir portfolios \
+  --snapshot-dir portfolios/decisions --xlsx yes
 ```
 
-## 포트폴리오 규칙
+## 최종 판단에서 할 일
 
-1. 선택 투자자의 과반이 `bullish`인 종목만 후보에 남긴다.
-2. 원시 비중 점수는 `predict total_score × 독립 분석 confidence × bullish 합의율`을
-   연환산 변동성과 후보 간 평균 양의 상관으로 조정한다.
-3. 단일 종목 최대 15%, 단일 섹터 최대 35%, 최소 종목 비중 2%다.
-4. 시장 현금 목표는 15%를 기준으로 과열 점수와 부정 전망이 높을수록 늘리고,
-   공포 점수와 긍정 전망이 높을수록 줄인다. 결과는 0~50% 범위다.
-   - 과열: 200일선 이격, RSI, 6개월 상승률
-   - 공포: 252일 고점 낙폭, RSI 과매도, 20일 실현변동성
-   - 전망: 가격/200일선, 50/200일선, 6개월 모멘텀
-5. 공포와 부정 전망이 동시에 발생하면 두 효과를 상쇄한다. 공포가 크다는 이유만으로
-   하락 추세를 무시하거나, 추세가 나쁘다는 이유만으로 공포 구간의 주식을 전부
-   현금화하지 않는다.
-6. 종목·섹터 상한 때문에 목표 주식비중을 채우지 못하면 남은 비중도 현금이다.
-   실제 현금은 시장 목표보다 많을 수 있지만 적을 수는 없다. 제약을 깨면서
-   다시 100%로 정규화하지 않는다.
-7. 과거 분석일에는 현재 Yahoo 섹터를 끼워 넣지 않는다. predict JSON에 당시 섹터가
-   없으면 `Unknown`으로 두며 Unknown 묶음에도 섹터 상한을 적용한다.
-8. `score_implied_return_pct`는 예상수익률이 아니다. 리포트에서는 “점수 환산값”과
-   “점수 환산 기여값”으로만 표시한다.
+- **선택과 가격:** 지금 가격에서 사업 전망·가치·현금흐름을 평가하고 다른 종목·ETF·현금과
+  비교해 선택/제외 이유를 쓴다. 매력적인 회사와 매력적인 매수가를 구분한다.
+- **반대 근거:** 중요한 하방 경로와 판단이 틀렸음을 드러낼 사건·가격 조건을 쓴다.
+  일부 관점의 `insufficient`는 자료의 한계다. 치명적인 공백인지 설명하고 다른 유효한
+  근거가 있으면 선택할 수 있다. 실패한 가격을 0이나 약세 신호로 바꾸지 않는다.
+- **비중:** 기대와 하방의 비대칭, 근거의 질, 보유 간 중복, 유동성을 종합한다.
+  기본 정책은 개별 주식 15%, 직접 주식 섹터 35%, 분산 비레버리지 ETF 100% 상한이다.
+  이 수치가 최적이라고 주장하지 않는다. 사용자 한도를 지키고 기본값 조정은 이유와 함께
+  기록한다. 집중/레버리지 ETF는 명시적 개별 한도가 필요하다.
+- **현금:** 지출 준비금과 전략적 대기를 구분한다. 이자·기회비용·대안의 매력·시장 위험을
+  판단한다. 시장 현금 규칙은 참고값이다. 후보 부족이나 상한으로 생긴 잔액은 대안을
+  다시 비교한 뒤 배정한다. 종목·ETF·현금의 최종 합계는 100%다.
+- **수치의 의미:** 가격 시나리오는 가정·계산·기간·통화를 명시한다. 정밀 수치가 뒷받침되지
+  않으면 범위나 정성 판단으로 선택한다. 점수와 confidence를 수익률·성공 확률로 변환하지 않는다.
 
-## 12개 투자자 가중치
+최종 답변은 추천 배분과 가장 중요한 이유를 먼저 보여준다. 유지·추가·축소 판단은 알려진
+보유와 비교하며 보유가 미상이면 목표 비중만 제시한다. 출처·기준일·가정·반증 조건·근거의
+한계를 이어서 설명한다. `conditional`은 가정을 명시한 추천이며 추천 포기가 아니다.
 
-가중치는 합의 신뢰도에만 사용한다. 역사적 성과를 정밀 추정한 값으로 해석하지 않는다.
+## 기록과 사후 평가
 
-| 투자자 | 가중치 | 투자자 | 가중치 |
-|---|---:|---|---:|
-| Buffett | 1.00 | Munger | 0.95 |
-| Damodaran | 0.90 | Lynch | 0.85 |
-| Graham | 0.85 | Fisher | 0.82 |
-| Druckenmiller | 0.80 | Pabrai | 0.78 |
-| Burry | 0.75 | Ackman | 0.75 |
-| Jhunjhunwala | 0.72 | Wood | 0.70 |
+추천 ID별 스냅샷에는 당시 판단·자료 참조·입력 hash가 보존된다. 내용을 바꾸면 새 ID와
+`previous_decision_id`를 사용한다. 과거 추천을 소급 수정하거나 손실 사례를 삭제하지 않는다.
 
-## 결과 확인
-
-- 종목별 비중 `<= 15%`
-- 섹터 합계 `<= 35%`
-- 주식 비중 + 현금 비중 `= 100%`
-- 실제 현금 비중 `>= market_regime.target_cash_weight`
-- `market_regime.as_of_date <= analysis_date`
-- 모든 투자자 분석의 `analysis_source = independent_investor_analysis`
-- 과거 결과라면 섹터·재무 데이터의 기준 시점 확인
-- 실제 자금 투입 전 `backtesting`으로 고정 유니버스와 비용을 반영해 검증
-- `backtesting.evidence_assessment`는 근거 설명에 사용하되 포트폴리오 생성을 차단하거나
-  목표비중을 자동 축소하지 않음
-- portfolio JSON의 `research_provenance`에
-  `predict -> independent_investor_analysis -> risk_snapshot -> portfolio_report` 순서,
-  factor evidence mode, provider 상태, news ranking policy, 검증 범위와 미검증 한계가
-  포함됨. 기존 provenance 없는 snapshot은 새 계약 통과 결과로 소급 표기하지 않음
-
-구성일 이후 데이터가 존재할 때는 생성된 목표비중 자체를 검증한다.
+구성 이후 평가할 때 [사후 평가 계약](references/evaluation_contract.md)을 읽고 실제 거래일·
+총수익 조정 가격·비용·환율을 준비한다. 첫 평가 경로는 최초 비중으로 매수 후 보유이며
+여러 추천을 계속 따라 리밸런싱한 실적과 구별한다.
 
 ```bash
-uv run python .agents/skills/backtesting/scripts/backtest.py \
-  --weights-json portfolios/portfolio.json \
-  --start YYYY-MM-DD --end YYYY-MM-DD --rebalance monthly
+uv run python .agents/skills/portfolio-report/scripts/evaluate_decision.py \
+  --snapshot portfolios/decisions/DECISION_ID --prices-json evaluation_prices.json \
+  --as-of 2027-03-10T00:00:00Z --reason "구성 후 첫 평가"
 ```
 
-`--start`는 portfolio JSON의 `analysis_date`보다 반드시 늦어야 한다.
+실현 수익·시장 대비 차이·현금 기여와 사업 가설의 변화를 따로 평가한다. 단기 하락만으로
+가설을 버리지 않고 반증이 확인되면 수정한다. 백테스트는 가정·비용·편향을 점검하는 데 계속
+사용한다. 다른 전략의 백테스트를 이 판단 방식의 실적으로 전용하지 않는다.
 
-스크립트: [scripts/build_risk_snapshot.py](scripts/build_risk_snapshot.py),
-[scripts/market_regime.py](scripts/market_regime.py),
-[scripts/generate_portfolio_report.py](scripts/generate_portfolio_report.py)
+## 기존 점수 배분 재현
+
+이미 만든 보고서를 재현할 때만 [legacy 배분 계약](references/legacy_allocation.md)을 읽는다.
+`--decision-json` 없는 기존 CLI 호출은 과거 점수 배분과 비중을 유지하고 legacy로 표시한다.
+새 추천에는 위의 판단 입력 경로를 사용한다.

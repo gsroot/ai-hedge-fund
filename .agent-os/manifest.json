@@ -10,15 +10,15 @@
     "path": "C:/projects/ai-hedge-fund",
     "type": "Educational investment research and portfolio reporting system",
     "stage": "validation",
-    "north_star": "시점 일치 데이터와 독립된 분석 관점을 사용해 재현 가능하고 위험이 명시된 연구 보고서를 만든다.",
-    "current_outcome": "KRX와 S&P 500 파이프라인의 provider 준비도, 시점 일치 팩터, 뉴스 증거 게이트를 통과한 경우에만 순위와 설명을 생성한다."
+    "north_star": "사용자 제약 안에서 장기 복리 성과를 높일 최선의 종목·ETF·현금 배분을 현재 근거로 추천하고 사후 평가로 판단을 개선한다.",
+    "current_outcome": "명시적 주식·ETF·현금 판단, 유형별 제약 검사, 추천 스냅샷과 구성 후 평가를 구현했고 신규 27개·기존 68개 로컬 회귀 및 독립 가상 실행을 검증했다."
   },
   "workflow": {
-    "work_id": "point-in-time-evidence-gates",
+    "work_id": "best-effort-portfolio-decisions",
     "specification_system": "openspec",
-    "spec_status": "applied",
-    "active_change": "point-in-time-evidence-gates",
-    "next_gate": "시장별 historical membership·vintage 7-factor panel과 독립 뉴스 gold/holdout을 구축한 뒤 기존 KRX/S&P snapshot을 새 provenance 계약으로 재생성한다."
+    "spec_status": "verified",
+    "active_change": "best-effort-portfolio-decisions",
+    "next_gate": "개선 스킬을 최신 자료와 사용자 자금 조건에 적용해 새 추천 스냅샷을 만들고, 구성 후 관측 시점에 평가한다. 기존 point-in-time-evidence-gates의 실증 자료 작업은 별도 유지한다."
   },
   "evidence": {
     "canonical_docs": [
@@ -29,7 +29,9 @@
       ".agents/skills/investor-analysis/SKILL.md",
       ".agents/skills/portfolio-report/SKILL.md",
       "docs/POINT_IN_TIME_EVIDENCE_APPLY_20260828.md",
-      "artifacts/evidence/provider_readiness_20260828.json"
+      "artifacts/evidence/provider_readiness_20260828.json",
+      "openspec/changes/best-effort-portfolio-decisions/tasks.md",
+      "openspec/changes/best-effort-portfolio-decisions/verification.md"
     ],
     "metrics": [
       "시점 일치 데이터 가용률",
@@ -37,7 +39,7 @@
       "뉴스 증거 게이트 통과율",
       "제약 위반 없는 포트폴리오 비율"
     ],
-    "release_state": "provider fail-closed와 provenance 구현은 로컬 검증됐지만 기존 KRX/S&P snapshot은 새 계약 이전 자료다. 실제 투자 주문·자금 이동·성과 보장·외부 공개는 수행하지 않았다."
+    "release_state": "best-effort-portfolio-decisions 구현과 로컬 검증 완료. 실제 최신 포트폴리오 재구성·장기 성과 측정·외부 배포는 수행하지 않았다. 기존 실증 자료 게이트는 유지한다."
   },
   "risk": {
     "high_risk_surfaces": [
@@ -55,12 +57,45 @@
     ]
   },
   "lifecycle": {
-    "planning": { "status": "passed", "evidence": ["README.md", ".agents/skills/backtesting/references/factor_evidence_contract.md"] },
-    "implementation": { "status": "passed", "evidence": ["docs/POINT_IN_TIME_EVIDENCE_APPLY_20260828.md", "77 deterministic tests passed"] },
-    "local_runtime": { "status": "blocked", "evidence": ["artifacts/evidence/provider_readiness_20260828.json", "3 of 7 provider samples not ready"] },
-    "device": { "status": "not_applicable", "evidence": [] },
-    "deployment": { "status": "not_applicable", "evidence": [] },
-    "public_release": { "status": "not_applicable", "evidence": [] },
-    "user_validation": { "status": "blocked", "evidence": ["필수 provider 및 OOS 검증 전에는 순위 품질을 주장할 수 없음"] }
+    "planning": {
+      "status": "passed",
+      "evidence": [
+        "README.md",
+        ".agents/skills/backtesting/references/factor_evidence_contract.md",
+        "openspec/changes/best-effort-portfolio-decisions/proposal.md"
+      ]
+    },
+    "implementation": {
+      "status": "passed",
+      "evidence": [
+        "openspec/changes/best-effort-portfolio-decisions/verification.md",
+        "Git base 301dff4141c97678adf311ff569de477b746150e; implementation work_id best-effort-portfolio-decisions (revision tracked in Git history)"
+      ]
+    },
+    "local_runtime": {
+      "status": "passed",
+      "evidence": [
+        "openspec/changes/best-effort-portfolio-decisions/verification.md",
+        "95 deterministic tests; synthetic forward test; legacy stored-input replay"
+      ]
+    },
+    "device": {
+      "status": "not_applicable",
+      "evidence": []
+    },
+    "deployment": {
+      "status": "not_applicable",
+      "evidence": []
+    },
+    "public_release": {
+      "status": "not_applicable",
+      "evidence": []
+    },
+    "user_validation": {
+      "status": "blocked",
+      "evidence": [
+        "실제 추천의 장기 성과는 구성 후 자료와 관측이 필요하며 이번 로컬 검증과 별개다."
+      ]
+    }
   }
 }

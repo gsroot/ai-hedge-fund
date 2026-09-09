@@ -30,4 +30,4 @@ operations:
   archive:
     guidance:
       - Record implementation, local reproduction, provider validation, report generation, and public sharing separately.
-      - Fail closed when point-in-time, OOS, provider readiness, or news evidence gates are missing.
+      - Fail closed on invalid required inputs and unsupported empirical performance claims; current recommendations may use valid current evidence and explicit assumptions without OOS history. Preserve outstanding point-in-time, provider, and quantitative news evidence gates for the claims they govern.
