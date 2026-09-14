@@ -1,4 +1,10 @@
 # Web Application
+
+> Legacy status (2026-09-13): this directory still imports `src.*`, which was removed in
+> commit `b6d7ac8`. It is not a runnable GPT-6 Astra integration in this checkout.
+> Use the current [Codex skill workflow](../README.md). The documentation below is
+> retained for reference if the web engine is restored in a separate change.
+
 The AI Hedge Fund app is a complete system with both frontend and backend components that enables you to run an AI-powered hedge fund trading system through a web interface on your own computer.
 
 <img width="1721" alt="Screenshot 2025-06-28 at 6 41 03 PM" src="https://github.com/user-attachments/assets/b95ab696-c9f4-416c-9ad1-51feb1f5374b" />

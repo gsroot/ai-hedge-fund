@@ -1,0 +1,4 @@
+# Project default; explicit session choices can override it.
+# Preserve the existing reasoning level. Authentication stays in user settings.
+model = "gpt-6-astra"
+model_reasoning_effort = "xhigh"

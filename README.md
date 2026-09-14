@@ -1,160 +1,104 @@
 # AI Hedge Fund
 
-This is a research proof of concept for AI-assisted investment decisions. The portfolio skills recommend stocks, ETFs and cash allocations from current evidence and user constraints, seeking better long-term compounding decisions. The system does not execute trades or guarantee returns.
+현재 자료와 독립 투자자 분석을 바탕으로 종목·ETF·현금 비중을 판단하는 교육·연구용 프로젝트다.
+사용자의 자금 사용 조건 안에서 장기 복리 의사결정을 개선하는 것을 목표로 하며, 실제 거래나
+자금 이동을 실행하거나 수익을 보장하지 않는다.
 
-The default portfolio skill combines independent analyses with explicit investment judgment. Scores inform research; they do not automatically set weights. Recommendations record price assumptions, alternatives, sizing reasons and review conditions. Historical performance evidence is reported separately from the current recommendation. See [portfolio-report](.agents/skills/portfolio-report/SKILL.md) for the decision workflow and prospective evaluation. Existing score-allocation reports remain reproducible through the legacy CLI path.
+## 실행 구조
 
-This system employs several agents working together:
+주요 기능은 Codex가 실행하는 [.agents/skills](.agents/skills)에 있다.
+Python 스크립트가 데이터 수집·점수 계산·제약 검사·보고서 생성을 담당하고,
+현재 세션 모델이 뉴스 분류·독립 투자자 분석·최종 투자 판단을 수행한다.
 
-1. Aswath Damodaran Agent - The Dean of Valuation, focuses on story, numbers, and disciplined valuation
-2. Ben Graham Agent - The godfather of value investing, only buys hidden gems with a margin of safety
-3. Bill Ackman Agent - An activist investor, takes bold positions and pushes for change
-4. Cathie Wood Agent - The queen of growth investing, believes in the power of innovation and disruption
-5. Charlie Munger Agent - Warren Buffett's partner, only buys wonderful businesses at fair prices
-6. Michael Burry Agent - The Big Short contrarian who hunts for deep value
-7. Mohnish Pabrai Agent - The Dhandho investor, who looks for doubles at low risk
-8. Peter Lynch Agent - Practical investor who seeks "ten-baggers" in everyday businesses
-9. Phil Fisher Agent - Meticulous growth investor who uses deep "scuttlebutt" research 
-10. Rakesh Jhunjhunwala Agent - The Big Bull of India
-11. Stanley Druckenmiller Agent - Macro legend who hunts for asymmetric opportunities with growth potential
-12. Warren Buffett Agent - The oracle of Omaha, seeks wonderful companies at a fair price
-13. Valuation Agent - Calculates the intrinsic value of a stock and generates trading signals
-14. Sentiment Agent - Analyzes market sentiment and generates trading signals
-15. Fundamentals Agent - Analyzes fundamental data and generates trading signals
-16. Technicals Agent - Analyzes technical indicators and generates trading signals
-17. Risk Manager - Calculates risk metrics and sets position limits
-18. Portfolio Manager - Makes final trading decisions and generates orders
+| 단계 | 역할 | 진입점 |
+|---|---|---|
+| predict | 후보의 상대 순위를 산정한다 | [predict](.agents/skills/predict/SKILL.md) |
+| investor-analysis | 관점별로 후보를 독립 분석한다 | [investor-analysis](.agents/skills/investor-analysis/SKILL.md) |
+| risk snapshot | 같은 기준일의 가격으로 위험을 계산한다 | [build_risk_snapshot.py](.agents/skills/portfolio-report/scripts/build_risk_snapshot.py) |
+| portfolio-report | 종목·ETF·현금 비중을 판단하고 검증한다 | [portfolio-report](.agents/skills/portfolio-report/SKILL.md) |
+| backtesting | 과거 전략과 구성 이후 결정을 평가한다 | [backtesting](.agents/skills/backtesting/SKILL.md) |
 
-<img width="1042" alt="Screenshot 2025-03-22 at 6 19 07 PM" src="https://github.com/user-attachments/assets/cbae3dcf-b571-490d-b0ad-3f0f035ac0d4" />
+점수와 confidence는 예상 수익률이나 성공 확률이 아니다. 새 추천은 `--decision-json` 경로로
+선택 근거·가격 가정·대안·사용자 제약·재검토 조건을 보존한다. 기존 점수 배분 보고서는
+[legacy 계약](.agents/skills/portfolio-report/references/legacy_allocation.md)으로 재현할 수 있다.
 
-Note: the system does not actually make any trades.
+## GPT-6 Astra로 사용하기
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/virattt?style=social)](https://twitter.com/virattt)
+프로젝트 기본값은 [.codex/config.toml](.codex/config.toml)에 설정되어 있다.
 
-## Disclaimer
-
-This project is for **educational and research purposes only**.
-
-- Research recommendations support decisions; this system does not execute trades or move funds
-- No regulated advisory service or future performance guarantees provided
-- Creator assumes no liability for financial losses
-- Consult a financial advisor for investment decisions
-- Past performance does not indicate future results
-
-By using this software, you agree to use it solely for learning purposes.
-
-## Table of Contents
-- [How to Install](#how-to-install)
-- [How to Run](#how-to-run)
-  - [⌨️ Command Line Interface](#️-command-line-interface)
-  - [🖥️ Web Application](#️-web-application)
-- [How to Contribute](#how-to-contribute)
-- [Feature Requests](#feature-requests)
-- [License](#license)
-
-## How to Install
-
-Before you can run the AI Hedge Fund, you'll need to install it and set up your API keys. These steps are common to both the full-stack web application and command line interface.
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/virattt/ai-hedge-fund.git
-cd ai-hedge-fund
+```toml
+model = "gpt-6-astra"
+model_reasoning_effort = "xhigh"
 ```
 
-### 2. Set up API keys
+`xhigh`는 마이그레이션 전 사용하던 추론 수준을 유지한 값이며, 최적 비용·속도로 검증한
+설정은 아니다. 새 Codex 작업에서 이 프로젝트를 열고 실제 모델과 추론 선택을 확인한다.
+프로젝트를 신뢰해야 프로젝트 설정이 로드되며, 명시적 세션 설정이 기본값보다 우선할 수 있다.
+파일 변경만으로 이미 실행 중인 세션의 모델이 바뀌었다고 간주하지 않는다.
+[공식 Codex 설정 참조](https://learn.chatgpt.com/docs/config-file/config-reference#configtoml)
 
-Create a `.env` file for your API keys:
-```bash
-# Create .env file for your API keys (in the root directory)
-cp .env.example .env
+Codex의 기존 인증을 사용한다. 스킬의 Python 코드는 별도의 OpenAI API 호출을 하지 않으므로
+이 분석 흐름 때문에 `OPENAI_API_KEY`를 추가할 필요는 없다. Claude Code용
+[.claude/skills](.claude/skills)와 에이전트의 기존 모델 선택은 별도로 유지한다.
+
+호환성 판단과 레거시 경계는 [Astra 마이그레이션 기록](docs/GPT_6_ASTRA_MIGRATION.md)을 참고한다.
+
+## 설치와 데이터 설정
+
+Python 3.11 이상과 uv를 사용한다. 저장소 루트에서 의존성을 설치한다.
+
+```powershell
+uv sync --frozen
 ```
 
-Open and edit the `.env` file to add your API keys:
-```bash
-# For running LLMs hosted by openai (gpt-4o, gpt-4o-mini, etc.)
-OPENAI_API_KEY=your-openai-api-key
+데이터 공급자 키가 필요하면 `.env.example`을 참고해 로컬 `.env`를 만든다.
+기존 `.env`를 덮어쓰지 않는다. 한국 재무 데이터에는 `DART_API_KEY`가 필요하며
+나머지 공급자 키는 사용하는 데이터 경로에 따라 다르다. 각 스킬의 데이터 계약을 따른다.
+프로세스 환경변수는 `.env`보다 우선한다. 키·인증 정보·유료 응답 원문은 커밋하지 않는다.
 
-# For getting financial data to power the hedge fund
-FINANCIAL_DATASETS_API_KEY=your-financial-datasets-api-key
+## 사용 예시
+
+Codex 대화에서는 다음과 같이 요청한다.
+
+- `$predict S&P 500 전체 종목의 상대 순위를 분석해줘`
+- `$investor-analysis 삼성전자를 버핏 관점에서 분석해줘`
+- `$portfolio-report 현재 자료와 내 자금 사용 조건으로 주식·ETF·현금 비중을 추천해줘`
+
+데이터 수집·계산 CLI를 직접 실행할 수도 있다.
+
+```powershell
+uv run python .agents/skills/predict/scripts/analyze_stocks.py --index sp500 --display 30 --output results.json
+uv run python .agents/skills/predict/scripts/analyze_stocks.py --index krx --display 30 --output krx_results.json
+uv run python .agents/skills/investor-analysis/scripts/data_fetcher.py --ticker AAPL
 ```
 
-**Important**: You must set at least one LLM API key (e.g. `OPENAI_API_KEY`, `GROQ_API_KEY`, `ANTHROPIC_API_KEY`, or `DEEPSEEK_API_KEY`) for the hedge fund to work. 
+포트폴리오 생성·스냅샷·사후 평가의 입력과 명령은
+[portfolio-report](.agents/skills/portfolio-report/SKILL.md)에 정의되어 있다.
+분석 기준일·provider·실패 또는 대체 원천·불확실성을 함께 기록한다.
+최신 데이터를 과거에 알려진 자료처럼 사용하지 않는다.
 
-**Financial Data**: Data for AAPL, GOOGL, MSFT, NVDA, and TSLA is free and does not require an API key. For any other ticker, you will need to set the `FINANCIAL_DATASETS_API_KEY` in the .env file.
+## 로컬 검증
 
-## How to Run
+테스트는 unittest 기반이며 금융 provider 응답을 모의 처리한다.
 
-### ⌨️ Command Line Interface
-
-You can run the AI Hedge Fund directly via terminal. This approach offers more granular control and is useful for automation, scripting, and integration purposes.
-
-<img width="992" alt="Screenshot 2025-01-06 at 5 50 17 PM" src="https://github.com/user-attachments/assets/e8ca04bf-9989-4a7d-a8b4-34e04666663b" />
-
-#### Quick Start
-
-1. Install Poetry (if not already installed):
-```bash
-curl -sSL https://install.python-poetry.org | python3 -
+```powershell
+uv run python -m unittest discover -s tests -p "test_*.py" -q
+openspec validate migrate-to-gpt-6-astra --strict
+git diff --check
 ```
 
-2. Install dependencies:
-```bash
-poetry install
-```
+검증 기록은 [OpenSpec verification](openspec/changes/migrate-to-gpt-6-astra/verification.md)에 있다.
+로컬 테스트 통과는 모델의 투자 판단 품질, 실제 provider 접근, OOS 초과성과를 입증하지 않는다.
 
-#### Run the AI Hedge Fund
-```bash
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA
-```
+## 레거시 웹앱
 
-You can also specify a `--ollama` flag to run the AI hedge fund using local LLMs.
+`src/`는 `b6d7ac8`에서 제거되었다. [app/](app/README.md)는 여전히 해당 모듈을 참조하는
+레거시 코드이므로 현재 체크아웃에서 완전한 웹 실행 경로로 제공하지 않는다.
+그곳의 GPT-4.1 모델 선택기는 현재 Codex 금융 스킬의 모델을 제어하지 않는다.
+웹앱 복원이 필요하면 별도 변경에서 누락된 엔진과 Astra Responses 통합을 함께 검증해야 한다.
 
-```bash
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA --ollama
-```
+## 프로젝트 계약
 
-You can optionally specify the start and end dates to make decisions over a specific time period.
-
-```bash
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01
-```
-
-#### Run the Backtester
-```bash
-poetry run python src/backtester.py --ticker AAPL,MSFT,NVDA
-```
-
-**Example Output:**
-<img width="941" alt="Screenshot 2025-01-06 at 5 47 52 PM" src="https://github.com/user-attachments/assets/00e794ea-8628-44e6-9a84-8f8a31ad3b47" />
-
-
-Note: The `--ollama`, `--start-date`, and `--end-date` flags work for the backtester, as well!
-
-### 🖥️ Web Application
-
-The new way to run the AI Hedge Fund is through our web application that provides a user-friendly interface. This is recommended for users who prefer visual interfaces over command line tools.
-
-Please see detailed instructions on how to install and run the web application [here](https://github.com/virattt/ai-hedge-fund/tree/main/app).
-
-<img width="1721" alt="Screenshot 2025-06-28 at 6 41 03 PM" src="https://github.com/user-attachments/assets/b95ab696-c9f4-416c-9ad1-51feb1f5374b" />
-
-
-## How to Contribute
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-**Important**: Please keep your pull requests small and focused.  This will make it easier to review and merge.
-
-## Feature Requests
-
-If you have a feature request, please open an [issue](https://github.com/virattt/ai-hedge-fund/issues) and make sure it is tagged with `enhancement`.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+[AGENTS.md](AGENTS.md)와 [.agent-os/manifest.json](.agent-os/manifest.json)을 먼저 확인한다.
+여러 세션의 작업은 OpenSpec change의 tasks와 검증 근거로 관리한다.
+기존 연구 스냅샷, 사용자의 변경과 미해결 데이터·성과 검증 게이트를 보존한다.
