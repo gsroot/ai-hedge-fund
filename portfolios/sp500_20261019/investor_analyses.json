@@ -1,0 +1,843 @@
+{
+  "analysis_date": "2026-10-19",
+  "investors": [
+    "buffett",
+    "lynch",
+    "fisher"
+  ],
+  "method": "Three separate agents, each with only raw source data and its own persona; no predict scores or other perspectives.",
+  "analyses": {
+    "EOG": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "우량 석유가스 생산사다. ROE 22.5%, ROIC 15.7%, D/E 0.26, 영업마진 40.7%, 후행 P/E 12.3배로 품질과 재무구조는 좋다. 다만 순이익이 2022년 7.76B, 2024년 6.40B, 2025년 4.98B로 줄었고 FCF도 6.09B에서 3.45B로 내려와 이익 일관성이 약하다. 현재 FCF 수익률은 약 5.4%이고 시가총액은 82.9B다. 가격 결정력이 없는 상품 사업이라 해자는 비용 우위에 한정되며, 유가 가정이 없어 25% 안전마진을 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "경기순환주(E&P). P/E 12.3, PEG 1.2, D/E 0.26, 배당수익률 2.58%로 재무는 건전하고 좋은 회사다. 하지만 연간 순이익은 2022년 77.6억달러에서 2025년 49.8억달러로 줄었고 FCF도 60.9억에서 34.5억달러로 감소했다. 스냅샷의 EPS 성장 102.5%와 매출 +58.7%는 분기 YoY라 유가 반등 국면을 반영한 것으로 보이며(추론), 이를 지속 성장으로 보면 PEG가 왜곡된다. 사이클 상승 구간이라 이익 정점 가능성을 배제할 수 없어 가격은 보통 수준으로 본다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 58,
+        "reasoning": "EOG: 2022~2025 매출 CAGR -8.5%(29.49B→22.58B), 영업이익률 48.3%에서 32.1%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. TTM 영업이익률 40.7%, 매출성장 58.7%는 현재 스냅샷의 반등이며 연간 추세와 다르다. 부채비율 0.26, 후행 P/E 12.3으로 재무와 가격은 무리가 없다. 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "HIG": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 55,
+        "reasoning": "손해보험·기업보험 중심이며 버핏이 이해하는 업종이다. ROE 22%, D/E 0.22, 후행 P/E 9.6배, 시가총액 36.6B다. 순이익이 2022년 1.82B에서 2025년 3.84B로 매년 늘었고 영업현금흐름이 이를 뒷받침한다. 반대 근거는 최근 이익이 보험 사이클 호황에서 나왔을 가능성과 재해 손실 변동성이다. 합산비율, 준비금 적정성, float 자료는 원자료에 없어 인수 규율은 직접 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 55,
+        "reasoning": "대형우량주 성향의 P&C 보험사. P/E 9.6, D/E 0.22, ROE 22.1%, 연간 순이익이 2022년 18.2억에서 2025년 38.4억달러로 매년 늘었고 FCF도 57.5억달러로 순이익을 웃돈다. Yahoo PEG는 0.12지만 분기 EPS 성장 30.5%에 기반해 신뢰도가 낮다. 반대 근거는 forward EPS 13.78이 후행 14.13보다 낮아 이익이 정점에 가까울 수 있고, 보험 요율 사이클이 꺾이면 마진이 줄 수 있다는 점이다. 그래도 낮은 P/E, 낮은 부채, 일관된 이익 성장 덕에 가격 매력은 있다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "abstain",
+        "confidence": 25,
+        "reasoning": "HIG: 2022~2025 매출 CAGR 8.7%(21.85B→28.07B), 영업이익률 11.3%에서 17.7%로 개선, 후행 P/E 9.6이다. 보험과 금융업은 연구개발비와 매출총이익 개념이 맞지 않아 피셔의 R&D 효율과 총마진 기준을 적용할 수 없다. 연간 영업이익도 투자손익과 준비금 변동의 영향을 받아 성장 지속성 판단이 왜곡될 수 있다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다. 따라서 신호를 내지 않는다.",
+        "data_quality": "insufficient",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "CINF": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "소형 우량 손해보험사로 D/E 0.05, ROE 21%, P/B 1.58배다. 후행 P/E 8.1배는 EPS 21.18이 포함한 주식 평가이익 때문에 왜곡됐을 수 있고, 선행 EPS는 9.06이어서 정상 이익 수준을 확정하기 어렵다. 2022년에는 순이익이 -0.49B로 적자였고 2025년 2.39B로 회복해 이익 변동성이 크다. 합산비율, float, 주식 포트폴리오 비중 자료가 없어 보험 인수 품질과 안전마진을 판단할 수 없다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "대형우량 P&C 보험사(투자손익 민감). P/E 8.1, D/E 0.05, ROE 21.5%로 재무는 매우 튼튼하다. 그러나 후행 EPS 21.18 대비 forward EPS 9.06으로 절반 이하여서 후행 이익에 투자 평가이익이 크게 섞였을 가능성이 높고(추론), 낮은 P/E는 착시일 수 있다. forward EPS 기준 P/E는 약 19배로 계산되며 PEG 2.19도 높다. 좋은 회사지만 가격이 싸다고 보기 어렵다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "abstain",
+        "confidence": 20,
+        "reasoning": "CINF: 매출이 2022년 6.56B(영업손실 -0.64B)에서 2025년 12.63B로 뛰었으나 주식 평가손익 영향이 커서 성장률로 읽기 어렵다. 2025 영업이익률 24.0%, 후행 P/E 8.1이다. 보험과 금융업은 연구개발비와 매출총이익 개념이 맞지 않아 피셔의 R&D 효율과 총마진 기준을 적용할 수 없다. 연간 영업이익도 투자손익과 준비금 변동의 영향을 받아 성장 지속성 판단이 왜곡될 수 있다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다. 따라서 신호를 내지 않는다.",
+        "data_quality": "insufficient",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "APA": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 60,
+        "reasoning": "가격 결정력이 없는 상품 생산사다. ROE 27%는 자기자본이 2022년 0.42B로 쪼그라든 데서 부풀려진 면이 있다. D/E 0.49에 총부채 4.59B, 순이익은 2022년 3.60B에서 2024년 0.80B, 2025년 1.43B로 흔들렸다. P/E 10.4배, FCF 수익률 12%로 싸 보이지만 capex가 2.77B로 영업이익 2.75B와 같은 수준이라 유지 투자 부담이 크다. 버핏이 영원히 보유할 사업이 아니다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "경기순환주(E&P). P/E 10.4, PEG 1.31, ROE 26.7%지만 D/E 0.49, 유동비율 0.95로 재무 여유는 부족하다. 연간 순이익이 2022년 36억에서 2025년 14.3억달러로 줄었고 forward EPS 4.74는 후행 4.73과 같아 추가 이익 개선 신호가 없다. 영업이익률 56%와 낮은 P/E는 유가 상승기의 이익 정점 신호일 수 있다. 린치 기준으로 사이클 중간 이후의 저P/E라 매수 근거가 약하다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 62,
+        "reasoning": "APA: 2022~2025 매출 CAGR -7.0%(11.07B→8.92B), 영업이익률 45.9%에서 30.8%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. 순이익이 2022년 3.6B에서 2024년 0.8B, 2025년 1.43B로 크게 흔들렸다. 부채비율 0.49, 후행 P/E 10.4다. 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "MPC": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 55,
+        "reasoning": "정유 마진 사이클에 좌우되는 사업이다. ROE 42%는 자기자본이 줄어든 효과가 크고 D/E 1.33, 총부채 34.4B로 버핏 기준(D/E<0.5)을 크게 넘는다. 순이익이 2022년 14.5B, 2023년 9.7B, 2024년 3.4B, 2025년 4.1B로 큰 폭으로 변했다. 후행 P/E 16.6배, 시가총액 134B이며 선행 EPS 55.9가 현재 EPS 28.9의 두 배라 정점 이익을 가정한 값일 수 있다. 해자가 약하고 부채가 높아 안전마진을 인정하기 어렵다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "경기순환주(정유). P/E 16.6, D/E 1.33, ROE 42%이고 후행 EPS 28.88 대비 forward EPS 55.9로 이익이 급반등하는 중이다. 연간 순이익은 2022년 145억에서 2025년 40.5억달러로 급감했다가 올라오는 국면이라 EPS 성장 322%는 저점 대비 반등이며 PEG 1.1은 의미가 약하다. 린치는 정유가 마진 확장기에 P/E가 낮을 때 정점을 경계한다. 부채가 많고 마진 사이클 위치를 확정하지 못해 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 60,
+        "reasoning": "MPC: 2022~2025 매출 CAGR -9.2%(177.45B→132.7B), 영업이익률 10.7%에서 4.3%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. 정유 마진 구조라 영업이익률이 낮고 부채비율이 1.33으로 높다. TTM 영업이익률 13.6%는 스냅샷 반등값이다. 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "CBOE": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "옵션·파생 거래소로 네트워크 효과와 독점적 상품이 해자다. ROE 26%, ROIC 29%, 영업마진 35%, D/E 0.28이고 capex는 매출의 2% 미만이다. 순이익이 2022년 0.23B에서 2025년 1.10B로 늘었다. 그러나 후행 P/E 24.6배, P/B 5.9배, 시가총액 32.9B로 가격 여유가 작다. 좋은 사업이지만 변동성 거래량에 이익이 연동되고 현재 가격은 안전마진을 주지 않는다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "대형우량주(거래소). P/E 24.6, PEG 2.79, ROE 26.3%, D/E 0.28이고 연간 순이익은 2022년 2.35억에서 2025년 11억달러로 늘었으며 FCF 16.8억달러다. 분기 EPS 성장 50%는 변동성 장세 수혜일 수 있어 지속 성장률로 쓰기 어렵다(추론). 좋은 사업이지만 대형우량주에 P/E 24.6과 PEG 2.79는 린치 기준으로 비싸다. 시황 둔화에 따른 거래량 감소가 반대 위험이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 48,
+        "reasoning": "2022~2025 매출 CAGR 5.9%(3.96B→4.71B)지만 2025년은 전년 대비 15% 증가했고 현재 스냅샷 매출성장은 22.9%다. 영업이익률은 24.5%에서 32.1%로 3년 연속 개선됐고 FCF는 1.68B이다. 거래소 사업이라 R&D 개념은 맞지 않는다. 후행 P/E 24.6, PEG 2.79로 가격은 성장 대비 싸지 않다. 최근 성장이 지속되는지는 확인하지 못했다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "ACN": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 50,
+        "reasoning": "IT 서비스·컨설팅 대형사다. ROE 26%, ROIC 26%, 영업마진 18%, D/E 0.40이다. 순이익은 2022년 6.88B에서 2025년 7.68B로 꾸준했고 FCF는 10.87B(수익률 약 8%)다. 후행 P/E 16.9배, 시가총액 140.6B로 품질 대비 합리적이다. 반대 근거는 AI 자동화가 인력 기반 모델의 가격과 수요를 훼손할 수 있고, 해자가 브랜드와 고객 관계에 한정된다는 점이다. 성장률이 낮아 안전마진은 크지 않다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "대형우량주(IT 서비스). P/E 16.9, ROE 26%, D/E 0.40, FCF 106.8억달러(2025 연간 108.7억), 배당수익률 2.98%다. 그러나 연간 매출은 2022년 616억에서 2025년 697억달러로 연 4% 안팎이고 순이익은 68.8억에서 76.8억달러로 완만하다. 분기 EPS 성장 40.8%에 따른 PEG 2.18은 비교 기간이 달라 신뢰하기 어렵다. 안정적이고 값이 부담스럽지 않지만 성장이 느려 매력은 보통이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 42,
+        "reasoning": "2022~2025 매출 CAGR 4.2%(61.59B→69.67B)이고 영업이익률은 15.2~15.6%로 정체됐다. R&D 항목이 원자료에 없어 연구개발 효율은 확인하지 못했다(서비스업 특성상 R&D 개념의 적합도도 낮다). FCF는 10.87B로 안정적이고 후행 P/E 16.9, 부채비율 0.40이다. 품질은 양호하나 피셔가 찾는 고성장 기업에는 못 미친다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "PSX": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "정유·화학·중류 혼합 사업이다. ROE 23%이지만 ROIC 11%, 영업마진 9%, D/E 0.63으로 평범하다. 순이익이 2022년 11.0B, 2024년 2.1B, 2025년 4.4B로 크게 흔들렸다. 후행 P/E 16.8배, FCF 수익률 약 4%, 시가총액 117.5B이고 선행 EPS 30.0은 현재 17.5보다 훨씬 높아 이익 회복을 이미 기대한 가격이다. 일관된 해자가 없어 안전마진도 확인되지 않는다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "경기순환주(정유·화학·중류). P/E 16.8, D/E 0.63, ROE 23.5%, 후행 EPS 17.5 대비 forward EPS 29.95다. 연간 순이익은 2022년 110억에서 2024년 21.2억, 2025년 44억달러로 변동이 컸고 FCF도 27.3억달러에 그쳤다. 스냅샷 EPS 성장 339%와 PEG 0.94는 저점 반등 분기 기준이라 린치의 PEG 해석을 적용하기 어렵다. 마진 개선 국면이지만 정점 판단이 어렵고 부채가 있어 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 62,
+        "reasoning": "PSX: 2022~2025 매출 CAGR -8.0%(169.99B→132.38B), 영업이익률 5.7%에서 2.6%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. 부채비율 0.63이고, TTM 영업이익률 8.5%는 스냅샷 반등값이다. 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "IT": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "리서치·자문 구독 사업으로 해자는 있지만 자본 구조가 문제다. ROE 114%, ROIC 40%는 자기자본이 0.32B로 줄어 생긴 숫자이고 P/B는 -79배, 부채 3.35B다. 영업마진 23%, FCF 1.18B(수익률 약 8%)와 P/E 18.6배는 매력적이다. 하지만 매출 성장률이 -0.6%이고 순이익이 2024년 1.25B에서 2025년 0.73B로 줄었다. AI가 리서치 수요를 대체할 위험이 있고 레버리지 매입이 반복돼 확신하기 어렵다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bearish",
+        "confidence": 50,
+        "reasoning": "성장이 정체된 stalwart(리서치 구독). P/E 18.6, ROE 113.6%는 자기자본이 3.2억달러까지 줄어든 결과로 건전성 지표가 아니며, 총부채 33.5억달러 대비 자본이 얇다. D/E는 원자료에 없고 유동비율은 0.88이다. 매출 성장률은 -0.6%이고 연간 순이익은 2024년 12.5억에서 2025년 7.3억달러로 줄었으며 52주 변동률은 -14.3%다. FCF 11.8억달러는 양호하지만 성장 둔화와 얇은 자본이라는 반대 근거가 우세하다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "2022~2025 매출 CAGR 5.8%(5.48B→6.5B)이고 영업이익률은 20.3%에서 18.1%로 3년 연속 하락했다. 총마진은 약 68%로 유지됐고 R&D 항목은 원자료에 없다. 현재 스냅샷 매출성장 -0.6%로 성장이 정체됐다. 후행 P/E 18.6, PEG 0.81이다. 부채비율은 원자료에 없다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "MU": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 70,
+        "reasoning": "메모리는 대표적인 상품 사이클 사업이다. 순이익이 2022년 8.69B, 2023년 -5.83B, 2024년 0.78B, 2025년 8.54B로 극단적으로 변했다. 현재 영업마진 81%, 매출 성장률 380%, ROE 88%는 정점 가까운 값이다. 시가총액 994B에 P/E 11.8배는 이 정점 이익이 유지된다는 가정을 깔고 있다. capex가 2025년 15.9B로 FCF를 대부분 삼켰다. 재무구조(D/E 0.04)는 좋지만 일관성과 해자가 없어 안전마진을 인정할 수 없다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "경기순환주(메모리). P/E 11.8, 후행 EPS 74.33 대비 forward 206.9, 분기 매출 +379%, 영업이익률 80.7%, 52주 +325%, 시가총액 약 9,943억달러다. 낮은 PEG 0.16은 폭증한 분기 EPS 성장에 근거해 의미가 없다. 연간 순이익이 2023년 -58억, 2025년 85억달러로 요동쳤고, 2025년 연간 FCF는 16.7억달러뿐이다. 린치는 사이클주의 저P/E를 정점 경고로 읽는다. 사업은 좋아졌지만 10배 가능성은 시가총액상 사라졌고 이익 정점 위험이 커서 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "2022~2025 매출 CAGR 6.7%(30.76B→37.38B)이고 영업이익률이 31.6%, -34.8%, 5.2%, 26.2%로 오르내려 메모리 사이클 특성이 강하다. R&D는 3.8B(매출의 10.2%)로 꾸준하다. 현재 스냅샷은 매출성장 379%, 영업이익률 80.7%, 후행 P/E 11.8로 극단적인 정점 구간일 수 있다(추론). 지속 성장과 사이클 정점의 일시적 이익을 이 자료만으로는 구분하기 어렵다. SPY 상위 10개 중 하나이고 시가총액은 994B이다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "ADBE": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 50,
+        "reasoning": "크리에이티브 소프트웨어로 전환 비용과 생태계 해자가 있다. ROE 62%, ROIC 56%, 영업마진 35%, capex는 매출의 1% 미만이다. 순이익은 2022년 4.76B에서 2025년 7.13B로, FCF는 9.85B로 늘었다. 후행 P/E 13.7배, FCF 수익률 약 10%, 시가총액 95.4B로 가격이 낮다. 반대 근거는 생성형 AI가 제품 가치를 약화할 수 있다는 점이고 이것이 낮은 멀티플의 이유일 것이다. D/E 0.58과 자사주 매입에 따른 자기자본 감소(2023년 16.5B에서 2025년 11.6B)도 ROE를 부풀린다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 60,
+        "reasoning": "대형우량주(소프트웨어). P/E 13.7, Yahoo PEG 0.59, ROE 61.9%, 영업이익률 34.8%, FCF 93.5억달러다. 연간 매출은 176억에서 238억달러로, 순이익은 47.6억에서 71.3억달러로 꾸준히 늘었다. 반대 근거는 분기 EPS 성장 3.1%가 낮고, 유동비율 0.77, D/E 0.58, 생성형 AI의 경쟁 위협이 있다는 점이다. 그래도 매출 +12.9%와 풍부한 현금흐름 대비 P/E 13.7은 좋은 회사가 합리적 가격에 있는 사례로 본다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "2022~2025 매출 CAGR 10.5%(17.61B→23.77B), 영업이익률 34.6%에서 36.6%로 완만히 개선됐고 R&D는 매출의 18.1%, 총마진은 89%대다. 품질은 높지만 성장률이 15% 아래이고 TTM EPS 성장은 3.1%에 그친다. 후행 P/E 13.7, PEG 0.59로 가격은 낮은 편이다. 낮은 멀티플의 이유(경쟁이나 AI 대체 우려)는 원자료로 확인하지 못했다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "VEEV": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "생명과학 업종 특화 소프트웨어로 전환 비용이 높은 훌륭한 사업이다. 부채가 거의 없고(D/E 0.02) 영업마진 30%, FCF 1.42B이며 순이익이 2023년 0.49B에서 2026년 0.91B로 꾸준히 늘었다. 다만 후행 P/E 50.9배, FCF 수익률 약 3%, 시가총액 50.3B로 가격이 매우 높다. ROE 14%는 현금이 쌓인 자기자본 탓에 낮고 ROIC 586%는 의미 있게 해석하기 어렵다. 좋은 회사지만 현재 가격은 안전마진이 없다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "고성장에서 대형우량으로 넘어가는 소프트웨어 성장주. P/E 50.9, PEG 1.2, 매출 +17.6%, D/E 0.02, 유동비율 5.5로 재무가 뛰어나다. 연간 순이익은 4.9억(2023)에서 9.1억달러(2026)로 늘었고 FCF 14.2억달러로 이익이 현금으로 뒷받침된다. 후행 P/E는 높고 forward EPS 10.25 기준으로 약 30배라 비싼 편이며 ROE는 14.4%로 높지 않다. 좋은 회사지만 가격 여유가 크지 않아 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 62,
+        "reasoning": "FY2023~FY2026 매출 CAGR 14.0%(2.16B→3.2B), 영업이익률 21.3%에서 28.7%로 개선됐고 R&D는 매출의 24.0%, 부채비율 0.02다. 품질과 재투자 측면은 피셔 기준에 잘 맞는다. 다만 후행 P/E가 50.9로 높아 좋은 회사와 매력적인 가격이 일치하지 않는다. 성장이 둔화되면 멀티플 하락 위험이 크다(추론). 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "MSFT": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "최고 수준의 사업이다. ROE 34%, ROIC 27%, 영업마진 45%, D/E 0.29이고 순이익은 2023년 72.4B에서 2026년 133.8B로 늘었다. 그러나 후행 P/E 29.5배, 시가총액 3.93T이며 스냅샷 FCF가 16.6B로 FCF 수익률이 약 0.4%에 불과하다. 연간 FCF는 74.1B(2024)에서 67.0B(2026)로 줄었다. capex가 2024년 44.5B에서 2026년 116.0B로 급증해 AI 투자 회수가 불확실하다. 연간 값과 스냅샷 FCF가 크게 달라 해석에 한계가 있다. 좋은 회사지만 가격에 안전마진이 없다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "초대형 우량 성장주. P/E 29.5, PEG 1.72, 매출 +17.7%, 영업이익률 45.1%, ROE 34%, D/E 0.29다. 연간 순이익이 2023년 724억에서 2026년 1,337억달러로 늘었다. 시가총액이 약 3.9조달러라 10배주 가능성은 없고, 스냅샷 FCF 165.5억달러는 연간 669.9억달러와 기간이 달라 비교할 수 없다. forward EPS 기준으로 약 22배라 합리적이지만 PEG 1.72는 린치의 매수 구간 위다. 훌륭한 회사이며 가격은 보통이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 74,
+        "reasoning": "FY2023~FY2026 매출 CAGR 16.1%(211.9B→331.8B), 영업이익률 41.8%에서 46.8%로 3년 연속 개선됐다. R&D는 35.6B로 매출의 10.7%이며 금액은 계속 늘었다. 후행 P/E 29.5, PEG 1.72로 싸지는 않지만 규모 대비 성장과 마진 확대를 함께 유지한 드문 사례다. 반대 근거는 FCF가 FY2024 74.1B에서 FY2026 67.0B로 줄어든 점으로, 투자 확대 부담이 커졌을 가능성이 있다(추론). SPY 내 비중은 6.0%다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "COP": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "대형 독립 석유가스 생산사다. ROE 14%, ROIC 14%, D/E 0.36, 영업마진 32%로 우량하지만 해자는 상품 가격 의존이다. 순이익이 2022년 18.7B, 2024년 9.2B, 2025년 8.0B로 내려오고 있고 FCF도 18.2B에서 7.2B로 줄었다. 후행 P/E 19.4배, FCF 수익률 약 4%, 시가총액 176B로 이익 감소 대비 가격이 싸지 않다. capex가 12.6B로 영업이익과 비슷해 소유주 이익이 얇다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "경기순환주(E&P). P/E 19.4, PEG 1.14, D/E 0.36, ROE 14.2%다. 연간 순이익은 2022년 187억에서 2025년 79.9억달러로 줄었고 FCF도 181.6억에서 72.4억달러로 줄었다. 스냅샷 EPS 성장 99%는 분기 YoY이며 forward EPS 10.5는 상승 기대를 나타낸다. 사이클 반등은 반영된 듯하고 P/E 19.4는 저평가 사이클주에 요구되는 낮은 수준이 아니다. 우량 대형사지만 매수 근거는 약하다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 58,
+        "reasoning": "COP: 2022~2025 매출 CAGR -9.1%(78.49B→58.94B), 영업이익률 32.4%에서 19.2%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. 현재 스냅샷은 매출성장 35.5%, 후행 P/E 19.4다. 가격은 사이클 반등을 일부 반영한 것으로 보인다(추론). 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "NTAP": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "데이터 스토리지·클라우드 사업이다. 영업마진 27%, FCF 1.87B, 순이익 1.28B(2026)로 수익성은 좋다. 그러나 ROE 115%와 ROIC 449%는 자기자본 1.35B 규모에서 나온 왜곡된 값이고 D/E 1.70, 총부채 2.73B다. 후행 P/E 28.7배, FCF 수익률 약 3%, P/B 26.7배다. 하드웨어 기반 기술이어서 해자의 지속성이 불확실하고 현재 가격은 안전마진을 주지 않는다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bearish",
+        "confidence": 45,
+        "reasoning": "저성장에 가까운 IT 하드웨어·스토리지. P/E 28.7, PEG 2.26, D/E 1.70이고 ROE 115%는 자기자본이 13.5억달러로 작아진 영향이다. 분기 매출 +29.9%와 EPS +61%는 연간 매출 65.7억에서 69.3억달러(약 5%)와 큰 차이가 나서 성장 기간이 맞지 않는다. FCF 11.7억달러, 유동비율 1.24, 배당 1.02%는 양호하지만, 연간 성장률 대비 P/E와 부채가 높다. 린치 기준으로 가격과 레버리지가 부담이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 42,
+        "reasoning": "FY2023~FY2026 매출 CAGR 2.8%(6.36B→6.92B)로 성장이 느리고, 영업이익률은 18.2%에서 24.5%로 개선됐다. R&D는 매출의 14.3%지만 금액이 0.96B에서 0.99B로 거의 늘지 않았다. 부채비율 1.69로 높고 후행 P/E 28.7, PEG 2.26이라 가격 부담이 있다. 현재 스냅샷 매출성장은 29.9%로 연간 추세와 괴리가 있다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "VLO": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "독립 정유사로 가장 단순한 사업이지만 마진 사이클이 지배한다. ROE 28%, D/E 0.40이나 ROIC 10%, 영업마진 12%로 자본수익률은 평범하다. 순이익이 2022년 11.5B, 2023년 8.8B, 2024년 2.8B, 2025년 2.4B로 줄었다. 후행 P/E 18.5배, 시가총액 128B, FCF 수익률 약 7%이고 선행 EPS 47.4는 현재 24.0의 두 배라 회복 기대가 가격에 반영돼 있다. 해자와 안전마진 모두 부족하다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "경기순환주(정유). P/E 18.5, PEG 1.91, D/E 0.40, ROE 27.6%, FCF 84.2억달러다. 연간 순이익은 2022년 115억에서 2025년 23.5억달러로 급감했다가 후행 EPS 23.99, forward 47.4로 반등 중이다. EPS 성장 421%는 저점 대비 반등이라 지속 성장률로 쓸 수 없다. 재무는 정유사 중 양호하지만 정제마진이 정점인지 확신하기 어렵고 P/E 18.5가 싸지 않아 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 62,
+        "reasoning": "VLO: 2022~2025 매출 CAGR -11.4%(176.38B→122.69B), 영업이익률 8.9%에서 3.5%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. TTM 영업이익률 12.3%는 스냅샷 반등값이고 후행 P/E 18.5다. 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "CRM": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "기업용 CRM 소프트웨어로 전환 비용이 높다. 영업마진 21%, FCF 14.4B(2026), 순이익이 2023년 0.21B에서 2026년 7.46B로 개선됐다. 후행 P/E 22.0배, FCF 수익률 약 9%, 시가총액 198B로 가격은 합리적이다. 반대 근거는 ROIC 8%, ROE 19%이며 D/E 1.10과 총부채 17.2B로 부채가 많다는 점이다. 자본 배분 이력이 인수 중심일 가능성이 있어 버핏의 품질 기준에는 못 미친다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 55,
+        "reasoning": "대형우량주(소프트웨어)로 이익 개선 단계. P/E 22.0, Yahoo PEG 0.86, 매출 +10.8%, FCF 177.3억달러, forward EPS 16.0 기준 약 15배다. 연간 순이익이 2023년 2억에서 2026년 74.6억달러로 늘었고 FCF도 63억에서 144억달러로 증가했다. 반대 근거는 D/E 1.10, 유동비율 0.84, 매출 성장이 10%대 초반이라 고성장이 아니라는 점이다. 이익 마진 개선이 이어진다면 합리적 가격이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 55,
+        "reasoning": "FY2023~FY2026 매출 CAGR 9.8%(31.35B→41.52B), 영업이익률 5.9%에서 21.5%로 크게 개선됐고 FCF는 14.4B이다. R&D는 매출의 14.4%이며 부채비율 1.10이다. 마진 개선 노력은 뚜렷하지만 최근 매출성장은 10.8%로 15%에 못 미친다. 후행 P/E 22.0, PEG 0.86이다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "ALL": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "대형 손해보험사이며 업종은 이해하기 쉽다. 후행 P/E 5.0배, ROE 46%, 시가총액 62.7B이지만 순이익이 2022년 -1.29B, 2023년 -0.19B, 2024년 4.67B, 2025년 10.28B로 극단적으로 변했다. 선행 EPS 28.1은 후행 EPS 50.0의 절반 정도라 현재 이익이 정점일 가능성이 높다. D/E 0.22로 재무는 건실하다. 합산비율, 준비금, float 자료가 없어 정상 이익과 인수 규율을 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "경기순환 성격의 P&C 보험. P/E 5.0, ROE 46%, D/E 0.22이고 연간 순이익이 2023년 -1.9억에서 2025년 102.8억달러로 급증했다. 후행 EPS 49.98 대비 forward 28.1이라 이익이 정점에 가까울 가능성이 높고(추론), forward 기준 P/E는 약 9배다. 유동비율 0.36은 보험사 재무제표 특성이라 일반 기업 기준을 그대로 쓰기 어렵다. 매우 싸 보이나 손해율 사이클의 정점 위험 때문에 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "abstain",
+        "confidence": 20,
+        "reasoning": "ALL: 2022~2025 매출 CAGR 9.8%, 영업이익률이 2023년 0.1%에서 2025년 20.2%로 급반등해 사이클 효과가 크다. 후행 P/E 5.0이다. 보험과 금융업은 연구개발비와 매출총이익 개념이 맞지 않아 피셔의 R&D 효율과 총마진 기준을 적용할 수 없다. 연간 영업이익도 투자손익과 준비금 변동의 영향을 받아 성장 지속성 판단이 왜곡될 수 있다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다. 따라서 신호를 내지 않는다.",
+        "data_quality": "insufficient",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "INCY": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "바이오 제약사로 부채가 거의 없다(D/E 0.01). ROE 31%, 영업마진 42%, 후행 P/E 14.4배, FCF 1.18B(수익률 약 5%)다. 그러나 순이익이 2023년 0.60B, 2024년 0.03B, 2025년 1.29B로 일관성이 없다. 주력 약물 의존과 특허 만료, 임상 결과 위험은 자료만으로 평가하기 어렵다. 버핏의 능력 범위 밖에 가깝고 이익 예측 가능성도 낮다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 55,
+        "reasoning": "고성장 바이오 제약. P/E 14.4, 매출 +37.7%, 분기 EPS +44.6%, D/E 0.006, 유동비율 4.6, ROE 30.7%, FCF 11.8억달러다. 연간 순이익은 2024년 0.33억에서 2025년 12.9억달러로 급변했고, 연간 매출은 34.0억(2022)에서 51.4억달러로 늘었다. Yahoo PEG 10.82는 분기 기준 이상값으로 보이며 forward EPS 8.68은 후행 7.85보다 11%만 높아 성장 둔화 신호다. 제품 집중도나 특허 만료 위험은 원자료로 확인하지 못했다. 낮은 P/E와 무차입, 현금 창출은 매력적이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "2022~2025 매출 CAGR 14.9%(3.39B→5.14B), R&D는 매출의 40~60%로 매우 높고 총마진은 93%다. 다만 영업이익률이 17.4%, 17.7%, 2.4%, 26.1%로 변동이 크고 2024년 R&D 비율이 61.5%까지 올랐다. R&D 효율은 개별 파이프라인과 특허 만료 정보가 있어야 평가 가능한데 원자료에 없다. 후행 P/E 14.4이며 부채비율 0.01이다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "FSLR": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "태양광 모듈 제조사로 D/E 0.02, ROE 19%, 영업마진 43%, 후행 P/E 10.6배다. 하지만 FCF가 2023년 -0.78B, 2024년 -0.31B로 마이너스였다가 2025년 1.19B로 돌아선 이력이 있다. 매출이 최근 -3.7% 줄었고 수익성은 정책 보조금과 관세에 크게 좌우된다. 해자가 기술 우위에 한정되고 정책 의존이 커서 버핏이 영원히 보유할 사업으로 보기 어렵다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 50,
+        "reasoning": "경기·정책 민감 성장주(태양광). P/E 10.6, Yahoo PEG 0.30, D/E 0.02, 유동비율 2.5, ROE 18.5%, 영업이익률 42.6%다. 연간 순이익이 2022년 -0.4억에서 2025년 15.3억달러로 늘었고 FCF도 2024년 -3.1억에서 2025년 11.9억달러로 흑자 전환했다. 반대 근거는 분기 매출이 -3.7%이고 FCF 흑자 기간이 짧으며 수요와 정책 의존도가 높다는 점이다(정책 효과는 원자료로 확인하지 못했다). 사이클 위험이 있어도 가격과 재무 안정성은 매력적이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "2022~2025 매출 CAGR 26%(2.62B→5.22B), 영업이익률 -10.7%에서 30.6%로 개선됐다. R&D는 0.23B로 매출의 4.5%이고 부채비율 0.02다. 반면 현재 스냅샷 매출성장은 -3.7%이고 FCF는 2023~2024년에 음수였다가 2025년 1.19B이다. 정책 의존도 등 수요 지속성은 원자료로 확인하지 못했다. 후행 P/E 10.6, PEG 0.3이다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "WDC": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 65,
+        "reasoning": "하드디스크 사업은 상품화된 사이클 산업이다. 순이익이 2023년 -1.68B, 2024년 -0.80B, 2025년 1.86B, 2026년 9.30B로 급변했다. ROE 131%, 영업마진 44%, 매출 성장률 44%는 정점 사이클 값으로 보인다. 시가총액 124B, 후행 P/E 12.3배는 이 이익이 유지된다는 가정에 의존한다. 최근 몇 년 적자였던 점과 해자 부재를 고려하면 안전마진을 인정하지 않는다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "경기순환주(스토리지)로 회생 후 급등 단계. P/E 12.3, 후행 EPS 26.92 대비 forward 33.3, 분기 매출 +43.8%, 52주 +173%, 시가총액 약 1,243억달러다. 연간 순이익은 2024년 -8억에서 2026년 93.0억달러로 급증했고 연간 FCF는 35.1억달러다. PEG 0.63은 급반등 EPS 성장 기반이라 신뢰하기 어렵고, 순이익 93억달러가 일회성 이익의 영향을 받았는지는 원자료로 확인하지 못했다. 회생은 확인됐지만 정점 위험 때문에 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "FY2023~FY2026 매출 CAGR 27.4%(6.25B→12.92B), 영업이익률 -6.4%에서 35.6%로 급개선됐고 R&D는 1.16B(매출의 9.0%)다. 성장과 마진은 매우 강하지만 2023~2024년에 적자였던 하드웨어 사이클 기업이다. FY2026 순이익 9.3B은 영업이익 4.6B보다 커서 일회성 이익이 섞였을 가능성이 있다(추론). 후행 P/E 12.3은 정점 이익 기준일 수 있어 지속성은 확인하지 못했다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "OXY": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "석유가스 생산사로 ROE 11%, ROIC 7%, 영업마진 45%다. D/E 0.35지만 총부채 23.4B로 절대 규모가 크다. 순이익이 2022년 13.3B에서 2025년 2.33B로 줄었고 후행 P/E 17.7배, P/B 1.86배다. FCF는 4.11B(수익률 약 6%)로 나쁘지 않으나 capex 6.4B가 크다. 자본수익률이 기준에 미치지 못하고 가격도 안전마진을 주지 않아 중립이다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "경기순환주(E&P). P/E 17.7, PEG 1.14, ROE 10.6%, D/E 0.35지만 총부채가 233.5억달러로 크다. 연간 순이익이 2022년 133억에서 2025년 23.3억달러로 줄었고 forward EPS 4.76은 후행 3.52보다 높다. EPS 성장 550%는 낮은 기저 효과가 크다. P/E와 ROE 모두 사이클주 매수 기준에 못 미치고 부채 부담이 있어 중립 하단이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 62,
+        "reasoning": "OXY: 2022~2025 매출 CAGR -16%(36.63B→21.59B), 영업이익률 37.3%에서 17.2%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. TTM 영업이익률 45.4%와 매출성장 53.4%는 스냅샷 값이다. 후행 P/E 17.7이다. 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "ADSK": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "설계 소프트웨어는 전환 비용이 높은 해자가 있다. 영업마진 29%, ROIC 55%, FCF 2.38B(2026), 순이익이 2023년 0.82B에서 2026년 1.12B로 안정적이다. 하지만 후행 P/E 31.1배, P/B 14.8배, FCF 수익률 약 6%, 시가총액 50.1B로 가격이 높다. D/E 1.10으로 부채가 많고 ROE 54%는 자기자본(3.04B)이 작아 부풀려졌다. 좋은 회사이나 현재 가격은 매력이 없다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 55,
+        "reasoning": "대형우량에서 고성장으로 넘어가는 소프트웨어. P/E 31.1, Yahoo PEG 0.81, 매출 +16.1%, FCF 31.6억달러, forward EPS 14.2 기준 약 17배다. 연간 매출이 50.1억에서 72.1억달러로, FCF는 20.3억에서 23.8억달러로 늘었다. 반대 근거는 D/E 1.10, 유동비율 0.86, 후행 P/E가 높다는 점이며 forward EPS가 비GAAP인지는 확인하지 못했다. 안정적 성장과 현금창출 대비 가격은 합리적이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 64,
+        "reasoning": "FY2023~FY2026 매출 CAGR 13.0%(5.0B→7.21B), 영업이익률 19.8%에서 24.9%로 개선됐고 매출총이익률은 약 91%다. R&D는 1.64B로 매출의 22.8%다. 후행 P/E 31.1, 부채비율 1.10으로 가격과 레버리지 부담은 있다. 매출 성장이 15%에 못 미치는 점도 감점 요인이다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "TROW": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "자산운용사로 D/E 0.04, ROE 19%, 영업마진 29%, 후행 P/E 10.1배, FCF 수익률 약 9%, 시가총액 21.5B다. 재무와 가격은 매력적이다. 반대 근거는 액티브 운용 자금이 패시브로 이동하는 구조적 역풍이고, 순이익이 2024년 2.10B, 2025년 2.09B로 정체돼 있다는 점이다. 수수료 압박으로 해자의 지속성을 확신하기 어렵다. 시장 수준에 이익이 연동돼 예측 가능성도 낮다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "저성장 자산운용사. P/E 10.1, 배당수익률 5.15%, D/E 0.04, 유동비율 4.0, FCF 20.2억달러다. 연간 순이익은 2023년 17.9억, 2024년 21.0억, 2025년 20.9억달러로 정체이고 forward EPS 10.2도 후행 9.96과 거의 같다. 분기 EPS +25%에 기댄 PEG 2.09는 연간 추세와 맞지 않는다. 배당과 재무는 좋지만 성장이 약하고 시장 의존도가 높아 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 35,
+        "reasoning": "2022~2025 매출 CAGR 4.0%(6.49B→7.31B)이고 영업이익률은 38.5%에서 33.9%로 낮아졌다(2025는 전년과 유사). 자산운용사는 R&D 개념이 맞지 않고 매출이 시장 수준과 자산 유출입에 좌우된다. 부채비율 0.04, 후행 P/E 10.1로 재무와 가격은 무난하다. 장기 성장 동력은 원자료로 확인하지 못했다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "CTSH": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "IT 서비스 업체로 ROE 15%, ROIC 17%, 영업마진 17%, D/E 0.14다. 순이익이 2022년 2.29B, 2025년 2.23B로 정체됐다. 후행 P/E 14.2배, FCF 2.22B(수익률 약 7%), 시가총액 29.7B로 가격은 합리적이다. 그러나 성장이 거의 없고 해자가 ACN보다 약하며 AI 자동화 위험이 같다. 싸지만 지속 가능한 경쟁 우위가 불분명하다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "저성장~대형우량 IT 서비스. P/E 14.2, PEG 0.96, D/E 0.15, 유동비율 2.2, 배당 2.0%, FCF 22.2억달러다. 그러나 연간 매출은 194억에서 211억달러로 소폭 늘었고 순이익은 22.9억에서 22.3억달러로 정체이며 EPS 성장은 -1.4%다. PEG 0.96은 분기 4% 수준 성장에 근거해 허수에 가깝다. 싸고 건전하지만 성장 스토리가 부족하다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 38,
+        "reasoning": "2022~2025 매출 CAGR 2.8%(19.43B→21.11B)이고 영업이익률은 15.1~15.8%로 정체됐다. 현재 스냅샷 EPS 성장은 -1.4%이고 R&D 항목은 없으며 IT 서비스업이라 R&D 비율 기준이 맞지 않는다. 후행 P/E 14.2, 부채비율 0.14로 재무는 건전하다. 장기 성장 근거는 약하다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "NXPI": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "자동차·산업용 반도체다. ROE 28%, 영업마진 30%, 후행 P/E 19.6배다. D/E 0.93, 총부채 12.2B로 부채가 많다. 순이익이 2023년 2.80B에서 2025년 2.02B로 줄었고 ROIC는 14%다. 반도체 사이클 영향을 받고 capex도 매출의 4% 수준이다. 해자는 있으나 사이클과 부채, 보통 수준인 가격 때문에 안전마진 근거가 부족하다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "bullish",
+        "confidence": 55,
+        "reasoning": "경기순환주(반도체) 회복 국면. P/E 19.6, Yahoo PEG 0.44, 분기 매출 +19.5%, ROE 27.9%, 배당 1.77%, FCF 35.6억달러, forward EPS 18.2다. 연간 순이익은 2023년 28.0억에서 2025년 20.2억달러로 줄었다가 후행 EPS 11.7에서 반등하는 중이라 아직 이전 정점 이익을 크게 넘지는 않은 것으로 본다(추론). D/E 0.93과 총부채 122억달러, 사이클 재하락 위험이 반대 근거다. 이익 회복 초입에서 forward P/E 약 12.6배는 매력적이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 38,
+        "reasoning": "2022~2025 매출 CAGR -2.4%(13.21B→12.27B)이고 영업이익률이 28.7%에서 24.7%로 3년 연속 하락해 경고 플래그에 해당한다. R&D는 매출의 19.2%로 높고 2.36B로 유지됐으나 성장으로 이어지지 못했다. 현재 스냅샷 매출성장 19.5%는 반등 신호일 수 있다(추론). 부채비율 0.93, 후행 P/E 19.6이다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "UHS": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "병원·행동건강 운영사다. 후행 P/E 7.6배, P/B 1.45배, ROE 21%, 순이익이 2022년 0.68B에서 2025년 1.49B로 늘었다. D/E 0.69, 총부채 5.17B로 부채는 보통이다. 시가총액 10.9B 대비 FCF 0.50B로 수익률은 약 5%에 그친다. capex가 매출의 6%(1.04B)로 자본 집약적이다. 정부 상환율, 소송, 인력 비용 위험이 있고 해자가 지역 입지에 한정돼 있어 싼 가격을 그대로 안전마진으로 보기 어렵다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "대형우량 병원 운영사. P/E 7.6, PEG 1.25, ROE 20.9%, D/E 0.69, 시가총액 약 109억달러다. 연간 매출이 134억에서 174억달러로, 순이익이 6.8억에서 14.9억달러로 늘었다. 반대 근거는 분기 EPS 성장이 +1.5%에 그치고 forward EPS 23.9가 후행 24.3보다 낮으며 스냅샷 FCF가 5.0억달러로 2025년 연간 8.3억달러보다 낮다는 점이다. 정책·지급 환경 위험도 있다(원자료 외 추론). 싸지만 성장 재가속 근거가 약하다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 40,
+        "reasoning": "2022~2025 매출 CAGR 9.0%(13.4B→17.36B), 영업이익률 7.5%에서 11.5%로 3년 연속 개선됐다. 병원업이라 R&D 개념이 맞지 않고 마진 수준이 낮으며 2025 FCF는 0.82B로 전년 1.12B보다 줄었다. 후행 P/E 7.6, 부채비율 0.69다. 가격은 낮지만 피셔식 성장기업 기준의 근거는 부족하다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "ZBRA": {
+      "buffett": {
+        "signal": "bearish",
+        "confidence": 50,
+        "reasoning": "바코드·자동 인식 장비 업체다. 후행 P/E 33.8배인데 ROE 15%, ROIC 8%로 자본수익률은 평범하다. D/E 0.86, 총부채 2.70B이고 순이익이 2022년 0.46B, 2025년 0.42B로 정체됐다. FCF 수익률은 약 3%, 시가총액 17.5B다. 하드웨어 재고 사이클에 민감해 이익 일관성도 낮다. 선행 EPS 22.3은 개선 기대를 반영하지만 현재 가격은 품질에 비해 비싸다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "경기순환성 산업용 하드웨어. P/E 33.8, Yahoo PEG 0.62, 분기 매출 +20.4%, forward EPS 22.3 기준 약 16.6배다. 그러나 D/E 0.86, 유동비율 0.52, 연간 순이익은 2022년 4.6억, 2024년 5.3억, 2025년 4.2억달러로 정체했다. EPS 성장 108%는 분기 반등이고 연간 성장 지속성은 확인되지 않는다. 회복 기대는 있으나 재무 여력과 이익 가시성이 부족하다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 42,
+        "reasoning": "2022~2025 매출 CAGR -2.3%(5.78B→5.4B)이고 영업이익률은 16.2%에서 14.8%로 낮아졌다. R&D는 매출의 11.0%로 꾸준하다. 현재 스냅샷은 매출성장 20.4%, 후행 P/E 33.8, 부채비율 0.86이라 회복이 이미 가격에 반영됐을 수 있다(추론). 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "CVX": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "통합 석유 메이저로 D/E 0.19, FCF 21.9B, 시가총액 441B이고 주주환원 여력이 크다. 그러나 ROE 12%, ROIC 8%로 버핏 기준에 못 미친다. 순이익이 2022년 35.5B, 2023년 21.4B, 2024년 17.7B, 2025년 12.3B로 줄곧 감소했다. 후행 P/E 21.2배, FCF 수익률 약 5%라 싸지 않다. 안정적인 대형 사업이지만 자본수익률과 가격이 안전마진을 주지 않는다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "경기순환형 대형 통합 석유사(저성장). P/E 21.2, PEG 0.97, D/E 0.19, 배당 3.16%, FCF 219억달러다. 연간 순이익은 2022년 355억에서 2025년 123억달러로 줄었고 forward EPS 15.2 기준 약 14.8배다. EPS 성장 385%는 분기 YoY라 연간 추세와 반대다. 재무와 배당은 훌륭하지만 사이클이 상승 중이라 이익 정점 위험이 있고 P/E 21.2가 낮지 않다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bearish",
+        "confidence": 58,
+        "reasoning": "CVX: 2022~2025 매출 CAGR -7.8%(235.72B→184.43B), 영업이익률 16.9%에서 9.0%로 하락했다. 연구개발비 항목이 없고 이익이 유가나 정제 마진 같은 외부 가격에 좌우돼 피셔식 수년간 매출 성장과 마진 개선 노력을 확인하기 어렵다. TTM 영업이익률 21.9%, 후행 P/E 21.2, 부채비율 0.19다. 규모와 재무는 견고하다. 좋은 자본배분 회사일 수는 있지만 장기 복리 성장 기업의 기준에는 맞지 않는다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "INTU": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 55,
+        "reasoning": "세무·회계 소프트웨어로 브랜드와 전환 비용이 해자다. ROE 24%, ROIC 25%, 영업마진 18%, D/E 0.44다. 순이익은 2023년 2.38B에서 2026년 4.57B로 2배가 됐고 FCF는 8.62B다. 후행 P/E 19.8배, FCF 수익률 약 7%, 시가총액 86.9B로 품질 대비 합리적이다. 반대 근거는 AI가 세무 신고 자동화로 기존 제품을 대체할 위험과 정부 무료 신고 정책이다. 안전마진은 25%를 확신할 정도는 아니다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "대형우량 소프트웨어. P/E 19.8, PEG 1.03, 매출 +13.7%, ROE 23.6%, FCF 63.5억달러(스냅샷), 배당 1.7%다. 연간 매출은 143.7억에서 214.5억달러, 순이익은 23.8억에서 45.7억달러로 늘었다. 반대 근거는 분기 EPS 성장 -4.7%로 이익 성장이 최근 꺾였고 D/E 0.44가 린치의 0.3 기준보다 높다는 점이다. 좋은 회사지만 이익 성장 지속 여부가 불분명해 중립이다. 원자료는 연간 4개년만 있어 5년 연속 성장은 확인하지 못했고, Yahoo 현재 스냅샷의 분기 YoY 성장률과 연간 수치가 섞여 있다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "bullish",
+        "confidence": 70,
+        "reasoning": "FY2023~FY2026 매출 CAGR 14.3%(14.37B→21.45B), 영업이익률 21.9%에서 28.8%로 3년 연속 개선됐다. R&D 3.38B로 매출의 15.7%, 매출총이익률도 78.1%에서 80.2%로 올랐다. 후행 P/E 19.8, PEG 1.03으로 품질 대비 가격 부담이 크지 않다. 반대로 TTM EPS 성장은 -4.7%라 단기 이익 성장이 매출 성장을 못 따라간다. 연도별 발행주식 수 이력이 원자료에 없어 희석 여부는 확인하지 못했고, 경영진 품질과 노사 관계도 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "SPY": {
+      "buffett": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "S&P 500 인덱스 ETF다. 후행 P/E 약 24.2배로 역사적 평균보다 비싼 편이고, 상위 10개 비중이 38.6%(NVDA 7.9%, AAPL 7.5%, MSFT 6.0%, MU 1.6% 등)이며 기술 섹터가 38.4%라 집중도가 높다. 503개 구성 종목으로 우량 기업이 다수 담겨 있고 1년 가격은 657.30에서 763.25(2026-10-16)로 올랐다. 보수는 0.0945%다. 버핏이 일반 투자자에게 저비용 S&P 500 인덱스를 권했지만, SPY는 같은 지수를 추종하는 VOO보다 보수가 높다. 개별 기업용 ROE와 내재가치 DCF는 적용하지 않았다. 현재 밸류에이션에서 안전마진 근거는 없다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "ETF(S&P 500). 보수 0.0945%로 같은 지수의 VOO보다 높다. 린치 관점에서 지수 ETF에는 개별 기업의 PEG, 재고, 10배주 분석을 적용할 수 없다. 지수는 503종목이지만 상위 10개가 38.6%, 기술 섹터가 38.4%로 집중도가 높다. 후행 P/E는 약 24.2배로 대형우량주 기준으로는 높은 편이다. 1년 가격은 657.30에서 763.25(+16.1%)로 올랐다. 린치는 지수 투자를 부정하지 않았지만 이 밸류에이션에서는 강하게 사야 할 근거가 없다. 이익 성장률 자료가 없어 PEG는 계산하지 않았다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 45,
+        "reasoning": "SPY은 S&P 500 지수 ETF로 개별 기업 지표를 적용하지 않았다. 503개 종목이지만 상위 10개가 38.6%(NVDA 7.9%, AAPL 7.5%, MSFT 6.0% 등), 기술 섹터가 38.4%로 집중도가 높다. 성장 기업 비중이 크다는 점은 피셔 관점에서 장점이지만 비성장 업종도 섞여 있다. 보수 0.0945%, 후행 P/E 약 24.2, 1년 가격 상승은 약 16%(2025-10-17 대비 2026-10-16)로 가격은 싸지 않다. 피셔는 소수의 뛰어난 개별 기업을 선호해 지수 자체에는 확신이 낮고, 지수 내 개별 기업의 경영진 품질은 확인하지 못했다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    },
+    "VOO": {
+      "buffett": {
+        "signal": "bullish",
+        "confidence": 50,
+        "reasoning": "S&P 500 인덱스 ETF다. 후행 P/E 약 24.2배로 역사적 평균보다 비싼 편이고, 상위 10개 비중이 38.6%(NVDA 7.9%, AAPL 7.5%, MSFT 6.0%, MU 1.6% 등)이며 기술 섹터가 38.4%라 집중도가 높다. 503개 구성 종목으로 우량 기업이 다수 담겨 있고 1년 가격은 603.80에서 701.61(2026-10-16)로 올랐다. 보수는 0.03%다. 버핏이 일반 투자자에게 저비용 S&P 500 인덱스를 권한 관점에서 VOO는 가장 낮은 보수군에 속해 장기 적립에 적합하다. 다만 현재 밸류에이션에서 25% 안전마진은 없고, 상승 근거는 지수 자체의 장기 수익력에 한정된다. 개별 기업용 ROE와 DCF는 적용하지 않았다. 신호는 일시 매수보다 분할 적립을 전제로 한 약한 강세다.",
+        "data_quality": "complete",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "lynch": {
+        "signal": "neutral",
+        "confidence": 50,
+        "reasoning": "ETF(S&P 500). 보수 0.03%로 SPY보다 낮아 같은 지수 노출 비용이 저렴하다. 린치 관점에서 지수 ETF에는 개별 기업의 PEG, 재고, 10배주 분석을 적용할 수 없다. 지수는 503종목이지만 상위 10개가 38.6%, 기술 섹터가 38.4%로 집중도가 높다. 후행 P/E는 약 24.2배로 대형우량주 기준으로는 높은 편이다. 1년 가격은 603.80에서 701.61(+16.2%)로 올랐다. 지수 자체는 비싸지만 비용 차이로 SPY보다 선호한다. 이익 성장률 자료가 없어 PEG는 계산하지 않았다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      },
+      "fisher": {
+        "signal": "neutral",
+        "confidence": 47,
+        "reasoning": "VOO은 S&P 500 지수 ETF로 개별 기업 지표를 적용하지 않았다. 503개 종목이지만 상위 10개가 38.6%(NVDA 7.9%, AAPL 7.5%, MSFT 6.0% 등), 기술 섹터가 38.4%로 집중도가 높다. 성장 기업 비중이 크다는 점은 피셔 관점에서 장점이지만 비성장 업종도 섞여 있다. 보수 0.03%, 후행 P/E 약 24.2, 1년 가격 상승은 약 16%(2025-10-17 대비 2026-10-16)로 가격은 싸지 않다. 피셔는 소수의 뛰어난 개별 기업을 선호해 지수 자체에는 확신이 낮고, 지수 내 개별 기업의 경영진 품질은 확인하지 못했다. 같은 지수를 추종하므로 SPY보다 보수가 낮은 점만 다르다.",
+        "data_quality": "partial",
+        "analysis_source": "independent_investor_analysis",
+        "analysis_date": "2026-10-19"
+      }
+    }
+  }
+}

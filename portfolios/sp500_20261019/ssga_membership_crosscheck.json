@@ -1,0 +1,14 @@
+{
+  "source": "https://www.ssga.com/library-content/products/fund-data/etfs/us/holdings-daily-us-en-spy.xlsx",
+  "source_as_of": "2026-10-15",
+  "retrieved_at": "2026-10-19T07:24:26.933489+00:00",
+  "wikipedia_retrieved": "2026-10-19",
+  "count": 503,
+  "wikipedia_only": [],
+  "ssga_only": [],
+  "non_equity_rows": {
+    "US DOLLAR": 0.286774,
+    "TPG INC residual (2602335D)": 3e-06
+  },
+  "validation": "ETF holdings proxy, not licensed official index membership. Changes between 2026-10-15 and 2026-10-19 are not covered."
+}
