@@ -6,6 +6,8 @@
 """
 import statistics
 import threading
+from collections import Counter
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -97,7 +99,41 @@ def _resolve_company_name(ticker, metrics):
     return ticker
 
 
+@dataclass(frozen=True)
+class BatchAnalysis:
+    """배치 분석 결과. 순위에 들지 못한 종목은 사유와 함께 excluded에 남긴다."""
+    results: tuple[dict, ...]
+    excluded: tuple[dict, ...]
+
+
+def summarize_exclusions(excluded) -> dict[str, int]:
+    """제외 사유별 종목 수"""
+    return dict(sorted(Counter(item["reason"] for item in excluded).items()))
+
+
 def analyze_single_ticker(
+    ticker,
+    end_date,
+    prefetched_prices=None,
+    strategy="hybrid",
+    skip_news=False,
+    sector_stats=None,
+    factor_weights=None,
+):
+    """단일 종목 종합 분석. 제외 사유가 필요하면 analyze_single_ticker_detailed를 쓴다."""
+    result, _reason = analyze_single_ticker_detailed(
+        ticker,
+        end_date,
+        prefetched_prices=prefetched_prices,
+        strategy=strategy,
+        skip_news=skip_news,
+        sector_stats=sector_stats,
+        factor_weights=factor_weights,
+    )
+    return result
+
+
+def analyze_single_ticker_detailed(
     ticker,
     end_date,
     prefetched_prices=None,
@@ -108,6 +144,12 @@ def analyze_single_ticker(
 ):
     """
     단일 종목 종합 분석 (앙상블 투자자 점수 포함)
+
+    재무 지표나 가격이 없으면 점수를 0으로 채우지 않고 제외 사유를 돌려준다.
+
+    Returns:
+        (result, None) 또는 (None, reason).
+        reason: metrics_unavailable | prices_unavailable | analysis_error:<예외 타입>
 
     Args:
         ticker: 종목 티커
@@ -128,7 +170,7 @@ def analyze_single_ticker(
         )
 
         if not metrics:
-            return None
+            return None, "metrics_unavailable"
 
         # 2. 가격 데이터
         if prefetched_prices is not None:
@@ -137,6 +179,9 @@ def analyze_single_ticker(
             end_dt = datetime.strptime(end_date, "%Y-%m-%d")
             start_dt = end_dt - timedelta(days=90)
             prices = get_prices(ticker, start_dt.strftime("%Y-%m-%d"), end_date)
+
+        if not prices:
+            return None, "prices_unavailable"
 
         # 3. 내부자 거래 / 뉴스 데이터
         if skip_news:
@@ -319,7 +364,7 @@ def analyze_single_ticker(
             )
 
         m = metrics[0]
-        return {
+        result = {
             "ticker": ticker,
             "company_name": _resolve_company_name(ticker, m),
             "total_score": round(total_score, 2),
@@ -379,12 +424,32 @@ def analyze_single_ticker(
                 "sector": m.get('sector'),
             }
         }
+        return result, None
 
-    except Exception:
-        return None
+    except Exception as exc:
+        # 예외 메시지에는 provider 응답이 섞일 수 있어 타입만 남긴다.
+        return None, f"analysis_error:{type(exc).__name__}"
 
 
 def run_batch_analysis(
+    tickers,
+    end_date,
+    max_workers=MAX_WORKERS,
+    strategy="hybrid",
+    factor_weights=None,
+):
+    """배치 분석 실행. 제외 종목이 필요하면 run_batch_analysis_with_exclusions를 쓴다."""
+    results = run_batch_analysis_with_exclusions(
+        tickers,
+        end_date,
+        max_workers=max_workers,
+        strategy=strategy,
+        factor_weights=factor_weights,
+    ).results
+    return list(results)
+
+
+def run_batch_analysis_with_exclusions(
     tickers,
     end_date,
     max_workers=MAX_WORKERS,
@@ -399,8 +464,12 @@ def run_batch_analysis(
         max_workers: 병렬 처리 워커 수
         strategy: 분석 전략 (fundamental, momentum, hybrid)
         factor_weights: 이 실행에 적용할 검증 수축 후 팩터 가중치
+
+    Returns:
+        BatchAnalysis. 데이터가 없는 종목은 순위 대신 excluded에 사유와 함께 남는다.
     """
     results = []
+    excluded = []
     total = len(tickers)
     processed = 0
     lock = threading.Lock()
@@ -445,7 +514,7 @@ def run_batch_analysis(
     def process_with_progress(ticker):
         nonlocal processed
         prefetched_prices = all_prices.get(ticker)
-        result = analyze_single_ticker(
+        outcome = analyze_single_ticker_detailed(
             ticker,
             end_date,
             prefetched_prices=prefetched_prices,
@@ -457,15 +526,17 @@ def run_batch_analysis(
             processed += 1
             if processed % 25 == 0 or processed == total:
                 print(f"   진행: {processed}/{total} ({processed/total*100:.0f}%)")
-        return result
+        return outcome
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = {executor.submit(process_with_progress, t): t for t in tickers}
 
         for future in as_completed(futures):
-            result = future.result()
+            result, reason = future.result()
             if result:
                 results.append(result)
+            else:
+                excluded.append({"ticker": futures[future], "reason": reason})
 
     # 점수순 정렬
     results.sort(key=lambda x: x['total_score'], reverse=True)
@@ -474,4 +545,11 @@ def run_batch_analysis(
     for i, r in enumerate(results, 1):
         r['rank'] = i
 
-    return results
+    if excluded:
+        summary = ", ".join(f"{k} {v}개" for k, v in summarize_exclusions(excluded).items())
+        print(f"   ⚠️ 데이터 부족으로 순위에서 제외: {len(excluded)}개 ({summary})")
+
+    return BatchAnalysis(
+        results=tuple(results),
+        excluded=tuple(sorted(excluded, key=lambda item: item["ticker"])),
+    )

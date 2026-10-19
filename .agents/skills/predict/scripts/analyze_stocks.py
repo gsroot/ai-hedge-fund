@@ -40,8 +40,9 @@ from datetime import datetime
 
 import config
 from cache import clear_cache, get_cache_stats, cache_stats
-from data_fetcher import get_index_tickers, sort_tickers_by_market_cap
-from analysis import run_batch_analysis
+# get_index_tickers는 backtesting/backtest.py가 이 모듈에서 import하므로 다시 내보낸다.
+from data_fetcher import get_index_tickers, resolve_index_universe, sort_tickers_by_market_cap  # noqa: F401
+from analysis import run_batch_analysis_with_exclusions, summarize_exclusions
 from factor_evidence import load_factor_weight_policy_safe
 from provider_readiness import load_provider_readiness_policy
 from reporting import print_results
@@ -135,9 +136,14 @@ def main():
     # 종목 리스트 결정
     if args.tickers:
         tickers = [t.strip() for t in args.tickers.split(',')]
+        universe_source, universe_may_be_stale = "explicit_tickers", False
+        universe_size = len(tickers)
     elif args.index:
         use_ticker_cache = config.CACHE_ENABLED and not args.update_tickers
-        tickers = get_index_tickers(args.index, use_cache=use_ticker_cache)
+        universe = resolve_index_universe(args.index, use_cache=use_ticker_cache)
+        tickers = list(universe.tickers)
+        universe_source, universe_may_be_stale = universe.source, universe.may_be_stale
+        universe_size = len(universe.tickers)
     else:
         print("오류: --tickers 또는 --index 중 하나를 지정해야 합니다.")
         parser.print_help()
@@ -180,23 +186,23 @@ def main():
     print(f"분석 전략: {strategy_names.get(args.strategy, args.strategy)}")
     print(f"팩터 가중치 정책: {factor_weight_policy['mode']}")
     print(f"대상 종목: {len(tickers)}개")
+    stale_note = " ⚠️ 현재 구성 종목과 다를 수 있음" if universe_may_be_stale else ""
+    print(f"유니버스 출처: {universe_source}{stale_note}")
     print()
 
     # 분석 실행
-    results = run_batch_analysis(
+    batch = run_batch_analysis_with_exclusions(
         tickers,
         end_date,
         args.workers,
         strategy=args.strategy,
         factor_weights=effective_factor_weights,
     )
-
-    if not results:
-        print("분석 결과가 없습니다.")
-        sys.exit(1)
+    results = list(batch.results)
 
     # 결과 출력
-    print_results(results, args.display, strategy=args.strategy)
+    if results:
+        print_results(results, args.display, strategy=args.strategy)
 
     # 캐시 통계 출력
     if config.CACHE_ENABLED:
@@ -222,7 +228,17 @@ def main():
                 "label": "점수 환산값(예상수익률 아님)",
             },
             "strategy": args.strategy,
+            "universe": {
+                "source": universe_source,
+                "may_be_stale": universe_may_be_stale,
+                "size": universe_size,
+                "requested_count": len(tickers),
+            },
+            "total_requested": len(tickers),
             "total_analyzed": len(results),
+            "total_excluded": len(batch.excluded),
+            "exclusion_summary": summarize_exclusions(batch.excluded),
+            "excluded": list(batch.excluded),
             "methodology": strategy_methods.get(args.strategy, "Multi-factor analysis"),
             "factor_weights": effective_factor_weights,
             "factor_weight_policy": factor_weight_policy,
@@ -244,6 +260,11 @@ def main():
         with open(args.output, 'w', encoding='utf-8') as f:
             json.dump(output_data, f, indent=2, ensure_ascii=False)
         print(f"\n결과 저장됨: {args.output}")
+
+    # 전부 제외된 실행도 excluded·universe 기록은 남긴 뒤 실패로 종료한다.
+    if not results:
+        print("분석 결과가 없습니다.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

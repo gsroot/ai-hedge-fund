@@ -7,8 +7,10 @@ Yahoo Finance / 한국 주식 데이터 조회 모듈
 
 한국 주식(6자리 숫자 종목코드)은 자동으로 DART + PyKRX로 라우팅됩니다.
 """
+import math
 import os
 import json
+from dataclasses import dataclass
 from datetime import datetime
 
 import pandas as pd
@@ -622,6 +624,34 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
 # 캐시된 데이터 조회 (재무 지표, 가격)
 # ============================================================================
 
+# 이 중 하나라도 값이 있어야 순위에 쓸 수 있는 재무 지표로 본다.
+# 상장폐지·티커 변경 종목은 Yahoo가 거의 빈 info를 돌려줘 전부 None인 dict가 만들어진다.
+CORE_METRIC_FIELDS = (
+    "market_cap",
+    "price_to_earnings_ratio",
+    "price_to_book_ratio",
+    "return_on_equity",
+    "operating_margin",
+    "revenue_growth",
+    "total_revenue",
+)
+
+
+def _is_present(value) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, float):
+        return math.isfinite(value)
+    return True
+
+
+def has_usable_metrics(metrics) -> bool:
+    """핵심 재무 필드가 하나라도 채워져 있는지 판별한다 (None·NaN·inf는 빈 값)."""
+    if not isinstance(metrics, dict):
+        return False
+    return any(_is_present(metrics.get(field)) for field in CORE_METRIC_FIELDS)
+
+
 def get_financial_metrics(
     ticker,
     end_date,
@@ -632,18 +662,19 @@ def get_financial_metrics(
 
     미국 종목의 Yahoo/financial-datasets snapshot은 현재 시점 데이터다.
     과거 분석에서는 해당 소스를 읽거나 캐시하지 않고 빈 결과를 반환한다.
+    핵심 필드가 모두 비어 있는 응답은 누락으로 취급해 캐시하지 않는다.
     """
     if is_korean_ticker(ticker):
         from korean_data_fetcher import get_financial_metrics_kr
         kr_ticker = normalize_korean_ticker(ticker)
         cache_path = _get_cache_path("metrics_kr", kr_ticker, end_date, "")
         cached = _read_cache(cache_path)
-        if cached is not None:
+        if has_usable_metrics(cached):
             cache_stats["hits"] += 1
             return [cached]
         cache_stats["misses"] += 1
         result = get_financial_metrics_kr(kr_ticker, end_date)
-        if result:
+        if has_usable_metrics(result):
             _write_cache(cache_path, result)
             return [result]
         return []
@@ -653,13 +684,13 @@ def get_financial_metrics(
 
     cache_path = _get_cache_path("metrics_yf", ticker, end_date, "")
     cached = _read_cache(cache_path)
-    if cached is not None:
+    if has_usable_metrics(cached):
         cache_stats["hits"] += 1
         return [cached]
 
     cache_stats["misses"] += 1
     result = _fetch_financial_metrics_yf(ticker)
-    if result:
+    if has_usable_metrics(result):
         _write_cache(cache_path, result)
         return [result]
 
@@ -667,7 +698,7 @@ def get_financial_metrics(
     try:
         from financial_datasets_api import get_metrics_snapshot_fallback
         result = get_metrics_snapshot_fallback(ticker, end_date)
-        if result:
+        if has_usable_metrics(result):
             _write_cache(cache_path, result)
             return [result]
     except Exception:
@@ -772,16 +803,31 @@ def fetch_nasdaq100_tickers_from_wikipedia():
         return None
 
 
+@dataclass(frozen=True)
+class IndexUniverse:
+    """인덱스 구성종목과 그 목록을 얻은 출처."""
+    tickers: tuple[str, ...]
+    source: str  # wikipedia | korean_provider | daily_cache | fallback_static | unavailable
+    may_be_stale: bool
+
+
 def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
+    """인덱스 구성종목 티커 목록만 반환한다. 출처가 필요하면 resolve_index_universe를 쓴다."""
+    return list(resolve_index_universe(index_name, use_cache=use_cache).tickers)
+
+
+def resolve_index_universe(index_name: str, use_cache: bool = True) -> IndexUniverse:
     """
-    인덱스 구성종목 티커 목록 가져오기
+    인덱스 구성종목 티커 목록과 출처 가져오기
 
     Args:
         index_name: 'sp500', 'nasdaq100', 'kospi', 'kosdaq', 'kospi200', 'kosdaq150'
         use_cache: 티커 목록 캐시 사용 여부
 
     Returns:
-        티커 목록 (리스트). 한국 인덱스는 PyKRX, 미국 인덱스는 Wikipedia에서 조회.
+        IndexUniverse. 한국 인덱스는 FDR/PyKRX, 미국 인덱스는 Wikipedia에서 조회하고,
+        미국 조회가 실패하면 코드에 고정된 폴백 목록을 쓰며 may_be_stale=True로 표시한다.
+        일별 캐시에는 실시간 provider 결과만 저장된다.
     """
     today = datetime.now().strftime("%Y-%m-%d")
     cache_path = os.path.join(CACHE_DIR, f"tickers_{index_name}_{today}.json")
@@ -790,8 +836,9 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
         try:
             with open(cache_path, 'r') as f:
                 cached = json.load(f)
+            if cached:
                 print(f"📋 {index_name.upper()} 티커 목록: 캐시에서 로드 ({len(cached)}개)")
-                return cached
+                return IndexUniverse(tuple(cached), "daily_cache", False)
         except Exception:
             pass
 
@@ -830,8 +877,8 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
                     pass
         else:
             print(f"   ⚠️ {index_name.upper()} 종목 조회 실패")
-            kr_tickers = []
-        return kr_tickers
+            return IndexUniverse((), "unavailable", True)
+        return IndexUniverse(tuple(kr_tickers), "korean_provider", False)
 
     tickers = None
     if index_name == "sp500":
@@ -847,7 +894,8 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
 
     if tickers is None:
         tickers = [t.strip() for t in fallback.split(',')]
-        print(f"   폴백 목록 사용: {len(tickers)}개 종목")
+        print(f"   ⚠️ 폴백 목록 사용: {len(tickers)}개 종목 (고정 목록이라 현재 구성 종목과 다를 수 있음)")
+        return IndexUniverse(tuple(tickers), "fallback_static", True)
     else:
         print(f"   ✅ Wikipedia에서 {len(tickers)}개 종목 조회 완료")
         if use_cache and CACHE_ENABLED:
@@ -859,7 +907,7 @@ def get_index_tickers(index_name: str, use_cache: bool = True) -> list:
             except Exception:
                 pass
 
-    return tickers
+    return IndexUniverse(tuple(tickers), "wikipedia", False)
 
 
 def sort_tickers_by_market_cap(tickers, top_n=0):

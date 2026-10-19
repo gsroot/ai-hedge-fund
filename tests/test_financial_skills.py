@@ -220,6 +220,7 @@ class PointInTimeTests(unittest.TestCase):
             Path("predict/scripts/news_sentiment_enrichment.py"),
             Path("predict/scripts/analysis.py"),
             Path("predict/scripts/analyze_stocks.py"),
+            Path("predict/scripts/data_fetcher.py"),
             Path("predict/scripts/config.py"),
             Path("predict/scripts/factor_evidence.py"),
             Path("predict/SKILL.md"),

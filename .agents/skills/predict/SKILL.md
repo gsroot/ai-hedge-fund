@@ -191,6 +191,17 @@ uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply 
     "all_samples_ready": false,
     "ranking_policy": "missing_evidence_requires_prior_or_explanation_only"
   },
+  "universe": {
+    "source": "wikipedia|korean_provider|daily_cache|fallback_static|explicit_tickers|unavailable",
+    "may_be_stale": false,
+    "size": 503,
+    "requested_count": 503
+  },
+  "total_requested": 503,
+  "total_analyzed": 495,
+  "total_excluded": 8,
+  "exclusion_summary": {"metrics_unavailable": 8},
+  "excluded": [{"ticker": "WBA", "reason": "metrics_unavailable"}],
   "rankings": [
   {
   "ticker": "AAPL",
@@ -226,6 +237,14 @@ uv run python .agents/skills/predict/scripts/news_sentiment_enrichment.py apply 
   `news_date <= analysis_date`인 기사만 사용한다. 날짜를 검증할 수 없는 기사는 제외한다.
 - 인덱스 목록과 시가총액 정렬은 현재 기준이다. 이 결과만으로 과거 초과성과를 주장하지 않는다.
 - 데이터가 누락된 종목은 결과에서 빠질 수 있으며, 성공 종목만으로 전체 유니버스 성과를 추론하지 않는다.
+- 핵심 재무 필드가 모두 비었거나 가격이 없는 종목은 0점이나 `weak_sell`로 순위에 넣지 않는다.
+  `excluded`에 `metrics_unavailable`, `prices_unavailable`, `analysis_error:<예외 타입>` 사유로
+  남기고, 비어 있는 재무 응답은 캐시하지 않는다.
+- `universe.source`가 `fallback_static`이면 `may_be_stale: true`다. 코드에 고정된 목록이라
+  편입·편출이 반영되지 않았을 수 있으므로 결과를 현재 인덱스 전체로 보고하지 않는다.
+  `daily_cache`에는 Wikipedia나 FDR/PyKRX 같은 실시간 provider 결과만 저장된다.
+- `universe.size`는 `--top` 적용 전 구성 종목 수이고 `requested_count`는 실제 분석을 요청한 수다.
+  전부 제외되어 순위가 비어도 `--output` JSON은 저장하고 종료 코드 1로 끝난다.
 
 ## 해석 원칙
 
