@@ -1,0 +1,230 @@
+{
+  "analysis_date": "2026-10-19",
+  "investor": "lynch",
+  "analyses": {
+    "039200": {
+      "signal": "neutral",
+      "confidence": 40,
+      "reasoning": "린치 분류로는 회생·신약 개발주에 가깝다. 2025년 매출 998억원(전년 340억원), 순이익 544억원(전년 -16억원), P/E 15.6, 영업이익률 52%, D/E 0.23으로 숫자는 좋아 보인다. 그러나 2022~2024년 3년 연속 적자였고 급증한 이익이 일회성 기술료·마일스톤인지 반복 수익(로열티)인지 구분할 자료가 없어 PEG를 신뢰하기 어렵다. 첨부 기사는 유한양행 렉라자 로열티 내용이라 이 회사와의 연결은 간접적이며, 2026년 실적도 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "171090": {
+      "signal": "bearish",
+      "confidence": 50,
+      "reasoning": "경기순환형 OLED 증착장비주다. 2025년 매출 5158억원(전년 1129억원), 순이익 965억원(전년 -281억원)으로 급반등했지만 P/E는 62.7로 높고 D/E 1.54, 유동비율 1.39로 재무 여유가 작다. ROE 67%는 자기자본이 작아서 부풀려진 값이며 지속 가능한 성장률로 보기 어렵다. 1년 수익률 +82%로 이미 반등을 반영했고, 2026년 수주·실적 자료가 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "036830": {
+      "signal": "neutral",
+      "confidence": 40,
+      "reasoning": "지주사 성격의 자산주 후보다. P/E 1.54, P/B 0.46으로 장부가 대비 매우 싸고 고점 대비 -46%지만, 2025년 순이익 4956억원은 영업이익 89억원(전년 853억원)과 크게 어긋나 영업 외 이익이 대부분으로 보인다. 린치는 이런 이익으로 계산한 P/E를 믿지 않고, 본업 영업이익은 오히려 감소했다. 자산 가치는 매력적이나 연결 구조와 보유 자산 내역이 자료에 없어 확신하기 어렵다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "080580": {
+      "signal": "neutral",
+      "confidence": 40,
+      "reasoning": "반도체 검사 소켓 업체로 성장주 후보다. 매출 +41%(944억원), 영업이익 111억원(전년 19억원), 순이익 78억원(전년 -54억원)이며 P/E 34.5, D/E 0.89다. 이익 회복이 막 시작되어 2025년 성장률로 PEG를 매기면 왜곡되고, 2022~2023년 순이익은 30억원·11억원에 그쳤다. 1년 +186%로 기대가 상당히 반영되었고 2026년 실적 자료가 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "232140": {
+      "signal": "neutral",
+      "confidence": 40,
+      "reasoning": "경기순환형 반도체 테스트 장비주다. 2025년 매출 2726억원(+29%), 순이익 290억원인데 영업이익은 170억원으로 순이익이 더 크다. ROE 6.1%에 P/E 37.9라 성장 대비 가격이 싸지 않고, 순이익은 2022년 344억원보다 아직 낮다. 재무는 D/E 0.28, 유동비율 3.7로 건전하나 이익 가시성은 확인할 수 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "101490": {
+      "signal": "bullish",
+      "confidence": 65,
+      "reasoning": "블랭크마스크 업체로 이익이 꾸준히 늘어난 고성장 우량주다. 순이익이 2022년 175억원에서 2025년 581억원으로 늘었고, 2025년 매출 +38%, 영업이익 504억원(+71%), P/E 15.5, ROE 19%, D/E 0.29, 유동비율 3.5다. 2025년 순이익 증가율 92%는 영업 외 이익이 섞여 과대하며 영업이익 기준으로 봐도 PEG가 1 아래다. 고점 대비 -57%, 1년 -23%로 가격이 성장을 따라가지 못했으나, 반도체 업황 사이클과 2026년 실적은 확인되지 않았다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "006730": {
+      "signal": "neutral",
+      "confidence": 45,
+      "reasoning": "숨은 부지 가치를 노리는 자산주다. P/E 8.5, P/B 0.77이고 용산 부지 개발 분양수익이 기대 요인이지만, 분양 이익은 시점이 불규칙하다. D/E 1.35, 유동비율 0.47로 부채가 높고 순이익 1162억원이 영업이익 703억원보다 커 이익 성격이 불분명하다. 1년 +47%로 이미 올랐고, 자산 가치 실현 시점과 금액 근거는 자료에 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "425420": {
+      "signal": "neutral",
+      "confidence": 50,
+      "reasoning": "반도체 후공정 테스트 소모품 업체로 고성장 후보다. 매출 +52%(1117억원), 영업이익 191억원(전년 44억원), 순이익 181억원이며 D/E 0.32, ROE 17%다. P/E 35.9는 반등 성장률을 감안하면 PEG 1 안팎으로 보이나, 2023년 순이익 111억원과 비교한 평균 성장은 훨씬 낮다. 기사에는 신규 발주와 신공장 기대가 있지만 1년 +60%로 선반영된 면이 있고 2026년 실적은 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "462870": {
+      "signal": "bullish",
+      "confidence": 65,
+      "reasoning": "콘솔 게임 IP를 가진 고성장주 후보다. 2025년 매출 2945억원(+31%), 영업이익 1814억원(영업이익률 62%), 순이익 1914억원이고 P/E 10.1, D/E 0.18, 유동비율 8.2로 PEG가 약 0.3~0.4다. 고점 대비 -21%, 1년 -17%로 성장 대비 가격이 낮다. 다만 단일 히트 IP 의존 가능성이 높고 자료가 2년뿐이며 2026년 실적과 후속 작품 근거가 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "295310": {
+      "signal": "bearish",
+      "confidence": 60,
+      "reasoning": "P/E 227로 성장 대비 가격이 지나치게 높다. 2025년 매출 665억원(+47%), 영업이익 58억원(전년 -68억원), 순이익 126억원이 영업이익의 2배라 영업 외 이익이 섞여 있다. D/E 0.92이고 1년 +166%로 이미 급등했으며 2년 자료뿐이라 지속 성장도 확인할 수 없다. 린치 기준으로 이야기는 있어도 숫자가 따라오지 않는다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "092870": {
+      "signal": "bearish",
+      "confidence": 60,
+      "reasoning": "검사장비 업체지만 영업이익이 1억원으로 사실상 0이고 순이익 90억원은 영업 외 이익 때문이다. 매출은 +109%(660억원)이나 2023년 823억원보다 낮아 회복이 확인되지 않았고 ROE 4.6%, P/E 34다. 1년 +282%, 최근 1개월 +53%로 기대가 크게 선반영되었다. 재무(D/E 0.15)는 건전하지만 가격이 이익 근거를 앞선다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "096530": {
+      "signal": "neutral",
+      "confidence": 45,
+      "reasoning": "코로나 이후 회생 중인 진단업체다. 2025년 영업이익 345억원(전년 -165억원), 매출 +14.5%, P/E 21.5, 배당 2.6%이고 현금성 자산이 많은 재무(D/E 0.22, 유동비율 4.7)다. 그러나 ROE 4.8%에 매출은 2022년 8536억원의 절반 수준이며 성장률 대비 P/E가 싸지 않다. 비호흡기 제품 성장 기사가 있으나 아직 수치로 확인되는 이야기는 아니다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "053800": {
+      "signal": "bearish",
+      "confidence": 55,
+      "reasoning": "저성장주다. 2025년 매출 +2.7%(2677억원), 영업이익 333억원, 순이익 515억원(영업 외 이익 포함)이고 P/E 19.3, ROE 13.7%다. 순이익 +59%는 본업 성장이 아니라 영업 외 요인이 커 보이며 매출 성장률 대비 P/E가 높다. 1년 +48%, 1개월 +28%로 보안 이슈 기대가 이미 반영되었다. 재무는 양호(D/E 0.30).",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "121600": {
+      "signal": "bearish",
+      "confidence": 65,
+      "reasoning": "P/E 49, ROE 0.7%, 순이익 16억원으로 매출 1117억원(+27%) 대비 수익이 거의 없다. D/E 0.84이고 기사에 따르면 해외 증설용 메자닌을 상환 중이며 신규 공장 수익화가 늦어졌다. 영업이익은 2022년 168억원에서 2025년 47억원으로 줄었다. 성장 이야기는 있으나 숫자가 뒷받침하지 못한다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "023160": {
+      "signal": "neutral",
+      "confidence": 55,
+      "reasoning": "배관자재 중심의 우량 저성장 및 경기순환주다. P/E 5.9, P/B 1.02, D/E 0.11, 유동비율 7.9, 배당 1.9%로 가격과 재무는 매력적이다. 그러나 매출 +11%에도 영업이익은 387억원으로 전년(399억원)과 2023년(577억원)보다 낮고, 순이익 +42%는 영업 외 요인이 크다. 싸지만 본업 성장 근거가 약해 중립으로 본다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "035900": {
+      "signal": "bullish",
+      "confidence": 62,
+      "reasoning": "엔터 우량 성장주다. 2025년 매출 8219억원(+37%), 영업이익 1552억원, 순이익 1606억원(+64%)이고 2022년 675억원 이후 순이익 연평균 증가율이 30% 이상이다. P/E 13.2, ROE 26%, D/E 0.36, 배당 2.2%로 PEG가 0.5 아래이며 고점 대비 -53%, 1년 -44%로 이미 크게 눌려 있다. 반대 근거는 3분기 전망 하향과 목표가 인하 기사, 히트 IP 의존성이고 2026년 실적은 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "043260": {
+      "signal": "bearish",
+      "confidence": 70,
+      "reasoning": "P/E 5.4는 착시다. 2025년 순이익 910억원이 영업이익 76억원의 12배로 영업 외 이익이 대부분이고, D/E 1.29, 유동비율 0.87이다. 1년 수익률 +1799%라 이야기가 가격에 완전히 반영되었으며 신주인수권부사채 발행과 M&A 확장 기사는 재무 부담을 키우는 요인이다. 린치가 경계하는 확장 위주 구조로 본다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "251970": {
+      "signal": "neutral",
+      "confidence": 40,
+      "reasoning": "화장품 용기 업체로 우량 성장 초입이다. 매출 +10%, 영업이익 565억원(+17%)이지만 순이익은 289억원으로 전년 383억원보다 줄었는데, 자료의 earnings_growth 0.101과 불일치해 이익 성장의 질을 확신하기 어렵다. P/E 20.3, ROE 8%라 PEG가 약 2 수준이다. K뷰티 수요와 원료 수급 병목 기사는 양면이며 1년 +33%, 고점 대비 -3%로 할인 여지도 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "058470": {
+      "signal": "bullish",
+      "confidence": 60,
+      "reasoning": "반도체 테스트 소켓의 우량 성장주다. 2025년 매출 3725억원(+34%), 순이익 1520억원(+34%), 영업이익률 47.5%, ROE 21%, D/E 0.08, 유동비율 9.7로 재무와 수익성이 뛰어나다. P/E 28.7이면 PEG가 약 0.85이고 고점 대비 -44%다. 다만 2022~2024년 순이익이 1100억원대로 정체되었다가 2025년에 뛴 것이라 이 성장의 지속성은 불확실하며 시가총액이 5조원대라 10배주 여지는 작다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "071970": {
+      "signal": "neutral",
+      "confidence": 45,
+      "reasoning": "조선 기자재 경기순환주다. P/E 7.3, ROE 34%, 매출 +27%이나 순이익 1651억원이 영업이익 759억원의 2배라 영업 외 이익이 커서 영업이익 기준으로는 P/E가 훨씬 높다. 고점 대비 -64%, 1년 -53%로 하락이 크지만 린치는 호황 정점의 낮은 P/E를 경계한다. 수주잔고와 2026년 실적 자료가 없어 판단을 유보한다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "053610": {
+      "signal": "bullish",
+      "confidence": 55,
+      "reasoning": "경기순환 성격의 장비주가 회복하는 국면이다. 2025년 매출 2305억원(+35%), 영업이익 463억원(전년 134억원), 순이익 354억원이며 P/E 8.2, D/E 0.25, 유동비율 4.6, 순이익은 2022년 436억원 아래다. 같은 영업이익 수준에서도 PEG가 낮고 고점 대비 -30%다. 반대로 1년 +102%로 이미 올랐고 사이클 정점 위험이 있으며 2026년 실적이 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "328130": {
+      "signal": "bearish",
+      "confidence": 70,
+      "reasoning": "적자 소프트웨어 회생형 성장주다. 2025년 매출 831억원(+53%)이지만 영업손실 831억원, 순손실 474억원, ROE -34.5%, 유동비율 0.26, D/E 1.69로 재무 위험이 크다. 이익이 없어 P/E와 PEG를 계산할 수 없고 린치는 부채가 많은 적자 기업을 피한다. 학회 발표와 협력 기사는 이야기일 뿐 수치로 확인되지 않는다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "062040": {
+      "signal": "bullish",
+      "confidence": 65,
+      "reasoning": "전력 변압기의 고성장주다. 2025년 매출 5019억원(+50%), 영업이익 1786억원(영업이익률 36%), 순이익 1489억원(+78%), ROE 25%, D/E 0.17이고 P/E 32면 PEG가 약 0.4다. 고점 대비 -43%로 조정이 크다. 자료가 2년뿐이고 P/B 8.7, 시가총액 5조원대라 높은 기대가 이미 반영되었으며 이익 증가의 지속 여부가 관건이다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "086450": {
+      "signal": "bullish",
+      "confidence": 58,
+      "reasoning": "이해하기 쉬운 우량 의약·소비재 기업이다. 매출 9269억원(+14%), 순이익 739억원(+19%)이고 2022년 이후 4년간 순이익이 548억원에서 739억원으로 완만하게 늘었다. P/E 14.9로 PEG는 약 0.8, D/E 0.39, 유동비율 2.1이다. 반면 ROE는 9.7%로 낮고 성장 속도가 빠르지 않으며, 사명 변경 기사는 성장 근거가 아니다. 1년 +37%, 2026년 실적 자료가 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "483650": {
+      "signal": "bullish",
+      "confidence": 68,
+      "reasoning": "K뷰티 고성장주다. 2025년 매출 5197억원(+68%), 영업이익 1015억원(전년 598억원), 순이익 791억원, ROE 40%, D/E 0.29, 유동비율 4.5이고 P/E 19.3으로 PEG가 0.5 아래다. 고점 대비 -36%로 가격이 눌렸고 증권사는 수익성이 기대를 웃돈다고 평가했다. 다만 순이익 증가율 413%는 낮은 기준 때문에 과대하고 자료가 2년뿐이며 환율과 유행 의존 위험이 있다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "033790": {
+      "signal": "bearish",
+      "confidence": 70,
+      "reasoning": "P/E 139, 순손실 59억원(ROE -6%)인 전구체 업체다. 매출은 307억원에서 2648억원으로 8배가 되었지만 영업이익률이 3.3%에 그쳐 수익 없는 외형 확대로 보인다. 1년 +117%로 이야기가 선반영되었고 D/E 0.67이다. 지분 투자와 재활용 계약 기사는 성장 이야기일 뿐 이익으로 확인되지 않는다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "439260": {
+      "signal": "neutral",
+      "confidence": 50,
+      "reasoning": "조선 경기순환주다. 2025년 매출 12281억원(+14%), 영업이익 2941억원, 순이익 2488억원(+44%), P/E 5.3, ROE 23%, D/E 0.41이다. 고점 대비 -60%, 1년 -44%로 하락이 크지만 린치는 호황기의 낮은 P/E를 이익이 정점이라는 신호로 읽는다. 자료에 연간 1개년뿐이라 사이클 위치와 수주잔고를 판단할 수 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "041510": {
+      "signal": "neutral",
+      "confidence": 50,
+      "reasoning": "엔터 우량주이며 이익의 질이 문제다. 2025년 매출 11749억원(+19%), 영업이익 1830억원(전년 873억원)이지만 순이익 3594억원은 영업이익의 약 2배이고 earnings_growth 43786%는 2024년 순이익 8억원이라는 낮은 기준 때문이다. P/E 15.1, ROE 26%, D/E 0.48로 영업이익 기준으로는 매력이 있으나 반복 가능한 이익이 확인되지 않는다. 1년 -25%, 고점 대비 -36%이고 2026년 실적은 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "491000": {
+      "signal": "bearish",
+      "confidence": 55,
+      "reasoning": "적자 이야기 주식(수술기구, 로봇)이다. 2025년 매출 512억원(+89%)이지만 영업손실 226억원이고 시가총액 약 1.1조원은 매출의 약 21배다. 현금이 풍부하고(유동비율 12.7, D/E 0.12) 신제품·수술로봇 기대는 있으나, 이익 근거가 없어 PEG를 계산할 수 없고 자료가 1년뿐이다. 최근 1개월 +45% 반등을 근거로 삼지 않는다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "028670": {
+      "signal": "neutral",
+      "confidence": 45,
+      "reasoning": "해운 경기순환주다. P/E 10.7, P/B 0.57, 배당 2.2%로 싸 보이나 매출 +5%, 순이익 +12%, ROE 5.3%, D/E 0.90이고 순이익은 2022년 6771억원의 절반 이하다. 3분기 실적 호조 기사가 있으나 1년 +83%로 이미 올랐고 운임은 지정학 요인에 좌우된다. 성장률이 낮아 PEG 근거가 약하고 2026년 실적은 없다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "069500": {
+      "signal": "neutral",
+      "confidence": 35,
+      "reasoning": "린치는 지수 ETF를 기업 분석 대상으로 보지 않는다. 근사 집중도로 삼성전자(28.0%)와 SK하이닉스(20.7%)가 약 49%, 상위 10종목이 63%이고 업종도 통신장비 29%·반도체 21%라 사실상 반도체 사이클 베팅이다. 1년 +72%이지만 고점 대비 -39%, 최근 1개월 -18%이며 지수 P/E와 EPS 성장률, 총보수, 실제 구성 자료가 없어 성장 대비 가격을 평가하지 못한다.",
+      "data_quality": "partial",
+      "analysis_source": "independent_investor_analysis"
+    },
+    "229200": {
+      "signal": "abstain",
+      "confidence": 10,
+      "reasoning": "코스닥150 지수 구성과 집중도(index_concentration이 null), P/E, EPS 성장률, 총보수 자료가 없어 린치식 가격 대비 성장 평가를 할 수 없다. 확인되는 사실은 1년 -4%, 고점 대비 -35%, 1개월 -0.8%뿐이며 가격 하락 자체는 근거로 쓰지 않는다. 기초 종목 평가 없이는 판단을 보류한다.",
+      "data_quality": "insufficient",
+      "analysis_source": "independent_investor_analysis"
+    }
+  }
+}

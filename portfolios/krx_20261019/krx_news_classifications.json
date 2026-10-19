@@ -1,0 +1,3542 @@
+{
+  "schema_version": 2,
+  "classifier_policy_id": "news_event_v2",
+  "analysis_date": "2026-10-19",
+  "source": "active_skill_llm",
+  "results": [
+    {
+      "ticker": "039200",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "유한양행 렉라자 로열티 확대 기사. 오스코텍은 원개발사로 간접 수혜지만 발췌문에 사명이 없다"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "종목명이 없는 시장·타사 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "타사 폐섬유증 신약 허가 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "렉라자 로열티 400억 전망, 간접 수혜"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "렉라자 로열티 중복 보도"
+        }
+      ]
+    },
+    {
+      "ticker": "171090",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "디스플레이 장비주 성장 기대 업종 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "신규시설투자 기재정정"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "코스피 급락·초고수 매매 기사"
+        },
+        {
+          "article_index": 8,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "디스플레이의 날 수상자, 회사 관련성 불명"
+        }
+      ]
+    },
+    {
+      "ticker": "036830",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "주주명부폐쇄 기준일 공시"
+        },
+        {
+          "article_index": 8,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "메자닌 시장 일반 기사"
+        },
+        {
+          "article_index": 9,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "셀인셀즈 기사, 지분 관계 불명"
+        }
+      ]
+    },
+    {
+      "ticker": "080580",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "종목명이 없는 시장·타사 기사"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "현대차증권 매수·목표가 2.8만 유지, CLT 도입으로 성장 가속 전망(8/28)"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "short",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "SEMICON Taiwan 참가, 실적 영향 불명"
+        },
+        {
+          "article_index": 4,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "베스트리포트 목록, 개별 종목 언급 불명"
+        }
+      ]
+    },
+    {
+      "ticker": "101490",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "대구경북 시가총액 동향"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "종목명이 없는 시장·타사 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "대량보유 약식 보고"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "종목명이 없는 시장·타사 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "K-반도체 보호필름이 내년부터 삼성 테일러 팹에 납품 예정"
+        }
+      ]
+    },
+    {
+      "ticker": "232140",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "마이크론 호실적에 따른 반도체주 관심, 종목 직접 언급 없음"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "공급계약 기재정정"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "삼성·하이닉스 반등 시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "소부장 급등 시황"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "소부장 급등 시황"
+        }
+      ]
+    },
+    {
+      "ticker": "006730",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "계열 리츠의 용산 개발사업 착공, 간접 관련"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "유진투자증권 매수·목표가 1.9만 커버리지 개시, 분양수익 주목"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "legal_regulatory",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "토지 공시지가 주석 공시 의무화, 저PBR 자산주 재평가 가능성"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "용산 코르디아 5500억 PF 대출 약정, 개발 자금 확보"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "일중 시황"
+        }
+      ]
+    },
+    {
+      "ticker": "425420",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "추천 종목 목록, 발췌문에 사명 없음"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "장비·후공정주 강세 시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "NH: SOCAMM2 토털 테스트 솔루션 양산 발주 확보, 해외 고객 확대"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "후공정 투자 확대 업종 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "후공정 수혜 리포트 소개"
+        }
+      ]
+    },
+    {
+      "ticker": "462870",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "콘솔게임 컨퍼런스 안내"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "게임사 콘솔 확장 업종 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "결산실적공시 예고"
+        },
+        {
+          "article_index": 5,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "대성창투 주식병합 기사"
+        },
+        {
+          "article_index": 6,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "카카오게임즈 신작 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "092870",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "유형자산 양수 결정, 증설 성격이나 규모·조건 불명"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "반도체 전시회 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "HBM4E 공개 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "반도체 전시회 개최 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "반도체 슈퍼사이클 지속 여부 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "295310",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "증시 일정"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "일중 시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "공급계약 기재정정"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "증시 일정, 종목 포함 여부 불명"
+        },
+        {
+          "article_index": 6,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        }
+      ]
+    },
+    {
+      "ticker": "096530",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "short",
+          "confidence": 50,
+          "abstain": true,
+          "reasoning": "임원·주요주주 거래계획 보고, 매수·매도 방향 불명"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "사이드카 발동 시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "비호흡기 진단 제품 성장으로 하반기 수익성 개선 전망"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "SG바이오의 씨젠 의존도 축소 기사, 씨젠 영향 불명"
+        },
+        {
+          "article_index": 5,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "negative",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "코로나 진단업체 실적 공백 업종 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "053800",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 45,
+          "abstain": false,
+          "reasoning": "ISMS-P 인증 기업 해킹 반복, 보안 수요 시사"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "안랩의 AI 자율 침투 도구 실험 결과 공개, 실적 영향 없음"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "동일 연구 결과 보도"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "GovWare 2026 참가"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "자회사 안랩블록체인컴퍼니의 농협카드 스테이블코인 결제 실증"
+        }
+      ]
+    },
+    {
+      "ticker": "121600",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "자기주식 처분 결과 보고"
+        },
+        {
+          "article_index": 7,
+          "relevance": "relevant",
+          "event_type": "financing_dilution",
+          "sentiment": "negative",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "전기차 캐즘으로 해외 공장 수익화 지연, 메자닌 조기상환 청구 이어져 630억 잔존(9/17)"
+        },
+        {
+          "article_index": 9,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "경남 신규 투자 기업 목록, 포함 여부 불명"
+        }
+      ]
+    },
+    {
+      "ticker": "035900",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "증권가 목표가 하향 업종 기사"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "negative",
+          "surprise": "negative",
+          "impact_horizon": "short",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "상상인증권 매수 유지·목표가 6만→5.2만 하향, 3Q 매출 2373억·영업이익 411억 추정"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "걸그룹 컴백 경쟁 업종 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "고덕 신사옥 백지화, 비용 절감과 계획 차질 양면"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "negative",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "이수만 복귀로 K팝 경쟁 심화 가능성"
+        }
+      ]
+    },
+    {
+      "ticker": "023160",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "종목명이 없는 시장·타사 기사"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "증시 일정"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "케이조선 인수전은 태광산업(003240) 이야기로 태광(023160)과 다름"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "태광그룹 승계 기사로 보이며 태광(023160) 관련성 불명"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "대량보유 약식 보고"
+        }
+      ]
+    },
+    {
+      "ticker": "043260",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "광통신주 하락 기사, 종목 포함 여부 불명"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "성호전자그룹의 M&A 주체가 핑거로 이동"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "코스피 급락 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "코스닥 액티브 ETF 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "financing_dilution",
+          "sentiment": "negative",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "신주인수권부사채 발행결정 첨부정정. BW 희석 가능성"
+        }
+      ]
+    },
+    {
+      "ticker": "062040",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "코스피 급락 시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "미래에셋 매수 유지·목표가 25만→27만 상향"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "증시 급락 시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "박스권 속 중소형주 상승 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "동일 취지 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "053610",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "반기보고서"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "증권가 호평에 장초 4% 상승(7월)"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "대신증권: 자회사 실적 개선·신규 장비 수주로 관심 필요(7월)"
+        },
+        {
+          "article_index": 4,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "공시 목록, 종목 내용 불명"
+        },
+        {
+          "article_index": 5,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "프로브카드 자회사 피엠티 지분 211억 추가 취득해 51.6%로 확대(6월)"
+        }
+      ]
+    },
+    {
+      "ticker": "328130",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "SITC 연구초록 2편 발표"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "미국 디스커버리 라이프 사이언스와 정밀 병리 협력"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "전환사채 만기 전 취득 공시"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "제약바이오 섹터 방송 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "ESMO 연구초록 5편 발표"
+        }
+      ]
+    },
+    {
+      "ticker": "071970",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "경쟁사 한화엔진의 엔진 공급 계약"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "종목명이 없는 시장·타사 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "아이 키우기 좋은 기업 발표"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "HD현대중공업 엔진사업 대표 승진, 자회사 영향 불명"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "공장 방문 르포, 인도 대기 엔진"
+        }
+      ]
+    },
+    {
+      "ticker": "483650",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "positive",
+          "impact_horizon": "medium",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "교보증권: 환율 비우호에도 수익성이 기대치 상회, 매수·목표가 31만 유지"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "시황 방송, 종목 언급 불명"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "AI 우려 속 뷰티주 강세"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "화장품 조정 마무리 진단"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "short",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "장관의 제품 언급, 실질 영향 미미"
+        }
+      ]
+    },
+    {
+      "ticker": "086450",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "사명을 DK센텔리안으로 변경"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "수험생 건강 기사, 제품 언급 불명"
+        },
+        {
+          "article_index": 2,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "제약사의 화장품 확장과 사명 변경"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "기업 사명 변경 추세 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "058470",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "코스닥 시총 상위 시황, 반도체 장비 매물"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        }
+      ]
+    },
+    {
+      "ticker": "251970",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "용기 부족과 플라스틱 원료 수급 불안 동시 언급"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "3Q 실적 조정 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "K뷰티 주문 급증으로 화장품 용기 부족"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "ETF 리밸런싱, 종목 포함 여부 불명"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "earnings_surprise",
+          "sentiment": "positive",
+          "surprise": "positive",
+          "impact_horizon": "short",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "다올: 3Q 시장 기대치 상회 실적 전망, 용기 수요 초과"
+        }
+      ]
+    },
+    {
+      "ticker": "033790",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "ESS 기대에 2차전지주 강세"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "코스모화학과 폐배터리 재활용 임가공 계약"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "코스모신소재 150억 지분 투자로 전구체·LFP 협력 확대"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "financing_dilution",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "150억 제3자배정 유상증자. 희석과 전략적 제휴가 공존"
+        }
+      ]
+    },
+    {
+      "ticker": "491000",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "후속 제품 출시와 수술로봇 스타크 사업 확장"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "제약·바이오 강세 시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "엘리스그룹 IPO 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "요약 브리핑"
+        },
+        {
+          "article_index": 5,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "스타크 시장 안착 조건 분석"
+        }
+      ]
+    },
+    {
+      "ticker": "003230",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "오리온 행동주의 기사"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "short",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "PC방·만화카페 메뉴 협업"
+        },
+        {
+          "article_index": 2,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "K-미식 행사, 참여 여부 불명"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "short",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "페스티벌 부스 운영"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "오너 3세 승계 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "028670",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "M&A 전망 기사"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "목표가 하향 업종 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "거래 상위 종목 시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "급락장에서 3Q 실적 기대로 해운주 상승"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "JKL·롯데손보 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "031980",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "반도체 장비 매물 출회 시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        }
+      ]
+    },
+    {
+      "ticker": "000660",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "코스피 반등 마감 시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "코스피 반등 마감 시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "AI 쇼크 후 반도체 투톱 반등 마감"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "JP모건: 한국 증시 밸류에이션 매력 구간"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "negative",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "이익 추정치 정체로 투톱 비중 축소·소부장 확대 제언"
+        }
+      ]
+    },
+    {
+      "ticker": "257720",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "capital_return",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "자기주식 취득 신탁계약 체결"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "뷰티주 강세"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "K뷰티 수출 성장 리포트"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "추천 목록: 유럽·북미 유통망 확장에 따른 구조적 성장"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "K뷰티주 급등 시황"
+        }
+      ]
+    },
+    {
+      "ticker": "012750",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "capital_return",
+          "sentiment": "positive",
+          "surprise": "positive",
+          "impact_horizon": "medium",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "발행주식 약 23% 소각 주주환원으로 증권사 목표가 잇단 상향"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "capital_return",
+          "sentiment": "positive",
+          "surprise": "positive",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "베스트리포트 선정: 주주환원과 성장 투자"
+        },
+        {
+          "article_index": 2,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "리포트 요약, 에스원 언급 불명"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "capital_return",
+          "sentiment": "positive",
+          "surprise": "positive",
+          "impact_horizon": "medium",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "유안타 목표가 9만→12만, 2년간 자사주 소각으로 주식수 23% 감소"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "capital_return",
+          "sentiment": "positive",
+          "surprise": "positive",
+          "impact_horizon": "medium",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "흥국 목표가 9.5만→12만, 대규모 자사주 매입·소각"
+        }
+      ]
+    },
+    {
+      "ticker": "098460",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "대량보유 약식 보고"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "AI 헬스케어 포럼, 참여 여부 불명"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "외국인 소부장 매수 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "외국인 소부장 매수 기사"
+        },
+        {
+          "article_index": 6,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "SEMICON West 개최 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "041510",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "short",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "라이즈 싱글 발매, 정기 활동"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "광고업계 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "negative",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "이수만 A2O 흥행에 따른 경쟁 가능성"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "이수만 인터뷰"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "민희진·방시혁 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "078600",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "실리콘음극재 ETF 3개월 수익률 1위, 종목 직접 언급 없음"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "국민연금 손실 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "국민연금 손실 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "수익률 상위 투자자 매매 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "국민연금 손실 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "361610",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "SK바이오사이언스 기사"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "SK그룹 인사 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "SK이노베이션의 SKIET 흡수합병 진행. 단독 종목보다 합병비율 기준으로 판단해야 함"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "CPI 사업 매각 후 기술력 평가 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "신용등급 하향 통계"
+        }
+      ]
+    },
+    {
+      "ticker": "214150",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "슈링크홈 미국 아마존·틱톡샵 론칭"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "CCO 신설과 외부 인사 선임"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "신제품으로 유럽 확대"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "분기 매출 1000억 돌파와 기부금 비판 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "골드만삭스 시장 전망"
+        }
+      ]
+    },
+    {
+      "ticker": "327260",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "광통신 관련주 동반 강세"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "광통신 관련주 동반 강세"
+        }
+      ]
+    },
+    {
+      "ticker": "439260",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "HJ중공업 선박금융"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "광주은행이 15.7만t급 선박 RG 3681만달러 발급, 수주 이행 지원"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "솔리다임 IPO 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "국정감사 기사"
+        },
+        {
+          "article_index": 5,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "IPO 주관 순위"
+        }
+      ]
+    },
+    {
+      "ticker": "458870",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "financing_dilution",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "1100억 조달로 미국 진출, 공시와 동일 사건"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "financing_dilution",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "1100억 CB 발행, 공시와 동일 사건"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "financing_dilution",
+          "sentiment": "negative",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 72,
+          "abstain": false,
+          "reasoning": "1100억 전환사채 발행결정. 전환 시 희석 부담"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "제약사·디지털헬스 협력 업종 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "4분기 중동·북미 모비케어 첫 공급 예정"
+        }
+      ]
+    },
+    {
+      "ticker": "009830",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "legal_regulatory",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "중국 태양광 기술 수출통제 영향 제한적 전망"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "거래 상위 시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "국민연금 손실 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "negative",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "석유화학 3Q 실적 재부진 전망"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "legal_regulatory",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "한화큐셀 미국 채권에서 우려국 투자자 제한, 세액공제 자격 관리"
+        }
+      ]
+    },
+    {
+      "ticker": "214450",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "국민연금 손실 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 45,
+          "abstain": false,
+          "reasoning": "스킨부스터 광고 관련 업종 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "383220",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "테일러메이드 매각에서 F&F 우선매수권 행사 여부 관심"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "지주사 신임 대표 선임"
+        },
+        {
+          "article_index": 2,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "러닝웨어 소비 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "자선 바자회 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "디스커버리 글로벌 상표권 1132억 인수(9/6)"
+        }
+      ]
+    },
+    {
+      "ticker": "078350",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "negative",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "반도체 소부장으로 매도세 확산"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "발췌문만으로 종목 관련성 판단 불가"
+        },
+        {
+          "article_index": 2,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "코스닥 액티브 ETF 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "요약 브리핑"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "코스닥 900 탈환 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "068270",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "K바이오 행사 안내"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "guidance",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "medium",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "주주서한에서 4Q 영업이익 6000억 이상 목표 재확인, 1~3Q 목표 달성"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "제약·바이오 업종 강세 시황"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "시총 상위 업종별 차별화 시황"
+        }
+      ]
+    },
+    {
+      "ticker": "032190",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "PQC 인터뷰"
+        },
+        {
+          "article_index": 1,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "아비바 후원 기사, 유통 관계 불명"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "IMM PE 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "negative",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "오너 2세 보수 증가와 비상장 계열사 배당, 지배구조 이슈"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "키움증권 등 증권사 이익 성장"
+        }
+      ]
+    },
+    {
+      "ticker": "018670",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "종속회사 타법인주식 처분 기재정정"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "SK그룹 인사 기사"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "아이 키우기 좋은 기업 발표"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "guidance",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "2027~2030년 연평균 세전이익 4500억 이상 목표 제시"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "guidance",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "CEO IR: 연평균 세전이익 4500억 목표"
+        }
+      ]
+    },
+    {
+      "ticker": "000240",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "사회공헌 활동"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "계열사 모델솔루션 뷰티 디바이스 ODM 확대"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "회장 메시지 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "7월 가석방 출소한 회장의 복귀 첫 행보, 지배구조 감시 필요"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "주니어보드 워크숍"
+        }
+      ]
+    },
+    {
+      "ticker": "326030",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "K바이오 행사 안내"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "바이오 상생교류회 안내"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "오너 3세 전략본부장 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "short",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "엑스코프리 처방 증가와 일본 마일스톤으로 3Q 견조 전망, 오파칼림 미국 리스크 언급"
+        },
+        {
+          "article_index": 4,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "제약사 경영 일반 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "020150",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "전고체·실리콘음극재 ETF 기사, 직접 언급 없음"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "중국 배터리 미국 철수와 ESS 기대로 2차전지주 강세"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "삼성전기 기사"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "공시 목록"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "삼아알미늄 리포트"
+        }
+      ]
+    },
+    {
+      "ticker": "323280",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "밸류파인더: 수주잔고 전년 대비 약 6배(영문 중복)"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "밸류파인더: AI 서버 FC-BGA 수요 수혜, 유리기판·복합동박 신사업"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "단일판매·공급계약 체결"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "심텍 SoCAMM 증설용 VCP 장비 수주"
+        },
+        {
+          "article_index": 5,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "독립리서치 업계 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "445680",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "제약바이오 급락 시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "short",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "글로벌 상위 5위 CRO로부터 약 7억 첫 주문"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "short",
+          "confidence": 50,
+          "abstain": true,
+          "reasoning": "임원·주요주주 거래계획 보고, 방향 불명"
+        },
+        {
+          "article_index": 6,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "증시 일정"
+        },
+        {
+          "article_index": 7,
+          "relevance": "relevant",
+          "event_type": "contract",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "short",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "CGT 글로벌 제약사 5.1억 장비 수주(8월)"
+        }
+      ]
+    },
+    {
+      "ticker": "253590",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "공급계약 기재정정"
+        },
+        {
+          "article_index": 7,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "베스트리포트 목록"
+        },
+        {
+          "article_index": 9,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "코스닥 라이징스타 목록, 포함 여부 불명"
+        }
+      ]
+    },
+    {
+      "ticker": "161390",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "short",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "캐리어 컬래버 한정판"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "product_partnership",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "short",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "TBR 신규 규격 출시"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "레드닷 디자인 수상"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "3Q 실적 조정 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "relevant",
+          "event_type": "management",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "그룹 회장 메시지"
+        }
+      ]
+    },
+    {
+      "ticker": "007660",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "AI 쇼크로 반도체 관련주 장초 하락"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "기판주 약세, 장초 6.64% 하락"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 65,
+          "abstain": false,
+          "reasoning": "주간 14% 급락 속 기판주 급락"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "외국인 매매 전략 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "코스피 전망 기사"
+        }
+      ]
+    },
+    {
+      "ticker": "000250",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 1,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "코스닥 시총 상위 시황"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "시황"
+        }
+      ]
+    },
+    {
+      "ticker": "009970",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "other",
+          "sentiment": "positive",
+          "surprise": "none",
+          "impact_horizon": "long",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "자회사 영원무역 68분기 연속 영업흑자"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "capital_return",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "자회사 영원무역 500억 자사주 신탁, 지주사 직접 환원은 아님"
+        },
+        {
+          "article_index": 2,
+          "relevance": "relevant",
+          "event_type": "capital_return",
+          "sentiment": "positive",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "자회사 영원무역 배당·매입 확대"
+        },
+        {
+          "article_index": 3,
+          "relevance": "ambiguous",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "none",
+          "confidence": 40,
+          "abstain": true,
+          "reasoning": "승계 기업 배당 여력 기사"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "KOSPI200 주주환원 통계"
+        }
+      ]
+    },
+    {
+      "ticker": "011790",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "macro_industry",
+          "sentiment": "neutral",
+          "surprise": "unknown",
+          "impact_horizon": "medium",
+          "confidence": 50,
+          "abstain": false,
+          "reasoning": "경쟁사 삼성전기 유리기판 인력 확보"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "routine_disclosure",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 75,
+          "abstain": false,
+          "reasoning": "채무보증 기재정정"
+        },
+        {
+          "article_index": 3,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "최태원 회장 재산분할 자금"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "도레이첨단소재 기업결합 심사"
+        },
+        {
+          "article_index": 5,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "ECM 주관 순위"
+        }
+      ]
+    },
+    {
+      "ticker": "064290",
+      "classifications": [
+        {
+          "article_index": 0,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 55,
+          "abstain": false,
+          "reasoning": "기판주 저가 매수 강세"
+        },
+        {
+          "article_index": 1,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 70,
+          "abstain": false,
+          "reasoning": "기판주 반등, 인텍플러스 7.4% 상승"
+        },
+        {
+          "article_index": 2,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "증시 급락 시황"
+        },
+        {
+          "article_index": 3,
+          "relevance": "relevant",
+          "event_type": "market_price_recap",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "intraday",
+          "confidence": 60,
+          "abstain": false,
+          "reasoning": "CPI 충격에 기판주 급락"
+        },
+        {
+          "article_index": 4,
+          "relevance": "unrelated",
+          "event_type": "other",
+          "sentiment": "neutral",
+          "surprise": "none",
+          "impact_horizon": "none",
+          "confidence": 85,
+          "abstain": false,
+          "reasoning": "충청권 시가총액 동향"
+        }
+      ]
+    }
+  ]
+}

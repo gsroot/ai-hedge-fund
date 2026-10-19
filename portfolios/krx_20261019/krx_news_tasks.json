@@ -1,0 +1,3889 @@
+{
+  "schema_version": 2,
+  "classifier_policy_id": "news_event_v2",
+  "analysis_date": "2026-10-19",
+  "index": "krx",
+  "source": "predict_top_candidate_news",
+  "candidate_pool": 60,
+  "article_limit": 5,
+  "duplicates_removed": 40,
+  "tasks": [
+    {
+      "ticker": "039200",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "유한양행이 폐암 신약 '렉라자'(성분명 레이저티닙)의 글로벌 판매 확대를 발판으로 수익 체질을 바꾸고 있다. 기존 의약품 사업에 해외 판매와 연동된 로열티(경상기술료)가 더해지면서 일회성 기술료 의존도를 낮추고 반복 수익 기반을...",
+          "date": "2026-10-19 11:19",
+          "publisher": "동행미디어 시대",
+          "link": "https://n.news.naver.com/mnews/article/417/0001161326",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "K바이오 완주형 투자의 신화를 쓰다 김나연 이앤인베스트먼트 대표는 국내 제약·바이오 투자 업계에서 독보적인 전문성을 구축한 23년 차 베테랑이다. 그의 투자 철학을 관통하는 키워드는 단기 차익을 좇지 않고 후보물질 발굴부터 임상 지원...",
+          "date": "2026-10-19 10:00",
+          "publisher": "시사저널",
+          "link": "https://n.news.naver.com/mnews/article/586/0000140224",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "식품의약품안전처가 특발성 폐섬유증 치료제 '자스케이드정(성분명 네란도밀라스트)'을 허가한 가운데 국내 제약바이오 기업들도 관련 신약 개발에 속도를 내고 있다. 기존 치료제와 다른 작용기전을 가진 신약이 국내에 도입되면서 치료 선택지가...",
+          "date": "2026-10-19 07:50",
+          "publisher": "비즈워치",
+          "link": "https://n.news.naver.com/mnews/article/648/0000051698",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "유한양행이 ‘렉라자’의 글로벌 판매 확대로 올해 400억 원대의 로열티 수익을 올릴 것으로 예상된다. 해외 처방이 늘어나면 2040년에 연간 로열티가 5000억 원대에 달할 것으로 전망된다. 존슨앤드존슨(J&J)은 13일(현지 시간) 3분기 리브리반트...",
+          "date": "2026-10-15 07:01",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004671412",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "유한양행이 ‘렉라자’의 글로벌 판매 확대로 올해 400억 원대의 로열티 수익을 올릴 것으로 예상된다. 해외 처방이 늘어나면 2040년에 연간 로열티가 5000억 원대에 달할 것으로 전망된다. 존슨앤드존슨(J&J)은 13일(현지 시간) 3분기...",
+          "date": "2026-10-14 17:35",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004671285",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 1,
+      "company_name": "오스코텍"
+    },
+    {
+      "ticker": "171090",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 4,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "■ 머니쇼 '투자자 순매수 TOP5' - 이가람 지난주 외국인과 기관이 가장 많이 순매수한 종목을 살펴보는, 투자자 순매수 TOP5 시간입니다. 지난주 외국인은 유가증권시장에서 11조원 넘게 순매도했습니다. 전체 순매도 금액의 약 79%가 삼성전자와...",
+          "date": "2026-10-19 08:31",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000538470",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "반도체·디스플레이 장비주 성장 기대 원전·우주·비만치료제 관련주 주목 국내 증시 변동성이 커지며 종목 선별이 여느 때보다 중요해졌다. 대형주 중심의 상승세에서 벗어나 실적 개선 가능성이 높거나 새로운 성장동력을 확보한 중소형주로...",
+          "date": "2026-10-17 17:01",
+          "publisher": "매경이코노미",
+          "link": "https://n.news.naver.com/mnews/article/024/0000108989",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[선익시스템] [기재정정]신규시설투자등",
+          "date": "2026-10-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261015900571",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "코스피가 장중 6% 넘게 급락하며 6000선 아래로 밀려난 가운데 주식 투자 수익률 상위 1%의 초고수들은 삼성전자와 SK하이닉스 등 국내 대표 반도체주를 집중 매도한 것으로 나타났다. 반면 LG전자와 에이피알 등 낙폭이 큰 종목은 사들이며...",
+          "date": "2026-10-13 11:35",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004670659",
+          "content_type": "news"
+        },
+        {
+          "article_index": 8,
+          "headline": "'디스플레이의 날'에는 특별 공로상 수상자로 3명이 선정됐다. 우리나라가 디스플레이 산업 경쟁력을 확보할 수 있도록 외산에 의존하던 핵심 공정 기술을 개발 및 상용화해 국산화하고, 산업 인력 육성, 정책 수립 등에 기여한 인물들이다. 박재규...",
+          "date": "2026-09-17 18:31",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003468047",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 2,
+      "company_name": "선익시스템"
+    },
+    {
+      "ticker": "036830",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 7,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[솔브레인홀딩스] 주주명부폐쇄기간또는기준일설정",
+          "date": "2026-10-12",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261012900555",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 8,
+          "headline": "▶마켓인사이트 9월 14일 오후 3시 23분 정부의 벤처·코스닥 활성화 자금이 민간 자산운용사로 내려오면서 메자닌 시장이 폭발적으로 커지고 있다. 투자금의 일부를 의무적으로 전환사채(CB) 같은 메자닌(주식으로 교환할 수 있는 채권)에...",
+          "date": "2026-09-14 18:01",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005332172",
+          "content_type": "news"
+        },
+        {
+          "article_index": 9,
+          "headline": "재생치료제 전문기업 셀인셀즈는 차세대 바이오 기술인 오가노이드 분야에서 굵직한 임상 및 사업화 성과를 내며 주목받고 있다. 조재진 서울대 치의학대학원 교수가 2014년 교원 창업으로 설립했고, 10년 넘게 기술력을...",
+          "date": "2026-09-09 16:03",
+          "publisher": "매일경제",
+          "link": "https://n.news.naver.com/mnews/article/009/0005732752",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 3,
+      "company_name": "솔브레인홀딩스"
+    },
+    {
+      "ticker": "080580",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "미래에셋증권에서 거래하는 고수익 투자자들이 14일 가장 많이 순매수한 종목은 SK하이닉스, 티에스이, OCI홀딩스 순으로 집계됐다. 중국 메모리 업체의 기술 추격 우려로 반도체주가 최근 급락했지만 주식 초고수들은 SK하이닉스를 다시 사들이는...",
+          "date": "2026-10-14 12:42",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004671143",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "한국경제신문의 투자 전문 유료 플랫폼 '한경 프리미엄9'(www.hankyung.com/premium9)에 실린 기사입니다. '한경 프리미엄9'을 구독하시면 더 많은 주식 투자 기사를 찾아볼 수 있습니다. 코스닥지수가 석 달 만에 900 탈환 고지전에 들어섰다....",
+          "date": "2026-10-02 17:35",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005338690",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "현대차증권이 오킨스전자(080580)에 대해 반도체 테스트 부품 수요가 확대되는 가운데 차세대 테스트 장비인 CLT 도입까지 빨라지면서 실적 성장이 가속화될 것으로 전망했다. 투자의견 ‘매수’와 목표주가 2만 8000원을 유지했다. 김종배...",
+          "date": "2026-08-28 08:49",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006359462",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "반도체 테스트 솔루션 전문기업 오킨스전자는 오는 9월 2일부터 4일까지 대만 타이베이 타이넥스(TaiNEX)에서 열리는 '세미콘 타이완(SEMICON Taiwan) 2026'에 참가한다고 25일 밝혔다. SEMICON Taiwan은 글로벌 반도체 기업과 전문가들이 참여하는 대만...",
+          "date": "2026-08-25 11:47",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003460113",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "머니투데이 증권부가 선정한 8월 둘째 주(10~14일) 베스트리포트는 △김동원 KB증권 연구원의 '주주환원 10배 이상, 확신의 매수 구간(삼성전자)' △최승환 신한투자증권 연구원의 '반도체 중소형주, 타이밍이 됐다' △박종대 하나증권 연구원의 '실적...",
+          "date": "2026-08-17 16:30",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005400915",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 4,
+      "company_name": "오킨스전자"
+    },
+    {
+      "ticker": "101490",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "금리 상승과 인공지능(AI) 속도조절론 등으로 투자심리가 위축되면서 지난달 대구경북 지역 상장법인 시가총액이 5조원 넘게 빠졌다. 14일 한국거래소 대구혁신성장센터가 발표한 '2026년 9월 대구경북지역 상장법인 증시 동향'에 따르면...",
+          "date": "2026-10-14 11:31",
+          "publisher": "매일신문",
+          "link": "https://n.news.naver.com/mnews/article/088/0001034230",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "코스피 100만원 투자 두달새 124만원 개인 순매수 톱10 중 코스피 9개 상승 두산퓨얼셀 128%·엑스게이트 115%↑ 모두가 주식을 던지던 지난 7월 폭락장에서 과감하게 주식을 사들였다면 지금 얼마를 벌었을까. 두 달여가 지난 현재...",
+          "date": "2026-10-05 08:07",
+          "publisher": "매일경제",
+          "link": "https://n.news.naver.com/mnews/article/009/0005743915",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[에스앤에스텍] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-09-29",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929000547",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "<블로터>가 창간 20주년을 맞았다. 자본시장을 기록해 온 20년은 국내 벤처캐피탈(VC)과 사모펀드(PEF)가 성장해 온 시간과 겹친다. 그사이 하우스들은 펀드레이징과 투자를 놓고 저마다 다른 답을 내놓으며 자본시장에 유의미한 족적을 남겼다....",
+          "date": "2026-09-18 07:00",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000090631",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "삼성전자와 국내 소부장 기업들이 공동 개발해온 'K-반도체 보호 필름'이 빛을 보게 됐습니다. 에프에스티와 에스앤에스텍이 생산한 제품이 내년부터 삼성전자의 미국 테일러 팹에 납품될 예정입니다. 삼성과 소부장이 원팀을 이뤄 일본의...",
+          "date": "2026-09-11 14:29",
+          "publisher": "한국경제TV",
+          "link": "https://n.news.naver.com/mnews/article/215/0001265661",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 5,
+      "company_name": "에스앤에스텍"
+    },
+    {
+      "ticker": "232140",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "미국 메모리 반도체 기업 마이크론이 시장 예상을 뛰어넘는 역대 최대 실적을 발표하면서 국내 반도체 관련주에 투자자들의 관심이 쏠리고 있다. 인공지능(AI) 인프라 투자 확대로 고대역폭메모리(HBM)는 물론 범용 메모리까지 수요가 늘면서...",
+          "date": "2026-10-03 09:02",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006380012",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "[와이씨] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-09-29",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260929900723",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "미국의 기준금리 인상 경계감과 인공지능(AI) 속도조절론으로 급락했던 삼성전자(005930)와 SK하이닉스(000660)가 21일 급반등했다. 장중 5% 안팎으로 급등한 삼성전자(005930)를 필두로 반도체주 전반에 매수세가 몰리며 코스피도 7거래일 만에...",
+          "date": "2026-09-21 16:49",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006373801",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "미국 뉴욕증시에서 메모리·반도체 장비주가 강세를 보이고 국내 반도체 수출 호조까지 확인되면서 반도체 소부장(소재·부품·장비) 종목들이 급등했다. 21일 한국거래소에 따르면 시그네틱스(033170)는 전 거래일보다 645원(30.00%) 오른...",
+          "date": "2026-09-21 16:02",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009183930",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "지난주 미국 반도체주 강세에 힘입어 삼성전자와 SK하이닉스가 동반 상승한 데 이어 장비·후공정·소재 등 국내 반도체 ‘소부장주’까지 급등하고 있다. 대형 반도체 업체의 설비투자 확대가 장비와 후공정 업체의 실적으로 이어질 수...",
+          "date": "2026-09-21 13:54",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004664059",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 6,
+      "company_name": "와이씨"
+    },
+    {
+      "ticker": "006730",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "이 기사는 2026년10월16일 17시18분에 마켓인 프리미엄 콘텐츠로 선공개 되었습니다. 서울 용산 나진상가 12·13동 개발사업이 착공하면서 신한서부티엔디리츠의 성장 전략에 시선이 쏠리고 있다. 하이엔드 오피스텔 분양매출만 약 5200억원에 이를...",
+          "date": "2026-10-16 19:20",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006389654",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "유진투자증권은 15일 서부T&D에 대해 보유하고 있던 부지의 개발사업이 본격화되고 있는 만큼 향후 발생할 분양수익에 주목할 시점이라고 분석했다. 투자 의견 ‘매수(Buy)’와 목표 주가 1만9000원으로 커버리지를 개시했다. 서부T&D의 전일 종가는...",
+          "date": "2026-10-15 08:58",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001198044",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "오는 12월 결산 재무제표부터 기업 보유 토지의 공시지가 주석 공시가 의무화되면서 저(低) 주가순자산비율(PBR) 알짜 자산주들에 시장의 관심이 집중되고 있다. 수십 년간 장부상 취득원가로 묶여 있던 도심 알짜 부지의 공시지가가 반영되면서...",
+          "date": "2026-10-13 07:58",
+          "publisher": "아시아경제",
+          "link": "https://n.news.naver.com/mnews/article/277/0005827495",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "지난 10월 7일, 하나·국민·신한은행은 서부T&D가 시행하고 서울드래곤시티가 운영하는 용산의 첫 호텔 하우스 '코르디아(CORDIA)'에 대해 5,500억 원 규모의 PF 대출 약정을 체결했다. 하이엔드 주거 개발의 PF 조달이 어려운 상황 속에서 3개...",
+          "date": "2026-10-12 13:35",
+          "publisher": "아시아경제",
+          "link": "https://n.news.naver.com/mnews/article/277/0005827220",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "■ 머니쇼 '이 시각 시황' - 장연재 이 시각 시황입니다. 오늘(12일) 국내 증시 좀처럼 힘을 내지 못하고 있습니다. 코스피가 6,600선 마저 반납했습니다. 현재 1% 내림세로 6,554포인트 기록하고 있습니다. 코스닥도 1% 하락하며 883선에서 움직임...",
+          "date": "2026-10-12 09:33",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000537204",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 7,
+      "company_name": "서부T&D"
+    },
+    {
+      "ticker": "425420",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "1.삼양식품 -내년 중국 공장 가동에 따른 Q 증대로 또 한 번의 레벨업 가능 -미주·유럽 향 수출 비중 확대에 따른 Mixed ASP 개선 전망 2.실리콘투 -K-뷰티 글로벌 수요 확대와 유럽·북미 유통망 확장에 따른 구조적 매출 성장 기대 -유럽 물류거점...",
+          "date": "2026-10-17 07:02",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006389917",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "삼성전자와 SK하이닉스가 보합권에서 등락하는 사이 반도체 장비·후공정 관련주는 장중 강세다. 미 반도체 기업 마이크론의 컨퍼런스콜에서 2028년까지 메모리 반도체에 대한 공급부족이 갈수록 심화할 것이라는 전망이 나오면서...",
+          "date": "2026-10-01 10:54",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009202945",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "NH투자증권은 22일 티에프이(425420)에 대해 SOCAMM(소캠)2 토털 테스트 솔루션 양산 발주를 확보한 가운데 해외 대형 고객사 확대가 이어지고 있다고 평가했다. 화성 신공장 가동과 수주잔고의 매출 인식, 단가 인상 효과까지 더해지며 올해와 내년...",
+          "date": "2026-09-22 07:41",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006374031",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "HBM·AI 확산에 패키징 중요도↑ 글로벌 업체 후공정 투자 잇따라 본딩 넘어 검사·테스트 수혜 확대 반도체 산업의 ‘조연’이던 후공정 장비가 새로운 투자처로 떠오른다. 고대역폭메모리(HBM)와 인공지능(AI) 가속기 생산이 늘면서 첨단패키징과...",
+          "date": "2026-09-19 09:01",
+          "publisher": "매경이코노미",
+          "link": "https://n.news.naver.com/mnews/article/024/0000108327",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "이번 주 화제의 리포트는 하나증권 한유건, 권태우, 박찬솔, 김록호, 김민경 애널리스트가 펴낸 ‘증설의 시대, 후공정의 수혜도 함께 온다’를 선정했다. 메모리 반도체 공급 부족이 이어지면서 그동안 상대적으로 주목받지 못했던 후공정까지...",
+          "date": "2026-09-14 10:30",
+          "publisher": "한경비즈니스",
+          "link": "https://n.news.naver.com/mnews/article/050/0000110832",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 8,
+      "company_name": "티에프이"
+    },
+    {
+      "ticker": "462870",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 2,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "문화체육관광부와 한국콘텐츠진흥원은 오는 11월 9일 서울 롯데월드타워 스카이31 컨벤션에서 '2026 콘솔게임 개발자 컨퍼런스'를 개최한다고 19일 밝혔다. 올해로 2회째를 맞이한 이번 행사에서는 '세계에서 통하는 콘솔게임은 어떻게 만들어지는가...",
+          "date": "2026-10-19 13:49",
+          "publisher": "포모스",
+          "link": "https://n.news.naver.com/mnews/article/236/0000257561",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "국내 주요 게임사들이 확률형 아이템 중심의 모바일 다중접속역할수행게임(MMORPG)에서 탈피해 글로벌 콘솔·PC 패키지 시장으로 외연을 확장하는 가운데, 서사와 액션성을 겸비한 ‘킬러 캐릭터’의 구축 여부가 글로벌 지식재산권(IP) 확장의 핵심...",
+          "date": "2026-10-17 07:00",
+          "publisher": "일간스포츠",
+          "link": "https://n.news.naver.com/mnews/article/241/0003535723",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[시프트업] 결산실적공시예고(안내공시)",
+          "date": "2026-10-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016800636",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 5,
+          "headline": "5대1 병합… 11월 신주 상장 오너 13억 매입도 반짝 반등에 그쳐 내년 7월 시총 기준도 부담 이 기사는 2026년 10월 8일 16시 22분 조선비즈 머니무브(MM) 사이트에 표출됐습니다. 코스닥시장 상장 벤처캐피털(VC) 대성창업투자(대성창투)가 보통주 5주를...",
+          "date": "2026-10-12 06:01",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001197240",
+          "content_type": "news"
+        },
+        {
+          "article_index": 6,
+          "headline": "카카오게임즈(293490)가 네이버 인기 웹소설·웹툰 ‘멸귀수도전’ 지식재산권(IP)을 기반으로 개발한 2.5D 다중접속역할수행게임(MMORPG) ‘도깨비의세계’를 정식 출시했다. 2D 도트 캐릭터와 3D 배경을 결합한 하이브리드 비주얼에 한국 전통 정서를...",
+          "date": "2026-10-10 12:02",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004669826",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 9,
+      "company_name": "시프트업"
+    },
+    {
+      "ticker": "092870",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[엑시콘] 주요사항보고서(유형자산양수결정)",
+          "date": "2026-10-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261015000403",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "삼성전자와 SK하이닉스의 반도체 기술 수장들이 국내 최대 반도체 전시회에서 나란히 부스를 둘러본 가운데, 삼성전자 사장이 경쟁사의 고대역폭메모리(HBM) 전시물을 살펴보고 세계 1위 반도체 위탁생산(파운드리) 업체 대만 TSMC 공정 관련...",
+          "date": "2026-10-14 22:18",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001066118",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "삼성전자와 SK하이닉스가 국내 최대 반도체 전시회에서 다음 세대 고대역폭메모리(HBM) 제품인 HBM4E(7세대)를 나란히 공개하며 차세대 인공지능(AI) 메모리 기술 경쟁에 나섰다. 한국반도체산업협회는 14일 서울 삼성동 코엑스에서 '제28회...",
+          "date": "2026-10-14 15:07",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001065975",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "국내 반도체 산업의 현재와 미래를 한눈에 볼 수 있는 국내 최대 반도체 전시회가 역대 최대 규모로 열린다. 삼성전자(005930)와 SK하이닉스(000660)가 차세대 인공지능(AI) 메모리 기술을 선보이는 가운데 반도체 설계부터 첨단 패키징, 휴머노이드...",
+          "date": "2026-10-13 07:01",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004670547",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "■ 반도체 전력 따라잡기 - 김장열 유니스토리자산운용 리서치센터장 삼성전자가 3분기 역대 최대 영업이익을 발표했고, 이번 주에는 TSMC와 ASML의 실적 발표까지 예정돼 있어 반도체 슈퍼사이클의 지속 가능성을 가늠할 중요한 분기점이 될...",
+          "date": "2026-10-12 15:35",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000537324",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 10,
+      "company_name": "엑시콘"
+    },
+    {
+      "ticker": "295310",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 2,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "▲신주배정기준일=MH에탄올(023150)(무상) ▲보통주추가상장=엘앤에프(신주인수권행사) 키다리스튜디오(주식매수선택권행사) ▲액면변경=형지엘리트(093240)(500원→2,500원) ▲주권변경상장=두산(주식소각) ▲공모주청약=크리에이츠(주관사...",
+          "date": "2026-10-19 10:29",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004672630",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "■ 머니쇼 '이 시각 시황' - 장연재 이 시각 시황입니다. 오늘(16일) 국내 증시 양대 지수 모두 상승합니다. 다만, 삼전닉스 상승 폭이 크지 않기 때문에 코스피 반동 폭 역시 예상보다 크지 않은 상황입니다. 코스피가 현재 0.8% 올라갑니다. 5...",
+          "date": "2026-10-16 09:38",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000538142",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[에이치브이엠] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-10-15",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261015900559",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "▲구주주유상청약=SK디앤디(210980) ▲주권변경상장=대신증권(주식소각) ▲공모주청약=엠에스바이오(주관사 KB) 디티에스(대신) ▲신주배정기준일=이렘(009730)(유상) ▲일반공모유상청약=다보링크(340360) 제이케이시냅스(060230)...",
+          "date": "2026-10-12 10:35",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004670217",
+          "content_type": "news"
+        },
+        {
+          "article_index": 6,
+          "headline": "한국경제신문의 투자 전문 유료 플랫폼 '한경 프리미엄9'(www.hankyung.com/premium9)에 실린 기사입니다. '한경 프리미엄9'을 구독하시면 더 많은 주식 투자 기사를 찾아볼 수 있습니다. 코스닥지수가 석 달 만에 900 탈환 고지전에 들어섰다....",
+          "date": "2026-10-02 17:35",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005338690",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 11,
+      "company_name": "에이치브이엠"
+    },
+    {
+      "ticker": "096530",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 1,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[씨젠] 임원ㆍ주요주주특정증권등거래계획보고서",
+          "date": "2026-10-19",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000233",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "코스피와 코스닥 모두 하락 출발 후 매도 사이드카가 발동됐다. 15일 오전 9시18분 기준 코스피지수는 전 거래일 대비 375.85포인트(6.25%) 내린 5632.96에 거래되고 있다. 지수는 전장 대비 335.8포인트(5.59%) 내린 5673.01로 출발한 후 7분...",
+          "date": "2026-10-15 09:33",
+          "publisher": "아시아경제",
+          "link": "https://n.news.naver.com/mnews/article/277/0005828779",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "씨젠(096530)이 비호흡기 진단 제품의 성장에 힘입어 하반기에도 수익성 개선을 이어갈 것이라는 분석이 나왔다. 인유두종바이러스(HPV), 성매개감염병(STI) 등 비호흡기 진단 제품의 매출 증가와 신제품 출시가 중장기 성장 동력으로 작용할...",
+          "date": "2026-10-08 08:36",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004669299",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "이 기사는 2026년09월30일 08시05분에 팜이데일리 프리미엄 콘텐츠로 선공개 되었습니다. 체외진단 전문기업 에스지바이오사이언스(구 SG메디칼, 이하 SG바이오)가 오랜 기간 성장 발판이자 잠재적 리스크로 지목돼 온 ‘씨젠 의존도’를 대폭...",
+          "date": "2026-10-01 08:07",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006378206",
+          "content_type": "news"
+        },
+        {
+          "article_index": 5,
+          "headline": "코로나19 팬데믹 당시 진단키트 사업으로 호황을 누렸던 기업들이 코로나 이후 실적 공백을 메우지 못한 채 위기를 이어가고 있다. 진단 수요가 급감하면서 기존 매출 기반이 크게 위축된 가운데, 기업마다 새로운 사업을 발굴하고 있지만 아직...",
+          "date": "2026-09-18 07:20",
+          "publisher": "비즈워치",
+          "link": "https://n.news.naver.com/mnews/article/648/0000050885",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 12,
+      "company_name": "씨젠"
+    },
+    {
+      "ticker": "053800",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "정부가 공인한 최고 권위의 정보보호 인증을 획득하고도 대규모 해킹을 당하는 역설이 반복되고 있다. 과학기술정보통신부와 개인정보보호위원회가 공동 운영하는 ‘정보보호 및 개인정보보호 관리체계’(ISMS-P)는 기업의 보안 신뢰도를 보증하는...",
+          "date": "2026-10-19 09:01",
+          "publisher": "이코노미스트",
+          "link": "https://n.news.naver.com/mnews/article/243/0000104378",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "전문적인 해킹 지식이 없는 사람도 인공지능(AI) 자율 침투 도구에 ‘공격하라’는 짧은 자연어 명령 한 줄만 입력하면 내부망을 뚫고 원격 제어까지 실행할 수 있다는 실험 결과가 나왔다. 18일 안랩 시큐리티인텔리전스센터가 최근 공개한...",
+          "date": "2026-10-19 00:07",
+          "publisher": "국민일보",
+          "link": "https://n.news.naver.com/mnews/article/005/0001879396",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "짧은 명령만으로 외부 웹 서버의 취약점을 찾아 침투하는 등 인공지능(AI) 에이전트의 자율 공격 능력이 고도화하고 있다. 18일 업계에 따르면 안랩은 오픈소스 자율 침투 도구 ‘아르텍스’의 모의실험 결과를 공개하며 이같이 밝혔다. 아르텍스는...",
+          "date": "2026-10-18 17:24",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343688",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "안랩이 싱가포르에서 열린 글로벌 보안 행사 ‘거브웨어 2026(GovWare 2026)’에 참가해 인공지능(AI) 기반 보안관제와 산업현장 보안 기술을 선보였다. 안랩은 지난 13일부터 15일까지 싱가포르 샌즈 엑스포 앤 컨벤션 센터에서 열린 행사에서 ‘안랩...",
+          "date": "2026-10-18 14:12",
+          "publisher": "TV조선",
+          "link": "https://n.news.naver.com/mnews/article/448/0000645504",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "NH농협카드가 안랩블록체인컴퍼니와 손잡고 차세대 쇼핑·결제 기술 실증을 추진한다고 16일 밝혔다. 이번 프로젝트는 고객이 인공지능(AI) 비서에 쇼핑 품목과 결제 조건을 사전 위임하면, AI가 최적의 상품을 탐색·선별해 스테이블코인으로 자동...",
+          "date": "2026-10-16 09:46",
+          "publisher": "연합뉴스",
+          "link": "https://n.news.naver.com/mnews/article/001/0016380632",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 13,
+      "company_name": "안랩"
+    },
+    {
+      "ticker": "121600",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 7,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[나노신소재] 자기주식처분결과보고서",
+          "date": "2026-10-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013000292",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 7,
+          "headline": "나노신소재가 해외 증설을 위해 조달한 대규모 메자닌을 잇달아 상환하고 있다. 전기차 캐즘으로 신규 공장의 수익화가 늦어진 사이 주가가 떨어져 차익을 기대하기 어려워진 투자자들이 원금 회수에 나선 것이다. 이달 상환 후에도 630억원이...",
+          "date": "2026-09-17 17:03",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000090618",
+          "content_type": "news"
+        },
+        {
+          "article_index": 9,
+          "headline": "우주항공·방위산업·정밀기계 중심…7개 시군에 공장·454명 고용 경남과 충남, 전남에 있는 기업 12곳이 우주항공, 방위산업, 정밀기계 등 미래 첨단산업 중심으로 경남에 신규 투자한다. 경남도는 31일 도청에서 박완수 지사와 7개 시군 시장·군수...",
+          "date": "2026-08-31 14:15",
+          "publisher": "연합뉴스",
+          "link": "https://n.news.naver.com/mnews/article/001/0016280467",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 14,
+      "company_name": "나노신소재"
+    },
+    {
+      "ticker": "035900",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "한국경제신의 유료 투자 플랫폼 '한경 프리미엄9'(hankyung.com/premium9)을 구독하시면 매일 아침 '오늘의 증권가 콜' 기사를 만나볼 수 있습니다. 19일 증권가에서는 화학·유통·조선 업종을 중심으로 목표주가 하향이 이어졌다. 환율 하락과 원가...",
+          "date": "2026-10-19 14:16",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343959",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "상상인증권이 JYP Ent.(035900)(JYP엔터테인먼트)에 대해 투자의견 ‘매수’를 유지하되 목표주가는 기존 6만원에서 5만 2000원으로 하향한다고 19일 밝혔다. 이나라 상상인증권 연구원은 “3분기 실적을 매출액 2373억원, 영업이익 411억원으로...",
+          "date": "2026-10-19 07:48",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006391140",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "A2O LITE, 음원 공개 29시간 만에 최단기 1위 NMIXX·베이비몬스터·아이브·아일릿 잇단 출격 하반기 실적 책임질 핵심 IP 경쟁도 본격화 10월 가요계에 ‘걸그룹 컴백 대전’이 펼쳐진다. 더블랙레이블부터 JYP엔터테인먼트...",
+          "date": "2026-10-18 09:01",
+          "publisher": "매경이코노미",
+          "link": "https://n.news.naver.com/mnews/article/024/0000108993",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "1. \"복잡한 단지 이름 싫어요\" 2. JYP 고덕 신사옥 결국 '백지화' 3. 서울, '43만가구' 공급 사라졌다? \"복잡한 단지 이름 싫어요\" 지난주 서울 서초구 반포주공1단지 1·2·4주구 재건축사업이 새 이름을 정한다는 소식 전해드렸는데요. 투표 결과 새로운...",
+          "date": "2026-10-18 07:00",
+          "publisher": "비즈워치",
+          "link": "https://n.news.naver.com/mnews/article/648/0000051682",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "SM엔터테인먼트를 떠났던 이수만이 24명의 신인들을 이끌고 K팝 시장에 다시 뛰어들었다. 복귀 직후 선보인 신곡이 음원 차트 정상에 오르면서 대형 기획사 중심의 K팝 산업 구도에 새로운 변수로 떠오르는 모습이다. 15일 가요계에 따르면...",
+          "date": "2026-10-17 08:23",
+          "publisher": "한경비즈니스",
+          "link": "https://n.news.naver.com/mnews/article/050/0000112045",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 15,
+      "company_name": "JYP Ent."
+    },
+    {
+      "ticker": "023160",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "송기석 달튼코리아 공동대표 인터뷰 저성장기일수록 지배구조 중요 자본 효율화가 증시 재평가 관건 중복상장·지주사 구조 개선해야 공개 대립보다 기업과 우호적 관여 日 10여년 밸류업, 韓 5~6년 가능 한국 경제가 저성장 국면에 접어들었지만 국내...",
+          "date": "2026-10-15 18:06",
+          "publisher": "매일경제",
+          "link": "https://n.news.naver.com/mnews/article/009/0005749336",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "▲구주주유상청약=SK디앤디(210980) ▲주권변경상장=대신증권(주식소각) ▲공모주청약=엠에스바이오(주관사 KB) 디티에스(대신) ▲신주배정기준일=이렘(009730)(유상) ▲일반공모유상청약=다보링크(340360) 제이케이시냅스(060230)...",
+          "date": "2026-10-12 10:35",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004670217",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "중견 조선사 케이조선 인수전에 뛰어든 한국카본과 태광산업이 스토킹호스(Stalking Horse)에 해당하는 조건부 인수예정자 선정이 초읽기에 들어갔다. 매도측인 유암코(연합자산관리), KHI와 MOU 체결을 위한 실무적 절차에 착수한 것으로 파악된다....",
+          "date": "2026-10-07 13:28",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005586094",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "2대 사주에게 매제는 경영의 동반자이자 든든한 조력자였다. 이에 더해 3세 승계 기반을 닦는데 결정적 역할을 한 일등공신이다. 매제에게 알짜 계열사를 떼 준 것은 자연스러운 수순일 수 있다. 오너 형제와 함께 ‘삼분지계’ 한 축 김형웅...",
+          "date": "2026-10-07 07:10",
+          "publisher": "비즈워치",
+          "link": "https://n.news.naver.com/mnews/article/648/0000051372",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "[태광] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-10-02",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261002000168",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 16,
+      "company_name": "태광"
+    },
+    {
+      "ticker": "043260",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "광통신주가 19일 장 초반 동반 하락세를 보인다. 뉴욕 증시에서 AI(인공지능) 투자 수익성 우려가 재차 점화되며 기술주가 급락한 여파가 미친 것으로 풀이된다. 이날 오전 9시11분 현재 코스닥 시장에서 자람테크놀로지는 한국거래소...",
+          "date": "2026-10-19 09:20",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428098",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "코스닥 상장 핀테크사 핑거가 성호전자그룹의 새 인수합병(M&A) 첨병으로 떠올랐다. 성호전자그룹은 성호전자를 앞세운 인수합병을 통해 몸집을 키워왔다. 최근 이 자리를 재무건전성을 갖춘 핑거가 대신하는 모양새다. 금융감독원...",
+          "date": "2026-10-16 10:00",
+          "publisher": "비즈워치",
+          "link": "https://n.news.naver.com/mnews/article/648/0000051653",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "코스피가 장중 6% 넘게 급락하며 6000선 아래로 밀려난 가운데 주식 투자 수익률 상위 1%의 초고수들은 삼성전자와 SK하이닉스 등 국내 대표 반도체주를 집중 매도한 것으로 나타났다. 반면 LG전자와 에이피알 등 낙폭이 큰 종목은 사들이며...",
+          "date": "2026-10-13 11:35",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004670659",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "반도체 소부장 종목에 '올인'한 코스닥 액티브 ETF 수익률이 패시브 상품을 앞지르고 있다. 코스닥 대장주가 바이오에서 반도체 종목으로 옮겨간 흐름을 발빠르게 반영한 결과다. 13일 ETF체크에 따르면 전날 기준 삼성액티브자산운용의...",
+          "date": "2026-10-13 06:00",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009223542",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "[성호전자] [첨부정정]주요사항보고서(신주인수권부사채권발행결정)",
+          "date": "2026-10-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013000419",
+          "content_type": "disclosure"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 17,
+      "company_name": "성호전자"
+    },
+    {
+      "ticker": "062040",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "15일 오전 9시 10분 기준, 한국거래소에 따르면 코스피는 5736.61로 전일 종가 6008.81보다 272.20포인트(-4.53%) 내린 상태다. 지수는 5673.01로 출발한 뒤 장중 5751.45까지 올랐지만, 5668.07까지 밀리며 급격한 약세 흐름을 이어가고 있다....",
+          "date": "2026-10-15 10:07",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003689163",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "미래에셋증권은 15일 산일전기(062040)에 대한 투자의견 '매수'를 유지하고 목표주가를 기존 25만 원에서 27만 원으로 8% 상향했다. 전날 종가 21만 2000원 대비 상승여력은 27.4%다. 김태형 미래에셋증권 연구원은 이날 보고서에서 \"2028년 기준...",
+          "date": "2026-10-15 09:25",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009228968",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "미국발 물가 충격과 인공지능(AI) 인프라 부채 리스크라는 이중 암초를 만난 국내 증시가 개장과 동시에 5600선까지 밀리며 7월 말 기록했던 저점 수준까지 밀려났다. 글로벌 빅테크의 설비투자 회수 의구심과 중동발 고유가 충격이...",
+          "date": "2026-10-15 09:20",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004671450",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "코스피가 최근 2개월여간 6,000∼7,000대 초반 사이에서 박스권 장세를 보이는 가운데, 반도체 대형주 랠리에서 소외됐던 반도체 소재·부품·장비(소부장)와 배터리 및 화학, 건설 분야 중소형주 일부가 크게 오른 것으로 나타났다. 코스피가...",
+          "date": "2026-10-15 00:31",
+          "publisher": "동아일보",
+          "link": "https://n.news.naver.com/mnews/article/020/0003755029",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "코스피가 최근 2개월여 간 6,000~7,000 초반 사이에서 박스권 장세를 보이고 있는 가운데, 반도체 대형주 랠리에서 소외됐던 반도체 소재·부품·장비(소부장)과 배터리 및 화학, 건설 분야 중·소형주 일부가 크게 오른 것으로 나타났다. 코스피가...",
+          "date": "2026-10-14 17:10",
+          "publisher": "동아일보",
+          "link": "https://n.news.naver.com/mnews/article/020/0003754975",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 18,
+      "company_name": "산일전기"
+    },
+    {
+      "ticker": "053610",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 1,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[프로텍] 반기보고서 (2026.06)",
+          "date": "2026-08-14",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814000560",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 2,
+          "headline": "프로텍이 장초 4%대 상승 중이다. 9일 엠피닥터에 따르면 프로텍(053610)은 이날 오전 9시 3분 기준 4.76% 오른 6만1600원에 거래되고 있다. 프로텍 주가는 장중 한때 8%대까지 치솟기도 했다. 최근 증권가 호평에 따른 매수세가 일부 유입되고 있는...",
+          "date": "2026-07-09 09:10",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006325831",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "대신증권이 프로텍(053610)에 대해 자회사 실적 개선, 신규 장비 수주까지 고려하면 관심이 필요한 구간이라고 7일 밝혔다. 다만 투자의견과 목표주가는 제시하지 않았다. 박장욱 대신증권 연구원은 “매년 견조한 실적을 기록해왔음에도 주요...",
+          "date": "2026-07-07 07:57",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006324226",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "▲현대로템(064350)=모로코 철도청과 7482억 원 규모 모로코 철도청 전동차 LTSS 사업 계약 체결 ▲트리니티항공(091810)=계열회사 트리니티에어서비스와 106억 원 규모 상품·용역거래 결정 ▲한솔케미칼(014680)=600억 원 규모 기취득...",
+          "date": "2026-06-19 16:33",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004632989",
+          "content_type": "news"
+        },
+        {
+          "article_index": 5,
+          "headline": "코스닥 상장사 프로텍은 프로브카드제조 종속회사 피엠티의 주식 514만2천126주를 약 211억원에 추가 취득한다고 19일 공시했습니다. 주식 취득 뒤 프로텍의 피엠티 지분율은 51.6%가 되며, 주식 취득 예정일은 29일 입니다. 프로텍은 이번 주식...",
+          "date": "2026-06-19 14:07",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000517110",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 19,
+      "company_name": "프로텍"
+    },
+    {
+      "ticker": "328130",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "루닛은 내달 4일부터 8일까지 미국 애리조나주 피닉스에서 열리는 미국면역항암학회(SITC 2026)에서 AI 바이오마커 플랫폼 '루닛 스코프'를 활용한 연구초록 2편을 발표한다고 14일 밝혔다. SITC는 지난 1984년 설립된 면역항암 분야의 대표적인 글로벌...",
+          "date": "2026-10-14 14:30",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001065946",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "의료 인공지능(AI) 기업 루닛이 미국 바이오 검체 및 정밀의료 선도기업과의 협력을 통해 글로벌 제약·바이오 시장을 향한 정밀 병리 분석 영토 확장에 속도를 내고 있다. 루닛은 미국 바이오 검체 및 정밀의료 전문기업 디스커버리 라이프 사이언스...",
+          "date": "2026-10-12 16:43",
+          "publisher": "이코노미스트",
+          "link": "https://n.news.naver.com/mnews/article/243/0000104139",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[루닛] 전환사채(해외전환사채포함)발행후만기전사채취득",
+          "date": "2026-10-02",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261002900904",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "■ 오늘 경제 안녕하십니까? '투자 노하우 - 한승연 NH투자증권 연구원 호재가 있어도, 실적이 잘 나와도 소외당한 섹터를 꼽으라면 단연코 제약바이오라고 할 수 있는데요. 제약바이오 업계도 AI로 미래 먹거리를 찾아 나선다고 하죠? 고금리도...",
+          "date": "2026-10-01 16:57",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000535890",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "루닛은 이달 23일부터 27일까지 스페인 마드리드에서 열리는 '2026 유럽종양학회(ESMO)'에서 AI 바이오마커 플랫폼 '루닛 스코프'를 활용한 연구초록 5편을 발표한다고 1일 밝혔다. 루닛은 이번 학회에서 일본에서 실시된 비소세포폐암 환자의 수술...",
+          "date": "2026-10-01 10:12",
+          "publisher": "한국경제TV",
+          "link": "https://n.news.naver.com/mnews/article/215/0001267814",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 20,
+      "company_name": "루닛"
+    },
+    {
+      "ticker": "071970",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "한화엔진이 삼성중공업과 1322억원 규모의 선박용 엔진 공급 계약을 체결하며 중장기 일감을 추가 확보했다. 16일 업계에 따르면, 한화엔진은 삼성중공업이 건조할 예정인 선박에 1322억5368만원 규모의 엔진을 공급하는 계약을 체결했다고 15일...",
+          "date": "2026-10-16 11:31",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005590255",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "국내 반도체 ‘투톱’인 삼성전자와 SK하이닉스 주가가 최근 급락하면서 증권사 평균 목표주가와 실제 주가 간 괴리율이 크게 벌어지고 있다. 삼성전자가 3분기 사상 최대 실적을 발표했음에도 반도체주 약세가 이어지면서 증권가의 실적...",
+          "date": "2026-10-15 16:08",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006388772",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "한반도미래인구연구원(이사장 정운찬, 원장 이인실, 이하 한미연)이 15일 '2026 아이 키우기 좋은 기업' 11곳을 발표했다. 올해 3회째인 이번 시상은 한미연이 지난 7월 발표한 '2026 인구 위기 대응 우수 기업 평가'를 바탕으로 했다. 평가 대상은...",
+          "date": "2026-10-15 15:34",
+          "publisher": "여성신문",
+          "link": "https://n.news.naver.com/mnews/article/310/0000140849",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "기업 최고 의사결정권자(CEO, CFO, COO, CIO 등)의 행보에서 투자 인사이트를 얻어 가세요. HD현대중공업이 33년간 엔진사업 한 분야에서 경력을 쌓아온 한주석 엔진기계사업대표를 사장으로 승진시켰다. 선박용 엔진의 연구개발과 생산을 두루 경험한...",
+          "date": "2026-10-13 15:18",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000091513",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "창원 성산구 신촌동에 위치한 HD현대마린엔진 공장. 공장 바깥에는 아파트 4~5층 높이(13m)의 선박엔진 8대가 자리잡고 있었다. 선박엔진 1대당 무게는 최대 430톤에 달했다. 이들 선박엔진은 최종 테스트를 마친 제품으로 인도를 앞두고 있다. 조민식...",
+          "date": "2026-10-12 11:26",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002708048",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 21,
+      "company_name": "HD현대마린엔진"
+    },
+    {
+      "ticker": "483650",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "교보증권은 19일 달바글로벌에 대해 환율 상황이 비우호적이지만 수익성이 기대치를 상회 중이라고 평가했다. 투자 의견 ‘매수(Buy)’와 목표 주가 31만원을 유지했다. 달바글로벌의 전 거래일 종가는 17만1900원이다. 교보증권은 달바글로벌의...",
+          "date": "2026-10-19 09:04",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001198723",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "■ 머니쇼 '기업이슈' - 도지은 어제장에서 이슈가 있었던 업종 살펴보는 기업이슈 시간입니다. ◇ 젠슨 황 \"모두 지나갈 일…펀더멘털은 변하지 않아\" 삼성전자와 SK하이닉스가 급락을 딛고 나란히 상승에 성공하면서, 반도체 소부장 관련주도...",
+          "date": "2026-10-19 08:21",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000538468",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "최근 인공지능(AI) 투자 수익성 우려로 삼성전자와 SK하이닉스 등 반도체주의 변동성이 커지는 가운데 국내외 뷰티주가 강세를 보이고 있다. 국내에서는 사상 최대 실적을 경신한 화장품 기업들이 주목받는 가운데 해외 주문이 급증하는...",
+          "date": "2026-10-18 18:50",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005590785",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "올여름 가파르게 상승한 뒤 꺾인 화장품 업종의 주가 조정이 마무리 국면이라는 진단이 나왔다. 증권가에서는 한국 화장품 업종이 강력한 글로벌 수요를 토대로 하반기 호실적을 예상하고 있다. 박종대 하나증권 연구원은 \"글로벌 K뷰티 수요는...",
+          "date": "2026-10-18 15:41",
+          "publisher": "아시아경제",
+          "link": "https://n.news.naver.com/mnews/article/277/0005829902",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "지난 16일 세종시 한국콜마(161890) 화장품 공장을 찾은 이소영 중소벤처기업부 장관이 전시된 국내 화장품 기업 달바글로벌 선크림을 가리키며 본인이 쓰는 제품이라고 말하며 반가운 표정을 지었다. 그러면서 이 장관은 “요즘 선크림은 정말 좋아진...",
+          "date": "2026-10-18 12:00",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004672355",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 22,
+      "company_name": "달바글로벌"
+    },
+    {
+      "ticker": "086450",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "보수적 색채가 강한 전통 제약업계에도 사명에 영문 이니셜을 넣거나 아예 사명을 해외 지향으로 바꾸는 사례가 하나둘씩 늘고 있다. ‘JW’중외제약, ‘GC’녹십자, ‘HK’이노엔에 이어 최근엔 동국제약까지 ‘DK센텔리안'으로 간판을 바꾸며...",
+          "date": "2026-10-19 14:32",
+          "publisher": "데일리안",
+          "link": "https://n.news.naver.com/mnews/article/119/0003144280",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "2027학년도 대학수학능력시험이 한 달 앞으로 다가왔다. 그동안 갈고닦은 실력을 시험장에서 충분히 발휘하려면 막바지 건강 관리가 중요하다. 잠을 줄여가며 공부하고 운동할 시간도 부족한 수험생들은 피로가 쌓이기 쉽다. 책과 모니터를 오래...",
+          "date": "2026-10-19 12:28",
+          "publisher": "코메디닷컴",
+          "link": "https://n.news.naver.com/mnews/article/296/0000106122",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "■ 머니쇼 '투자자 순매수 TOP5' - 이가람 지난주 외국인과 기관이 가장 많이 순매수한 종목을 살펴보는, 투자자 순매수 TOP5 시간입니다. 지난주 외국인은 유가증권시장에서 11조원 넘게 순매도했습니다. 전체 순매도 금액의 약 79%가 삼성전자와...",
+          "date": "2026-10-19 08:31",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000538470",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "제약·바이오와 뷰티업계의 경계가 허물어지고 있습니다. 제약사는 화장품에 힘을 싣고, 뷰티기업은 의료기기 분야에 진출하며 사업 영역을 확장하고 있습니다. 동국제약은 최근 회사 간판을 'DK 센텔리안(DK Centellian)'으로 바꿔달기로...",
+          "date": "2026-10-19 08:03",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000538466",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "수십 년의 전통을 깨고 사명을 과감히 바꾸는 기업들이 늘어나고 있다. 특히 글로벌 시장 공략과 정체성 각인을 위해 브랜드를 사명으로 교체하는 현상도 시선을 끌고 있다. 17일 업계에 따르면 최근 기업들의 사명 변경이 두드러지고 있다. 먼저...",
+          "date": "2026-10-17 17:53",
+          "publisher": "이코노미스트",
+          "link": "https://n.news.naver.com/mnews/article/243/0000104347",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 23,
+      "company_name": "동국제약"
+    },
+    {
+      "ticker": "058470",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "코스닥 800선 회복…환율 1330.3원 코스피가 장 초반 약세를 딛고 오후 들어 이어진 저가 매수세 유입에 이틀 연속 상승 마감했다. 19일 한국거래소에 따르면 이날 코스피는 전 거래일 대비 1.76% 오른 5768.01에 거래를 마쳤다. 개장 후...",
+          "date": "2026-10-19 15:51",
+          "publisher": "더팩트",
+          "link": "https://n.news.naver.com/mnews/article/629/0000543393",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "코스피가 19일 주말 사이 재부각된 ‘인공지능(AI) 수익성 논란’으로 장 초반 5500선이 붕괴되며 3% 하락 출발했다가 장중 1%대 반등에 성공했다. 장전 프리마켓에서 6% 급락했던 삼성전자와 SK하이닉스가 낙폭을 빠르게 줄여나갔고...",
+          "date": "2026-10-19 13:54",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006391457",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "19일 오후 12시 25분 기준 코스닥 시가총액 상위 종목들은 업종별로 엇갈린 흐름을 보이고 있다. 2차전지와 일부 로봇주는 강세를 나타내는 반면, 반도체 장비와 소재 관련 종목들에는 매물이 출회되는 모습이다. 시가총액...",
+          "date": "2026-10-19 13:22",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003690235",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "코스피가 장 초반 급락세를 딛고 상승 전환해 5700선을 회복했다. 외국인과 기관이 유가증권시장에서 동반 순매수에 나선 가운데 2차전지와 자동차, 바이오 등 일부 시가총액 상위 종목이 큰 폭으로 오르며 지수를 끌어올리고 있다. 19일...",
+          "date": "2026-10-19 13:16",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343935",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "미국 AI반도체주 급락 여파에 장 초반 하락했던 코스피 지수가 기관 매수세에 보합세를 이어가고 있다. 한때 5700선을 찍고 현재 5600선에서 등락 중이다. 19일 오전 10시 46분 코스피는 전 거래일 대비 8.25p(-0.15%) 하락한 5659.80을...",
+          "date": "2026-10-19 11:08",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009235699",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 24,
+      "company_name": "리노공업"
+    },
+    {
+      "ticker": "251970",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "#국내 한 중소 화장품 브랜드는 올 들어 선크림을 두 달간 팔지 못했다. 제품을 담을 튜브를 제때 구하지 못하면서다. 어렵게 튜브를 확보하자 이번에는 클렌징폼 뚜껑이 문제였다. 중동 전쟁 여파로 플라스틱 원료 수급이 흔들리면서 캡 생산에...",
+          "date": "2026-10-16 07:26",
+          "publisher": "아시아경제",
+          "link": "https://n.news.naver.com/mnews/article/277/0005829239",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "3분기 실적 시즌을 앞두고 눈높이 조정에 기업들의 주가가 급등락을 연출하고 있는 가운데 증권가에선 막판 실적 조정이 나타날 수 있는 기업들에 주목하고 있다. 15일 한국거래소에 따르면 전날 주식시장에서 제주항공은 정규장에서만 23%대 급등...",
+          "date": "2026-10-15 08:14",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005342707",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "K뷰티 제품 주문이 폭발적으로 늘어 화장품 용기가 부족한 것으로 알려졌다. 주요 화장품 제조업자개발생산(ODM) 업체가 생산능력(CAPA)을 역대 최고치로 끌어올리자 후방 산업 단계에서 일시적인 병목 현상이 발생한 것으로 풀이된다. 9일...",
+          "date": "2026-10-09 17:37",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005340875",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "10월 옵션 만기일 리밸런싱…한글날 휴장으로 8·12일 매매 분산 매수종목, 리밸런싱 다음날까지 주가↑…매도종목, 당일 '↓' 이달 상장지수펀드(ETF) 리밸런싱(재조정) 매매가 8일과 오는 12일 나뉘어 이뤄지는 가운데 단기 수급 충격이 예상된다는...",
+          "date": "2026-10-08 10:46",
+          "publisher": "연합뉴스",
+          "link": "https://n.news.naver.com/mnews/article/001/0016365203",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "펌텍코리아가 3분기 시장 기대치를 웃도는 실적을 발표할 것이라는 분석이 나왔다. K-뷰티 인기가 높아지면서 화장품 용기 공급이 수요를 따라가지 못하는 국면에까지 들어선 영향이다. 박종현 다올투자증권 연구원은 8일 리포트에서...",
+          "date": "2026-10-08 08:40",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005423655",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 25,
+      "company_name": "펌텍코리아"
+    },
+    {
+      "ticker": "033790",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "코스닥지수가 약 3개월 만에 900선을 돌파했지만 상승세를 이어가지 못하고 있다. 단기간 지수가 빠르게 오른 만큼 추가 상승보다 4분기에도 실적과 수주가 뒷받침될 종목을 가려야 한다는 게 증권가 분석이다. 반도체 소부장(소재·부품·장비)이...",
+          "date": "2026-10-14 16:16",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005342473",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "인공지능(AI) 데이터센터 확산에 따른 에너지저장장치(ESS) 수요 증가 기대가 커지면서 2차전지주가 14일 장 초반 동반 강세를 보이고 있다. 전기차 시장 둔화로 부진했던 배터리 업종의 새로운 성장축으로 ESS가 부각되면서 관련 종목...",
+          "date": "2026-10-14 10:23",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004671078",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "코스모화학이 폐배터리에서 금속을 회수해 배터리 소재로 다시 공급하는 사업의 원료·수요 기반을 확보한다. 코스모화학은 국내 전구체 제조기업 피노와 지난달 28일 폐배터리 재활용 임가공 계약을 체결했다고 14일 밝혔다. 임가공은 공급받은 원료를...",
+          "date": "2026-09-14 10:33",
+          "publisher": "지디넷코리아",
+          "link": "https://n.news.naver.com/mnews/article/092/0002437296",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "코스모신소재가 이차전지 소재기업 피노에 150억원을 투자한다. 양사는 이번 지분 투자를 계기로 원료·전구체 조달부터 LFP 양극재까지 이차전지 소재 사업 전반에서 협력을 확대할 계획이다. 코스모신소재는 지난달 28일 충주...",
+          "date": "2026-09-08 15:09",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005330012",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "첨단 IT소재 전문기업 코스모신소재는 이차전지 소재기업 피노와 150억원 규모의 신주인수계약을 체결했다고 7일 밝혔다. 이번 계약으로 코스모신소재는 피노의 150억 규모 제3자배정 유상증자에 참여해 보통주 약 269만주를 인수한다. 취득 후...",
+          "date": "2026-09-07 10:08",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014173043",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 26,
+      "company_name": "피노"
+    },
+    {
+      "ticker": "491000",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 1,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "리브스메드가 신제품 출시와 수술로봇 사업 확장으로 성장의 변곡점을 맞고 있다. 주력 제품인 다관절 복강경 수술기구 '아티센셜'에 이어 '아티센셜 프로'와 혈관봉합기 '아티씰' 등 후속제품을 잇따라 선보이는 가운데, 수술로봇 '스타크'의 한국...",
+          "date": "2026-10-19 15:29",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428385",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "이 기사는 2026년10월17일 07시00분에 팜이데일리 프리미엄 콘텐츠로 선공개 되었습니다. 간밤 미국 뉴욕증시에서 제약·바이오주가 강세를 보이면서 16일 국내 제약·바이오 종목에도 훈풍이 불었다. 유가증권시장(코스피 시장)에서는...",
+          "date": "2026-10-19 07:03",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006391121",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "▶마켓인사이트 10월 8일 오후 4시 50분 인공지능(AI) 풀스택 기업 엘리스그룹이 코스닥시장에 상장하기 위한 일반청약에서 10조원이 넘는 뭉칫돈을 끌어모았다. 모처럼 등장한 상장 시가총액 1조원 규모의 ‘IPO(상장) 대어’로 공모주 시장의...",
+          "date": "2026-10-08 17:36",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005340641",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "▲ AI 프리즘* 맞춤형 경제 브리핑 * 편집자 주: ‘AI PRISM’(Personalized Report & Insight Summarizing Media)은 한국언론진흥재단의 지원을 받아 개발한 ‘인공지능(AI) 기반 맞춤형 뉴스 추천 및 요약 서비스’입니다. 독자 유형별 맞춤 뉴스 6개를 선별해...",
+          "date": "2026-10-07 10:01",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004668888",
+          "content_type": "news"
+        },
+        {
+          "article_index": 5,
+          "headline": "리브스메드(491000) 수술로봇 ‘스타크’가 시장에 안착하기 위해서는 단순히 허가 범위를 넓히는 것보다 다관절 기구의 강점이 드러나는 특정 수술과 병원군을 확보하는 게 중요하다는 분석이 나왔다. 한 술식에서 수술 건수가 늘면 병원이...",
+          "date": "2026-10-07 08:53",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004668844",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 27,
+      "company_name": "리브스메드"
+    },
+    {
+      "ticker": "003230",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "싱가포르계 행동주의 펀드인 플래쉬라이트캐피탈파트너스(FCP)와 미국계 투자회사 터톤 캐피탈이 국내 제과업계 1위 기업 오리온을 상대로 동시에 주주 행동에 나섰다. 양사는 오리온 이사회에 각각 공개서한을 전달하고 무모한 비관련 사업...",
+          "date": "2026-10-19 15:44",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000091789",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "삼양식품이 PC방과 만화카페 등 소비자들이 즐겨 찾는 공간으로 제품 경험을 확대하며 전용 라면 메뉴를 선보인다고 19일 밝혔다. 삼양식품에 따르면 이번 협업은 PC방 프랜차이즈 '아이센스PC방'과 만화카페 '벌툰'을 운영하는 아이센스에프앤비와...",
+          "date": "2026-10-19 14:49",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014263276",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "한국식품산업협회는 오는 20일 프랑스 파리에서 글로벌 미식 평가기관 라 리스트(La Liste)와 공동으로 K-미식 행사 ‘더 코리안 팬트리(The Korean Pantry)’를 개최한다. 이번 행사는 세계적인 식품박람회인 ‘시알 파리(SIAL Paris 2026)’와 연계해...",
+          "date": "2026-10-19 10:10",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002711074",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "삼양식품은 '그랜드민트페스티벌 2026'에서 프로틴 파스타 '탱글(Tangle)' 브랜드 부스 운영을 성황리에 마무리했다고 19일 밝혔다. 지난 17일부터 18일까지 서울 올림픽공원에서 운영한 부스에서는 시식 프로그램으로 '갈릭쉬림프 파스타'와 '머쉬룸크림...",
+          "date": "2026-10-19 10:09",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014261889",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "초고속 승진한 '포스트 불닭', 날아오를까 김정수 삼양식품 회장의 장남인 전병우 삼양식품 최고운영책임자(COO·전무)는 재계에서 승계 시계가 가장 빠르게 돌아가는 오너 3세 중 하나로 꼽힌다. 1994년생인 그는 2019년 부장으로 입사한 지 6년 만인...",
+          "date": "2026-10-19 10:00",
+          "publisher": "시사저널",
+          "link": "https://n.news.naver.com/mnews/article/586/0000140233",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 28,
+      "company_name": "삼양식품"
+    },
+    {
+      "ticker": "028670",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "이 기사는 10월 05일 18:11 마켓인사이트에 게재된 기사입니다. \"지금 자본시장에서 가장 뜨거운 분야는 '인공지능'(AI)과 'K컬처'입니다. 내년 인수합병(M&A) 거래도 이 두 테마를 중심으로 활성화될 겁니다. \" 정경수 삼일PwC CF(기업금융) 조직 리더(부대표...",
+          "date": "2026-10-19 14:46",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343975",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "한국경제신의 유료 투자 플랫폼 '한경 프리미엄9'(hankyung.com/premium9)을 구독하시면 매일 아침 '오늘의 증권가 콜' 기사를 만나볼 수 있습니다. 19일 증권가에서는 화학·유통·조선 업종을 중심으로 목표주가 하향이 이어졌다. 환율 하락과 원가...",
+          "date": "2026-10-19 14:16",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343959",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "19일 오후 12시 30분 기준 코스피 거래 상위 종목은 종목별 주가 흐름이 뚜렷하게 엇갈렸다. 거래량 상위권에서는 에스엠벡셀(010580)이 4040원으로 전일 대비 29.9% 급등하며 상한가를 기록했고, 거래량은 2668만4425주...",
+          "date": "2026-10-19 13:23",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003690236",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "10월 셋째주(12~16일) 코스피지수가 14% 넘게 급락한 가운데 주도주인 반도체 투톱과 소부장(소재·부품·장비)주, 기판주가 줄줄이 급락했다. 반면 3분기 실적 기대감이 큰 해운주와 제약·바이오주는 하락장에서도 상승했다. 18일 한국거래소에...",
+          "date": "2026-10-19 04:03",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428004",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "2023년 순익 2856억→올해 상반기 185억 적자 취득가보다 363억 낮은 매각 계약…인수금융 부담까지 ☞<상>편에 이어 [더팩트｜정리=윤정원 기자] ◆ 승승장구하던 JKL의 굴욕…롯데손보 7년 투자에 남은 건 손실 -사모펀드(PEF) 운용사 JKL파트너스가...",
+          "date": "2026-10-18 00:03",
+          "publisher": "더팩트",
+          "link": "https://n.news.naver.com/mnews/article/629/0000542982",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 29,
+      "company_name": "팬오션"
+    },
+    {
+      "ticker": "031980",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "코스피가 1% 넘게 상승하며 2거래일 연속 반등에 성공했다. 최근 낙폭이 가팔랐다는 판단이 투자자들의 반발 매수 심리를 자극한 것으로 풀이된다. 19일 코스피는 전 거래일 대비 99.96포인트(1.76%) 오른 5768.01에 거래를 마쳤다. 지난 16일에...",
+          "date": "2026-10-19 15:50",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014263607",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "19일 오후 12시 25분 기준 코스닥 시가총액 상위 종목들은 업종별로 엇갈린 흐름을 보이고 있다. 2차전지와 일부 로봇주는 강세를 나타내는 반면, 반도체 장비와 소재 관련 종목들에는 매물이 출회되는 모습이다. 시가총액...",
+          "date": "2026-10-19 13:22",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003690235",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "연기금 등 기관이 시총 상위 종목 저가 매수에 돌입하면서 코스피가 상승 반전했다. 19일 오전 10시40분 현재 코스피는 전 거래일 대비 30.58포인트(0.54%) 오른 5698.63을 나타낸다. 이날 코스피는 179.64포인트(3.17%) 떨어진 5488.41로 출발했으나...",
+          "date": "2026-10-19 10:36",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428187",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "19일 오전 10시 기준(이하 생략) 삼성전자는 21만2500원으로 1.39%, SK하이닉스는 121만8000원으로 4.25% 하락했다. 지난주 마지막 거래일인 16일(현지시간) 뉴욕증시에서 나스닥지수가 2% 넘게 떨어지고 인공지능(AI) 데이터센터 업체 코어위브의...",
+          "date": "2026-10-19 10:21",
+          "publisher": "조세일보",
+          "link": "https://n.news.naver.com/mnews/article/123/0002392102",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "코스피가 하락하며 주간 거래를 시작했다. AI(인공지능) 산업 불안 여파로 지난 주말 미국 증시에서 AI·반도체주가 급락한 영향이 지속되는 중으로 풀이된다. 19일 오전 9시12분 현재 코스피는 전 거래일 대비 66.85포인트(1.18%) 하락한 5601.20을...",
+          "date": "2026-10-19 09:22",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428101",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 30,
+      "company_name": "피에스케이홀딩스"
+    },
+    {
+      "ticker": "000660",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "코스닥 800선 회복…환율 1330.3원 코스피가 장 초반 약세를 딛고 오후 들어 이어진 저가 매수세 유입에 이틀 연속 상승 마감했다. 19일 한국거래소에 따르면 이날 코스피는 전 거래일 대비 1.76% 오른 5768.01에 거래를 마쳤다. 개장 후...",
+          "date": "2026-10-19 15:51",
+          "publisher": "더팩트",
+          "link": "https://n.news.naver.com/mnews/article/629/0000543393",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "코스피가 1% 넘게 상승하며 2거래일 연속 반등에 성공했다. 최근 낙폭이 가팔랐다는 판단이 투자자들의 반발 매수 심리를 자극한 것으로 풀이된다. 19일 코스피는 전 거래일 대비 99.96포인트(1.76%) 오른 5768.01에 거래를 마쳤다. 지난 16일에...",
+          "date": "2026-10-19 15:50",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014263607",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "지난 주말 미국발(發) 인공지능(AI) 쇼크에 휘청였던 반도체 투톱 주가가 충격을 딛고 상승 마감했다. 19일 한국거래소에 따르면 삼성전자는 전장 대비 2500원(1.16%) 오른 21만8000원에 거래를 마쳤다. 주가는 이날 3.94% 하락 출발해 개장 직후 4...",
+          "date": "2026-10-19 15:50",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014263604",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "19일 한국 주식 전략 보고서 발간 \"RSI 최저 수준…ROE도 낮아\" 국내 증시가 주가수익비율(PER)이 최저 수준으로 떨어져 밸류에이션 측면에서 매력적인 구간에 진입했다는 평가가 나왔다. JP모건은 19일 발간한 한국 주식 전략 보고서를 통해 한국...",
+          "date": "2026-10-19 15:48",
+          "publisher": "더팩트",
+          "link": "https://n.news.naver.com/mnews/article/629/0000543390",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "최근 이익 추정치가 정체된 삼성전자와 SK하이닉스 등 대형 반도체 ‘톱2’에 대한 쏠림을 줄이고, 반도체 소재·부품·장비(소부장) 기업의 비중을 확대하는 것이 수익률 제고를 위한 대안으로 제시됐다. 다만 인공지능(AI) 사이클은 이제 시작...",
+          "date": "2026-10-19 15:47",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002711367",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 31,
+      "company_name": "SK하이닉스"
+    },
+    {
+      "ticker": "257720",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[실리콘투] 주요사항보고서(자기주식취득신탁계약체결결정)",
+          "date": "2026-10-19",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000068",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "최근 인공지능(AI) 투자 수익성 우려로 삼성전자와 SK하이닉스 등 반도체주의 변동성이 커지는 가운데 국내외 뷰티주가 강세를 보이고 있다. 국내에서는 사상 최대 실적을 경신한 화장품 기업들이 주목받는 가운데 해외 주문이 급증하는...",
+          "date": "2026-10-18 18:50",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005590785",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "이번 주 화제의 리포트는 10월 12일 키움증권 손예빈 애널리스트가 발간한 ‘K뷰티의 지구정복’을 선정했다. K뷰티의 경쟁력과 활동 영역을 넓힌 과정, 지역별 소비 트렌드를 짚었다는 점에서다. K뷰티 수출액은 2023년 이후 연평균 13% 성장하며...",
+          "date": "2026-10-18 10:02",
+          "publisher": "한경비즈니스",
+          "link": "https://n.news.naver.com/mnews/article/050/0000112074",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "1.삼양식품 -내년 중국 공장 가동에 따른 Q 증대로 또 한 번의 레벨업 가능 -미주·유럽 향 수출 비중 확대에 따른 Mixed ASP 개선 전망 2.실리콘투 -K-뷰티 글로벌 수요 확대와 유럽·북미 유통망 확장에 따른 구조적 매출 성장 기대 -유럽 물류거점...",
+          "date": "2026-10-17 07:02",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006389917",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "K뷰티 관련 종목이 10%에 가까운 상승률을 보이며 급등하고 있다. 인공지능(AI) 산업 성장세를 둘러싼 경계감이 커지는 가운데 실적 안정성과 성장성을 모두 갖춘 기업들로 수요가 몰리는 모습이다. 간밤 뉴욕 증시에서도 하방 안정성이 높은...",
+          "date": "2026-10-16 14:46",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004672025",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 32,
+      "company_name": "실리콘투"
+    },
+    {
+      "ticker": "012750",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "증권사들이 삼성그룹 보안 계열사 에스원의 목표주가를 잇달아 상향 조정했다. 전체 발행주식의 약 23%를 소각하는 파격적인 주주환원 정책을 내놓은 점을 반영했다. 주가 역시 최근 선전하는 흐름을 보여 시장의 관심이 쏠린다. 한국거래소에...",
+          "date": "2026-10-19 06:31",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343787",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "머니투데이 증권부가 선정한 10월 셋째주(12~18일) 베스트리포트는 △하혜민 키움증권 연구원의 '3분기 하회 전망되나, 4분기 기대'(한미약품) △이창영 유안타증권 연구원의 '화끈한 주주환원과 미래성장 투자'(에스원) △유재선 하나증권 연구원의...",
+          "date": "2026-10-18 16:22",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005427956",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "10월 16일 오전, 주요 증권사 리포트를 정리해드립니다. 삼양식품은 원화 강세 우려에도 해외 수요가 견조하게 유지되는 가운데 밀양 2공장 가동률 상승과 중국 공장 증설로 외형 성장이 이어질 것이라는 평가를 받으며 음식료 업종 최선호주로...",
+          "date": "2026-10-16 11:20",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005590250",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "유안타증권은 16일 에스원의 전체 발행 주식수가 올해와 내년 자사주 매입·소각에 따라 약 23% 줄 예정이라며 이 회사에 대한 투자전략을 '매수'로 유지한 채 목표주가를 종전 9만원에서 12만원으로 상향 조정했다. 에스원의 전일 종가는...",
+          "date": "2026-10-16 10:26",
+          "publisher": "연합뉴스",
+          "link": "https://n.news.naver.com/mnews/article/001/0016380758",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "흥국증권은 16일 에스원(012750)에 대해 견조한 본업 실적과 함께 대규모 자사주 매입 및 소각을 포함한 강력한 주주가치 제고 방안을 발표했다며 투자의견 ‘매수(BUY)’를 유지하고 목표주가를 기존 9만5000원에서 12만원으로 26.3% 상향...",
+          "date": "2026-10-16 08:51",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006389113",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 33,
+      "company_name": "에스원"
+    },
+    {
+      "ticker": "098460",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 2,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[고영] 주식등의대량보유상황보고서(약식)",
+          "date": "2026-10-16",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016000117",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "한국보건산업진흥원은 오는 22일 서울 마곡 코엑스 컨벤션센터에서 'KHIDI-Unitaid 공동포럼'을 개최하고, 국제의약품구매기구(Unitaid)와 인공지능(AI) 헬스케어 기술을 활용한 글로벌 의료 격차 해소 방안을 논의한다고 15일 밝혔다. 2026 월드 바이오...",
+          "date": "2026-10-15 15:21",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003475517",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "매도 공세를 이어가고 있는 외국인 투자자의 반도체 투자 전략에 변화가 감지된다. 이달 하락장에서 삼성전자와 SK하이닉스 등 반도체 대형주를 팔아치우면서도 반도체 소부장(소재·부품·장비) 종목은 적극적으로 담고 있어서다. 반도체 업황에...",
+          "date": "2026-10-14 13:36",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001065918",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "10월 1~13일, 삼전닉스 매도 10조원↑ 순매수 1위 ‘고배당·방어주’ 우리금융 “반도체 기대 여전, 추가 주주환원 관건” 국내 주식시장에서 외국인이 삼성전자와 SK하이닉스를 대거 매도하는 반면 반도체 부품·장비 관련 종목은 사들인 것으로...",
+          "date": "2026-10-14 11:56",
+          "publisher": "매경이코노미",
+          "link": "https://n.news.naver.com/mnews/article/024/0000108902",
+          "content_type": "news"
+        },
+        {
+          "article_index": 6,
+          "headline": "반도체 산업이 연매출 1조달러를 돌파한 후 열리는 첫 '세미콘 웨스트(SEMICON West)' 행사가 오는 13일(현지시간)부터 미국 샌프란시스코 모스콘센터에서 개최된다. 주최 측 국제반도체장비재료협회(SEMI)는 이번 행사를 1조달러 돌파를 기념하고...",
+          "date": "2026-10-12 14:20",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003474130",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 34,
+      "company_name": "고영"
+    },
+    {
+      "ticker": "041510",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "에스엠엔터테인먼트는 소속 아이돌그룹 라이즈(RIIZE)가 오는 26일 싱글 '인섬니아(Insomnia)를 발매한다고 19일 밝혔다. 이번 신곡은 멜론, 플로, 지니 등 국내 주요 음원 플랫폼을 비롯해 아이튠즈, 애플뮤직, 스포티파이, 중국 텐센트뮤직 산하 큐큐...",
+          "date": "2026-10-19 15:43",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428401",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "광고 업계가 전통적인 광고 마케팅 방식만으로는 성장 한계에 다다르자 신사업으로 돌파구를 마련하고 있다. 인공지능(AI)과 데이터를 활용한 테크 설루션, 콘텐츠·방송 제작, 지식재산권(IP) 사업 등이 대표적이다. 대기업 광고 수주를 중심으로...",
+          "date": "2026-10-19 08:00",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009234997",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "H.O.T.부터 동방신기, 소녀시대까지 K팝의 신화를 써온 이수만 A2O엔터테인먼트 키 프로듀서 겸 비저너리 리더가 다시 현장에 섰다. 그가 공들인 보이그룹 A2O SOUL(소울)과 걸그룹 A2O LITE(라이트)는 단번에 대중의 눈과 귀를 사로잡았다. 1995년...",
+          "date": "2026-10-19 05:47",
+          "publisher": "동행미디어 시대",
+          "link": "https://n.news.naver.com/mnews/article/417/0001161282",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "\"기술이 얼마나 발전하는가보다 더 중요한 것은, 그 기술이 어떻게 존재하게 할 것인가 그리고 어떻게 사용되도록 할 것인가를 결정하는 우리의 지혜다.\" 3년간의 경업금지 기간 뒤 국내 활동을 재개한 이수만 A2O엔터테인먼트 키 프로듀서가 AI 시대...",
+          "date": "2026-10-19 05:37",
+          "publisher": "동행미디어 시대",
+          "link": "https://n.news.naver.com/mnews/article/417/0001161280",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "“미혼앤 비혼~.” 법적 분쟁을 벌이고 있는 민희진 전 어도어 대표와 방시혁 하이브 의장이 나란히 춤을 춘다. 걸그룹 A2O LITE의 노래 ‘NEON’에 맞춰 팔을 뻗고 몸을 흔드는 모습이 제법 능숙하다. 실제로는 한자리에 모이기 어려울 법한 두...",
+          "date": "2026-10-18 13:01",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343631",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 35,
+      "company_name": "에스엠"
+    },
+    {
+      "ticker": "078600",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "신한자산운용은 차세대 배터리 핵심 기업에 투자하는 'SOL 전고체배터리&실리콘음극재' 상장지수펀드(ETF)가 지난 16일 기준 최근 3개월간 22.76%의 수익률을 기록하며 국내 상장 주식형 ETF 가운데 1위를 차지했다고 밝혔다. 이 ETF는 전고체 배터리와...",
+          "date": "2026-10-19 15:29",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005344002",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "국내 주식의 ‘큰 손’ 국민연금의 국내 주식 평가액이 약 100일 만에 182조원 넘게 증발했다. 그동안 수익을 견인했던 삼성전자와 SK하이닉스의 주가 급락으로 두 종목에서만 131조원에 달하는 손실이 발생했다. 18일 금융정보업체...",
+          "date": "2026-10-19 09:59",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004672604",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "국내 증시가 최근 폭락장세를 기록하면서 국민연금도 약 100일 만에 200조원에 가까운 손실을 본 것으로 나타났다. AI속도 조절론, 중국산 메모리 추격 등 악재에 '반도체 투톱'인 삼성전자와 SK하이닉스가 휘청이면서, 코스피도 급락장에서...",
+          "date": "2026-10-18 20:09",
+          "publisher": "매일신문",
+          "link": "https://n.news.naver.com/mnews/article/088/0001035112",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "수익률 상위 투자자들이 삼성전자와 SK하이닉스에 대한 매수 강도를 다시 높였다. 삼성전기와 주성엔지니어링 등 반도체 부품·장비주에 대한 매수를 이어가는 한편 효성중공업 등 전력기기주도 담았다. 18일 키움증권이 제공하는 '수익률 상위...",
+          "date": "2026-10-18 18:22",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005590751",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "삼성전자와 SK하이닉스가 주가 급락의 직격탄을 맞으면서 국민연금의 국내 상장주식 평가액이 석 달 반 만에 180조원 넘게 줄어든 것으로 나타났다. 두 종목에서만 131조원가량의 평가액이 감소해 전체 감소분의 70% 이상을 차지했다. 18일...",
+          "date": "2026-10-18 16:45",
+          "publisher": "디지털타임스",
+          "link": "https://n.news.naver.com/mnews/article/029/0003053694",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 36,
+      "company_name": "대주전자재료"
+    },
+    {
+      "ticker": "361610",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "코로나19 팬데믹 당시 백신 개발 기대감에 힘입어 증시를 뜨겁게 달궜던 SK바이오사이언스가 재도약을 모색하고 있다. 한때 공모가의 5배를 웃돌았던 주가는 3만원대까지 내려앉았지만, 차세대 백신 개발과 위탁생산(CMO) 사업 확대를 발판으로...",
+          "date": "2026-10-18 11:00",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014260442",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "이르면 이달 말 진행될 SK그룹 인사에 대한 관심이 커지고 있다. 우서 지난 2년 간 그룹의 리밸런싱(사업 구조 재편)을 이끌었던 최창원 SK수펙스추구협의회 의장(부회장)의 유임 여부에 이목이 모아진다. 지난해에 이어 올해도 부회장 승진자가...",
+          "date": "2026-10-18 07:02",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002710718",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "SK이노베이션을 바라보는 증권가 시선이 두 달 만에 달라졌다. SK아이이테크놀로지(SKIET) 흡수합병으로 주가 부담을 우려했던 증권가가 이달 들어 일제히 목표주가를 높여 잡았다. 배터리 사업의 본격적인 턴어라운드보다 액화석유가스(LNG) 등...",
+          "date": "2026-10-15 14:32",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001066345",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "SK이노베이션이 무색 폴리이미드(CPI) 사업을 매각했음에도 글로벌 시장의 주요 기업으로 선정되며 그 배경에 관심이 쏠린다. 현재 사업을 운영해서라기보다 원료 합성부터 필름 제조·하드코팅까지 확보했던 기술력과 상업생산 경험이 시장...",
+          "date": "2026-10-12 13:32",
+          "publisher": "마이데일리",
+          "link": "https://n.news.naver.com/mnews/article/117/0004114300",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "올해 들어 신용등급이 떨어진 국내 기업의 수는 지난해보다 소폭 감소한 것으로 나타났다. 그러나 신용평가사별 하향 조정 건수는 오히려 50% 가까이 급증했다. 시장 전반의 체질 악화라기보다는 중앙그룹 주요 계열사의 연쇄 기업회생절차...",
+          "date": "2026-10-11 10:41",
+          "publisher": "아시아경제",
+          "link": "https://n.news.naver.com/mnews/article/277/0005826737",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 37,
+      "company_name": "SK아이이테크놀로지"
+    },
+    {
+      "ticker": "214150",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "글로벌 메디컬 에스테틱 기업 클래시스(대표 윤준오)가 홈뷰티 브랜드 '슈링크홈(SHURINK HOME)'을 지난 10월 6일 미국 아마존과 틱톡샵에 공식 론칭하며 글로벌 소비자 시장 공략을 본격화했다. 슈링크홈은 미국 진출에 앞서 한국과 일본에서...",
+          "date": "2026-10-15 11:17",
+          "publisher": "스포츠조선",
+          "link": "https://n.news.naver.com/mnews/article/076/0004456349",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "글로벌 메디컬 에스테틱 플랫폼 기업 클래시스는 최고사업책임자(CCO·Chief Commercial Officer) 직을 신설, CCO 겸 GTM(Go to Market)센터장에 베인앤드컴퍼니 파트너 출신 배정희 부사장을 선임했다고 13일 밝혔다. 클래시스는 올해 7월 윤준오 대표 취임...",
+          "date": "2026-10-13 21:04",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002708855",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "윤준오 클래시스 대표가 영국 런던에서 개최된 유럽 유저 미팅에서 클래시스 기기에 대해 설명하고 있다.(사진=클래시스) 클래시스(214150)가 신제품 ‘쿼드세이’와 ‘비클라라’를 앞세워 유럽 사업 확대에 나선다. 초음파·고주파 리프팅 장비...",
+          "date": "2026-10-13 15:58",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006387238",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "미용 의료기기 전문기업 클래시스가 창사 이래 처음으로 분기 매출 1000억원을 돌파한 가운데 올해 상반기 누적 기부금은 50만원에 그친 것으로 나타났다. 13일 금융감독원 전자공시시스템에 따르면 클래시스의 올해 상반기 누적 기부금은...",
+          "date": "2026-10-13 09:34",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014248836",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "한국경제신문의 투자 전문 유료 플랫폼 '한경 프리미엄9'(www.hankyung.com/premium9)에 실린 기사입니다. '한경 프리미엄9'을 구독하시면 더 많은 주식 투자 기사를 찾아볼 수 있습니다. 글로벌 투자은행인 골드만삭스가 국내 증시의 단기 변동성에...",
+          "date": "2026-10-12 18:01",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005341608",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 38,
+      "company_name": "클래시스"
+    },
+    {
+      "ticker": "327260",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "국내 증시가 조정 국면을 이어가는 가운데 외국인 매도세가 소강 상태에 접어들면서 반도체와 2차전지, 인공지능(AI) 데이터센터(AIDC) 관련주를 중심으로 분할 매수에 나설 시점이라는 전문가의 진단이 나왔다. 유창희 유스탁 대표는 12일 유튜브...",
+          "date": "2026-10-13 00:00",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014248402",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "한국경제신문의 투자 전문 유료 플랫폼 '한경 프리미엄9'(www.hankyung.com/premium9)에 실린 기사입니다. '한경 프리미엄9'을 구독하시면 더 많은 주식 투자 기사를 찾아볼 수 있습니다. 코스닥지수가 석 달 만에 900 탈환 고지전에 들어섰다....",
+          "date": "2026-10-02 17:35",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005338690",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "미국 국채 금리 여파로 2일 약보합 출발한 코스피 지수가 장중 방향성을 탐색하고 있다. 개인과 외국인 기관이 모두 순매도하는 가운데, 삼성전자와 SK하이닉스의 자사주 물량으로 추정되는 기타법인이 홀로 순매수에 나서고 있다. 이날...",
+          "date": "2026-10-02 11:33",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001195867",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "인공지능(AI) 데이터센터 투자 확대에 따른 광통신 수요 증가 기대감에 국내 증시에서 광통신 관련주가 동반 강세다. 2일 한국거래소에 따르면 오전 10시12분 현재 머큐리는 전 거래일 대비 29.80% 급등한 6250원에 거래되고 있다. 에이스테크(14.19...",
+          "date": "2026-10-02 11:02",
+          "publisher": "매일신문",
+          "link": "https://n.news.naver.com/mnews/article/088/0001031896",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "국내 광통신과 통신 장비 관련 종목들이 2일 장 초반 일제히 강세를 나타내고 있다. 미국 빅테크 기업들의 인프라 투자 확대 소식이 전해지면서 매수세가 몰리는 것으로 풀이된다. 이날 오전 9시 42분 코스닥 시장에서 머큐리는 전 거래일...",
+          "date": "2026-10-02 09:52",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001195813",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 39,
+      "company_name": "RF머트리얼즈"
+    },
+    {
+      "ticker": "439260",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 1,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "한국수출입은행은 국내 중견 조선사인 HJ중공업에 총 1억3467만달러(약 1815억원)규모의 선박 금융을 제공했다고 15일 밝혔다. 수은 선박금융이 투입되는 선박은 '메탄올 레디(Methanol Ready)'사양이 적용된 8850TEU(1TEU는 20피트 컨테이너 1개)급...",
+          "date": "2026-10-15 09:38",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005589524",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "광주은행이 지역 중형조선사의 선박 수주 이행을 위해 대규모 금융지원에 나섰다. 광주은행은 최근 전남광주통합특별시 해남군에 있는 대한조선에 미화 3681만 달러 규모의 선수금환급보증(RG)을 발급했다고 밝혔다. 이번 보증은 15만 7000톤(t)급...",
+          "date": "2026-10-13 16:22",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004670786",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "SK하이닉스의 미국 자회사 솔리다임의 나스닥 상장(IPO) 추진 소식에 중복상장 논란이 일고 있다. '중복상장=주주가치 훼손'의 프레임에 갇히지 않고 솔리다임 IPO를 둘러싼 각종 오해와 진실을 따져보면서 AI 시대에 첨단산업의 자금조달 현실을...",
+          "date": "2026-10-13 06:30",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005425242",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "더불어민주당 김원이(전남광주 목포) 국회의원은 6일 국회 산업통상부 국정감사에서 서남권 반도체 팹 건설 숙련 기능인력 확보와 주변 조선·철강산업의 인력 공백에 대비한 정부의 상생대책 마련을 촉구했다. 정부는 광주 군공항 일원에 서남권...",
+          "date": "2026-10-06 17:26",
+          "publisher": "연합뉴스",
+          "link": "https://n.news.naver.com/mnews/article/001/0016360517",
+          "content_type": "news"
+        },
+        {
+          "article_index": 5,
+          "headline": "이 기사는 2026년 10월 5일 18:01 자본시장 나침반  '시그널(Signal)' 에 표출됐습니다. 올해 3분기 기업공개(IPO) 시장도 중소형 공모주가 주도한 가운데 삼성증권이 빅3(미래에셋·한투·NH)를 누르고 1위에 올랐다. 3분기 최대 규모의 딜인...",
+          "date": "2026-10-06 06:01",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004668353",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 40,
+      "company_name": "대한조선"
+    },
+    {
+      "ticker": "458870",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "웨어러블(입는) 진단 모니터링 기업 씨어스가 1100억원의 '실탄'을 확보하고 중동에 이어 미국 의료 인공지능(AI) 시장 공략에 나선다. 국민성장펀드의 관심 속 토종 의료 AI로서 글로벌 진출의 '성공 공식'을 만들어간다는 목표다. 14일 업계에...",
+          "date": "2026-10-14 11:36",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005426114",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "씨어스가 1100억원 규모의 전환사채(CB)를 발행해 해외 사업 확대에 나선다. 미국에서는 현지 진단서비스 사업자와 협력해 보험수가 시장 진입을 추진하고, 아랍에미리트(UAE)에서는 진단서비스 운영 기반과 부정맥 센터를 구축할 계획이다....",
+          "date": "2026-10-13 16:30",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006387272",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[씨어스] 주요사항보고서(전환사채권발행결정)",
+          "date": "2026-10-13",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013000138",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "국내 제약사들이 디지털 헬스케어 기업들과 손잡고 디지털 치료 사업 영역 확장에 나섰다. 5일 제약업계에 따르면 대웅제약, 한독, 일동제약, 유한양행, 동아에스티 등 국내 제약회사들은 디지털 헬스케어 기업과 협력해 시장 확장에 나섰다. 디지털...",
+          "date": "2026-10-05 08:01",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014233324",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "씨어스가 수출 의료 AI(인공지능) 플랫폼으로 도약한다. 올해 4분기 중동과 북미에 웨어러블(입는) AI 기반 심전도(ECG) 분석 솔루션 '모비케어'(mobiCARE) 첫 공급을 시작할 예정이다. 내수 시장에서 성장을 지속하는 가운데 수출이 더해지며 이익...",
+          "date": "2026-10-01 17:18",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005421236",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 41,
+      "company_name": "씨어스"
+    },
+    {
+      "ticker": "009830",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "중국이 태양광 장비 제조에 사용되는 12개 핵심 기술 수출 통제를 예고했지만 한국 태양광 업계에는 큰 영향을 미치지 않을 것이라는 전망이 나온다. 한국 태양광 업계는 이미 독자 기술을 갖추고 미국 시장을 선점하고 있어서다. 현재 글로벌 태양광...",
+          "date": "2026-10-19 15:20",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009236696",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "19일 오후 12시 30분 기준 코스피 거래 상위 종목은 종목별 주가 흐름이 뚜렷하게 엇갈렸다. 거래량 상위권에서는 에스엠벡셀(010580)이 4040원으로 전일 대비 29.9% 급등하며 상한가를 기록했고, 거래량은 2668만4425주...",
+          "date": "2026-10-19 13:23",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003690236",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "국민연금이 보유한 국내 주요 상장주식의 평가액이 100여 일 만에 182조 원 넘게 줄어든 것으로 나타났습니다. 삼성전자와 SK하이닉스 두 종목에서만 약 131조 원이 감소해 전체의 71.8%를 차지했습니다. 반도체 주가 급락이 국민연금의 국내...",
+          "date": "2026-10-19 10:20",
+          "publisher": "JIBS",
+          "link": "https://n.news.naver.com/mnews/article/661/0000085158",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "중동전쟁에 따른 일시적인 반사이익으로 2분기 실적이 개선됐던 국내 석유화학업계가 3분기 다시 부진한 성적표를 받아들 전망이다. 저렴하게 확보한 원료로 수익을 높였던 효과가 사라지고 제품 가격까지 하락하면서 주요 업체들의 수익성이...",
+          "date": "2026-10-19 06:15",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009234939",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "이 기사는 2026년 10월 16일 16시 46분 조선비즈 머니무브(MM) 사이트에 표출됐습니다. 한화큐셀이 미국 현지 법인의 채권 발행 과정에서 중국 본토와 홍콩 등 특정 국가 투자자의 참여를 제한했다. 해당 채권 발행으로 세액공제 자격에 중대한...",
+          "date": "2026-10-19 06:01",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001198683",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 42,
+      "company_name": "한화솔루션"
+    },
+    {
+      "ticker": "214450",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "19일 오후 12시 25분 기준 코스닥 시가총액 상위 종목들은 업종별로 엇갈린 흐름을 보이고 있다. 2차전지와 일부 로봇주는 강세를 나타내는 반면, 반도체 장비와 소재 관련 종목들에는 매물이 출회되는 모습이다. 시가총액...",
+          "date": "2026-10-19 13:22",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003690235",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "국민연금이 보유한 국내 주요 상장주식의 평가액이 100여 일 만에 182조 원 넘게 줄어든 것으로 나타났습니다. 삼성전자와 SK하이닉스 두 종목에서만 약 131조 원이 감소해 전체의 71.8%를 차지했습니다. 반도체 주가 급락이 국민연금의 국내...",
+          "date": "2026-10-19 10:20",
+          "publisher": "JIBS",
+          "link": "https://n.news.naver.com/mnews/article/661/0000085158",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "코스피가 지난주에 이어 약세를 이어가고 있다. 증시를 이끌어온 반도체주 부진이 지속되면서 6000선이 무너진 뒤 5500선에서 좀처럼 반등하지 못하는 모습이다. 코스닥도 반도체 업종 약세에 3% 가까이 하락 출발한 뒤 780선 부근에서...",
+          "date": "2026-10-19 09:43",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001067049",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "■ 머니쇼 '투자자 순매수 TOP5' - 이가람 지난주 외국인과 기관이 가장 많이 순매수한 종목을 살펴보는, 투자자 순매수 TOP5 시간입니다. 지난주 외국인은 유가증권시장에서 11조원 넘게 순매도했습니다. 전체 순매도 금액의 약 79%가 삼성전자와...",
+          "date": "2026-10-19 08:31",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000538470",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "# 34세 여성 A씨는 최근 푸석해진 피부가 고민이다. 사회관계망서비스(SNS)에서 세포외기질(ECM) 스킨부스터 광고와 후기를 접하며 시술을 알아보기 시작했다. 콜라겐 촉진 스킨부스터를 맞았던 경험이 있는데 콜라겐을 직접 채워준다는 광고 영상에...",
+          "date": "2026-10-19 07:30",
+          "publisher": "비즈워치",
+          "link": "https://n.news.naver.com/mnews/article/648/0000051696",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 43,
+      "company_name": "파마리서치"
+    },
+    {
+      "ticker": "383220",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "이 기사는 2026년 10월 15일 15:02 자본시장 나침반  '시그널(Signal)' 에 표출됐습니다. 글로벌 골프 브랜드 테일러메이드의 매각 절차가 진행 중인 가운데 우선협상 대상자인 미국의 엔트라다 컨소시엄과 우선매수권을 보유한 F&F(383220) 간 눈치 싸움이...",
+          "date": "2026-10-15 17:30",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004671695",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "F&F(383220)그룹 지주사 F&F홀딩스가 마정만 F&F 최고재무책임자(CFO) 전무를 신임 대표이사로 선임했다. 마정만 F&F홀딩스 신임 대표이사(에프앤에프홀딩스 제공) F&F홀딩스는 30일 이사회를 열고 마 전무를 신임 대표이사로 선임했다고 공시했다. 마...",
+          "date": "2026-09-30 17:26",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006377879",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "직장인 남성 박모(32)씨는 최근 러닝용 긴팔 티셔츠와 얇은 바람막이를 새로 장만했다. 여름 내내 반소매와 반바지만 입고 달렸지만 아침저녁으로 바람이 선선해지면서 옷차림을 바꿀 필요를 느껴서다. 박씨는 “한여름보다 요즘 저녁이 확실히 뛰기...",
+          "date": "2026-09-21 10:24",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006373465",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "미래회, 9일 자선 바자회 개최…노소영 관장 2년 만에 참석 예년과 달리 경호 인력 배치…미래회 멤버는 이름 감춰 노소영 아트센터 나비 관장이 '재벌가 사모님들의 사교 모임'인 미래회의 자선 바자회 행사에 참석했다. 현장에서 취재진과 만난 노...",
+          "date": "2026-09-10 00:01",
+          "publisher": "더팩트",
+          "link": "https://n.news.naver.com/mnews/article/629/0000532397",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "F&F(383220)가 1132억 원을 들여 디스커버리 익스페디션의 글로벌 상표권을 인수하면서 MLB에 이은 새로운 글로벌 성장축 육성에 나섰다. 전체 매출의 60% 이상을 MLB에 의존하고 있는 만큼 디스커버리를 글로벌 브랜드로 키우고 비패션 사업까지...",
+          "date": "2026-09-06 07:50",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009152989",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 44,
+      "company_name": "F&F"
+    },
+    {
+      "ticker": "078350",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "삼성전자와 SK하이닉스의 주가 급락 여파가 반도체 소재·부품·장비(소부장) 기업으로 확산하고 있다. 이달 초까지만 해도 반도체 대형주가 주춤하는 사이 소부장주는 상승세를 이어갔지만 최근 한 주간은 업종 전반으로 매도세가 확산했다....",
+          "date": "2026-10-18 17:52",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004672444",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "코스닥지수가 약 3개월 만에 900선을 돌파했지만 상승세를 이어가지 못하고 있다. 단기간 지수가 빠르게 오른 만큼 추가 상승보다 4분기에도 실적과 수주가 뒷받침될 종목을 가려야 한다는 게 증권가 분석이다. 반도체 소부장(소재·부품·장비)이...",
+          "date": "2026-10-14 16:16",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005342473",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "부진한 수익률로 고전했던 코스닥 액티브 상장지수펀드(ETF)가 최근 한 달간 국내 ETF 수익률 상위권에 대거 이름을 올렸다. 반도체 소재·부품·장비(소부장) 종목의 강세에 힘입어 수익률이 개선되면서 달라진 성적표를 내놓고 있다. 14일 ETF...",
+          "date": "2026-10-14 10:32",
+          "publisher": "매일신문",
+          "link": "https://n.news.naver.com/mnews/article/088/0001034210",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "▲ AI 프리즘* 맞춤형 경제 브리핑 * 편집자 주: ‘AI PRISM’(Personalized Report & Insight Summarizing Media)은 한국언론진흥재단의 지원을 받아 개발한 ‘인공지능(AI) 기반 맞춤형 뉴스 추천 및 요약 서비스’입니다. 독자 유형별 맞춤 뉴스 6개를...",
+          "date": "2026-10-07 10:01",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004668890",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "코스닥이 3개월 만에 900선을 탈환했다. 인공지능(AI) 투자 확대에 따른 실적 개선 기대가 코스피 대형 반도체주를 넘어 반도체 소재·부품·장비(소부장)주로 확산한 영향으로 풀이된다. 다만 코스닥의 추세적인 상승을 위해서는 자금 유입과...",
+          "date": "2026-10-06 18:06",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004668719",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 45,
+      "company_name": "한양디지텍"
+    },
+    {
+      "ticker": "068270",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "코스피가 1% 넘게 상승하며 2거래일 연속 반등에 성공했다. 최근 낙폭이 가팔랐다는 판단이 투자자들의 반발 매수 심리를 자극한 것으로 풀이된다. 19일 코스피는 전 거래일 대비 99.96포인트(1.76%) 오른 5768.01에 거래를 마쳤다. 지난 16일에...",
+          "date": "2026-10-19 15:50",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014263607",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "국내외 제약사와 인공지능(AI) 신약개발 기업, 투자기관이 한자리에 모여 K바이오의 성장 전략을 모색한다. AI 확산과 중국 바이오기업의 약진에 대응할 기술혁신 방안부터 글로벌 제약사와의 협력 수요, 내년 투자시장 전망까지 논의한다....",
+          "date": "2026-10-19 15:45",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003476424",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "셀트리온이 올해 4분기 영업이익 6000억원 이상을 달성하겠다는 목표를 재확인했다. 앞서 1~3분기 영업이익 목표를 모두 달성한 데 이어 마지막 분기에도 목표 달성에 자신감을 나타냈다. 셀트리온은 19일 홈페이지에 게시한 주주서한을 통해...",
+          "date": "2026-10-19 15:15",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001067229",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "국내 증시에서 제약·바이오주가 강세를 보이고 있다. 코스피 업종 가운데 제약업종이 가장 높은 상승률을 기록한 가운데, 국내 바이오 대장주인 삼성바이오로직스도 9% 넘게 오르며 업종 상승을 이끌고 있다. 경기 불확실성이 커지는 국면에서...",
+          "date": "2026-10-19 14:35",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005591186",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "19일 오후 12시 20분 현재 코스피 시가총액 상위 종목들은 업종별로 뚜렷한 차별화 흐름을 보이고 있다. 2차전지와 바이오, 자동차주가 강세를 나타내는 반면 일부 반도체와 지주, 조선주는 약세를 기록하며 혼조 장세가...",
+          "date": "2026-10-19 13:22",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003690234",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 46,
+      "company_name": "셀트리온"
+    },
+    {
+      "ticker": "032190",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "“양자내성암호(PQC)는 알고리즘만 바꾼다고 끝나는 문제가 아닙니다. 암호키를 어디에서 만들고 저장하며 어떻게 보호할 것인지까지 함께 설계해야 합니다.” 이창근 키페어 대표는 국방·금융의 PQC 전환에서 HW 기반 키 보호가 핵심이라고...",
+          "date": "2026-10-11 16:01",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003473855",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "산업용 소프트웨어 기업 아비바(AVEVA)가 한국화학공학회가 주최하는 '제15회 전국 화학공학 공정설계 경진대회'를 후원하며 화학·플랜트 산업의 디지털 전환을 이끌 차세대 공정 엔지니어 양성과 산학협력 강화에 나섰다고 8일 밝혔다. 올해로...",
+          "date": "2026-10-08 16:28",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003473561",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "‘딜 가뭄’이 이어진 올해 국내 인수·합병(M&A) 시장에서 IMM 프라이빗에쿼티(IMM PE)의 선택은 ‘정공법’이었다. 우량 자산을 정밀 타깃팅해 투자하고 유연한 회수 장치로 실탄을 챙기는 한편, 보유 포트폴리오의 체질을 바꾸는 운용 능력을...",
+          "date": "2026-10-07 11:33",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002706427",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "기업 지배구조(Governance)를 분석합니다. 다우키움그룹 오너 2세인 김동준 키움증권 사장의 연간 기본급이 두 배 넘게 늘었다. 최대주주로 있는 비상장 계열사 이머니에서도 수십억원의 배당이 돌아간다. 그룹 계열사와의 거래와 보유...",
+          "date": "2026-09-23 09:09",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000090836",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "증권사들이 증시 활황과 자본시장으로의 '머니무브'를 타고 은행을 위협할 만큼 빠르게 몸집을 키우고 있다. 미래에셋증권과 한국투자증권은 반기 순이익 2조원 시대를 열었고, 키움증권도 1조원대 순이익을 거두며 리테일 강자의 위상을 굳혔다....",
+          "date": "2026-09-22 15:30",
+          "publisher": "아이뉴스24",
+          "link": "https://n.news.naver.com/mnews/article/031/0001060680",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 47,
+      "company_name": "다우데이타"
+    },
+    {
+      "ticker": "018670",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[SK가스] [기재정정]타법인주식및출자증권처분결정(종속회사의주요경영사항)",
+          "date": "2026-10-19",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019800002",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 1,
+          "headline": "최창원 SK수펙스 의장 유임 3년간 자산 리밸런싱 마무리 미래먹거리 사업 강화나서 사장단 인사는 소폭 단행 전망 최창원 SK수펙스추구협의회(SUPEX) 의장의 유임에는 3년간 추진해온 리밸런싱과 운영 개선(Operation Improvement·O/I) 성과를 인공지능(AI)...",
+          "date": "2026-10-18 17:33",
+          "publisher": "매일경제",
+          "link": "https://n.news.naver.com/mnews/article/009/0005750257",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "한반도미래인구연구원(이사장 정운찬, 원장 이인실, 이하 한미연)이 15일 '2026 아이 키우기 좋은 기업' 11곳을 발표했다. 올해 3회째인 이번 시상은 한미연이 지난 7월 발표한 '2026 인구 위기 대응 우수 기업 평가'를 바탕으로 했다. 평가 대상은...",
+          "date": "2026-10-15 15:34",
+          "publisher": "여성신문",
+          "link": "https://n.news.naver.com/mnews/article/310/0000140849",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "SK가스가 북미 가스전 투자와 해외 수요처 확대, 가스 제품군 다변화 등을 통해 2027~2030년 연평균 4500억원 이상의 세전이익을 달성하겠다는 목표를 제시했다. 2027년부터 성장투자를 집행하고 신규 사업의 이익 기여는 2031년부터 본격화할...",
+          "date": "2026-10-14 21:52",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005589395",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "SK가스가 내년부터 2030년까지 4년간 연평균 세전이익 4500억 원을 내겠다는 목표를 내놨습니다. 14일 관련 업계에 따르면, SK가스는 이날 오후 서울 여의도 콘래드호텔에서 국내외 기관투자자와 애널리스트를 대상으로 '최고경영자(CEO)...",
+          "date": "2026-10-14 17:50",
+          "publisher": "SBS Biz",
+          "link": "https://n.news.naver.com/mnews/article/374/0000537815",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 48,
+      "company_name": "SK가스"
+    },
+    {
+      "ticker": "000240",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "임직원과 가족 160명 팔 걷어 기흥초등학교 82m 담장 새단장 올해로 5년째 가족 나눔 실천 통합 ESG 브랜드 출범 1주년 한국앤컴퍼니그룹이 지난 17일 경기도 용인시 기흥구 기흥초등학교와 대전광역시 유성구 국군대전병원에서 ‘가족과 함께하는 벽화...",
+          "date": "2026-10-19 14:56",
+          "publisher": "매일경제",
+          "link": "https://n.news.naver.com/mnews/article/009/0005750653",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "모델솔루션 CI. (사진=한국앤컴퍼니그룹) 한국앤컴퍼니그룹 계열사 모델솔루션이 뷰티 디바이스 제조업자 개발생산(ODM) 사업을 확대한다. 자체 개발 조직이 없는 화장품 브랜드와 뷰티 스타트업을 대상으로 제품 기획부터 양산까지 지원한다....",
+          "date": "2026-10-15 20:19",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006388963",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "“위에서 정해준 문제를 푸는 데 그치지 않고 구성원 스스로 문제를 찾아내야 해결 의지가 커지고 실행으로 이어질 가능성도 높아진다.” 조현범(사진) 한국앤컴퍼니그룹 회장이 젊은 직원들에게 스스로 문제를 발견하고 해결책을 실행하는...",
+          "date": "2026-10-15 11:57",
+          "publisher": "문화일보",
+          "link": "https://n.news.naver.com/mnews/article/021/0002825370",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "지난 7월 가석방으로 출소한 조현범(사진) 한국앤컴퍼니그룹 회장이 복귀 첫 공개 행보로 젊은 직원들과의 대화를 택했다. 한국앤컴퍼니그룹은 조 회장과 주요 경영진이 지난 12~13일 개최한 미래 리더 양성 프로젝트 ‘주니어보드’에 참석했다고 14일...",
+          "date": "2026-10-15 00:31",
+          "publisher": "국민일보",
+          "link": "https://n.news.naver.com/mnews/article/005/0001878756",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "한국앤컴퍼니그룹이 지난 12일부터 13일까지 미래 리더 양성 프로젝트인 ‘주니어보드’ 3분기 워크숍을 개최했다. 이번 행사에는 조현범 한국앤컴퍼니그룹 회장을 비롯한 그룹 주요 경영진이 참석해 구성원들에게 ‘프로액티브 리더’로의 성장을...",
+          "date": "2026-10-14 19:40",
+          "publisher": "스포츠경향",
+          "link": "https://n.news.naver.com/mnews/article/144/0001144086",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 49,
+      "company_name": "한국앤컴퍼니"
+    },
+    {
+      "ticker": "326030",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "국내외 제약사와 인공지능(AI) 신약개발 기업, 투자기관이 한자리에 모여 K바이오의 성장 전략을 모색한다. AI 확산과 중국 바이오기업의 약진에 대응할 기술혁신 방안부터 글로벌 제약사와의 협력 수요, 내년 투자시장 전망까지 논의한다....",
+          "date": "2026-10-19 15:45",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003476424",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "한국제약바이오협회는 국내 바이오의약품 기업 글로벌 진출 역량을 강화하고 기업 간 협력을 도모하기 위한 '2026 바이오 상생교류회'를 이달 27일 서울 방배동 협회 사옥에서 개최한다고 19일 밝혔다. 프로그램은 글로벌 기술이전부터 해외 시장...",
+          "date": "2026-10-19 15:24",
+          "publisher": "전자신문",
+          "link": "https://n.news.naver.com/mnews/article/030/0003476416",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "SK 미래 청사진 그리는 '바이오 브레인' 최태원 SK그룹 회장의 장녀인 최윤정 SK바이오팜 전략본부장(부사장)은 그룹의 차세대 먹거리인 제약·바이오 사업을 진두지휘하는 핵심 리더다. 오너 3세 중 유일하게 그룹 경영에 참여하고 있는 그는 지주사인...",
+          "date": "2026-10-19 10:00",
+          "publisher": "시사저널",
+          "link": "https://n.news.naver.com/mnews/article/586/0000140228",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "SK바이오팜(326030)이 뇌전증 신약 ‘엑스코프리’의 처방 증가와 일본 허가에 따른 마일스톤 유입에 힘입어 3분기에도 견조한 실적을 이어갈 전망이다. 다만 차기 성장동력으로 도입을 추진 중인 뇌전증 신약 후보물질 ‘오파칼림’의 미국...",
+          "date": "2026-10-19 08:56",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004672567",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "신약 개발 경쟁이 치열해지고 글로벌 시장 진출의 중요성이 커지면서 국내 제약바이오 기업의 경영 방정식도 한층 복잡해지고 있다. 기존 의약품 사업에서 안정적인 수익을 확보하는 동시에 막대한 연구개발(R&D) 비용을 감수하며 미래 먹거리를...",
+          "date": "2026-10-19 05:31",
+          "publisher": "한경비즈니스",
+          "link": "https://n.news.naver.com/mnews/article/050/0000112079",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 50,
+      "company_name": "SK바이오팜"
+    },
+    {
+      "ticker": "020150",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "신한자산운용은 차세대 배터리 핵심 기업에 투자하는 'SOL 전고체배터리&실리콘음극재' 상장지수펀드(ETF)가 지난 16일 기준 최근 3개월간 22.76%의 수익률을 기록하며 국내 상장 주식형 ETF 가운데 1위를 차지했다고 밝혔다. 이 ETF는 전고체 배터리와...",
+          "date": "2026-10-19 15:29",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005344002",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "국내 증시에서 2차전지 관련주가 일제히 강세다. 강한 규제에 중국산 배터리 업체가 미국 시장에서 대부분 철수했다는 소식이 전해진 영향으로 풀이된다. ESS(에너지저장장치) 산업 성장 가속화에 대한 기대감도 일부 반영된 것으로...",
+          "date": "2026-10-19 11:20",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428229",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "삼성전기 주가가 스마트폰 등 전방 정보기술(IT) 세트 수요 부진 여파로 조정을 받고 있다. 지난 6월 기록한 전고점(241만7000원) 대비 '반토막'난 118만8000원(지난 16일 기준)에 장을 마쳤다. 다만 주요 협력사·경쟁사들은 차량용 전장 부품 전환...",
+          "date": "2026-10-17 07:31",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005343525",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "▲에스원(012750)=454만 5454주 공개매수신고 ▲대한전선(001440)=1168억 원 규모 북미 초고압케이블 납품 ▲LG씨엔에스(064400)=10월 30일 결산실적공시예고 ▲롯데렌탈(089860)=주주총회소집공고(10월 30일, 이사 선임 등)...",
+          "date": "2026-10-15 17:02",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004671678",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "신한투자증권은 15일 삼아알미늄(006110)에 대해 인공지능(AI) 데이터센터 확장에 따른 에너지저장장치(ESS) 수요 폭증으로 알루미늄박(알박) 쇼티지(공급 부족)의 최대 수혜를 입을 것으로 전망하며 투자의견 ‘매수’와 목표주가 10만2000원을...",
+          "date": "2026-10-15 07:57",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006388205",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 51,
+      "company_name": "롯데에너지머티리얼즈"
+    },
+    {
+      "ticker": "323280",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 1,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "Independent research firm ValueFinder published a company report on ‘Taesung’ on the 19th, saying, ‘Taesung has secured an order backlog of more than about six times last year’s revenue, benefiting fr",
+          "date": "2026-10-19 09:17",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006391224",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "독립리서치 밸류파인더가 19일 태성(323280, KQ)에 대해 인공지능(AI) 서버용 FC-BGA(플립칩 볼그리드어레이) 수요 증대에 따른 수혜와 유리기판·복합동박 등 신사업 추진을 바탕으로 중장기 성장 기반을 다질 것이라고 평가했다. 투자의견 및...",
+          "date": "2026-10-19 08:24",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006391172",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[태성] 단일판매ㆍ공급계약체결",
+          "date": "2026-10-06",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261006900667",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 4,
+          "headline": "태성은 반도체용 인쇄회로기판(PCB) 전문기업 심텍의 인공지능(AI) 서버용 SoCAMM(Small Outline Compression Attached Memory Module) 증설 프로젝트에 적용되는 전기 동도금(Via Fill) VCP(Vertical Continuous Plating) 장비 구매의향서(LOI)를 수령했다고 28일...",
+          "date": "2026-09-28 09:19",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014216657",
+          "content_type": "news"
+        },
+        {
+          "article_index": 5,
+          "headline": "증권사 ‘뒷북 목표가’에 불신 팽배 금융분석원 알짜 분석에 구독 급증 기관·기업 눈치 안 보고 보고서 내 핀플루언서와 경계 위해 공시 필요 ‘매수 일색의 천편일률적인 보고서, 주가가 오른 뒤 따라가는 목표주가, 기관과 기업의 눈치를 보느라...",
+          "date": "2026-09-21 05:02",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003681998",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 52,
+      "company_name": "태성"
+    },
+    {
+      "ticker": "445680",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 3,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "이 기사는 2026년10월16일 07시20분에 팜이데일리 프리미엄 콘텐츠로 선공개 되었습니다. 15일 국내 제약바이오 업종은 '검은 목요일'을 피하지 못했다. 대부분의 종목이 하락을 피하지 못했다. 제약업종은 161개 종목 중 상승 종목은 12개에 불과했다....",
+          "date": "2026-10-17 07:22",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006389922",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "큐리옥스바이오시스템즈가 글로벌 상위 5위권 임상시험수탁기관(CRO)으로부터 세포 세척 자동화 장비 ‘플루토’의 첫 주문을 수주했다. 계약 규모는 약 7억원으로, 회사의 3분기 멀티유닛 구매 가운데 최대 규모다. 이번 주문은...",
+          "date": "2026-10-06 08:01",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005339374",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "[큐리옥스바이오시스템즈] 임원ㆍ주요주주특정증권등거래계획보고서",
+          "date": "2026-10-02",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261002000666",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 6,
+          "headline": "▲보통주추가상장=엘앤에프(066970)(신주인수권행사) ▲주권변경상장=NHN(주식소각) ▲공모주청약=글로벌테크놀로지(주관사 한국) 덕산넵코어스(대신) 브릴스(IBK) ▲신주배정기준일=미트박스(475460)(무상) ▲구주주유상청약=툴젠(199800)...",
+          "date": "2026-09-16 13:58",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004662452",
+          "content_type": "news"
+        },
+        {
+          "article_index": 7,
+          "headline": "이 기사는 2026년08월24일 08시30분에 팜이데일리 프리미엄 콘텐츠로 선공개 되었습니다. “최근 세포·유전자치료제(CGT) 분야 글로벌 제약사로부터 5억 1000만원 규모 장비 수주를 확보했습니다. 현재 10여 곳 이상의 글로벌 제약사와 장비 도입을...",
+          "date": "2026-08-27 08:32",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006358693",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 53,
+      "company_name": "큐리옥스바이오시스템즈"
+    },
+    {
+      "ticker": "253590",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 7,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "[네오셈] [기재정정]단일판매ㆍ공급계약체결",
+          "date": "2026-09-28",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260928900895",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 7,
+          "headline": "머니투데이 증권부가 선정한 8월 둘째 주(10~14일) 베스트리포트는 △김동원 KB증권 연구원의 '주주환원 10배 이상, 확신의 매수 구간(삼성전자)' △최승환 신한투자증권 연구원의 '반도체 중소형주, 타이밍이 됐다' △박종대 하나증권 연구원의 '실적...",
+          "date": "2026-08-17 16:30",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005400915",
+          "content_type": "news"
+        },
+        {
+          "article_index": 9,
+          "headline": "한국거래소는 에스티팜(237690), 티에스이(131290), 샘씨엔에스(252990) 등 18개 코스닥 상장사를 올해의 '코스닥 라이징스타'로 선정했다고 12일 밝혔다. 한국거래소는 유망 코스닥 상장사의 중장기적 성장을 지원하기 위해 2009년부터 매년...",
+          "date": "2026-08-12 17:31",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009110878",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 54,
+      "company_name": "네오셈"
+    },
+    {
+      "ticker": "161390",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "한국타이어앤테크놀로지(이하 한국타이어)가 여행용 캐리어 전문 브랜드 ‘리드볼트’와 컬래버레이션을 통해 한정판 캐리어를 선보인다고 19일 밝혔다. 협업 제품은 ‘리드볼트’ 특유의 세련된 하드 캐리어 디자인에 한국타이어의 브랜드 정체성을...",
+          "date": "2026-10-19 15:46",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002711364",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "한국타이어앤테크놀로지(이하 한국타이어)가 대형 카고 트럭 후륜용 프리미엄 타이어 ‘스마트플렉스 DH51’의 신규 규격 12R22.5를 국내에 출시하며 트럭·버스용 타이어(TBR) 라인업을 확대한다고 19일 밝혔다. ‘스마트플렉스 DH51’은...",
+          "date": "2026-10-19 15:27",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002711351",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "한국타이어앤테크놀로지(이하 한국타이어)가 지난 15일(현지시간) 싱가포르 캐피톨 극장에서 개최된 ‘레드닷 디자인 어워드 2026’ 디자인 콘셉트 부문 시상식에서 최우수상 2관왕에 올랐다고 16일 밝혔다. 한국타이어는 지난 8월 발표된 ‘레드닷...",
+          "date": "2026-10-16 10:47",
+          "publisher": "헤럴드경제",
+          "link": "https://n.news.naver.com/mnews/article/016/0002710219",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "3분기 실적 시즌을 앞두고 눈높이 조정에 기업들의 주가가 급등락을 연출하고 있는 가운데 증권가에선 막판 실적 조정이 나타날 수 있는 기업들에 주목하고 있다. 15일 한국거래소에 따르면 전날 주식시장에서 제주항공은 정규장에서만 23%대 급등...",
+          "date": "2026-10-15 08:14",
+          "publisher": "한국경제",
+          "link": "https://n.news.naver.com/mnews/article/015/0005342707",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "조현범 한국앤컴퍼니그룹 회장이 \"위에서 정해준 문제를 푸는 데 그치지 않고 구성원 스스로 문제를 찾아내 해결해야 한다\"고 강조했다. 14일 한국앤컴퍼니그룹에 따르면 조 회장은 지난 13일 판교 본사에서 열린 주니어보드 3분기 워크숍에서 \"기업...",
+          "date": "2026-10-14 14:27",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009227361",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 55,
+      "company_name": "한국타이어앤테크놀로지"
+    },
+    {
+      "ticker": "007660",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "미국발 인공지능(AI) 쇼크에 반도체 관련 종목들이 19일 장 초반 일제히 하락 중이다. 이날 오전 9시 40분 기준 파두 주식이 코스닥 시장에서 전 거래일보다 10.84%(6200원) 하락한 5만1000원에 거래되고 있다. 반도체와 반도체장비 업종으로...",
+          "date": "2026-10-19 09:53",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001198753",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "19일 장 초반 삼성전기가 5%대 하락하는 등 반도체 기판주가 약세다. 이날 오전 9시27분 기준 삼성전기는 전거래일 대비 6만9000원(5.81%) 내린 111만9000원에 거래되고 있다. 기판 대표주들도 동반 약세다. 이수페타시스는 6600원(6.64%) 내린...",
+          "date": "2026-10-19 09:37",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428119",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "10월 셋째주(12~16일) 코스피지수가 14% 넘게 급락한 가운데 주도주인 반도체 투톱과 소부장(소재·부품·장비)주, 기판주가 줄줄이 급락했다. 반면 3분기 실적 기대감이 큰 해운주와 제약·바이오주는 하락장에서도 상승했다. 18일 한국거래소에...",
+          "date": "2026-10-19 04:03",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005428004",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "최근 코스피가 급락하며 국내 증시의 시가총액이 1000조원 넘게 줄어드는 동안 외국인 투자자들의 매매 전략도 뚜렷하게 갈렸다. 국내 증시를 대표하는 삼성전자와 SK하이닉스는 대규모로 팔아치우면서도 조선·해운과 일부 반도체 관련 종목은...",
+          "date": "2026-10-18 18:25",
+          "publisher": "파이낸셜뉴스",
+          "link": "https://n.news.naver.com/mnews/article/014/0005590766",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "코스피가 일주일 새 15% 가까이 급락하며 5600선으로 밀린 가운데 당장 급격한 반등보다는 5100~6100선에서 방향성을 모색할 것이란 전망이 나온다. AI(인공지능) 산업에 대한 의구심에 외국인 수급 공백까지 겹쳐 급락한 코스피가 반등하려면...",
+          "date": "2026-10-18 14:03",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005427908",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 56,
+      "company_name": "이수페타시스"
+    },
+    {
+      "ticker": "000250",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "코스닥 800선 회복…환율 1330.3원 코스피가 장 초반 약세를 딛고 오후 들어 이어진 저가 매수세 유입에 이틀 연속 상승 마감했다. 19일 한국거래소에 따르면 이날 코스피는 전 거래일 대비 1.76% 오른 5768.01에 거래를 마쳤다. 개장 후...",
+          "date": "2026-10-19 15:51",
+          "publisher": "더팩트",
+          "link": "https://n.news.naver.com/mnews/article/629/0000543393",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "코스피가 1% 넘게 상승하며 2거래일 연속 반등에 성공했다. 최근 낙폭이 가팔랐다는 판단이 투자자들의 반발 매수 심리를 자극한 것으로 풀이된다. 19일 코스피는 전 거래일 대비 99.96포인트(1.76%) 오른 5768.01에 거래를 마쳤다. 지난 16일에...",
+          "date": "2026-10-19 15:50",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014263607",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "코스피가 19일 주말 사이 재부각된 ‘인공지능(AI) 수익성 논란’으로 장 초반 5500선이 붕괴되며 3% 하락 출발했다가 장중 1%대 반등에 성공했다. 장전 프리마켓에서 6% 급락했던 삼성전자와 SK하이닉스가 낙폭을 빠르게 줄여나갔고...",
+          "date": "2026-10-19 13:54",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006391457",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "19일 오후 12시 25분 기준 코스닥 시가총액 상위 종목들은 업종별로 엇갈린 흐름을 보이고 있다. 2차전지와 일부 로봇주는 강세를 나타내는 반면, 반도체 장비와 소재 관련 종목들에는 매물이 출회되는 모습이다. 시가총액...",
+          "date": "2026-10-19 13:22",
+          "publisher": "서울신문",
+          "link": "https://n.news.naver.com/mnews/article/081/0003690235",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "미국 AI반도체주 급락 여파에 장 초반 하락했던 코스피 지수가 기관 매수세에 보합세를 이어가고 있다. 한때 5700선을 찍고 현재 5600선에서 등락 중이다. 19일 오전 10시 46분 코스피는 전 거래일 대비 8.25p(-0.15%) 하락한 5659.80을...",
+          "date": "2026-10-19 11:08",
+          "publisher": "뉴스1",
+          "link": "https://n.news.naver.com/mnews/article/421/0009235699",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 57,
+      "company_name": "삼천당제약"
+    },
+    {
+      "ticker": "009970",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "영원무역(111770)(영원무역홀딩스)이 2009년 코스피시장 입성 후 지속적인 영업흑자를 기록하며 눈길을 끌고 있다. 영원무역은 68분기 연속 영업 흑자로 국내 패션업계에서 최장기 흑자 행진을 이어가고 있다. 노스페이스를 비롯해 파타고니아...",
+          "date": "2026-10-15 14:32",
+          "publisher": "이데일리",
+          "link": "https://n.news.naver.com/mnews/article/018/0006388602",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "영원무역이 기업과 주주가치 제고를 위해 자기주식 매입에 나섰다. 영원무역은 지난 6일 이사회를 열고 신한투자증권과 500억원 규모의 자기주식 취득 신탁계약을 체결했다고 밝혔다. 계약기간은 2026년 10월 6일부터 2027년 4월 6일까지 6개월이다....",
+          "date": "2026-10-13 16:27",
+          "publisher": "한국경제TV",
+          "link": "https://n.news.naver.com/mnews/article/215/0001269022",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "영원무역이 자사주 매입에 다시 나섰다. 8월 배당 목표를 높이고 매입 계획을 내놓은 지 두 달 만이다. 배당과 매입이 함께 늘면서 주주환원 규모는 지난해의 두 배 수준으로 불어날 전망이다. 쌓아둔 현금이 넉넉해 주주환원 확대 기조가...",
+          "date": "2026-10-12 16:07",
+          "publisher": "블로터",
+          "link": "https://n.news.naver.com/mnews/article/293/0000091470",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "경영권 승계를 진행 중인 기업의 배당 여력에 주목해야 한다는 분석이 나왔다. 고배당기업 배당소득 분리과세로 세 부담이 낮아지면서 오너 일가가 상속·증여세 재원을 배당으로 마련할 유인이 커졌다는 이유에서다. 다만 같은 승계라도 자금 조달...",
+          "date": "2026-10-12 15:21",
+          "publisher": "디지털타임스",
+          "link": "https://n.news.naver.com/mnews/article/029/0003052563",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "상법 개정 이후 KOSPI200 상장사들이 자사주 소각과 배당 확대 등 주주환원 정책을 강화한 것으로 나타났다. 다만 기업들의 주주환원 정책 변화와 실제 이행 여부를 투자자들이 쉽게 확인하기 어려운 만큼 공시체계 개선이 필요하다는 지적도 제기됐다....",
+          "date": "2026-10-08 13:27",
+          "publisher": "조세일보",
+          "link": "https://n.news.naver.com/mnews/article/123/0002391524",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 58,
+      "company_name": "영원무역홀딩스"
+    },
+    {
+      "ticker": "011790",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 1,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "삼성전기가 차세대 반도체 패키지 소재인 유리기판 사업을 위한 인력 확보에 나섰다. 16일 업계에 따르면 삼성전기와 동우화인켐의 유리기판 소재 합작법인 '글라셈(GlaSSEM)'은 최근 경력사원 채용을 시작했다. 모집 분야는 인프라·안전환경과...",
+          "date": "2026-10-16 05:30",
+          "publisher": "뉴시스",
+          "link": "https://n.news.naver.com/mnews/article/003/0014257216",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "[SKC] [기재정정]타인에대한채무보증결정",
+          "date": "2026-10-08",
+          "publisher": "DART (금융감독원 전자공시)",
+          "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008800891",
+          "content_type": "disclosure"
+        },
+        {
+          "article_index": 3,
+          "headline": "최태원 SK(034730)그룹 회장이 노소영 아트센터 나비 관장에게 지급할 재산분할금 9440억 원을 조달하기 위해 한국투자증권의 도움을 받았다. 최 회장은 한국투자증권과 주가수익스와프(PRS) 계약을 체결해 4000억 원 규모의 실탄을 확보할...",
+          "date": "2026-10-02 19:04",
+          "publisher": "서울경제",
+          "link": "https://n.news.naver.com/mnews/article/011/0004667868",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "공정거래위원회가 사모투자(PE) 운용사 어펄마캐피탈이 지난해 6월 신고한 '도레이첨단소재 연성동박적층판(FCCL) 사업 기업결합' 심사 공청회를 이르면 이달 개최할 예정인 것으로 1일 파악됐다. 한 업계 관계자는 \"공정위가 4분기 관련 공청회...",
+          "date": "2026-10-01 23:10",
+          "publisher": "지디넷코리아",
+          "link": "https://n.news.naver.com/mnews/article/092/0002439600",
+          "content_type": "news"
+        },
+        {
+          "article_index": 5,
+          "headline": "한투, 한화솔루션 유증 성공 KB, 호텔롯데 회사채 발행 한국투자증권이 올해 3분기 누적 주식발행시장(ECM)에서 1위 자리를 굳혔다. 상반기에 이어 하반기에도 조 단위 유상증자 주관을 잇달아 따내며 2위 NH투자증권과 격차를 벌렸다....",
+          "date": "2026-09-30 17:25",
+          "publisher": "매일경제",
+          "link": "https://n.news.naver.com/mnews/article/009/0005742184",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 59,
+      "company_name": "SKC"
+    },
+    {
+      "ticker": "064290",
+      "classification_source": "active_skill_llm",
+      "instruction": "현재 스킬을 실행 중인 LLM이 각 기사의 종목 관련성을 먼저 판정하고, 이벤트 유형·시장 기대 대비 surprise·영향 기간을 구분한 뒤 sentiment를 분류한다. 종목이 불명확하거나 근거가 부족하면 abstain=true로 반환한다. 단순 주가 등락 요약은 market_price_recap, 반복·정형 공시는 routine_disclosure로 분류한다. 외부 모델 API를 호출하거나 모델을 지정하지 않는다.",
+      "duplicates_removed": 0,
+      "articles": [
+        {
+          "article_index": 0,
+          "headline": "국내 반도체 기판 관련 종목들이 16일 장 초반 강세를 보이고 있다. 최근 이어진 주가 하락으로 가격 매력도가 높아지면서 저가 매수 물량이 유입된 영향으로 풀이된다. 이날 오전 9시 34분 기준 유가증권 시장에서 삼성전기는 전일 대비 5000원(0.43...",
+          "date": "2026-10-16 09:46",
+          "publisher": "조선비즈",
+          "link": "https://n.news.naver.com/mnews/article/366/0001198346",
+          "content_type": "news"
+        },
+        {
+          "article_index": 1,
+          "headline": "국내 증시에서 기판주들이 상승하고 있다. 최근 하락에 따른 저가 매수세가 유입된 것으로 보인다. 16일 오전 9시12분 현재 삼성전기는 전날 대비 17000원(1.46%) 오른 118만원에 거래되고 있다. 인텍플러스(7.4%), 네오티스(2.56...",
+          "date": "2026-10-16 09:16",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005427263",
+          "content_type": "news"
+        },
+        {
+          "article_index": 2,
+          "headline": "15일 오후 12시 기준 한국 증시는 미국발 이중 악재의 충격이 가시지 않은 채 코스피와 코스닥의 동반 급락 흐름을 이어가고 있다. 이날 코스피는 전일 대비 460.35포인트(7.66%) 하락한 5548.46에서 거래되고 있으며, 코스닥 역시 63.57포인트(7.72...",
+          "date": "2026-10-15 12:19",
+          "publisher": "한경비즈니스",
+          "link": "https://n.news.naver.com/mnews/article/050/0000111992",
+          "content_type": "news"
+        },
+        {
+          "article_index": 3,
+          "headline": "국내 증시에서 기판주들이 장 초반 급락 중이다. 간밤 미국 9월 CPI(소비자물가지수) 충격에 미국 증시에서 기술주가 하락하자 투자 심리가 악화한 것으로 보인다. 15일 오전 9시15분 현재 삼성전기는 전날 대비 16만5000원(12.01%) 내린...",
+          "date": "2026-10-15 09:19",
+          "publisher": "머니투데이",
+          "link": "https://n.news.naver.com/mnews/article/008/0005426601",
+          "content_type": "news"
+        },
+        {
+          "article_index": 4,
+          "headline": "지난 8월 반등에 성공했던 충청권 상장기업들의 시가총액이 한 달 만에 다시 감소세로 돌아섰다. 제약과 일반서비스 업종을 중심으로 지역 기업들의 몸값이 6조 원 넘게 줄어든 데다 투자자 거대대금도 급감했다. 14일 한국거래소...",
+          "date": "2026-10-14 19:13",
+          "publisher": "대전일보",
+          "link": "https://n.news.naver.com/mnews/article/656/0000189503",
+          "content_type": "news"
+        }
+      ],
+      "response_schema": {
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      },
+      "base_rank": 60,
+      "company_name": "인텍플러스"
+    }
+  ],
+  "no_news_tickers": [],
+  "classification_contract": {
+    "schema_version": 2,
+    "classifier_policy_id": "news_event_v2",
+    "source": "active_skill_llm",
+    "analysis_date": "2026-10-19",
+    "results": [
+      {
+        "ticker": "string",
+        "classifications": [
+          {
+            "article_index": "integer",
+            "relevance": "relevant|unrelated|ambiguous",
+            "event_type": "earnings_surprise|guidance|contract|financing_dilution|capital_return|legal_regulatory|product_partnership|management|market_price_recap|routine_disclosure|macro_industry|other",
+            "sentiment": "positive|negative|neutral",
+            "surprise": "positive|negative|none|unknown",
+            "impact_horizon": "intraday|short|medium|long|none",
+            "confidence": "number 0-100",
+            "abstain": "boolean",
+            "reasoning": "string"
+          }
+        ]
+      }
+    ]
+  }
+}

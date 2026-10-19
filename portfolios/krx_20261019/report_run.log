@@ -1,0 +1,240 @@
+현재 자료에 따른 추천: krx-20261019-core-satellite-r2 (2026-10-19)
+판단 | 상태: conditional
+판단 | 방식: explicit_investment_judgment_v1
+판단 | 성과 근거: prior_only
+판단 | decision_id: krx-20261019-core-satellite-r2
+판단 | analysis_date: 2026-10-19
+판단 | created_at: 2026-10-19T12:27:31Z
+판단 | input_cutoff: 2026-10-19T08:47:42Z
+판단 | author: Claude Code session (claude-opus-5-5); investor perspectives by isolated Claude subagents (agent definition model alias: sonnet)
+판단 | base_currency: KRW
+판단 | benchmark: 069500
+최종 비중 | 069500: 51.00%
+최종 비중 | 483650: 8.00%
+최종 비중 | 101490: 6.00%
+최종 비중 | 062040: 6.00%
+최종 비중 | 462870: 5.00%
+최종 비중 | 058470: 4.00%
+최종 비중 | CASH: 20.00%
+사용자 맥락 | objective: 가정: 장기 복리 성과 극대화. 사용자가 목표를 별도로 확인하지 않았다.
+사용자 맥락 | evaluation_horizon: 6개월 후 첫 사후 평가. 전략 자체는 장기 보유를 전제로 한다.
+사용자 맥락 | spending_horizon: 미확인. 1~3년 안에 일부 인출 가능성을 배제하지 않는 가정.
+사용자 맥락 | spending_currency: KRW
+사용자 맥락 | required_amount: null
+사용자 맥락 | risk_tolerance: 미확인. 한국 주식형 자산의 큰 하락(-40% 내외)을 견딜 수 있다고 가정하고 개별 종목 집중은 제한한다.
+사용자 맥락 | holdings: unknown
+사용자 맥락 | liquidity_min_weight: 0.05
+사용자 맥락 | liquidity_basis: assumption
+사용자 맥락 | liquidity_reason: 지출 계획·금액이 확인되지 않아 5%를 원화 가정 준비금으로 둔다.
+069500 | asset_type: etf
+069500 | quote: {"value": 89930.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+069500 | calendar: XKRX
+069500 | 선택/제외 이유: KOSPI 200 핵심 노출. 개별 종목 근거가 지수를 대체할 만큼 강하지 않아 시장 노출을 기본으로 두되, 두 종목 집중 때문에 비중을 절반 수준으로 제한한다.
+069500 | 검토한 비중: 51.00%
+069500 | rationale: 30개 후보 중 세 관점이 모두 긍정인 종목은 없고, 두 관점 긍정·부정 없음은 4개뿐이며 모두 partial 자료다. 지수는 1년 고점 대비 -39%로 가격이 크게 내려왔고, 시장 노출을 현금(연 3.2%)으로 바꾸는 것보다 장기 복리에 유리하다고 판단했다(추론).
+069500 | price_assumptions: 지수 P/E와 이익 추정치는 이번 자료에 없다. 가격 수준만으로 저평가를 주장하지 않으며 목표가나 기대수익률을 제시하지 않는다. 구성 기업의 장기 이익 성장과 배당에 의존한다는 정성 가정만 둔다.
+069500 | downside: 운용사 자료 기준 삼성전자·SK하이닉스가 65.1%로 사실상 메모리 반도체 사이클에 대한 노출이다. 1년 실현 연변동성 약 60%, 7/31 하루 +24% 같은 극단적 움직임이 관측됐다. AI 투자 회수 지연이 메모리 이익 하향으로 이어지면 추가 하락할 수 있다.
+069500 | counterevidence: 메모리 가격·HBM 수요 둔화가 실적에서 확인되거나, 외국인 순매도가 이어져 지수가 직전 저점을 크게 하회하면 핵심 비중 판단을 재검토한다.
+069500 | review_trigger: 삼성전자·SK하이닉스 3분기 실적과 4분기 가이던스, KOSPI 200 종가가 2026-10-19 대비 -20%, 정기 검토일.
+069500 | sizing_reason: 세 관점 모두 중립(집중도와 자료 부족)이라 시장 비중을 최대로 두지 않았다. 위성 29%와 현금 20%를 뺀 51%다.
+069500 | alternative: TIGER 200(102110)은 같은 지수를 총보수 0.05%로 추종해 보수가 0.10%p 낮다. 독립 분석과 위험 스냅샷을 069500으로 수행했기 때문에 이번 판단은 069500으로 기록하며, 실행 시 동일 지수의 저보수 상품으로 교체할 수 있다. KODEX 코스닥150은 세 관점 모두 자료 부족으로 abstain했다.
+069500 | missing_evidence_impact: 독립 분석은 전체 시가총액 기반 근사 집중도(삼성전자 28.0%, SK하이닉스 20.7%)를 보고 작성됐다. 운용사 자료는 더 집중된 65.1%여서 실제 위험은 분석 당시 가정보다 크다. 지수 P/E와 총보수는 분석 입력에 없었다.
+069500 | facts: [{"text": "KODEX 200 총보수 연 0.15%, 순자산 288,248.79억원, 상위 10종목 중 삼성전자 33.12%·SK하이닉스 32.02%(2026-06-30).", "source_refs": ["samsung_kodex200_factsheet"]}, {"text": "동일 지수 TIGER 200의 총보수 0.05%, 2026-08-31 기준 삼성전자 33.62%·SK하이닉스 26.38%, 기술 섹터 65.72%.", "source_refs": ["trackinsight_tiger200"]}, {"text": "069500 2026-10-19 종가 89,930원, 1년 고점 148,056원 대비 -39.3%, 1개월 -17.7%.", "source_refs": ["fdr_close"]}, {"text": "risk snapshot 1년 연변동성 59.7%, 시장 국면 fear_risk_off, 규칙 참고 현금 5.35%.", "source_refs": ["risk_snapshot"]}, {"text": "독립 분석: 버핏 neutral 40, 린치 neutral 35, 피셔 neutral 45.", "source_refs": ["independent_analyses"]}]
+069500 | ETF 자료: {"index": "KOSPI 200", "expense_ratio": 0.0015, "leverage": 1, "diversified": true, "concentration": "200 holdings; 삼성전자+SK하이닉스 = 65.1%; top 10 = 77.0% (운용사 팩트시트 2026-06-30)", "source_id": "samsung_kodex200_factsheet", "holdings_as_of": "2026-06-30T00:00:00Z", "holdings_complete": false, "holdings": [{"ticker": "005930", "issuer": "005930", "sector": "통신 및 방송 장비 제조업", "weight": 0.3312}, {"ticker": "000660", "issuer": "000660", "sector": "반도체 제조업", "weight": 0.3202}, {"ticker": "402340", "issuer": "402340", "sector": "기타 금융업", "weight": 0.0333}, {"ticker": "009150", "issuer": "009150", "sector": "전자부품 제조업", "weight": 0.0252}, {"ticker": "005380", "issuer": "005380", "sector": "자동차용 엔진 및 자동차 제조업", "weight": 0.0149}, {"ticker": "105560", "issuer": "105560", "sector": "기타 금융업", "weight": 0.0103}, {"ticker": "028260", "issuer": "028260", "sector": "기타 전문 도매업", "weight": 0.01}, {"ticker": "055550", "issuer": "055550", "sector": "기타 금융업", "weight": 0.0087}, {"ticker": "034020", "issuer": "034020", "sector": "일반 목적용 기계 제조업", "weight": 0.0084}, {"ticker": "032830", "issuer": "032830", "sector": "보험업", "weight": 0.0076}]}
+483650 | asset_type: stock
+483650 | quote: {"value": 169400.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+483650 | calendar: XKRX
+483650 | 선택/제외 이유: 린치·피셔가 독립적으로 긍정하고 버핏은 중립(부정 없음). 후보 중 KOSPI 200과 상관이 0.14로 가장 낮아 반도체 집중을 실제로 분산한다.
+483650 | 검토한 비중: 8.00%
+483650 | rationale: 선크림 등 K뷰티 브랜드로 2025년 매출 5197억원(+68%), 영업이익 1015억원(영업이익률 19.5%)을 기록했고 ROE 40%, 부채비율 0.29다. 반도체 변동성이 커지는 동안 화장품주로 수요가 이동한다는 보도가 있다.
+483650 | price_assumptions: 169,400원은 2025년 순이익 기준 P/E 약 19배, P/B 8.4배다. 2025년 수준의 이익이 유지·성장한다는 가정이며 목표가는 제시하지 않는다.
+483650 | downside: 자료가 2024~2025년 두 해뿐이고 순이익이 154억에서 791억으로 급증해 지속성을 확인할 수 없다. 환율(원화 강세)과 유행 의존 위험이 있다. 연변동성 약 65%.
+483650 | counterevidence: 3분기 실적에서 매출 성장률이 크게 둔화하거나 영업이익률이 15% 아래로 떨어지면 가설을 다시 본다.
+483650 | review_trigger: 3분기 실적 발표, 종가 기준 매입가 대비 -25%.
+483650 | sizing_reason: 두 관점 긍정과 낮은 시장 상관을 반영해 위성 중 가장 큰 8%. 이력 2년이라는 자료 한계 때문에 10%를 넘기지 않았다.
+483650 | alternative: 펌텍코리아(용기)도 K뷰티 수요 수혜지만 피셔만 긍정하고 ROE 8%였다. 실리콘투는 상위 30 밖이라 독립 분석하지 않았다.
+483650 | missing_evidence_impact: 버핏은 이력 부족으로 neutral 40(partial). 2026년 실적과 R&D·현금흐름 자료가 없다.
+483650 | facts: [{"text": "2025년 매출 5197억원, 영업이익 1015억원, 순이익 791억원(2024년 3091억·598억·154억).", "source_refs": ["dart_annual"]}, {"text": "P/E 19.3배, P/B 8.4배, ROE 39.8%, 부채비율 0.29, 시가총액 약 2.15조원.", "source_refs": ["dart_annual"]}, {"text": "교보증권: 환율이 비우호적이지만 수익성이 기대치 상회, 매수·목표가 31만원 유지(2026-10-19 보도).", "source_refs": ["news_classifications"]}, {"text": "2026-10-19 종가 169,400원, 1년 고점 대비 -36.1%. KOSPI 200과 상관 0.14, 연변동성 65%.", "source_refs": ["fdr_close", "risk_snapshot"]}, {"text": "독립 분석: 버핏 neutral 40, 린치 bullish 68, 피셔 bullish 62.", "source_refs": ["independent_analyses"]}]
+101490 | asset_type: stock
+101490 | quote: {"value": 45500.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+101490 | calendar: XKRX
+101490 | 선택/제외 이유: 린치·피셔가 독립적으로 긍정하고 버핏은 중립 55(complete). 반도체 소재 후보 중 밸류에이션(P/E 15.5배)이 가장 낮다.
+101490 | 검토한 비중: 6.00%
+101490 | rationale: 블랭크마스크 업체로 매출이 2022년 1235억원에서 2025년 2437억원(약 25% CAGR)으로 늘었고 영업이익률이 13%에서 20.7%로 매년 개선됐다. 삼성전자 미국 테일러 팹에 보호필름 납품 예정 보도가 신규 성장원이다.
+101490 | price_assumptions: 45,500원은 P/E 약 15.5배, P/B 2.85배다. 버핏 관점 추정 내재가치(약 1.07조원) 대비 안전마진이 약 14%라는 점을 함께 고려한다. 목표가는 제시하지 않는다.
+101490 | downside: 반도체 업황과 고객(삼성전자) 집중에 노출된다. 1년 고점 대비 -57%이고 연변동성 약 88%다. 2025년 순이익에는 영업 외 이익이 섞여 있다.
+101490 | counterevidence: 블랭크마스크 수요 감소나 마진 하락이 분기 실적에서 확인되면 재검토한다.
+101490 | review_trigger: 3분기 실적 발표, 종가 기준 매입가 대비 -30%.
+101490 | sizing_reason: KOSPI 200(상관 0.58)과 리노공업(상관 0.65)과 같은 반도체 요인이라 직접 반도체 합계를 10%로 제한하고 그중 6%를 둔다.
+101490 | alternative: 티에프이는 피셔만 긍정하고 버핏이 부정했다. 엑시콘·오킨스전자는 P/E가 과도해 부정이 많았다.
+101490 | missing_evidence_impact: 고객 집중도와 R&D 자료가 없다. 2026년 실적이 없어 최근 급락이 이익 하향을 반영한 것인지 확인하지 못했다.
+101490 | facts: [{"text": "2025년 매출 2437억원, 영업이익 504억원, 순이익 581억원(2024년 1760억·295억·303억).", "source_refs": ["dart_annual"]}, {"text": "P/E 15.5배, P/B 2.85배, ROE 19.1%, 부채비율 0.29, 시가총액 약 9259억원.", "source_refs": ["dart_annual"]}, {"text": "에프에스티와 에스앤에스텍이 생산한 K-반도체 보호필름이 내년부터 삼성전자 테일러 팹에 납품될 예정(2026-09-11 보도).", "source_refs": ["news_classifications"]}, {"text": "2026-10-19 종가 45,500원, 1년 고점 대비 -56.7%. 연변동성 88%.", "source_refs": ["fdr_close", "risk_snapshot"]}, {"text": "독립 분석: 버핏 neutral 55, 린치 bullish 65, 피셔 bullish 70.", "source_refs": ["independent_analyses"]}]
+062040 | asset_type: stock
+062040 | quote: {"value": 189500.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+062040 | calendar: XKRX
+062040 | 선택/제외 이유: 린치·피셔가 독립적으로 긍정하고 버핏은 중립(가격 부담). 전력 설비는 반도체와 다른 수요 요인(전력망·데이터센터 전력)이라 분산에 기여한다.
+062040 | 검토한 비중: 6.00%
+062040 | rationale: 변압기 업체로 2025년 매출 5019억원(+50%), 영업이익 1786억원(영업이익률 36%), ROE 25%, 부채비율 0.16이다. 미래에셋이 목표가를 25만원에서 27만원으로 올렸다.
+062040 | price_assumptions: 189,500원은 P/E 약 32배, P/B 8.7배로 성장이 이어진다는 기대가 높게 반영돼 있다. 성장 지속을 전제로 한 가격이라는 점을 인정하며 목표가는 제시하지 않는다.
+062040 | downside: 전력 설비 사이클의 정점 여부를 확인할 수 없고 자료가 두 해뿐이다. 1년 고점 대비 -43%, 1개월 -10%, 연변동성 약 89%다.
+062040 | counterevidence: 수주잔고 감소나 영업이익률 하락이 확인되면 재검토한다.
+062040 | review_trigger: 3분기 실적 발표, 종가 기준 매입가 대비 -30%.
+062040 | sizing_reason: 높은 밸류에이션과 변동성을 고려해 6%. KOSPI 200과 상관 0.59, 반도체 소재 종목과 0.46~0.47이다.
+062040 | alternative: HD현대마린엔진은 피셔만 긍정하고 순이익에 비영업 요인이 섞였다. 대한조선은 자료 부족이었다.
+062040 | missing_evidence_impact: 버핏은 가격 부담으로 neutral 45(partial). 수주잔고와 2026년 실적 자료가 없다.
+062040 | facts: [{"text": "2025년 매출 5019억원, 영업이익 1786억원, 순이익 1489억원(2024년 3340억·1092억·837억).", "source_refs": ["dart_annual"]}, {"text": "P/E 32.1배, P/B 8.7배, ROE 25.4%, 부채비율 0.16, 시가총액 약 5.58조원.", "source_refs": ["dart_annual"]}, {"text": "미래에셋증권 매수 유지, 목표가 25만원에서 27만원으로 상향(2026-10-15 보도).", "source_refs": ["news_classifications"]}, {"text": "2026-10-19 종가 189,500원, 1년 고점 대비 -43.2%. 연변동성 89%.", "source_refs": ["fdr_close", "risk_snapshot"]}, {"text": "독립 분석: 버핏 neutral 45, 린치 bullish 65, 피셔 bullish 66.", "source_refs": ["independent_analyses"]}]
+462870 | asset_type: stock
+462870 | quote: {"value": 31400.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+462870 | calendar: XKRX
+462870 | 선택/제외 이유: 린치 긍정, 버핏·피셔 중립(부정 없음). 버핏 관점의 단순 내재가치 추정에서 안전마진이 가장 큰 종목이며 후보 중 변동성이 가장 낮다.
+462870 | 검토한 비중: 5.00%
+462870 | rationale: 콘솔 게임 개발사로 2025년 매출 2945억원(+31%), 영업이익률 62%, ROE 21%, 부채비율 0.18, P/E 10배다. 버핏 관점은 Owner Earnings 기준 내재가치를 약 3.5조원(시총 1.84조원)으로 추정했다.
+462870 | price_assumptions: 31,400원은 P/E 약 10배, P/B 1.84배다. 현재 이익의 상당 부분이 유지된다는 가정에서 가격 부담이 낮다는 판단이며, 히트작 의존 때문에 이익의 영속성은 가정하지 않는다.
+462870 | downside: 소수 IP 의존도가 높고 후속작 파이프라인 근거가 없다. 자료가 두 해뿐이다. 결산실적공시 예고가 있어 단기 실적 변동이 크다.
+462870 | counterevidence: 신작 출시 지연이나 기존 IP 매출 급감이 확인되면 제외한다.
+462870 | review_trigger: 3분기 결산 실적 발표, 차기작 일정 공개, 종가 기준 매입가 대비 -25%.
+462870 | sizing_reason: 한 관점만 긍정이라 5%로 작게 둔다. 연변동성 40%, KOSPI 200과 상관 0.36으로 포트폴리오 변동성 기여가 작다.
+462870 | alternative: JYP Ent.도 린치만 긍정했지만 목표가 하향 위험 경보가 있었다. 에스엠은 긍정 관점이 없었다.
+462870 | missing_evidence_impact: 피셔는 IP 의존과 파이프라인 자료 부족으로 neutral 55. 버핏은 히트 의존 사업이라 neutral 45로 두었다.
+462870 | facts: [{"text": "2025년 매출 2945억원, 영업이익 1814억원, 순이익 1914억원(2024년 2241억·1527억·1480억).", "source_refs": ["dart_annual"]}, {"text": "P/E 10.1배, P/B 1.84배, ROE 20.8%, 부채비율 0.18, 시가총액 약 1.84조원.", "source_refs": ["dart_annual"]}, {"text": "2026-10-19 종가 31,400원, 1년 고점 대비 -20.8%. 연변동성 40%, KOSPI 200과 상관 0.36.", "source_refs": ["fdr_close", "risk_snapshot"]}, {"text": "독립 분석: 버핏 neutral 45, 린치 bullish 65, 피셔 neutral 55.", "source_refs": ["independent_analyses"]}]
+058470 | asset_type: stock
+058470 | quote: {"value": 70800.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+058470 | calendar: XKRX
+058470 | 선택/제외 이유: 린치·피셔가 독립적으로 긍정하고 버핏은 중립 60(품질 최상, 가격 부담). 품질은 후보 중 가장 높다.
+058470 | 검토한 비중: 4.00%
+058470 | rationale: 반도체 테스트 소켓 업체로 영업이익률 47.5%, ROE 21%, 부채비율 0.08, 유동비율 9.7이다. 2025년 매출 3725억원(+34%)이다.
+058470 | price_assumptions: 70,800원은 P/E 약 28.7배, P/B 6.9배다. 버핏 관점의 보수적 내재가치(약 2.6조원)보다 시총(5.4조원)이 크게 높아 품질 프리미엄을 지불한다는 점을 인정한다.
+058470 | downside: 2022~2024년 순이익이 1100억원대로 정체됐다가 2025년에 뛰어 성장 지속성이 불확실하다. 에스앤에스텍과 상관 0.65로 같은 반도체 요인이다. 연변동성 74%.
+058470 | counterevidence: 테스트 소켓 수요 둔화로 영업이익률이 40% 아래로 떨어지면 재검토한다.
+058470 | review_trigger: 3분기 실적 발표, 종가 기준 매입가 대비 -25%.
+058470 | sizing_reason: 가격 부담과 에스앤에스텍과의 중복 때문에 4%로 가장 작게 둔다. 직접 반도체 합계 10%.
+058470 | alternative: 에스앤에스텍이 같은 요인에서 가격 근거가 더 강해 더 큰 비중을 받았다.
+058470 | missing_evidence_impact: R&D와 고객 집중도 자료가 없다.
+058470 | facts: [{"text": "2025년 매출 3725억원, 영업이익 1770억원, 순이익 1520억원(2024년 2782억·1242억·1133억).", "source_refs": ["dart_annual"]}, {"text": "P/E 28.7배, P/B 6.9배, ROE 20.8%, 부채비율 0.08, 시가총액 약 5.40조원.", "source_refs": ["dart_annual"]}, {"text": "2026-10-19 종가 70,800원, 1년 고점 대비 -44.3%. 연변동성 74%.", "source_refs": ["fdr_close", "risk_snapshot"]}, {"text": "독립 분석: 버핏 neutral 60, 린치 bullish 60, 피셔 bullish 68.", "source_refs": ["independent_analyses"]}]
+229200 | asset_type: etf
+229200 | quote: {"value": 13725.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+229200 | calendar: XKRX
+229200 | 선택/제외 이유: KODEX 코스닥150. 세 관점 모두 구성·보수 자료 부족으로 abstain했다.
+229200 | 검토한 비중: 0.00%
+039200 | asset_type: stock
+039200 | quote: {"value": 38450.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+039200 | calendar: XKRX
+039200 | 선택/제외 이유: predict 1위지만 버핏이 부정(70), 린치·피셔는 중립 40. 2025년 흑자는 렉라자 마일스톤·기술료 성격일 가능성이 높아 반복 이익으로 보기 어렵다.
+039200 | 검토한 비중: 0.00%
+171090 | asset_type: stock
+171090 | quote: {"value": 83600.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+171090 | calendar: XKRX
+171090 | 선택/제외 이유: predict 2위지만 버핏·린치 부정. P/E 63배로 가격 부담이 크다.
+171090 | 검토한 비중: 0.00%
+251970 | asset_type: stock
+251970 | quote: {"value": 71000.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+251970 | calendar: XKRX
+251970 | 선택/제외 이유: 피셔만 긍정. ROE 8%, 순이익 감소와 성장률 필드 불일치. 1년 고점 근처라 할인 여지가 작다.
+251970 | 검토한 비중: 0.00%
+425420 | asset_type: stock
+425420 | quote: {"value": 64400.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+425420 | calendar: XKRX
+425420 | 선택/제외 이유: 피셔 긍정, 버핏 부정으로 갈렸다. 반도체 요인 중복.
+425420 | 검토한 비중: 0.00%
+035900 | asset_type: stock
+035900 | quote: {"value": 40250.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+035900 | calendar: XKRX
+035900 | 선택/제외 이유: 린치만 긍정. 목표가 6만원에서 5.2만원으로 하향된 위험 경보.
+035900 | 검토한 비중: 0.00%
+071970 | asset_type: stock
+071970 | quote: {"value": 41650.0, "currency": "KRW", "as_of": "2026-10-19T06:30:00Z", "source_id": "fdr_close"}
+071970 | calendar: XKRX
+071970 | 선택/제외 이유: 피셔만 긍정. 순이익에 비영업 요인이 섞였고 1년 고점 대비 -64%.
+071970 | 검토한 비중: 0.00%
+현금 판단 | weight: 20.00%
+현금 판단 | currency: KRW
+현금 판단 | annual_rate: 3.20%
+현금 판단 | liquidity_weight: 5.00%
+현금 판단 | rationale: 가정 준비금 5%와 전략적 대기 15%.
+현금 판단 | opportunity_cost: CD 91일물 약 3.2%(2차 출처)를 받는 대신 고점 대비 -39% 지점의 주식 노출 일부를 포기한다. 과매도 국면(RSI 16.8)에서 반등을 놓칠 수 있다는 비용을 인정한다.
+현금 판단 | liquidity_reason: 지출 조건 미확인에 따른 원화 가정 준비금.
+현금 판단 | strategic_reason: 지수 실현 연변동성이 약 54~60%로 극단적이고, 지수의 65%가 두 종목에 몰려 있으며, 세 관점 모두 지수와 개별 후보에 강한 확신을 보이지 않았다. 2026년 실적 자료 없이 판단했으므로 3분기 실적 확인 후 분할 투입할 여력을 남긴다.
+현금 판단 | market_regime_reason: ^KS11 가격 규칙의 국면은 fear_risk_off, 참고 현금 5.35%다. 규칙은 공포 국면에서 주식 비중 확대를 시사하지만, 최종 20%는 위 집중·자료 공백을 이유로 참고값보다 높게 두었다. 시장 하락 예측이 아니다.
+제약 검사 | valid: True
+제약 검사 | violations: []
+제약 검사 | input_issues: []
+제약 검사 | direct_sectors: {"기타 화학제품 제조업": 0.08, "전자부품 제조업": 0.1, "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업": 0.06, "소프트웨어 개발 및 공급업": 0.05}
+제약 검사 | total_issuers: {"005930": 0.168912, "000660": 0.163302, "402340": 0.016983, "009150": 0.012852, "005380": 0.007599, "105560": 0.005253, "028260": 0.0051, "055550": 0.004437, "034020": 0.004284, "032830": 0.003876, "483650": 0.08, "101490": 0.06, "062040": 0.06, "462870": 0.05, "058470": 0.04}
+제약 검사 | total_sectors: {"통신 및 방송 장비 제조업": 0.168912, "반도체 제조업": 0.163302, "기타 금융업": 0.026673, "전자부품 제조업": 0.112852, "자동차용 엔진 및 자동차 제조업": 0.007599, "기타 전문 도매업": 0.0051, "일반 목적용 기계 제조업": 0.004284, "보험업": 0.003876, "기타 화학제품 제조업": 0.08, "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업": 0.06, "소프트웨어 개발 및 공급업": 0.05}
+제약 검사 | lookthrough_coverage_weight: 68.26%
+적용 한도 | max_stock_weight: 15.00%
+적용 한도 | max_diversified_etf_weight: 100.00%
+적용 한도 | max_direct_sector_weight: 35.00%
+적용 한도 | rationale: 저장소 기본 정책(개별 주식 15%, 직접 주식 섹터 35%, 분산 비레버리지 ETF 100%)을 사용했다. 사용자 한도는 확인되지 않았고 이 수치가 최적이라고 주장하지 않는다. 직접 반도체 종목 합계 10%와 KOSPI 200 51%는 지수 자체의 두 종목 집중(65%)을 근거로 스스로 둔 판단 한도다.
+보유 대비 판단 | 069500: {"action": "target_only", "target_weight": 0.51}
+보유 대비 판단 | 483650: {"action": "target_only", "target_weight": 0.08}
+보유 대비 판단 | 101490: {"action": "target_only", "target_weight": 0.06}
+보유 대비 판단 | 062040: {"action": "target_only", "target_weight": 0.06}
+보유 대비 판단 | 462870: {"action": "target_only", "target_weight": 0.05}
+보유 대비 판단 | 058470: {"action": "target_only", "target_weight": 0.04}
+평가 규칙 | method: initial_weights_buy_and_hold
+평가 규칙 | review_at: 2027-04-19T06:30:00Z
+평가 규칙 | dividends: reinvested
+평가 규칙 | tax_basis: pre_tax
+평가 규칙 | entry_cost_bps: 10
+평가 규칙 | exit_cost_bps: 25
+평가 규칙 | fx_cost_bps: 0
+평가 규칙 | cost_assumptions: 가정: 위탁수수료와 호가 스프레드 약 10bp. 매도 시 주식 증권거래세를 포함해 약 25bp(세율은 직접 확인하지 않은 가정이며 ETF는 거래세가 없다). 원화 기준이라 환전 비용 0.
+평가 규칙 | review_trigger: 정기 검토일, 보유 종목 3분기 실적, 삼성전자·SK하이닉스 실적과 가이던스, KOSPI 200 종가 2026-10-19 대비 -20%.
+독립 근거 | 069500: {"independent_analyses": {"buffett": {"signal": "neutral", "confidence": 40, "reasoning": "KOSPI 200 근사 집중도에서 삼성전자 28.0%, SK하이닉스 20.7%로 두 종목이 약 49%이고 상위 10종목이 63%라 사실상 반도체 사이클에 대한 베팅이다. 1년 +72%이지만 고점 대비 -39%, 최근 한 달 -18%로 가격은 크게 내려왔다. 하락만으로 가치라고 볼 수 없고 반도체 이익의 지속성은 이 자료로 평가할 수 없다. 총보수와 구성 종목 자료가 없고 집중도는 시총 기반 근사치다. 버핏은 저비용 광범위 지수를 인정하나 이 지수는 집중도 때문에 중립이다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "lynch": {"signal": "neutral", "confidence": 35, "reasoning": "린치는 지수 ETF를 기업 분석 대상으로 보지 않는다. 근사 집중도로 삼성전자(28.0%)와 SK하이닉스(20.7%)가 약 49%, 상위 10종목이 63%이고 업종도 통신장비 29%·반도체 21%라 사실상 반도체 사이클 베팅이다. 1년 +72%이지만 고점 대비 -39%, 최근 1개월 -18%이며 지수 P/E와 EPS 성장률, 총보수, 실제 구성 자료가 없어 성장 대비 가격을 평가하지 못한다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "fisher": {"signal": "neutral", "confidence": 45, "reasoning": "KOSPI 200 근사 구성에서 삼성전자 28.0%, SK하이닉스 20.7%로 상위 2개가 약 49%, 상위 10개가 63%를 차지한다. 반도체 성장 노출은 높지만 소수 종목과 한 업황에 집중되어 있다. 지수 편입 기업의 경영진 품질과 R&D를 개별로 고르는 방식이 아니므로 피셔 관점의 강한 확신은 어렵다. 운용 보수 자료가 없고 집중도는 운용사 구성이 아닌 시가총액 근사치다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}}, "annualized_volatility": 0.5967221484, "price_issues": []}
+독립 근거 | 483650: {"independent_analyses": {"buffett": {"signal": "neutral", "confidence": 40, "reasoning": "ROE 40%, PER 19배, 영업이익률 20%, 부채비율 0.29로 숫자는 좋다. 그러나 자료가 2024~2025년 두 해뿐이고 순이익이 154억에서 791억으로 급증해 지속성을 판단할 수 없다. 화장품은 유행과 환율에 민감하고 PBR 8.4배이다. 해자 입증이 부족하다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "lynch": {"signal": "bullish", "confidence": 68, "reasoning": "K뷰티 고성장주다. 2025년 매출 5197억원(+68%), 영업이익 1015억원(전년 598억원), 순이익 791억원, ROE 40%, D/E 0.29, 유동비율 4.5이고 P/E 19.3으로 PEG가 0.5 아래다. 고점 대비 -36%로 가격이 눌렸고 증권사는 수익성이 기대를 웃돈다고 평가했다. 다만 순이익 증가율 413%는 낮은 기준 때문에 과대하고 자료가 2년뿐이며 환율과 유행 의존 위험이 있다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "fisher": {"signal": "bullish", "confidence": 62, "reasoning": "화장품으로 2025년 매출 5197억원(전년 3091억원, 68% 성장), 영업이익률 19.5%로 2024년 19.3%와 비슷한 높은 수준을 유지했다. ROE 39.8%, 부채비율 0.29이다. 자료가 2년뿐이고 환율·K뷰티 수요 변동 위험이 있으며 PBR 8.4배로 기대가 높다. 기사는 증권사 호평 위주라 독립 검증이 아니다. R&D 자료가 없다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}}, "annualized_volatility": 0.6539119216, "price_issues": []}
+독립 근거 | 101490: {"independent_analyses": {"buffett": {"signal": "neutral", "confidence": 55, "reasoning": "블랭크마스크는 이해 가능한 틈새 소재로 ROE 19%, 영업이익률 21%, 부채비율 0.29이며 순이익이 2022년 175억에서 2025년 581억까지 4년 연속 증가했다. PER 15.5배에 고점 대비 -57%라 매력이 있지만, Owner Earnings(약 580억) x 18.5배는 약 1.07조로 시총 9,259억 대비 안전마진이 약 14%에 그친다. 설비투자와 고객 집중도 자료가 없어 해자 강도를 확정하지 못했다.", "data_quality": "complete", "analysis_source": "independent_investor_analysis"}, "lynch": {"signal": "bullish", "confidence": 65, "reasoning": "블랭크마스크 업체로 이익이 꾸준히 늘어난 고성장 우량주다. 순이익이 2022년 175억원에서 2025년 581억원으로 늘었고, 2025년 매출 +38%, 영업이익 504억원(+71%), P/E 15.5, ROE 19%, D/E 0.29, 유동비율 3.5다. 2025년 순이익 증가율 92%는 영업 외 이익이 섞여 과대하며 영업이익 기준으로 봐도 PEG가 1 아래다. 고점 대비 -57%, 1년 -23%로 가격이 성장을 따라가지 못했으나, 반도체 업황 사이클과 2026년 실적은 확인되지 않았다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "fisher": {"signal": "bullish", "confidence": 70, "reasoning": "블랭크마스크로 매출이 2022년 1235억원에서 2025년 2437억원으로 약 25% CAGR 성장했고 영업이익률도 13%에서 20.7%로 매년 개선됐다. 부채비율 0.29, 유동비율 3.5이며 삼성전자 미국 팹 납품 기사는 신규 성장원으로 볼 수 있다. 주가가 고점 대비 57% 하락했지만 이를 약세 근거로 쓰지 않았다. 한계는 R&D 비율과 고객 집중도 자료가 없다는 점이다. 2026년 실적과 R&D 지출은 자료에 없다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}}, "annualized_volatility": 0.8774078335, "price_issues": []}
+독립 근거 | 062040: {"independent_analyses": {"buffett": {"signal": "neutral", "confidence": 45, "reasoning": "ROE 25%, 영업이익률 36%, 부채비율 0.16으로 변압기 사업의 품질은 높고 수요 호황이다. 그러나 PER 32배, PBR 8.7배로 Owner Earnings(약 1,400억) x 18.5배 약 2.6조 대비 시총 5.6조는 두 배가 넘는다. 두 해치 자료뿐이고 전력 설비 사이클의 정점 여부를 확인할 수 없다. 좋은 기업이나 가격이 높다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "lynch": {"signal": "bullish", "confidence": 65, "reasoning": "전력 변압기의 고성장주다. 2025년 매출 5019억원(+50%), 영업이익 1786억원(영업이익률 36%), 순이익 1489억원(+78%), ROE 25%, D/E 0.17이고 P/E 32면 PEG가 약 0.4다. 고점 대비 -43%로 조정이 크다. 자료가 2년뿐이고 P/B 8.7, 시가총액 5조원대라 높은 기대가 이미 반영되었으며 이익 증가의 지속 여부가 관건이다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "fisher": {"signal": "bullish", "confidence": 66, "reasoning": "변압기로 2025년 매출 5019억원(전년 대비 50% 성장), 영업이익률 35.6%, ROE 25.4%, 부채비율 0.17이다. 자료가 2024~2025년뿐이라 장기 추세는 제한적이고 PER 32배, PBR 8.7배로 기대가 높다. 목표주가 상향 기사는 증권사 전망이며 직접 증거는 아니다. 고점 대비 43% 낙폭은 판단에 사용하지 않았다. R&D 자료가 없다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}}, "annualized_volatility": 0.8893289218, "price_issues": []}
+독립 근거 | 462870: {"independent_analyses": {"buffett": {"signal": "neutral", "confidence": 45, "reasoning": "영업이익률 62%, ROE 21%, 부채비율 0.18, PER 10배로 숫자는 최상급이다. 단순 Owner Earnings(약 1,900억) x 18.5배는 약 3.5조로 시총 1.84조 대비 큰 안전마진이 나온다. 그러나 자료에 2024~2025년 두 해뿐이고 소수 히트작 의존 사업이라 이익의 예측 가능성과 해자(지식재산의 수명)를 확인할 수 없다. 버핏은 히트 의존형 사업의 이익을 영속적으로 가정하지 않으므로 중립에 둔다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "lynch": {"signal": "bullish", "confidence": 65, "reasoning": "콘솔 게임 IP를 가진 고성장주 후보다. 2025년 매출 2945억원(+31%), 영업이익 1814억원(영업이익률 62%), 순이익 1914억원이고 P/E 10.1, D/E 0.18, 유동비율 8.2로 PEG가 약 0.3~0.4다. 고점 대비 -21%, 1년 -17%로 성장 대비 가격이 낮다. 다만 단일 히트 IP 의존 가능성이 높고 자료가 2년뿐이며 2026년 실적과 후속 작품 근거가 없다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "fisher": {"signal": "neutral", "confidence": 55, "reasoning": "게임 개발사로 2025년 매출 2945억원(전년 대비 31% 성장), 영업이익률 61.6%로 수익성이 매우 높고 부채비율 0.18, 유동비율 8.2이다. 다만 자료가 2024~2025년뿐이고 특정 IP에 대한 의존도와 차기 신작 파이프라인을 확인할 자료가 없다. PER 10배는 낮지만 이익 지속성 확신이 부족하다. R&D 자료도 없다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}}, "annualized_volatility": 0.3960784986, "price_issues": []}
+독립 근거 | 058470: {"independent_analyses": {"buffett": {"signal": "neutral", "confidence": 60, "reasoning": "버핏이 좋아할 품질이다. ROE 20% 안팎(4년 연속), 영업이익률 41~48%, 부채비율 0.08, 유동비율 9.7이다. 그러나 PER 28.7, PBR 6.9로 Owner Earnings(약 1,400억) x 18.5배는 약 2.6조인데 시총은 5.4조다. 보수적 공식으로는 큰 프리미엄이 있어 고점 대비 -44%에도 안전마진이 없다. 훌륭한 기업이지만 지금 가격은 적정하지 않다.", "data_quality": "complete", "analysis_source": "independent_investor_analysis"}, "lynch": {"signal": "bullish", "confidence": 60, "reasoning": "반도체 테스트 소켓의 우량 성장주다. 2025년 매출 3725억원(+34%), 순이익 1520억원(+34%), 영업이익률 47.5%, ROE 21%, D/E 0.08, 유동비율 9.7로 재무와 수익성이 뛰어나다. P/E 28.7이면 PEG가 약 0.85이고 고점 대비 -44%다. 다만 2022~2024년 순이익이 1100억원대로 정체되었다가 2025년에 뛴 것이라 이 성장의 지속성은 불확실하며 시가총액이 5조원대라 10배주 여지는 작다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}, "fisher": {"signal": "bullish", "confidence": 68, "reasoning": "반도체 소켓과 리노핀으로 2025년 영업이익률 47.5%, ROE 20.8%, 부채비율 0.08, 유동비율 9.7로 수익성과 재무가 최상위이다. 2025년 매출은 34% 성장했지만 2022년 3224억원 대비 3년 CAGR은 약 5%라 성장이 순탄치 않았고, PER 28.7배와 PBR 6.9배로 기대가 높다. 이 마진 구조는 차별화된 제품력을 시사한다. R&D 비율과 고객 집중도 자료가 없다. 2026년 실적과 R&D 지출은 자료에 없다.", "data_quality": "partial", "analysis_source": "independent_investor_analysis"}}, "annualized_volatility": 0.7428664966, "price_issues": []}
+독립 근거 | 229200: {"price_issues": [], "selection_reason": "KODEX 코스닥150. 세 관점 모두 구성·보수 자료 부족으로 abstain했다."}
+독립 근거 | 039200: {"price_issues": [], "selection_reason": "predict 1위지만 버핏이 부정(70), 린치·피셔는 중립 40. 2025년 흑자는 렉라자 마일스톤·기술료 성격일 가능성이 높아 반복 이익으로 보기 어렵다."}
+독립 근거 | 171090: {"price_issues": [], "selection_reason": "predict 2위지만 버핏·린치 부정. P/E 63배로 가격 부담이 크다."}
+독립 근거 | 251970: {"price_issues": [], "selection_reason": "피셔만 긍정. ROE 8%, 순이익 감소와 성장률 필드 불일치. 1년 고점 근처라 할인 여지가 작다."}
+독립 근거 | 425420: {"price_issues": [], "selection_reason": "피셔 긍정, 버핏 부정으로 갈렸다. 반도체 요인 중복."}
+독립 근거 | 035900: {"price_issues": [], "selection_reason": "린치만 긍정. 목표가 6만원에서 5.2만원으로 하향된 위험 경보."}
+독립 근거 | 071970: {"price_issues": [], "selection_reason": "피셔만 긍정. 순이익에 비영업 요인이 섞였고 1년 고점 대비 -64%."}
+시장 참고값 | formula_version: market-regime-cash-v1
+시장 참고값 | benchmark: ^KS11
+시장 참고값 | as_of_date: 2026-10-16
+시장 참고값 | data_quality: complete
+시장 참고값 | observations: 263
+시장 참고값 | regime: fear_risk_off
+시장 참고값 | target_cash_weight: 5.35%
+시장 참고값 | target_equity_weight: 94.65%
+시장 참고값 | scores: {"overheat": 0.0, "fear": 0.903636, "outlook": -0.195157}
+시장 참고값 | components: {"overheat": {"distance_above_200d": 0.0, "rsi": 0.0, "six_month_momentum": 0.0}, "fear": {"drawdown": 1.0, "rsi": 1.0, "realized_volatility": 0.710907}, "outlook": {"price_vs_200d": -1.0, "50d_vs_200d": 0.509683, "six_month_momentum": -0.095154}}
+시장 참고값 | metrics: {"close": 5668.0498046875, "sma_50": 6672.2596484375, "sma_200": 6410.8589282227, "distance_to_sma_200": -0.1158673326, "sma_50_to_sma_200": 0.0407746798, "momentum_126": -0.0190307676, "rsi_14": 16.8329111834, "drawdown_from_252d_peak": -0.3781316767, "realized_volatility_20": 0.4132722098}
+시장 참고값 | rationale: ["낙폭·과매도·실현변동성의 공포 점수가 현금 확대 폭을 상쇄"]
+시장 참고값 | usage: advisory
+시장 참고값 | cash_difference: 14.65%
+한계 | 1: 058470/fisher: partial; see missing_evidence_impact
+한계 | 2: 058470/lynch: partial; see missing_evidence_impact
+한계 | 3: 062040/buffett: partial; see missing_evidence_impact
+한계 | 4: 062040/fisher: partial; see missing_evidence_impact
+한계 | 5: 062040/lynch: partial; see missing_evidence_impact
+한계 | 6: 069500/buffett: partial; see missing_evidence_impact
+한계 | 7: 069500/fisher: partial; see missing_evidence_impact
+한계 | 8: 069500/lynch: partial; see missing_evidence_impact
+한계 | 9: 069500: incomplete ETF look-through
+한계 | 10: 101490/fisher: partial; see missing_evidence_impact
+한계 | 11: 101490/lynch: partial; see missing_evidence_impact
+한계 | 12: 462870/buffett: partial; see missing_evidence_impact
+한계 | 13: 462870/fisher: partial; see missing_evidence_impact
+한계 | 14: 462870/lynch: partial; see missing_evidence_impact
+한계 | 15: 483650/buffett: partial; see missing_evidence_impact
+한계 | 16: 483650/fisher: partial; see missing_evidence_impact
+한계 | 17: 483650/lynch: partial; see missing_evidence_impact
+한계 | 18: liquidity reserve is an assumption
+출처 | fdr_close: {"id": "fdr_close", "provider": "FinanceDataReader (KRX daily prices)", "reference": "portfolios/krx_20261019/investor_source_data.json price_1y.last_close", "status": "ok", "as_of": "2026-10-19T06:30:00Z", "available_at": "2026-10-19T06:30:00Z", "retrieved_at": "2026-10-19T08:29:44Z", "max_age_days": 5, "note": "2026-10-19(월) 정규장 종가. 장 마감 후 조회. Yahoo ^KS11과 교차 확인한 지수 흐름과 일치.", "problems": []}
+출처 | dart_annual: {"id": "dart_annual", "provider": "DART 사업보고서 + PyKRX/Naver 밸류에이션 (investor-analysis data_fetcher)", "reference": "portfolios/krx_20261019/investor_source_data.json", "status": "ok", "as_of": "2025-12-31T00:00:00Z", "available_at": "2026-03-31T00:00:00Z", "retrieved_at": "2026-10-19T08:29:44Z", "max_age_days": 400, "note": "연간 사업보고서 기준. 2026년 반기·분기 실적은 수집하지 않았다. 연 1회 공시 주기라 허용 시차를 400일로 둔다. FCF·CapEx·R&D 필드는 전 종목 비어 있다.", "problems": []}
+출처 | samsung_kodex200_factsheet: {"id": "samsung_kodex200_factsheet", "provider": "삼성자산운용 KODEX 200 월간 팩트시트", "reference": "https://m.samsungfund.com/sheet/20260706/2ETF01_20260630.pdf (portfolios/krx_20261019/raw/samsung_kodex200_factsheet_20260630.pdf)", "status": "ok", "as_of": "2026-06-30T00:00:00Z", "available_at": "2026-07-06T00:00:00Z", "retrieved_at": "2026-10-19T08:41:20Z", "max_age_days": 120, "note": "총보수 연 0.15%, 상위 10종목 비중. 월간 자료라 허용 시차 120일. 이후 반도체 주가 급락으로 실제 비중은 낮아졌을 수 있다.", "problems": []}
+출처 | trackinsight_tiger200: {"id": "trackinsight_tiger200", "provider": "Trackinsight (third-party ETF data)", "reference": "https://www.trackinsight.com/en/fund/102110", "status": "ok", "as_of": "2026-08-31T00:00:00Z", "available_at": "2026-08-31T00:00:00Z", "retrieved_at": "2026-10-19T08:40:00Z", "max_age_days": 90, "note": "동일 지수 TIGER 200의 상위 10종목·섹터(기술 65.72%)와 총보수 0.05%. 3자 자료이며 교차 확인 용도.", "problems": []}
+출처 | cd91_rate_news: {"id": "cd91_rate_news", "provider": "StockHub (Yonhap 재게재, 2차 출처)", "reference": "https://stockhub.kr/en/news/news_f76a07bda2dc", "status": "ok", "as_of": "2026-09-20T00:00:00Z", "available_at": "2026-09-20T00:00:00Z", "retrieved_at": "2026-10-19T08:46:00Z", "max_age_days": 45, "note": "CD 91일물 3.20% 상승 보도. 원문·금융투자협회 자료는 직접 대조하지 못했다. 10월 금통위 결과는 확인하지 못했다.", "problems": []}
+출처 | news_classifications: {"id": "news_classifications", "provider": "This repository: predict news tasks + active skill LLM classification", "reference": "portfolios/krx_20261019/krx_news_classifications_v2.json", "status": "ok", "as_of": "2026-10-19T08:24:29Z", "available_at": "2026-10-19T08:24:29Z", "retrieved_at": "2026-10-19T08:24:29Z", "max_age_days": 3, "note": "네이버 증권 공개 뉴스 폴백(Naver Search API 401). 순위에는 반영하지 않은 설명·위험 경보 자료.", "problems": []}
+출처 | predict_snapshot: {"id": "predict_snapshot", "provider": "This repository: predict skill (hybrid, prior_only)", "reference": "portfolios/krx_20261019/krx_predict_final_v2.json", "status": "ok", "as_of": "2026-10-19T07:49:03Z", "available_at": "2026-10-19T07:49:03Z", "retrieved_at": "2026-10-19T08:24:32Z", "max_age_days": 3, "problems": []}
+출처 | risk_snapshot: {"id": "risk_snapshot", "provider": "This repository: build_risk_snapshot.py", "reference": "portfolios/krx_20261019/krx_risk.json", "status": "ok", "as_of": "2026-10-19T06:30:00Z", "available_at": "2026-10-19T06:30:00Z", "retrieved_at": "2026-10-19T08:31:55Z", "max_age_days": 5, "problems": []}
+출처 | independent_analyses: {"id": "independent_analyses", "provider": "This repository: 3 isolated investor-perspective agents", "reference": "portfolios/krx_20261019/investor_analyses.json", "status": "ok", "as_of": "2026-10-19T08:42:47Z", "available_at": "2026-10-19T08:42:47Z", "retrieved_at": "2026-10-19T08:45:46Z", "max_age_days": 3, "problems": []}
+현재 자료와 가정에 따른 연구 목적의 추천이며 미래 성과는 미확정입니다.
+
+추천 스냅샷: portfolios\decisions\krx-20261019-core-satellite-r2
