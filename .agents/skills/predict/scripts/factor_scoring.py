@@ -51,6 +51,23 @@ def get_market_cap_category(market_cap, currency=None):
         return "small", f"${cap_b*1000:.0f}M"
 
 
+# get_market_cap_category와 같은 기준: KRW 임계값은 USD 임계값의 1000배다 (₩200조 ↔ $200B)
+KRW_PER_USD_CAP_SCALE = 1000
+
+
+def to_usd_scale_market_cap(market_cap, currency=None):
+    """
+    USD 기준 시가총액 임계값과 비교할 수 있게 단위를 맞춘다.
+
+    실제 환율 환산이 아니라 get_market_cap_category와 같은 구간 기준을 쓰기 위한 값이다.
+    currency가 None이면 get_market_cap_category와 같은 방식으로 자동 감지한다.
+    """
+    if not market_cap:
+        return None
+    is_krw = (currency == "KRW") or (currency is None and market_cap > 1e13)
+    return market_cap / KRW_PER_USD_CAP_SCALE if is_krw else market_cap
+
+
 def calculate_size_bonus(market_cap, growth_score, currency=None):
     """
     시가총액 기반 보너스 점수 (피터 린치/준준왈라 스타일)

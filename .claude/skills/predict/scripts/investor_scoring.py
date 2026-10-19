@@ -8,6 +8,37 @@
 import statistics
 from collections import defaultdict
 
+from factor_scoring import get_market_cap_category, to_usd_scale_market_cap
+from ticker_utils import is_korean_ticker
+
+
+def _market_cap_currency(ticker):
+    """한국 종목의 시가총액은 KRW 단위다. 그 외는 get_market_cap_category 자동 감지에 맡긴다."""
+    return "KRW" if is_korean_ticker(ticker) else None
+
+
+def _format_cash_amount(value, currency=None) -> str:
+    """현금흐름 금액 표시. 한국 종목은 억 원, 그 외는 백만 달러 단위다."""
+    if currency == "KRW":
+        return f"₩{value/1e8:,.0f}억"
+    return f"${value/1e6:.0f}M"
+
+
+def lynch_size_adjustment(market_cap, currency=None) -> float:
+    """Lynch 시가총액 조정: 메가캡은 10배가 어렵고 소형주일수록 가산한다."""
+    cap = to_usd_scale_market_cap(market_cap, currency)
+    if not cap:
+        return 0
+    if cap > 200e9:
+        return -0.8
+    if cap > 100e9:
+        return -0.3
+    if cap < 2e9:
+        return 1.0
+    if cap < 10e9:
+        return 0.5
+    return 0
+
 
 # ============================================================================
 # 섹터별 통계 계산 (상대적 밸류에이션용)
@@ -265,17 +296,8 @@ def calculate_lynch_score(metrics, growth_score, sentiment_score, insider_score,
         elif rev_growth < -0.10:
             score -= 1.5
 
-    # 9. 시가총액 기반 조정
-    market_cap = m.get('market_cap')
-    if market_cap:
-        if market_cap > 200e9:
-            score -= 0.8
-        elif market_cap > 100e9:
-            score -= 0.3
-        elif market_cap < 10e9:
-            score += 0.5
-        elif market_cap < 2e9:
-            score += 1.0
+    # 9. 시가총액 기반 조정 (한국 종목은 KRW 기준 구간)
+    score += lynch_size_adjustment(m.get('market_cap'), _market_cap_currency(m.get('ticker')))
 
     # 10. 경기순환주 사이클 위치 조정
     CYCLICAL_SECTORS = ['Basic Materials', 'Energy', 'Industrials']
@@ -594,9 +616,10 @@ def generate_investor_warnings(ticker: str, investor_scores: dict, metrics: dict
 
     # Lynch 관련 경고
     lynch_score = investor_scores.get('lynch', 0)
-    if lynch_score >= 6 and market_cap and market_cap > 200e9:
-        cap_str = f"${market_cap/1e9:.0f}B"
-        warnings.append(f"⚠️ Lynch 높은점수({lynch_score:.1f}) but 메가캡({cap_str}, 10배 어려움)")
+    currency = _market_cap_currency(ticker)
+    cap_category, cap_display = get_market_cap_category(market_cap, currency=currency)
+    if lynch_score >= 6 and cap_category == "mega":
+        warnings.append(f"⚠️ Lynch 높은점수({lynch_score:.1f}) but 메가캡({cap_display}, 10배 어려움)")
     if lynch_score >= 6 and rev_growth and rev_growth < -0.15:
         warnings.append(f"⚠️ Lynch 높은점수({lynch_score:.1f}) but 매출 {rev_growth*100:.0f}% (떨어지는 칼)")
     if lynch_score >= 6 and sector in ['Basic Materials', 'Energy', 'Industrials']:
@@ -615,9 +638,9 @@ def generate_investor_warnings(ticker: str, investor_scores: dict, metrics: dict
     op_margin_val = m.get('operating_margin')
 
     if op_cf is not None and op_cf < 0:
-        warnings.append(f"🚨 영업현금흐름 마이너스 (${op_cf/1e6:.0f}M) - 본업 현금소진")
+        warnings.append(f"🚨 영업현금흐름 마이너스 ({_format_cash_amount(op_cf, currency)}) - 본업 현금소진")
     if fcf is not None and fcf < 0 and (op_cf is None or op_cf >= 0):
-        warnings.append(f"⚠️ FCF 마이너스 (${fcf/1e6:.0f}M) - 높은 CapEx 부담")
+        warnings.append(f"⚠️ FCF 마이너스 ({_format_cash_amount(fcf, currency)}) - 높은 CapEx 부담")
     if op_margin_val is not None and 0 < op_margin_val < 0.05:
         warnings.append(f"⚠️ 영업마진 극저 ({op_margin_val*100:.1f}%) - 가격결정력 부재")
 
