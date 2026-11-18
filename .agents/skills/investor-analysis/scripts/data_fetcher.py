@@ -9,7 +9,7 @@ import sys
 import os
 import argparse
 import json
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from typing import Optional
 
 try:
@@ -39,7 +39,7 @@ def _is_historical_snapshot(end_date: str | None) -> bool:
     if not end_date:
         return False
     try:
-        return datetime.strptime(end_date, "%Y-%m-%d").date() < datetime.now().date()
+        return datetime.strptime(end_date, "%Y-%m-%d").date() < datetime.now(UTC).date()
     except ValueError:
         return False
 
@@ -187,7 +187,7 @@ def get_financial_metrics(ticker: str, end_date: str = None, period: str = "annu
         try:
             from korean_data_fetcher import get_financial_metrics_kr
             kr_ticker = normalize_korean_ticker(ticker)
-            result = get_financial_metrics_kr(kr_ticker, end_date or datetime.now().strftime("%Y-%m-%d"))
+            result = get_financial_metrics_kr(kr_ticker, end_date or datetime.now(UTC).date().isoformat())
             return [result] if result else []
         except ImportError as e:
             print(f"한국 주식 데이터 모듈 로드 실패: {e}")
@@ -212,7 +212,7 @@ def get_financial_metrics(ticker: str, end_date: str = None, period: str = "annu
 
         metrics = {
             "ticker": ticker,
-            "report_period": end_date or datetime.now().strftime("%Y-%m-%d"),
+            "report_period": end_date or datetime.now(UTC).date().isoformat(),
 
             # ===== 밸류에이션 지표 =====
             "price_to_earnings_ratio": info.get("trailingPE") or info.get("forwardPE"),
@@ -241,7 +241,7 @@ def get_financial_metrics(ticker: str, end_date: str = None, period: str = "annu
             # ===== 재무 건전성 =====
             "current_ratio": info.get("currentRatio"),
             "quick_ratio": info.get("quickRatio"),
-            "debt_to_equity": info.get("debtToEquity") / 100 if info.get("debtToEquity") else None,
+            "debt_to_equity": info["debtToEquity"] / 100 if info.get("debtToEquity") is not None else None,
             "interest_coverage": derived.get("interest_coverage"),
             "cash_ratio": derived.get("cash_ratio"),
             "operating_cash_flow_ratio": derived.get("operating_cash_flow_ratio"),
@@ -249,7 +249,7 @@ def get_financial_metrics(ticker: str, end_date: str = None, period: str = "annu
             "debt_to_assets": (total_debt / (total_debt + market_cap)) if total_debt and market_cap else None,
 
             # ===== 배당 =====
-            "dividend_yield": info.get("dividendYield"),
+            "dividend_yield": info["dividendYield"] / 100 if info.get("dividendYield") is not None else None,
             "payout_ratio": info.get("payoutRatio"),
 
             # ===== 시가총액 및 주식 정보 =====
@@ -340,7 +340,7 @@ def get_market_cap(ticker: str, end_date: str = None) -> Optional[float]:
     if is_korean_ticker(ticker):
         try:
             from korean_data_fetcher import get_market_cap_kr
-            return get_market_cap_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"))
+            return get_market_cap_kr(normalize_korean_ticker(ticker), end_date or datetime.now(UTC).date().isoformat())
         except ImportError:
             return None
 
@@ -362,7 +362,7 @@ def get_insider_trades(ticker: str, end_date: str = None, limit: int = 100) -> l
     if is_korean_ticker(ticker):
         try:
             from korean_data_fetcher import get_insider_trades_kr
-            return get_insider_trades_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"), limit)
+            return get_insider_trades_kr(normalize_korean_ticker(ticker), end_date or datetime.now(UTC).date().isoformat(), limit)
         except ImportError:
             return []
 
@@ -416,7 +416,7 @@ def get_company_news(ticker: str, end_date: str = None, limit: int = 100) -> lis
     if is_korean_ticker(ticker):
         try:
             from korean_data_fetcher import get_company_news_kr
-            return get_company_news_kr(normalize_korean_ticker(ticker), end_date or datetime.now().strftime("%Y-%m-%d"), limit)
+            return get_company_news_kr(normalize_korean_ticker(ticker), end_date or datetime.now(UTC).date().isoformat(), limit)
         except ImportError:
             return []
 
@@ -477,7 +477,7 @@ def search_line_items(ticker: str, line_items: list, end_date: str = None, perio
     if is_korean_ticker(ticker):
         try:
             from korean_data_fetcher import search_line_items_kr
-            return search_line_items_kr(normalize_korean_ticker(ticker), line_items, end_date or datetime.now().strftime("%Y-%m-%d"), period, limit)
+            return search_line_items_kr(normalize_korean_ticker(ticker), line_items, end_date or datetime.now(UTC).date().isoformat(), period, limit)
         except ImportError as e:
             print(f"한국 주식 데이터 모듈 로드 실패: {e}")
             return []
@@ -672,7 +672,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    end_date = args.end_date or datetime.now().strftime("%Y-%m-%d")
+    end_date = args.end_date or datetime.now(UTC).date().isoformat()
 
     if (
         _is_historical_snapshot(end_date)

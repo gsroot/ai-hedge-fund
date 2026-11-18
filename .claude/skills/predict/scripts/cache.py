@@ -9,7 +9,8 @@ import json
 import hashlib
 import shutil
 
-from config import CACHE_DIR, CACHE_ENABLED
+import config
+from config import CACHE_DIR
 
 # 캐시 히트/미스 카운터
 cache_stats = {"hits": 0, "misses": 0}
@@ -30,7 +31,7 @@ def _get_cache_path(cache_type: str, ticker: str, date: str, extra: str = "") ->
 
 def _read_cache(cache_path: str):
     """캐시 파일 읽기"""
-    if not CACHE_ENABLED:
+    if not config.CACHE_ENABLED:
         return None
     try:
         if os.path.exists(cache_path):
@@ -43,7 +44,7 @@ def _read_cache(cache_path: str):
 
 def _write_cache(cache_path: str, data):
     """캐시 파일 쓰기"""
-    if not CACHE_ENABLED:
+    if not config.CACHE_ENABLED:
         return
     try:
         cache_dir = os.path.dirname(cache_path)

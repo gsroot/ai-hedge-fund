@@ -143,8 +143,8 @@ class ExclusionReasonTests(unittest.TestCase):
 class BatchExclusionTests(unittest.TestCase):
     def test_batch_ranks_only_analyzed_and_lists_exclusions(self):
         outcomes = {
-            "AAA": ({"ticker": "AAA", "total_score": 5.0}, None),
-            "BBB": ({"ticker": "BBB", "total_score": 7.0}, None),
+            "AAA": ({"ticker": "AAA", "rank_inputs": {"value": 5.0}, "scores": {}}, None),
+            "BBB": ({"ticker": "BBB", "rank_inputs": {"value": 7.0}, "scores": {}}, None),
             "WBA": (None, "metrics_unavailable"),
             "IPG": (None, "prices_unavailable"),
         }

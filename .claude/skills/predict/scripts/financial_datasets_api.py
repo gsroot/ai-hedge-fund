@@ -153,6 +153,7 @@ def get_metrics_snapshot_fallback(ticker: str, end_date: str) -> dict | None:
     result = {
         "ticker": ticker,
         "company_name": ticker,  # 스냅샷에 회사명 없음 → ticker로 대체
+        "provider": "financial_datasets",
 
         # 밸류에이션
         "price_to_earnings_ratio": s.get("pe_ratio"),
@@ -199,7 +200,7 @@ def get_metrics_snapshot_fallback(ticker: str, end_date: str) -> dict | None:
 
         # 현금흐름
         "free_cash_flow": free_cash_flow,
-        "free_cash_flow_yield": (free_cash_flow / market_cap) if free_cash_flow and market_cap else None,
+        "free_cash_flow_yield": (free_cash_flow / market_cap) if free_cash_flow is not None and market_cap else None,
         "free_cash_flow_per_share": (free_cash_flow / shares) if free_cash_flow and shares else None,
         "operating_cashflow": None,
 

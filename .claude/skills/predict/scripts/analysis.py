@@ -1,555 +1,270 @@
-"""
-분석 파이프라인
-
-단일 종목 종합 분석(analyze_single_ticker)과
-배치 분석(run_batch_analysis)을 수행합니다.
-"""
+"""Collect date-scoped observations and rank companies within the requested universe."""
 import statistics
-import threading
+import re
 from collections import Counter
-from dataclasses import dataclass
-from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass
+from datetime import UTC, date, datetime, timedelta
 
-from config import CACHE_ENABLED, FACTOR_WEIGHTS, INVESTOR_WEIGHTS, MAX_WORKERS
-from cache import cache_stats
-from data_fetcher import (
-    get_financial_metrics,
-    get_prices,
-    get_insider_trades,
-    get_company_news,
-    batch_fetch_prices,
-)
+from config import FACTOR_WEIGHTS, INVESTOR_WEIGHTS, MAX_WORKERS
+from data_fetcher import get_financial_metrics, get_prices, get_insider_trades, get_company_news, batch_fetch_prices
 from factor_scoring import (
-    get_market_cap_category,
-    calculate_size_bonus,
-    calculate_value_score,
-    calculate_growth_score,
-    calculate_quality_score,
-    calculate_momentum_score,
-    calculate_enhanced_momentum_score,
-    calculate_safety_score,
-    calculate_sentiment_score,
-    calculate_insider_activity_score,
+    get_market_cap_category, calculate_value_score, calculate_growth_score, calculate_quality_score,
+    calculate_momentum_score, calculate_enhanced_momentum_score, calculate_safety_score,
+    calculate_sentiment_score, calculate_insider_activity_score,
 )
 from investor_scoring import (
-    calculate_sector_stats,
-    calculate_buffett_score,
-    calculate_lynch_score,
-    calculate_graham_score,
-    calculate_fisher_score,
-    calculate_druckenmiller_score,
-    generate_investor_warnings,
+    calculate_sector_stats, calculate_buffett_score, calculate_lynch_score, calculate_graham_score,
+    calculate_fisher_score, calculate_druckenmiller_score, generate_investor_warnings,
 )
+from research_ranking import (
+    FINANCIAL_INPUTS, MIN_PRICE_OBSERVATIONS, is_number, observed_financials, observed_prices, rank_research_rows,
+)
+from ticker_utils import completed_korean_price_date, is_korean_ticker
 
 
-from ticker_utils import is_korean_ticker
+def ranking_sentiment_score(diagnostic_score, *, accuracy_validated=False):
+    """Legacy factor API. Live keyword diagnostics have no relative rank effect."""
+    return max(0.0, min(10.0, float(diagnostic_score))) if accuracy_validated else 5.0
 
 
-UNVALIDATED_SENTIMENT_NEUTRAL = 5.0
-
-
-def ranking_sentiment_score(
-    diagnostic_score: float,
-    *,
-    accuracy_validated: bool = False,
-) -> float:
-    """Keep news rank-neutral until an independent validation gate passes."""
-    if not accuracy_validated:
-        return UNVALIDATED_SENTIMENT_NEUTRAL
-    return max(0.0, min(10.0, float(diagnostic_score)))
-
-
-def calculate_weighted_factor_score(
-    factor_scores: dict[str, float],
-    factor_weights: dict[str, float] | None = None,
-) -> float:
-    """Combine factor scores with the run's validated effective weights."""
+def calculate_weighted_factor_score(factor_scores, factor_weights=None):
+    """Historical raw factor blend for existing callers."""
     weights = FACTOR_WEIGHTS if factor_weights is None else factor_weights
     if set(weights) != set(FACTOR_WEIGHTS):
         raise ValueError("factor_weights keys must match config.FACTOR_WEIGHTS")
     if any(float(weight) < 0 for weight in weights.values()):
         raise ValueError("factor_weights cannot contain negative values")
-    return sum(
-        float(factor_scores[factor]) * float(weights[factor])
-        for factor in FACTOR_WEIGHTS
-    )
-
-
-def _resolve_company_name(ticker, metrics):
-    """metrics dict에서 company_name을 추출하거나, 없으면 직접 조회"""
-    name = metrics.get("company_name")
-    if name and name != ticker:
-        return name
-    # metrics에 없는 경우 (캐시된 오래된 데이터 등) 직접 조회
-    if is_korean_ticker(ticker):
-        try:
-            from korean_data_fetcher import _get_company_name
-            return _get_company_name(ticker)
-        except Exception:
-            return ticker
-    else:
-        try:
-            from data_fetcher import safe_get_ticker_info
-            info = safe_get_ticker_info(ticker)
-            if info:
-                return info.get("shortName") or info.get("longName") or ticker
-        except Exception:
-            pass
-    return ticker
+    return sum(float(factor_scores[factor]) * float(weights[factor]) for factor in FACTOR_WEIGHTS)
 
 
 @dataclass(frozen=True)
 class BatchAnalysis:
-    """배치 분석 결과. 순위에 들지 못한 종목은 사유와 함께 excluded에 남긴다."""
     results: tuple[dict, ...]
     excluded: tuple[dict, ...]
 
 
-def summarize_exclusions(excluded) -> dict[str, int]:
-    """제외 사유별 종목 수"""
+def summarize_exclusions(excluded):
     return dict(sorted(Counter(item["reason"] for item in excluded).items()))
 
 
-def analyze_single_ticker(
-    ticker,
-    end_date,
-    prefetched_prices=None,
-    strategy="hybrid",
-    skip_news=False,
-    sector_stats=None,
-    factor_weights=None,
-):
-    """단일 종목 종합 분석. 제외 사유가 필요하면 analyze_single_ticker_detailed를 쓴다."""
-    result, _reason = analyze_single_ticker_detailed(
-        ticker,
-        end_date,
-        prefetched_prices=prefetched_prices,
-        strategy=strategy,
-        skip_news=skip_news,
-        sector_stats=sector_stats,
-        factor_weights=factor_weights,
-    )
-    return result
+def _price_start(end_date):
+    return (date.fromisoformat(end_date) - timedelta(days=120)).isoformat()
 
 
-def analyze_single_ticker_detailed(
-    ticker,
-    end_date,
-    prefetched_prices=None,
-    strategy="hybrid",
-    skip_news=False,
-    sector_stats=None,
-    factor_weights=None,
-):
-    """
-    단일 종목 종합 분석 (앙상블 투자자 점수 포함)
+def _percent(value):
+    return round(value * 100, 1) if is_number(value) else None
 
-    재무 지표나 가격이 없으면 점수를 0으로 채우지 않고 제외 사유를 돌려준다.
 
-    Returns:
-        (result, None) 또는 (None, reason).
-        reason: metrics_unavailable | prices_unavailable | analysis_error:<예외 타입>
+def _clean_snapshot(snapshot):
+    text_fields = {"ticker", "company_name", "sector", "industry", "report_period", "provider", "quote_type", "pe_basis"}
+    return {key: value for key, value in snapshot.items() if is_number(value) or
+            (key in text_fields and isinstance(value, str))}
 
-    Args:
-        ticker: 종목 티커
-        end_date: 분석 기준일
-        prefetched_prices: 미리 배치로 가져온 가격 데이터 (선택사항)
-        strategy: 분석 전략 (fundamental, momentum, hybrid)
-        skip_news: True이면 뉴스/내부자 거래 조회 건너뜀
-        sector_stats: 섹터별 통계 (상대적 밸류에이션용)
-        factor_weights: 이 실행에 적용할 검증 수축 후 팩터 가중치
-    """
+
+def _auxiliary(fetch, ticker, end_date, limit):
     try:
-        # 1. 재무 지표 수집
-        metrics = get_financial_metrics(
-            ticker,
-            end_date,
-            period="annual",
-            limit=2,
-        )
+        rows = fetch(ticker, end_date, limit=limit) or []
+    except Exception as exc:
+        return [], f"unavailable:{type(exc).__name__}"
+    return rows, "observed" if rows else "no_observations"
 
-        if not metrics:
-            return None, "metrics_unavailable"
 
-        # 2. 가격 데이터
-        if prefetched_prices is not None:
-            prices = prefetched_prices
+def _directional_trades(trades):
+    """Only explicit purchase/sale evidence supports a directional insider factor."""
+    directional = []
+    for trade in trades:
+        if not isinstance(trade, dict):
+            continue
+        event = str(trade.get("transaction_type") or "").lower().strip()
+        if re.search(r"gift|award|grant|option|exercis|conversion|withhold|tax|to cover", event):
+            continue
+        if re.match(r"^(?:open[ -]market\s+)?(?:purchase|buy|bought|p)\b|^장내매수", event):
+            side = "buy"
+        elif re.match(r"^(?:open[ -]market\s+)?(?:sale|sell|sold|s)\b|^장내매도", event):
+            side = "sell"
         else:
-            end_dt = datetime.strptime(end_date, "%Y-%m-%d")
-            start_dt = end_dt - timedelta(days=90)
-            prices = get_prices(ticker, start_dt.strftime("%Y-%m-%d"), end_date)
+            continue
+        ownership = str(trade.get("ownership_type") or "").strip().lower()
+        directional.append({**trade, "transaction_type": side,
+                            "ownership_type": "direct" if ownership in {"d", "direct"} else ""})
+    return directional
 
-        if not prices:
-            return None, "prices_unavailable"
 
-        # 3. 내부자 거래 / 뉴스 데이터
-        if skip_news:
-            insider_trades = []
-            company_news = []
-        else:
-            insider_trades = get_insider_trades(ticker, end_date, limit=50)
-            company_news = get_company_news(ticker, end_date, limit=20)
+def _style_diagnostics(metrics, raw, momentum, details, sector_stats):
+    """Compute a style only when its required blocks exist. Never used as rank inputs."""
+    value, growth, quality, safety = (raw[key] for key in FINANCIAL_INPUTS)
+    insider = raw["insider"]
+    styles = {}
+    if None not in (growth, quality, safety):
+        styles["buffett"] = calculate_buffett_score(metrics, growth, quality, safety)
+    if None not in (growth, insider, value):
+        styles["lynch"] = calculate_lynch_score(metrics, growth, 5, insider, sector_stats)
+    if value is not None and safety is not None:
+        styles["graham"] = calculate_graham_score(metrics, sector_stats)
+    if growth is not None and quality is not None:
+        styles["fisher"] = calculate_fisher_score(metrics, growth, quality)
+    if momentum is not None and growth is not None:
+        styles["druckenmiller"] = calculate_druckenmiller_score(momentum, growth, details, metrics)
+    total_weight = sum(INVESTOR_WEIGHTS[name] for name in styles)
+    mean = sum(score * INVESTOR_WEIGHTS[name] for name, score in styles.items()) / total_weight if total_weight else None
+    spread = statistics.stdev(styles.values()) if len(styles) >= 2 else None
+    consensus = {
+        "bullish": [name for name in styles if styles[name] >= 7],
+        "bearish": [name for name in styles if styles[name] <= 3],
+        "std": round(spread, 2) if spread is not None else None,
+        "level": None if spread is None else ("high" if spread < 1.5 else "medium" if spread < 2.5 else "low"),
+    }
+    return styles, mean, consensus
 
-        # 시가총액 (한국 종목은 KRW 단위)
-        market_cap = metrics[0].get('market_cap')
-        currency = "KRW" if is_korean_ticker(ticker) else None
-        cap_category, cap_display = get_market_cap_category(market_cap, currency=currency)
 
-        # 4. 애널리스트 추정치 (US 종목만, API 키 없으면 None)
-        analyst_estimates = None
-        if not is_korean_ticker(ticker):
+def analyze_single_ticker(ticker, end_date, prefetched_prices=None, strategy="hybrid", skip_news=False,
+                          sector_stats=None, factor_weights=None):
+    row, _ = analyze_single_ticker_detailed(ticker, end_date, prefetched_prices, strategy, skip_news,
+                                            sector_stats, factor_weights)
+    return row
+
+
+def analyze_single_ticker_detailed(ticker, end_date, prefetched_prices=None, strategy="hybrid", skip_news=False,
+                                   sector_stats=None, factor_weights=None, *, prefetched_metrics=None, for_batch=False):
+    """A standalone research score uses a one-company comparison universe."""
+    try:
+        if strategy not in {"fundamental", "hybrid", "momentum"}:
+            raise ValueError("unknown strategy")
+        metrics = []
+        if strategy != "momentum":
+            metrics = prefetched_metrics
+            if metrics is None:
+                metrics = get_financial_metrics(ticker, end_date, period="annual", limit=2)
+            if not metrics:
+                return None, "metrics_unavailable"
+            if str(metrics[0].get("quote_type") or "").upper() in {"ETF", "MUTUALFUND", "INDEX", "FUTURE", "CURRENCY", "CRYPTOCURRENCY"}:
+                return None, "non_company_instrument"
+        bars = prefetched_prices if prefetched_prices is not None else get_prices(ticker, _price_start(end_date), end_date)
+        latest_price_day = completed_korean_price_date(end_date) if is_korean_ticker(ticker) else end_date
+        prices, reason = observed_prices(bars, end_date, latest_price_day=latest_price_day)
+        if reason:
+            return None, reason
+        long_window = len(prices) >= MIN_PRICE_OBSERVATIONS
+        if strategy == "momentum" and not long_window:
+            return None, "insufficient_price_history"
+
+        m = _clean_snapshot(metrics[0]) if metrics else {}
+        metrics = [m] if m else []
+        estimates = None
+        if metrics and not is_korean_ticker(ticker) and end_date == datetime.now(UTC).date().isoformat():
+            from financial_datasets_api import get_analyst_estimates
             try:
-                from financial_datasets_api import get_analyst_estimates
-                analyst_estimates = get_analyst_estimates(ticker, end_date)
+                estimates = get_analyst_estimates(ticker, end_date)
             except Exception:
                 pass
+        inputs = observed_financials(m, estimates)
+        if strategy != "momentum" and sum(bool(values) for values in inputs.values()) < 2:
+            return None, "insufficient_fundamental_coverage"
+        raw = dict.fromkeys((*FINANCIAL_INPUTS, "insider", "momentum"))
+        explanations = []
+        for group, fn in (("value", calculate_value_score), ("growth", calculate_growth_score),
+                          ("quality", calculate_quality_score), ("safety", calculate_safety_score)):
+            if inputs[group]:
+                if group in {"quality", "safety"}:
+                    raw[group], notes = fn(metrics, observed=True)
+                elif group == "growth":
+                    raw[group], notes = fn(metrics, inputs["growth"])
+                else:
+                    raw[group], notes = fn(metrics)
+                explanations.extend(notes)
 
-        # ========================================
-        # 기본 팩터별 점수 계산
-        # ========================================
-        value_score, value_factors = calculate_value_score(metrics)
-        growth_score, growth_factors = calculate_growth_score(metrics, analyst_estimates)
-        quality_score, quality_factors = calculate_quality_score(metrics)
-        momentum_score, momentum_factors = calculate_momentum_score(prices)
-        safety_score, safety_factors = calculate_safety_score(metrics)
-
-        raw_sentiment_score, raw_sentiment_factors = calculate_sentiment_score(company_news)
-        sentiment_score = ranking_sentiment_score(raw_sentiment_score)
-        insider_score, insider_factors = calculate_insider_activity_score(insider_trades)
-
-        size_bonus, size_factors = calculate_size_bonus(market_cap, growth_score, currency=currency)
-
-        enhanced_momentum_score, momentum_details = calculate_enhanced_momentum_score(prices)
-
-        # ========================================
-        # 투자자 스타일별 점수 계산
-        # ========================================
-        investor_scores = {
-            "buffett": calculate_buffett_score(metrics, growth_score, quality_score, safety_score),
-            "lynch": calculate_lynch_score(metrics, growth_score, sentiment_score, insider_score, sector_stats),
-            "graham": calculate_graham_score(metrics, sector_stats),
-            "druckenmiller": calculate_druckenmiller_score(enhanced_momentum_score, growth_score, momentum_details, metrics),
-            "fisher": calculate_fisher_score(metrics, growth_score, quality_score),
-        }
-
-        # ========================================
-        # 앙상블 가중 점수 계산
-        # ========================================
-        ensemble_weighted_sum = 0
-        ensemble_total_weight = 0
-
-        for investor, inv_score in investor_scores.items():
-            weight = INVESTOR_WEIGHTS.get(investor, 0.5)
-            ensemble_weighted_sum += inv_score * weight
-            ensemble_total_weight += weight
-
-        ensemble_score = ensemble_weighted_sum / ensemble_total_weight if ensemble_total_weight > 0 else 0
-
-        # 기본 팩터 가중 점수
-        factor_score = calculate_weighted_factor_score(
-            {
-                "value": value_score,
-                "growth": growth_score,
-                "quality": quality_score,
-                "momentum": momentum_score,
-                "safety": safety_score,
-                "sentiment": sentiment_score,
-                "insider": insider_score,
-            },
-            factor_weights,
-        )
-
-        # ========================================
-        # Lynch GARP 보너스
-        # ========================================
-        lynch_garp_bonus = 0
-        lynch_score = investor_scores.get('lynch', 0)
-        if lynch_score >= 7:
-            lynch_garp_bonus = 0.5
-        elif lynch_score >= 5:
-            lynch_garp_bonus = 0.25
-
-        # ========================================
-        # 전략별 최종 점수 계산
-        # ========================================
-        fundamental_score = ensemble_score * 0.6 + factor_score * 0.4 + size_bonus + lynch_garp_bonus
-
-        if strategy == "momentum":
-            total_score = enhanced_momentum_score
-        elif strategy == "hybrid":
-            buffett_s = investor_scores.get('buffett', 0)
-            graham_s = investor_scores.get('graham', 0)
-            drucken_s = investor_scores.get('druckenmiller', 0)
-
-            if buffett_s >= 7 and graham_s >= 6:
-                fund_weight, mom_weight = 0.85, 0.15
-            elif drucken_s >= 7 and buffett_s < 5 and graham_s < 5:
-                fund_weight, mom_weight = 0.55, 0.45
-            else:
-                fund_weight, mom_weight = 0.70, 0.30
-
-            total_score = fundamental_score * fund_weight + enhanced_momentum_score * mom_weight
-        else:
-            total_score = fundamental_score
-
-        # ========================================
-        # 현금흐름 품질 게이트
-        # ========================================
-        m_cf = metrics[0] if isinstance(metrics, list) else metrics
-        fcf = m_cf.get('free_cash_flow')
-        op_cf = m_cf.get('operating_cashflow')
-        op_margin = m_cf.get('operating_margin')
-        cf_penalty = 0
-
-        if op_cf is not None and op_cf < 0:
-            cf_penalty -= 1.5
-            all_factors_cf = ["⚠️ 영업CF 마이너스 (본업 현금소진)"]
-        elif fcf is not None and fcf < 0:
-            cf_penalty -= 1.0
-            all_factors_cf = ["⚠️ FCF 마이너스 (높은 CapEx)"]
-        else:
-            all_factors_cf = []
-
-        if op_margin is not None and 0 < op_margin < 0.05:
-            cf_penalty -= 0.5
-            all_factors_cf.append(f"⚠️ 영업마진 극저 ({op_margin*100:.1f}%)")
-
-        total_score += cf_penalty
-
-        # 모든 요인 병합
-        all_factors = (value_factors + growth_factors + quality_factors +
-                      momentum_factors + safety_factors +
-                      insider_factors + size_factors + all_factors_cf)
-
-        # 점수를 사람이 읽기 쉬운 퍼센트 범위로만 환산한다.
-        # 학습·검증된 기대수익률 모델이 아니므로 예상 수익률로 표기하지 않는다.
-        normalized = (total_score - 3) / 10
-        score_implied_return = max(-0.30, min(0.40, normalized * 0.35))
-
-        # 신호 결정
-        if total_score >= 8:
-            signal = "strong_buy"
-        elif total_score >= 5:
-            signal = "buy"
-        elif total_score >= 2:
-            signal = "hold"
-        elif total_score >= 0:
-            signal = "weak_sell"
-        else:
-            signal = "sell"
-
-        # ========================================
-        # 투자자 합의도 분석
-        # ========================================
-        bullish_investors = [k for k, v in investor_scores.items() if v >= 7]
-        bearish_investors = [k for k, v in investor_scores.items() if v <= 3]
-
-        inv_scores_list = list(investor_scores.values())
-        if len(inv_scores_list) >= 2:
-            investor_std = statistics.stdev(inv_scores_list)
-        else:
-            investor_std = 0
-
-        consensus_level = "high" if investor_std < 1.5 else ("medium" if investor_std < 2.5 else "low")
-
-        investor_warnings = generate_investor_warnings(ticker, investor_scores, metrics)
-
-        if investor_std > 2.5:
-            max_inv = max(investor_scores, key=investor_scores.get)
-            min_inv = min(investor_scores, key=investor_scores.get)
-            investor_warnings.append(
-                f"⚠️ 투자자 의견 분산 심함 (std={investor_std:.1f}): "
-                f"{max_inv}({investor_scores[max_inv]:.1f}) vs {min_inv}({investor_scores[min_inv]:.1f})"
-            )
-
-        m = metrics[0]
-        result = {
-            "ticker": ticker,
-            "company_name": _resolve_company_name(ticker, m),
-            "total_score": round(total_score, 2),
-            "ensemble_score": round(ensemble_score, 2),
-            "signal": signal,
-            "score_implied_return_pct": round(score_implied_return * 100, 1),
-            "return_estimate": {
-                "calibrated": False,
-                "method": "heuristic_score_mapping",
-                "label": "점수 환산값(예상수익률 아님)",
-            },
-            "data_as_of": end_date,
-            "factors": all_factors[:5],
-            "strategy": strategy,
-            "scores": {
-                "value": round(value_score, 1),
-                "growth": round(growth_score, 1),
-                "quality": round(quality_score, 1),
-                "momentum": round(momentum_score, 1),
-                "enhanced_momentum": round(enhanced_momentum_score, 1),
-                "safety": round(safety_score, 1),
-                "sentiment": round(sentiment_score, 2),
-                "insider": round(insider_score, 1),
-                "size_bonus": round(size_bonus, 1),
-                "lynch_garp_bonus": round(lynch_garp_bonus, 2),
-                "fundamental": round(fundamental_score, 2),
+        enhanced, momentum_details = calculate_enhanced_momentum_score(prices) if long_window else (None, {})
+        classical, momentum_notes = calculate_momentum_score(prices) if long_window else (None, [])
+        # Preserve the raw factor definition used by the common factor evidence artifacts.
+        raw["momentum"] = classical if strategy != "momentum" else enhanced
+        if strategy != "fundamental":
+            explanations.extend(momentum_notes)
+        news, trades = [], []
+        news_status = insider_status = "not_requested"
+        if strategy != "momentum" and not skip_news:
+            news, news_status = _auxiliary(get_company_news, ticker, end_date, 20)
+            trades, insider_status = _auxiliary(get_insider_trades, ticker, end_date, 50)
+        directional = _directional_trades(trades)
+        insider_score, insider_notes = calculate_insider_activity_score(directional)
+        if directional:
+            raw["insider"] = insider_score
+            explanations.extend(insider_notes)
+        elif trades:
+            insider_status = "no_usable_observations"
+        raw_sentiment, sentiment_notes = calculate_sentiment_score(news) if news else (None, [])
+        styles, ensemble, consensus = _style_diagnostics(metrics, raw, enhanced, momentum_details, sector_stats)
+        warnings = generate_investor_warnings(ticker, styles, metrics) if metrics else []
+        cap = m.get("market_cap")
+        category, display = get_market_cap_category(cap, currency="KRW" if is_korean_ticker(ticker) else None)
+        row = {
+            "ticker": ticker, "company_name": m.get("company_name") or ticker, "strategy": strategy,
+            "data_as_of": end_date, "rank_inputs": raw, "factors": explanations[:5],
+            "scores": {**raw, "sentiment": 5.0 if strategy != "momentum" else None, "enhanced_momentum": enhanced},
+            "research_evidence": {
+                "price_start": prices[0]["time"], "price_end": prices[-1]["time"], "last_close": prices[-1]["close"],
+                "last_price_providers": prices[-1]["providers"],
+                "price_observations": len(prices), "momentum_window_available": long_window,
+                "fundamental_fields": inputs, "financial_snapshot_date": end_date if metrics else None,
+                "financial_provider": m.get("provider"), "quote_type": m.get("quote_type"), "pe_basis": m.get("pe_basis"),
+                "cash_flow_observations": {key: m[key] for key in ("operating_cashflow", "free_cash_flow")
+                                          if is_number(m.get(key))},
+                "missing_fundamental_groups": [key for key in inputs if not inputs[key]],
+                "insider_status": insider_status, "keyword_news_status": news_status,
+                "insider_events_received": len(trades), "insider_events_used": len(directional),
             },
             "sentiment_diagnostics": {
-                "source": "keyword",
-                "raw_score": round(raw_sentiment_score, 2),
-                "ranking_score": round(sentiment_score, 2),
-                "ranking_policy": "risk_and_explanation_only",
-                "ranking_contribution_applied": False,
-                "accuracy_validated": False,
-                "factors": raw_sentiment_factors,
+                "source": "keyword", "raw_score": raw_sentiment, "ranking_policy": "risk_and_explanation_only",
+                "ranking_contribution_applied": False, "accuracy_validated": False, "factors": sentiment_notes,
             },
-            "momentum_details": momentum_details,
-            "investor_scores": {k: round(v, 1) for k, v in investor_scores.items()},
-            "investor_consensus": {
-                "bullish": bullish_investors,
-                "bearish": bearish_investors,
-                "std": round(investor_std, 2),
-                "level": consensus_level,
-            },
-            "investor_warnings": investor_warnings,
-            "market_cap": {
-                "value": market_cap,
-                "display": cap_display,
-                "category": cap_category,
-            },
-            "metrics": {
-                "pe": m.get('price_to_earnings_ratio'),
-                "pb": m.get('price_to_book_ratio'),
-                "roe": round(m.get('return_on_equity', 0) * 100, 1) if m.get('return_on_equity') else None,
-                "revenue_growth": round(m.get('revenue_growth', 0) * 100, 1) if m.get('revenue_growth') else None,
-                "peg": m.get('peg_ratio'),
-                "sector": m.get('sector'),
-            }
+            "momentum_details": momentum_details, "ensemble_score": round(ensemble, 2) if ensemble is not None else None,
+            "investor_scores": {key: round(value, 2) for key, value in styles.items()},
+            "investor_consensus": consensus, "investor_warnings": warnings,
+            "market_cap": {"value": cap, "display": display, "category": category},
+            "metrics": {"pe": m.get("price_to_earnings_ratio"), "pb": m.get("price_to_book_ratio"),
+                        "roe": _percent(m.get("return_on_equity")), "revenue_growth": _percent(m.get("revenue_growth")),
+                        "peg": m.get("peg_ratio"), "sector": m.get("sector")},
         }
-        return result, None
-
+        if for_batch:
+            return row, None
+        ranked = rank_research_rows([row], strategy, factor_weights)
+        return (ranked[0], None) if ranked else (None, "no_weighted_observations")
     except Exception as exc:
-        # 예외 메시지에는 provider 응답이 섞일 수 있어 타입만 남긴다.
         return None, f"analysis_error:{type(exc).__name__}"
 
 
-def run_batch_analysis(
-    tickers,
-    end_date,
-    max_workers=MAX_WORKERS,
-    strategy="hybrid",
-    factor_weights=None,
-):
-    """배치 분석 실행. 제외 종목이 필요하면 run_batch_analysis_with_exclusions를 쓴다."""
-    results = run_batch_analysis_with_exclusions(
-        tickers,
-        end_date,
-        max_workers=max_workers,
-        strategy=strategy,
-        factor_weights=factor_weights,
-    ).results
-    return list(results)
+def run_batch_analysis(tickers, end_date, max_workers=MAX_WORKERS, strategy="hybrid", factor_weights=None, *, skip_news=False):
+    return list(run_batch_analysis_with_exclusions(tickers, end_date, max_workers, strategy, factor_weights, skip_news=skip_news).results)
 
 
-def run_batch_analysis_with_exclusions(
-    tickers,
-    end_date,
-    max_workers=MAX_WORKERS,
-    strategy="hybrid",
-    factor_weights=None,
-):
-    """배치 분석 실행
-
-    Args:
-        tickers: 분석할 종목 리스트
-        end_date: 분석 기준일
-        max_workers: 병렬 처리 워커 수
-        strategy: 분석 전략 (fundamental, momentum, hybrid)
-        factor_weights: 이 실행에 적용할 검증 수축 후 팩터 가중치
-
-    Returns:
-        BatchAnalysis. 데이터가 없는 종목은 순위 대신 excluded에 사유와 함께 남는다.
-    """
-    results = []
-    excluded = []
-    total = len(tickers)
-    processed = 0
-    lock = threading.Lock()
-
-    strategy_names = {"fundamental": "펀더멘털", "momentum": "모멘텀", "hybrid": "하이브리드"}
-    cache_status = "활성화" if CACHE_ENABLED else "비활성화"
-    print(f"분석 시작: {total}개 종목 (Workers: {max_workers}, 캐시: {cache_status}, 전략: {strategy_names.get(strategy, strategy)})")
-
-    # 1단계: 가격 데이터 배치 다운로드
-    end_dt = datetime.strptime(end_date, "%Y-%m-%d")
-    start_dt = end_dt - timedelta(days=90)
-    start_date_str = start_dt.strftime("%Y-%m-%d")
-
-    all_prices = batch_fetch_prices(tickers, start_date_str, end_date)
-
-    # 2단계: 재무 지표 선행 수집 (섹터 통계 계산용)
-    print(f"📊 섹터 통계 계산을 위한 재무 지표 수집 중... ({total}개 종목)")
-    all_metrics = []
-    metrics_map = {}
-
-    def fetch_metrics_only(ticker):
-        metrics = get_financial_metrics(ticker, end_date, period="annual", limit=2)
-        if metrics:
-            return ticker, metrics[0]
-        return ticker, None
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for ticker, metrics in executor.map(lambda t: fetch_metrics_only(t), tickers):
-            if metrics:
-                all_metrics.append(metrics)
-                metrics_map[ticker] = metrics
-
-    # 3단계: 섹터별 통계 계산
-    sector_stats = calculate_sector_stats(all_metrics)
-    sector_count = len([k for k in sector_stats.keys() if not k.startswith('_')])
-    print(f"   ✅ {sector_count}개 섹터 통계 계산 완료 (총 {len(all_metrics)}개 종목)")
-
-    # 4단계: 전체 분석
-    print(f"📈 투자자 앙상블 분석 중... ({total}개 종목)")
-    processed = 0
-
-    def process_with_progress(ticker):
-        nonlocal processed
-        prefetched_prices = all_prices.get(ticker)
-        outcome = analyze_single_ticker_detailed(
-            ticker,
-            end_date,
-            prefetched_prices=prefetched_prices,
-            strategy=strategy,
-            sector_stats=sector_stats,
-            factor_weights=factor_weights,
-        )
-        with lock:
-            processed += 1
-            if processed % 25 == 0 or processed == total:
-                print(f"   진행: {processed}/{total} ({processed/total*100:.0f}%)")
-        return outcome
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(process_with_progress, t): t for t in tickers}
-
+def run_batch_analysis_with_exclusions(tickers, end_date, max_workers=MAX_WORKERS, strategy="hybrid", factor_weights=None,
+                                       *, skip_news=False):
+    tickers = list(dict.fromkeys(tickers))
+    all_prices = batch_fetch_prices(tickers, _price_start(end_date), end_date)
+    rows, excluded, snapshots = [], [], {}
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        if strategy != "momentum":
+            futures = {pool.submit(get_financial_metrics, t, end_date, period="annual", limit=2): t for t in tickers}
+            for future in as_completed(futures):
+                ticker = futures[future]
+                try:
+                    snapshots[ticker] = future.result() or []
+                except Exception as exc:
+                    excluded.append({"ticker": ticker, "reason": f"analysis_error:{type(exc).__name__}"})
+        active = [ticker for ticker in tickers if strategy == "momentum" or ticker in snapshots]
+        sectors = calculate_sector_stats([_clean_snapshot(m[0]) for m in snapshots.values() if m]) if snapshots else {}
+        futures = {
+            pool.submit(analyze_single_ticker_detailed, ticker, end_date, prefetched_prices=all_prices.get(ticker),
+                        prefetched_metrics=snapshots.get(ticker), strategy=strategy, sector_stats=sectors,
+                        factor_weights=factor_weights, skip_news=skip_news, for_batch=True): ticker for ticker in active
+        }
         for future in as_completed(futures):
-            result, reason = future.result()
-            if result:
-                results.append(result)
-            else:
+            row, reason = future.result()
+            if row is None:
                 excluded.append({"ticker": futures[future], "reason": reason})
-
-    # 점수순 정렬
-    results.sort(key=lambda x: x['total_score'], reverse=True)
-
-    # 순위 부여
-    for i, r in enumerate(results, 1):
-        r['rank'] = i
-
-    if excluded:
-        summary = ", ".join(f"{k} {v}개" for k, v in summarize_exclusions(excluded).items())
-        print(f"   ⚠️ 데이터 부족으로 순위에서 제외: {len(excluded)}개 ({summary})")
-
-    return BatchAnalysis(
-        results=tuple(results),
-        excluded=tuple(sorted(excluded, key=lambda item: item["ticker"])),
-    )
+            else:
+                rows.append(row)
+    ranked = rank_research_rows(rows, strategy, factor_weights)
+    included = {row["ticker"] for row in ranked}
+    excluded.extend({"ticker": row["ticker"], "reason": "no_weighted_observations"} for row in rows if row["ticker"] not in included)
+    return BatchAnalysis(tuple(ranked), tuple(sorted(excluded, key=lambda row: row["ticker"])))

@@ -19,6 +19,9 @@ calendar에는 `id`(추천과 같은 XNYS 등), `provider`, `reference`, `covera
 범위는 생성부터 평가일까지 포괄하며 실제 거래일을 순서대로 넣는다. 공휴일·임시 휴장·단축
 거래도 원천으로 확인한다. 달력 날짜로 거래일을 추정하거나 누락된 거래일을 건너뛰지 않는다.
 달력의 완전성은 원천으로 확인한다. 검증기는 순서·중복·범위를 검사한다.
+정규장 시가·종가의 거래소 현지 날짜는 session.date와 일치해야 한다. XNYS·XNAS·XKRX는
+거래소 시간대를 적용한다. 다른 달력에서 UTC 시각을 쓰면 IANA 이름을 `calendar.timezone`에
+명시한다. 이를 생략하면 입력 시각 자체의 offset을 현지 시간으로 사용한다.
 
 series는 ticker별 객체다. `currency`, `calendar`, `provider`, `reference`, `retrieved_at`,
 `price_basis="total_return_adjusted"`, `bars:[{date,open,close,status:"ok"}]`를 넣는다.
@@ -45,6 +48,27 @@ weight/(1+entry_cost)이고 종료 평가에 exit_cost를 차감한다. 외화�
 
 출력: portfolio_return, benchmark_return, 단순 차이 relative_return, 자산별/CASH
 contributions, 관측 기간 MDD·변동성·NAV. 짧은 표본을 표시하고 미래 알파로 해석하지 않는다.
+
+## 새 추천의 대안별 평가
+
+`decision_evaluation_v2.alternative_outcomes`는 형성 시점의 비교표에 저장된 모든 배분을
+같은 시작 시가와 마지막 종가로 평가한다. 각 대안의 `formation_status`는 당시 제약을
+충족했는지를 나타낸다. 제약을 어긴 안도 가격이 있으면 선택할 수 없었던 비교 사례로 표시한다.
+당시 자료가 부족했던 안은 `unavailable`, 이후 가격·환율·거래일 자료가 부족한 안은
+`incomplete`로 기록한다. 선택안을 평가하지 못한 경우에도 관측 가능한 대안의 수익은 남긴다.
+
+- `fresh_capital_return`은 새 자금으로 모든 자산을 매수하고 종료 시 청산한다는 가정이다.
+  선택안은 기존 `portfolio_return`과 같은 방식으로 계산한다.
+- `from_holdings_return`은 기존 자산에서 목표 비중으로 옮긴 뒤 종료 종가로 평가한다.
+  형성일에 고정한 추정 전환 비용을 최초 자금에서 한 번 빼고, 남은 자금을 목표 비중에
+  비례하여 배분한다. 종료 시 청산을 가정하지 않는다. 기존 보유를 그대로 유지하면 최초
+  전환 비용은 0이다. 보유나 비용이 미상이면 이 값은 null이다.
+- `selected_minus_alternative_fresh`와 `selected_minus_alternative_from_holdings`는 각각
+  같은 비용 기준으로 계산한 선택안 수익률에서 대안 수익률을 뺀 값이다. 한쪽이라도 평가할 수
+  없으면 차이는 null이다. 예측이나 연율화 점수가 아닌 해당 관측 기간의 모의 수익률 차이다.
+
+형성 시점의 손실 가정, 과거 가격의 최대 낙폭, 결정 이후의 관측 수익은 따로 해석한다.
+비교 결과의 입력은 고정된 결정 해시와 평가 가격 해시로 추적한다.
 
 ## 사업 가설과 버전
 

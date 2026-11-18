@@ -986,6 +986,9 @@ def print_report(
 
 
 def main() -> None:
+    # Windows pipes can use CP949 even when user-supplied source text contains other scripts.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="backslashreplace")
     parser = argparse.ArgumentParser()
     parser.add_argument("--predict-json", required=True)
     parser.add_argument("--investor-json", required=True, help="종목별 독립 investor-analysis 결과 JSON")
@@ -998,6 +1001,8 @@ def main() -> None:
     parser.add_argument("--portfolio-json", help="백테스트용 목표비중 JSON 저장 경로")
     parser.add_argument("--decision-json", help="현재 AI가 작성한 최종 투자 판단 JSON (새 기본 스킬 흐름)")
     parser.add_argument("--snapshot-dir", help="추천별 변경 불가능한 스냅샷 디렉터리")
+    parser.add_argument("--preview", action="store_true", help="판단안과 대안을 계산해 출력한다. 파일은 생성하지 않는다.")
+    parser.add_argument("--legacy-replay", action="store_true", help="과거 점수 배분 또는 v1 판단 재현")
     args = parser.parse_args()
 
     requested = [token.strip() for token in args.investors.split(",") if token.strip()]
@@ -1013,6 +1018,10 @@ def main() -> None:
     if unknown:
         parser.error(f"알 수 없는 투자자: {', '.join(unknown)}")
     payload, top_stocks = load_predict_results(Path(args.predict_json), args.top)
+    if args.preview and not args.decision_json:
+        parser.error("--preview에는 --decision-json이 필요합니다.")
+    if payload.get("research_shortlist") and not args.decision_json and not args.legacy_replay:
+        parser.error("새 추천에는 --decision-json이 필요합니다. 과거 배분 재현은 --legacy-replay를 지정하세요.")
     analysis_date = payload.get("analysis_date")
     if not analysis_date:
         parser.error("predict JSON에 analysis_date가 없습니다.")

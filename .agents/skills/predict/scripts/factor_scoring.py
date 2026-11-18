@@ -240,7 +240,7 @@ def calculate_growth_score(metrics, analyst_estimates=None):
 # 품질 점수
 # ============================================================================
 
-def calculate_quality_score(metrics):
+def calculate_quality_score(metrics, *, observed=False):
     """품질 점수 (멍거/피셔 스타일)"""
     if not metrics:
         return 0, []
@@ -251,7 +251,7 @@ def calculate_quality_score(metrics):
 
     # ROE
     roe = m.get('return_on_equity')
-    if roe:
+    if roe is not None and (observed or roe):
         if roe > 0.25:
             score += 4
             factors.append(f"뛰어난 ROE ({roe*100:.0f}%)")
@@ -274,7 +274,7 @@ def calculate_quality_score(metrics):
 
     # 영업이익률
     op_margin = m.get('operating_margin')
-    if op_margin:
+    if op_margin is not None and (observed or op_margin):
         if op_margin > 0.25:
             score += 2
             factors.append(f"높은 영업마진 ({op_margin*100:.0f}%)")
@@ -455,7 +455,7 @@ def calculate_enhanced_momentum_score(prices, lookback_short=20, lookback_long=6
 # 안전성 점수
 # ============================================================================
 
-def calculate_safety_score(metrics):
+def calculate_safety_score(metrics, *, observed=False):
     """
     안전성 점수 (파브라이/버핏 스타일)
 
@@ -474,7 +474,9 @@ def calculate_safety_score(metrics):
     # 부채비율 (D/E)
     debt_equity = m.get('debt_to_equity')
     if debt_equity is not None:
-        if debt_equity < 0.3:
+        if observed and debt_equity < 0:
+            factors.append("음수 D/E: 자본과 부채를 별도로 확인")
+        elif debt_equity < 0.3:
             score += 3
             factors.append("낮은 부채")
         elif debt_equity < 0.7:
@@ -485,7 +487,7 @@ def calculate_safety_score(metrics):
 
     # 유동비율
     current_ratio = m.get('current_ratio')
-    if current_ratio:
+    if current_ratio is not None and (observed or current_ratio):
         if current_ratio > 2.5:
             score += 2
             factors.append(f"양호한 유동비율 ({current_ratio:.1f})")
@@ -497,7 +499,7 @@ def calculate_safety_score(metrics):
 
     # 당좌비율 (Quick Ratio)
     quick_ratio = m.get('quick_ratio')
-    if quick_ratio:
+    if quick_ratio is not None and (observed or quick_ratio):
         if quick_ratio > 1.5:
             score += 1
         elif quick_ratio < 0.5:
@@ -505,7 +507,7 @@ def calculate_safety_score(metrics):
 
     # 현금비율 (Cash Ratio)
     cash_ratio = m.get('cash_ratio')
-    if cash_ratio:
+    if cash_ratio is not None and (observed or cash_ratio):
         if cash_ratio > 0.5:
             score += 2
             factors.append(f"충분한 현금보유 ({cash_ratio:.2f})")
@@ -516,7 +518,7 @@ def calculate_safety_score(metrics):
 
     # 이자보상배율 (Interest Coverage)
     interest_coverage = m.get('interest_coverage')
-    if interest_coverage:
+    if interest_coverage is not None and (observed or interest_coverage):
         if interest_coverage > 10:
             score += 2
             factors.append(f"충분한 이자보상 ({interest_coverage:.1f}x)")
@@ -528,7 +530,7 @@ def calculate_safety_score(metrics):
 
     # 영업현금흐름 비율
     ocf_ratio = m.get('operating_cash_flow_ratio')
-    if ocf_ratio:
+    if ocf_ratio is not None and (observed or ocf_ratio):
         if ocf_ratio > 1.0:
             score += 1
             factors.append("강한 영업현금흐름")

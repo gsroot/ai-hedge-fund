@@ -14,7 +14,6 @@ import sys
 import time
 import random
 import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Dict, List, Literal, Optional, Tuple
@@ -416,7 +415,7 @@ def get_index_tickers_from_predictor(index_name: str) -> List[str]:
         predictor_scripts = os.path.join(skills_dir, "predict", "scripts")
         if predictor_scripts not in sys.path:
             sys.path.insert(0, predictor_scripts)
-        from analyze_stocks import get_index_tickers
+        from data_fetcher import get_index_tickers
         return get_index_tickers(index_name, use_cache=True)
     except ImportError:
         print(f"⚠️ predict 모듈을 불러올 수 없습니다. 기본 목록 사용.")
@@ -600,80 +599,42 @@ def generate_signals_from_predictor(
     skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (401 오류 방지)
 ) -> Dict[str, Dict]:
     """predict 분석 결과에서 거래 신호 생성 (상대적 순위 기반, 병렬 처리)"""
-    try:
-        # predict의 analyze_stocks 모듈 임포트
-        skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        predictor_scripts = os.path.join(skills_dir, "predict", "scripts")
-        if predictor_scripts not in sys.path:
-            sys.path.insert(0, predictor_scripts)
-        from analyze_stocks import analyze_single_ticker
+    from analysis import run_batch_analysis_with_exclusions
 
-        # 단일 티커 분석 래퍼 함수
-        def analyze_ticker(ticker: str) -> Tuple[str, float, Dict]:
-            try:
-                result = analyze_single_ticker(
-                    ticker,
-                    analysis_date,
-                    skip_news=skip_news,
-                )
-                if result:
-                    return (ticker, result.get("total_score", 0), result)
-                return (ticker, 0, {})
-            except Exception as e:
-                return (ticker, 0, {"error": str(e)})
+    batch = run_batch_analysis_with_exclusions(
+        tickers, analysis_date, max_workers=max_workers, strategy="hybrid", skip_news=skip_news,
+    )
+    rows = [(row["ticker"], row["total_score"], {"score": row["total_score"], "reasoning": row["factors"]})
+            for row in batch.results]
+    excluded = {item["ticker"]: item["reason"] for item in batch.excluded}
+    return _ranked_signals(rows, excluded, top_pct, bottom_pct, buy_floor=0.5)
 
-        # 병렬 처리로 모든 티커 분석
-        ticker_scores = []
-        ticker_results = {}
 
-        # 종목 수에 따라 워커 수 조정
-        actual_workers = min(max_workers, len(tickers))
-
-        with ThreadPoolExecutor(max_workers=actual_workers) as executor:
-            futures = {executor.submit(analyze_ticker, t): t for t in tickers}
-            for future in as_completed(futures):
-                ticker, score, result = future.result()
-                ticker_scores.append((ticker, score))
-                ticker_results[ticker] = result
-
-        # 점수 기준 정렬 (높은 순)
-        ticker_scores.sort(key=lambda x: x[1], reverse=True)
-
-        # 상대적 순위로 신호 결정
-        n = len(ticker_scores)
-        top_n = max(1, int(n * top_pct))
-        bottom_n = max(1, int(n * bottom_pct))
-
-        signals = {}
-        for i, (ticker, score) in enumerate(ticker_scores):
-            result = ticker_results.get(ticker, {})
-
-            if i < top_n:
-                # 상위 N% - 매수
-                action = Action.BUY
-                # 순위가 높을수록 신뢰도 높음
-                confidence = 0.5 + 0.5 * (top_n - i) / top_n
-            elif i >= n - bottom_n:
-                # 하위 N% - 매도
-                action = Action.SELL
-                confidence = 0.3 + 0.3 * (i - (n - bottom_n)) / bottom_n
-            else:
-                # 중간 - 보유
-                action = Action.HOLD
-                confidence = 0.5
-
-            signals[ticker] = {
-                "action": action,
-                "confidence": confidence,
-                "score": score,
-                "rank": i + 1,
-                "reasoning": result.get("key_factors", []),
-            }
-
+def _ranked_signals(
+    rows: List[Tuple[str, float, Dict]], excluded: Dict[str, str], top_pct: float,
+    bottom_pct: float, buy_floor: float,
+) -> Dict[str, Dict]:
+    signals = {ticker: {"excluded_reason": reason} for ticker, reason in excluded.items()}
+    n = len(rows)
+    if n < 2:
+        for ticker, _, _ in rows:
+            signals[ticker] = {"excluded_reason": "insufficient_cross_section"}
         return signals
-    except ImportError as e:
-        print(f"  ⚠️ predict import 실패: {e}, 모멘텀 전략으로 대체")
-        return generate_momentum_signals(tickers, analysis_date)
+
+    top_n = max(1, int(n * top_pct))
+    bottom_n = max(1, int(n * bottom_pct))
+    for i, (ticker, _, details) in enumerate(sorted(rows, key=lambda row: (-row[1], row[0]))):
+        if i < top_n:
+            action = Action.BUY
+            confidence = buy_floor + (1 - buy_floor) * (top_n - i) / top_n
+        elif i >= n - bottom_n:
+            action = Action.SELL
+            confidence = 0.3 + 0.3 * (i - (n - bottom_n)) / bottom_n
+        else:
+            action = Action.HOLD
+            confidence = 0.5
+        signals[ticker] = {**details, "action": action, "confidence": confidence, "rank": i + 1}
+    return signals
 
 
 def generate_momentum_signals(
@@ -789,106 +750,45 @@ def generate_hybrid_signals(
     skip_news: bool = False,  # 뉴스/내부자 조회 건너뜀 (401 오류 방지)
 ) -> Dict[str, Dict]:
     """하이브리드 전략: 펀더멘털 + 모멘텀 결합 (상대적 순위 기반)"""
-    momentum_weight = 1.0 - fundamental_weight
+    from analysis import run_batch_analysis_with_exclusions
 
-    try:
-        # predict 임포트
-        skills_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        predictor_scripts = os.path.join(skills_dir, "predict", "scripts")
-        if predictor_scripts not in sys.path:
-            sys.path.insert(0, predictor_scripts)
-        from analyze_stocks import analyze_single_ticker
+    if not 0 <= fundamental_weight <= 1:
+        raise ValueError("fundamental_weight must be in [0, 1]")
+    snapshot = slice_price_frame_as_of(price_df, analysis_date)
+    momentum = {}
+    excluded = {}
+    for ticker in tickers:
+        detail = calculate_momentum_score(ticker, snapshot)
+        if "short_momentum" not in detail or not np.isfinite(detail["momentum_score"]):
+            excluded[ticker] = detail.get("error") or "insufficient_momentum_history"
+        else:
+            momentum[ticker] = detail
+    if not momentum:
+        return _ranked_signals([], excluded, top_pct, bottom_pct, buy_floor=0.6)
 
-        # 펀더멘털 분석 (병렬)
-        def analyze_ticker(ticker: str) -> Tuple[str, float, Dict]:
-            try:
-                result = analyze_single_ticker(
-                    ticker,
-                    analysis_date,
-                    skip_news=skip_news,
-                )
-                if result:
-                    return (ticker, result.get("total_score", 0), result)
-                return (ticker, 0, {})
-            except Exception as e:
-                return (ticker, 0, {"error": str(e)})
+    batch = run_batch_analysis_with_exclusions(
+        list(momentum), analysis_date, max_workers=max_workers, strategy="fundamental", skip_news=skip_news,
+    )
+    excluded.update({item["ticker"]: item["reason"] for item in batch.excluded})
+    fundamentals = {row["ticker"]: row["total_score"] for row in batch.results}
+    relative_fundamentals = _normalize_cohort(fundamentals)
+    relative_momentum = _normalize_cohort({ticker: momentum[ticker]["momentum_score"] for ticker in fundamentals})
+    rows = []
+    for ticker, score in fundamentals.items():
+        hybrid = relative_fundamentals[ticker] * fundamental_weight + relative_momentum[ticker] * (1 - fundamental_weight)
+        details = {"hybrid_score": hybrid, "fundamental_score": score,
+                   "momentum_score": momentum[ticker]["momentum_score"], "momentum_detail": momentum[ticker]}
+        rows.append((ticker, hybrid, details))
+    return _ranked_signals(rows, excluded, top_pct, bottom_pct, buy_floor=0.6)
 
-        fundamental_scores = {}
-        fundamental_results = {}
 
-        actual_workers = min(max_workers, len(tickers))
-        with ThreadPoolExecutor(max_workers=actual_workers) as executor:
-            futures = {executor.submit(analyze_ticker, t): t for t in tickers}
-            for future in as_completed(futures):
-                ticker, score, result = future.result()
-                fundamental_scores[ticker] = score
-                fundamental_results[ticker] = result
-
-        # 모멘텀 분석: 반드시 분석 기준일까지 데이터 프레임을 절단한다.
-        point_in_time_prices = slice_price_frame_as_of(price_df, analysis_date)
-        momentum_scores = {}
-        momentum_details = {}
-        for ticker in tickers:
-            mom_data = calculate_momentum_score(ticker, point_in_time_prices)
-            momentum_scores[ticker] = mom_data.get("momentum_score", 0)
-            momentum_details[ticker] = mom_data
-
-        # 정규화 (0-10 스케일)
-        def normalize_scores(scores: Dict[str, float]) -> Dict[str, float]:
-            values = list(scores.values())
-            if not values:
-                return scores
-            min_val, max_val = min(values), max(values)
-            if max_val - min_val < 0.001:
-                return {k: 5.0 for k in scores}
-            return {k: (v - min_val) / (max_val - min_val) * 10 for k, v in scores.items()}
-
-        norm_fundamental = normalize_scores(fundamental_scores)
-        norm_momentum = normalize_scores(momentum_scores)
-
-        # 하이브리드 점수 계산
-        hybrid_scores = []
-        for ticker in tickers:
-            fund_score = norm_fundamental.get(ticker, 0)
-            mom_score = norm_momentum.get(ticker, 0)
-            hybrid = fund_score * fundamental_weight + mom_score * momentum_weight
-            hybrid_scores.append((ticker, hybrid, fund_score, mom_score))
-
-        # 하이브리드 점수 기준 정렬
-        hybrid_scores.sort(key=lambda x: x[1], reverse=True)
-
-        # 상대적 순위로 신호 결정
-        n = len(hybrid_scores)
-        top_n = max(1, int(n * top_pct))
-        bottom_n = max(1, int(n * bottom_pct))
-
-        signals = {}
-        for i, (ticker, hybrid, fund, mom) in enumerate(hybrid_scores):
-            if i < top_n:
-                action = Action.BUY
-                confidence = 0.6 + 0.4 * (top_n - i) / top_n
-            elif i >= n - bottom_n:
-                action = Action.SELL
-                confidence = 0.3 + 0.3 * (i - (n - bottom_n)) / bottom_n
-            else:
-                action = Action.HOLD
-                confidence = 0.5
-
-            signals[ticker] = {
-                "action": action,
-                "confidence": confidence,
-                "hybrid_score": hybrid,
-                "fundamental_score": fundamental_scores.get(ticker, 0),
-                "momentum_score": momentum_scores.get(ticker, 0),
-                "rank": i + 1,
-                "momentum_detail": momentum_details.get(ticker, {}),
-            }
-
-        return signals
-
-    except ImportError as e:
-        print(f"  ⚠️ hybrid 전략 실패: {e}, 모멘텀 전략으로 대체")
-        return generate_momentum_signals(tickers, analysis_date)
+def _normalize_cohort(scores: Dict[str, float]) -> Dict[str, float]:
+    if not scores:
+        return {}
+    low, high = min(scores.values()), max(scores.values())
+    if high - low < 0.001:
+        return dict.fromkeys(scores, 5.0)
+    return {ticker: (score - low) / (high - low) * 10 for ticker, score in scores.items()}
 
 
 def calculate_position_size(
@@ -1027,8 +927,9 @@ class BacktestEngine:
         """가격 데이터 일괄 조회 (한국/해외 자동 분기)"""
         all_tickers = self.tickers + ([self.benchmark] if self.benchmark else [])
 
-        # 1개월 전부터 조회 (모멘텀 계산용)
-        start = datetime.strptime(self.start_date, "%Y-%m-%d") - timedelta(days=60)
+        # 60개 거래일을 확보할 수 있도록 hybrid의 가격 선행 구간을 늘린다.
+        warmup_days = 120 if self.strategy == "hybrid" else 60
+        start = datetime.strptime(self.start_date, "%Y-%m-%d") - timedelta(days=warmup_days)
         start_str = start.strftime("%Y-%m-%d")
         end_exclusive = (datetime.strptime(self.end_date, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
 
@@ -1135,6 +1036,7 @@ class BacktestEngine:
         })
 
         last_mark_prices: Dict[str, float] = {}
+        research_coverage = []
 
         def exact_price(ticker: str, field: str, date: pd.Timestamp) -> Optional[float]:
             try:
@@ -1193,16 +1095,22 @@ class BacktestEngine:
                         }
                 elif self.strategy == "predictor":
                     signals = generate_signals_from_predictor(
-                        available_tickers, signal_date_str, max_workers=self.workers, skip_news=self.skip_news
+                        self.tickers, signal_date_str, max_workers=self.workers, skip_news=self.skip_news
                     )
                 elif self.strategy == "hybrid":
                     signals = generate_hybrid_signals(
-                        available_tickers, signal_date_str, price_df, max_workers=self.workers, skip_news=self.skip_news
+                        self.tickers, signal_date_str, price_df, max_workers=self.workers, skip_news=self.skip_news
                     )
                 else:  # momentum
                     signals = generate_momentum_signals_from_prices(available_tickers, price_df, signal_date)
 
                 print(" 완료", flush=True)
+                if self.strategy in {"predictor", "hybrid"}:
+                    research_coverage.append({
+                        "signal_date": signal_date_str,
+                        "ranked": sum("rank" in signal for signal in signals.values()),
+                        "excluded": {t: s["excluded_reason"] for t, s in signals.items() if "excluded_reason" in s},
+                    })
 
                 # 거래 실행 - 점수 순으로 정렬하여 처리 (현금 한도 내에서 최적 배분)
                 # 1. 먼저 SELL 처리 (현금 확보)
@@ -1321,6 +1229,8 @@ class BacktestEngine:
             "benchmark_excess_return": benchmark_excess_return,
             "validity": {
                 "point_in_time_prices": True,
+                **({"research_ranking": "observed_peer_factors_v2", "research_coverage": research_coverage}
+                   if self.strategy in {"predictor", "hybrid"} else {}),
                 "signal_execution_lag": "previous_close_to_next_open",
                 "survivorship_bias": self.universe_has_survivorship_bias,
                 "portfolio_formation_date": self.portfolio_formation_date,

@@ -11,12 +11,14 @@ import math
 import os
 import json
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
 from config import CACHE_DIR, CACHE_ENABLED
 from cache import _get_cache_path, _read_cache, _write_cache, cache_stats
+from research_ranking import FINANCIAL_INPUTS, is_number
 from rate_limiter import (
     safe_get_ticker_info,
     safe_get_ticker_news,
@@ -26,7 +28,7 @@ from rate_limiter import (
     safe_get_balance_sheet,
     safe_batch_download,
 )
-from ticker_utils import is_korean_ticker, normalize_korean_ticker, is_korean_index
+from ticker_utils import completed_korean_price_date, is_korean_ticker, normalize_korean_ticker, is_korean_index
 
 
 def _is_historical_snapshot(end_date: str) -> bool:
@@ -40,7 +42,7 @@ def _is_historical_snapshot(end_date: str) -> bool:
         requested = datetime.strptime(end_date, "%Y-%m-%d").date()
     except (TypeError, ValueError):
         return False
-    return requested < datetime.now().date()
+    return requested < datetime.now(timezone.utc).date()
 
 # ============================================================================
 # 인덱스 종목 리스트 (폴백용 하드코딩)
@@ -399,9 +401,12 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
         return {
             "ticker": ticker,
             "company_name": info.get("shortName") or info.get("longName") or ticker,
+            "provider": "yahoo_finance",
+            "quote_type": info.get("quoteType"),
+            "pe_basis": "trailing" if info.get("trailingPE") is not None else "forward" if info.get("forwardPE") is not None else None,
 
             # ===== 밸류에이션 지표 =====
-            "price_to_earnings_ratio": info.get("trailingPE") or info.get("forwardPE"),
+            "price_to_earnings_ratio": info.get("trailingPE") if info.get("trailingPE") is not None else info.get("forwardPE"),
             "price_to_book_ratio": info.get("priceToBook"),
             "price_to_sales_ratio": info.get("priceToSalesTrailing12Months"),
             "peg_ratio": info.get("pegRatio"),
@@ -427,7 +432,7 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
             # ===== 재무 건전성 =====
             "current_ratio": info.get("currentRatio"),
             "quick_ratio": info.get("quickRatio"),
-            "debt_to_equity": info.get("debtToEquity") / 100 if info.get("debtToEquity") else None,
+            "debt_to_equity": info["debtToEquity"] / 100 if info.get("debtToEquity") is not None else None,
             "interest_coverage": derived.get("interest_coverage"),
             "cash_ratio": derived.get("cash_ratio"),
             "operating_cash_flow_ratio": derived.get("operating_cash_flow_ratio"),
@@ -435,7 +440,7 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
             "debt_to_assets": (total_debt / (total_debt + market_cap)) if total_debt and market_cap else None,
 
             # ===== 배당 =====
-            "dividend_yield": info.get("dividendYield"),
+            "dividend_yield": info["dividendYield"] / 100 if info.get("dividendYield") is not None else None,
             "payout_ratio": info.get("payoutRatio"),
 
             # ===== 시가총액 및 주식 정보 =====
@@ -445,8 +450,8 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
 
             # ===== 현금흐름 =====
             "free_cash_flow": free_cash_flow,
-            "free_cash_flow_yield": (free_cash_flow / market_cap) if free_cash_flow and market_cap else None,
-            "free_cash_flow_per_share": (free_cash_flow / shares_outstanding) if free_cash_flow and shares_outstanding else None,
+            "free_cash_flow_yield": (free_cash_flow / market_cap) if free_cash_flow is not None and market_cap else None,
+            "free_cash_flow_per_share": (free_cash_flow / shares_outstanding) if free_cash_flow is not None and shares_outstanding else None,
             "operating_cashflow": info.get("operatingCashflow"),
 
             # ===== 부채/현금 =====
@@ -491,10 +496,16 @@ def _fetch_financial_metrics_yf(ticker: str) -> dict:
 # 가격 데이터
 # ============================================================================
 
+def _yahoo_exclusive_end(end_date: str, market_today: date | None = None) -> str:
+    """Include a finished historical date; avoid an in-progress US daily candle."""
+    market_today = market_today or datetime.now(ZoneInfo("America/New_York")).date()
+    return min(date.fromisoformat(end_date) + timedelta(days=1), market_today).isoformat()
+
+
 def _fetch_prices_yf(ticker: str, start_date: str, end_date: str) -> list:
     """Yahoo Finance에서 가격 데이터 가져오기 (단일 티커)"""
     try:
-        df = safe_get_ticker_history(ticker, start_date, end_date)
+        df = safe_get_ticker_history(ticker, start_date, _yahoo_exclusive_end(end_date))
 
         if df is None or df.empty:
             return []
@@ -503,6 +514,7 @@ def _fetch_prices_yf(ticker: str, start_date: str, end_date: str) -> list:
         for date, row in df.iterrows():
             prices.append({
                 "time": date.strftime("%Y-%m-%d"),
+                "provider": "yahoo_finance",
                 "open": float(row["Open"]),
                 "high": float(row["High"]),
                 "low": float(row["Low"]),
@@ -538,7 +550,7 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
     if kr_tickers:
         from korean_data_fetcher import batch_fetch_prices_kr
         kr_normalized = [normalize_korean_ticker(t) for t in kr_tickers]
-        kr_result = batch_fetch_prices_kr(kr_normalized, start_date, end_date)
+        kr_result = batch_fetch_prices_kr(kr_normalized, start_date, completed_korean_price_date(end_date))
         # 원래 티커명으로 매핑 (정규화 전 이름 유지)
         for orig, norm in zip(kr_tickers, kr_normalized):
             if norm in kr_result:
@@ -554,7 +566,7 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
         df = safe_batch_download(
             tickers=us_tickers,
             start=start_date,
-            end=end_date,
+            end=_yahoo_exclusive_end(end_date),
             group_by='ticker',
         )
 
@@ -565,11 +577,14 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
         # 단일 티커인 경우 컬럼 구조가 다름
         if len(us_tickers) == 1:
             ticker = us_tickers[0]
+            if isinstance(df.columns, pd.MultiIndex):
+                df = df[ticker]
             prices = []
             for date, row in df.iterrows():
                 try:
                     prices.append({
                         "time": date.strftime("%Y-%m-%d"),
+                        "provider": "yahoo_finance",
                         "open": float(row["Open"]),
                         "high": float(row["High"]),
                         "low": float(row["Low"]),
@@ -598,6 +613,7 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
                                 continue
                             prices.append({
                                 "time": date.strftime("%Y-%m-%d"),
+                                "provider": "yahoo_finance",
                                 "open": float(row["Open"]) if not pd.isna(row["Open"]) else 0,
                                 "high": float(row["High"]) if not pd.isna(row["High"]) else 0,
                                 "low": float(row["Low"]) if not pd.isna(row["Low"]) else 0,
@@ -624,32 +640,20 @@ def batch_fetch_prices(tickers: list, start_date: str, end_date: str) -> dict:
 # 캐시된 데이터 조회 (재무 지표, 가격)
 # ============================================================================
 
-# 이 중 하나라도 값이 있어야 순위에 쓸 수 있는 재무 지표로 본다.
+# Keep partial snapshots for the strategy-specific observation gate.
 # 상장폐지·티커 변경 종목은 Yahoo가 거의 빈 info를 돌려줘 전부 None인 dict가 만들어진다.
 CORE_METRIC_FIELDS = (
     "market_cap",
-    "price_to_earnings_ratio",
-    "price_to_book_ratio",
-    "return_on_equity",
-    "operating_margin",
-    "revenue_growth",
     "total_revenue",
+    *(name for fields in FINANCIAL_INPUTS.values() for name in fields),
 )
-
-
-def _is_present(value) -> bool:
-    if value is None:
-        return False
-    if isinstance(value, float):
-        return math.isfinite(value)
-    return True
 
 
 def has_usable_metrics(metrics) -> bool:
     """핵심 재무 필드가 하나라도 채워져 있는지 판별한다 (None·NaN·inf는 빈 값)."""
     if not isinstance(metrics, dict):
         return False
-    return any(_is_present(metrics.get(field)) for field in CORE_METRIC_FIELDS)
+    return any(is_number(metrics.get(field)) for field in CORE_METRIC_FIELDS)
 
 
 def get_financial_metrics(
@@ -682,7 +686,7 @@ def get_financial_metrics(
     if _is_historical_snapshot(end_date):
         return []
 
-    cache_path = _get_cache_path("metrics_yf", ticker, end_date, "")
+    cache_path = _get_cache_path("metrics_yf_fractional_v2", ticker, end_date, "")
     cached = _read_cache(cache_path)
     if has_usable_metrics(cached):
         cache_stats["hits"] += 1
@@ -712,7 +716,8 @@ def get_prices(ticker, start_date, end_date):
     if is_korean_ticker(ticker):
         from korean_data_fetcher import get_prices_kr
         kr_ticker = normalize_korean_ticker(ticker)
-        cache_path = _get_cache_path("prices_kr", kr_ticker, end_date, start_date)
+        end_date = completed_korean_price_date(end_date)
+        cache_path = _get_cache_path("prices_kr_completed_v2", kr_ticker, end_date, start_date)
         cached = _read_cache(cache_path)
         if cached is not None:
             cache_stats["hits"] += 1
@@ -723,7 +728,7 @@ def get_prices(ticker, start_date, end_date):
             _write_cache(cache_path, result)
         return result
 
-    cache_path = _get_cache_path("prices_yf", ticker, end_date, start_date)
+    cache_path = _get_cache_path("prices_yf_inclusive_v2", ticker, end_date, f"{start_date}_{_yahoo_exclusive_end(end_date)}")
     cached = _read_cache(cache_path)
     if cached is not None:
         cache_stats["hits"] += 1
@@ -910,33 +915,26 @@ def resolve_index_universe(index_name: str, use_cache: bool = True) -> IndexUniv
     return IndexUniverse(tuple(tickers), "wikipedia", False)
 
 
-def sort_tickers_by_market_cap(tickers, top_n=0):
-    """티커를 시가총액 기준으로 정렬 (한국/해외 자동 분기)"""
-    print(f"📊 {len(tickers)}개 종목을 시가총액 기준으로 정렬 중...")
-
+def sort_tickers_by_market_cap(tickers, top_n=0, *, unavailable=None):
+    """Select from positive, observed capitalizations and report any unknowns separately."""
     market_caps = {}
-    batch_size = 50
-
-    for i in range(0, len(tickers), batch_size):
-        batch = tickers[i:i+batch_size]
-        for ticker in batch:
-            try:
-                if is_korean_ticker(ticker):
-                    from korean_data_fetcher import get_market_cap_kr
-                    kr_ticker = normalize_korean_ticker(ticker)
-                    cap = get_market_cap_kr(kr_ticker, datetime.now().strftime("%Y-%m-%d"))
-                    market_caps[ticker] = cap or 0
-                else:
-                    info = safe_get_ticker_info(ticker)
-                    market_cap = info.get("marketCap", 0) or 0 if info else 0
-                    market_caps[ticker] = market_cap
-            except Exception:
-                market_caps[ticker] = 0
-
-    sorted_tickers = sorted(tickers, key=lambda t: market_caps.get(t, 0), reverse=True)
-
-    if top_n > 0:
-        sorted_tickers = sorted_tickers[:top_n]
-
-    print(f"   시가총액 상위 10개: {sorted_tickers[:10]}")
-    return sorted_tickers
+    missing = []
+    for ticker in tickers:
+        try:
+            if is_korean_ticker(ticker):
+                from korean_data_fetcher import get_market_cap_kr
+                cap = get_market_cap_kr(normalize_korean_ticker(ticker), datetime.now().strftime("%Y-%m-%d"))
+            else:
+                cap = (safe_get_ticker_info(ticker) or {}).get("marketCap")
+            if not isinstance(cap, bool) and isinstance(cap, (int, float)) and math.isfinite(cap) and cap > 0:
+                market_caps[ticker] = cap
+            else:
+                missing.append(ticker)
+        except Exception:
+            missing.append(ticker)
+    if unavailable is not None:
+        unavailable.extend(missing)
+    if missing:
+        print(f"시가총액 미확인 {len(missing)}개 · 관측 가능한 {len(market_caps)}개 안에서만 선별합니다.")
+    ordered = sorted(market_caps, key=lambda ticker: (-market_caps[ticker], ticker))
+    return ordered[:top_n] if top_n > 0 else ordered

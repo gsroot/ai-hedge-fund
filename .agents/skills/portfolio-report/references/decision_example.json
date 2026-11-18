@@ -1,5 +1,5 @@
 {
-  "schema_version": "portfolio_decision_v1",
+  "schema_version": "portfolio_decision_v2",
   "decision_id": "synthetic-example-20260909",
   "analysis_date": "2026-09-08",
   "created_at": "2026-09-09T00:30:00Z",
@@ -168,5 +168,47 @@
     "fx_cost_bps": 5,
     "cost_assumptions": "Illustrative fees and slippage; replace with actual account assumptions",
     "review_trigger": "Scheduled review and material thesis change"
+  },
+  "comparison": {
+    "scenarios": {
+      "base": {
+        "assumptions": "Over the six-month evaluation period, resilient cash generation supports the assumed local equity total returns; cash interest is about 2%. All figures are hypothetical USD total returns including income.",
+        "source_refs": [
+          "prices",
+          "fundamentals"
+        ],
+        "returns": {
+          "AAA": 0.1,
+          "MARKET": 0.045,
+          "CASH": 0.02
+        }
+      },
+      "downside": {
+        "assumptions": "Over the same six months, an earnings contraction causes a larger loss at AAA than at the diversified ETF. USD cash accrues assumed interest.",
+        "source_refs": [
+          "prices",
+          "fundamentals"
+        ],
+        "returns": {
+          "AAA": -0.35,
+          "MARKET": -0.19,
+          "CASH": 0.02
+        }
+      }
+    },
+    "reviews": {
+      "benchmark_reserve": {
+        "tradeoff": "The active position adds cash-flow upside and concentration risk. Even with extra cash, the selected basket is more exposed to the assumed earnings shock.",
+        "switch_condition": "Use the diversified basket if the issuer cannot sustain cash conversion at the quoted price."
+      },
+      "all_cash": {
+        "tradeoff": "The provisional reserve covers the assumed spending need. Holding the balance in cash gives up equity participation to avoid drawdowns.",
+        "switch_condition": "Increase the cash reserve if a larger near-term spending commitment becomes known."
+      },
+      "half_active_tilt": {
+        "tradeoff": "The smaller position sacrifices some assumed recovery upside for lower issuer concentration in a downturn.",
+        "switch_condition": "Halve active exposure if recurring revenue weakens before the review."
+      }
+    }
   }
 }

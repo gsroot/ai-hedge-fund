@@ -13,7 +13,9 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import math
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +28,7 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from data_fetcher import get_company_news  # noqa: E402
+from research_ranking import RANKING_POLICY_ID, build_research_shortlist  # noqa: E402
 from factor_evidence import (  # noqa: E402
     PREDICT_FACTOR_SPEC_ID,
     SCHEMA_VERSION as FACTOR_EVIDENCE_SCHEMA_VERSION,
@@ -92,7 +95,10 @@ def prepare_candidate_tasks(
     if not 1 <= article_limit <= MAX_LLM_ARTICLES:
         raise ValueError(f"article_limit은 1~{MAX_LLM_ARTICLES}이어야 합니다.")
 
-    selected = rankings[: min(candidate_pool, len(rankings))]
+    shortlist = predict_payload.get("research_shortlist", {}).get("candidates", [])
+    rank_by_ticker = {row["ticker"]: row for row in rankings}
+    order = dict.fromkeys([item["ticker"] for item in shortlist] + list(rank_by_ticker))
+    selected = [rank_by_ticker[ticker] for ticker in order if ticker in rank_by_ticker][:candidate_pool]
     tasks = []
     no_news_tickers = []
     duplicates_removed = 0
@@ -269,7 +275,8 @@ def _score_validated_classifications(
 
 def _number(value: Any, default: float = float("-inf")) -> float:
     try:
-        return float(value)
+        number = float(value)
+        return number if math.isfinite(number) else default
     except (TypeError, ValueError):
         return default
 
@@ -534,6 +541,10 @@ def apply_news_sentiment_enrichment(
         validation_payload,
         predict_payload.get("factor_weight_policy"),
     )
+    if predict_payload.get("ranking_policy_id") == RANKING_POLICY_ID:
+        # The available portfolio holdout generator evaluates only the legacy scoring pipeline.
+        ranking_gate["failure_reasons"].append("observed_peer_ranking_holdout_pending")
+        ranking_gate.update(passed=False, policy=RANKING_POLICY_EVIDENCE_ONLY)
     enriched_rankings = []
     applied = []
     for base_row in rankings:
@@ -554,12 +565,16 @@ def apply_news_sentiment_enrichment(
             enriched_rankings.append(copy.deepcopy(base_row))
 
     if ranking_gate["passed"]:
-        enriched_rankings.sort(key=lambda row: row.get("total_score", 0.0), reverse=True)
+        enriched_rankings.sort(key=lambda row: (-row["total_score"], row["ticker"]))
         for rank, row in enumerate(enriched_rankings, start=1):
             row["rank"] = rank
 
     result = copy.deepcopy(predict_payload)
+    if predict_payload.get("ranking_policy_id") == RANKING_POLICY_ID:
+        result["available_at"] = datetime.now(UTC).isoformat()
     result["rankings"] = enriched_rankings
+    if "research_shortlist" in result:
+        result["research_shortlist"] = build_research_shortlist(enriched_rankings)
     result["total_analyzed"] = len(enriched_rankings)
     methodology_suffix = (
         "validated active-skill-LLM news sentiment replacement"

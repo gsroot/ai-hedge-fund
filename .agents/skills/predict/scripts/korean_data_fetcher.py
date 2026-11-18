@@ -854,6 +854,7 @@ def _prices_from_fdr(ticker: str, start_date: str, end_date: str) -> list:
         try:
             prices.append({
                 "time": date.strftime("%Y-%m-%d"),
+                "provider": "finance_data_reader",
                 "open": float(row["Open"]),
                 "high": float(row["High"]),
                 "low": float(row["Low"]),
@@ -881,6 +882,7 @@ def _prices_from_pykrx(ticker: str, start_date: str, end_date: str) -> list:
         try:
             prices.append({
                 "time": date.strftime("%Y-%m-%d"),
+                "provider": "pykrx",
                 "open": float(row["시가"]),
                 "high": float(row["고가"]),
                 "low": float(row["저가"]),

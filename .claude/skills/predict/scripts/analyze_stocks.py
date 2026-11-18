@@ -36,17 +36,33 @@ Stock Analyzer - End-to-End 종목 분석 및 순위 산정 (Yahoo Finance + DAR
 import sys
 import json
 import argparse
-from datetime import datetime
+from datetime import UTC, datetime
 
 import config
 from cache import clear_cache, get_cache_stats, cache_stats
 # get_index_tickers는 backtesting/backtest.py가 이 모듈에서 import하므로 다시 내보낸다.
 from data_fetcher import get_index_tickers, resolve_index_universe, sort_tickers_by_market_cap  # noqa: F401
-from analysis import run_batch_analysis_with_exclusions, summarize_exclusions
-from factor_evidence import load_factor_weight_policy_safe
+from analysis import analyze_single_ticker, run_batch_analysis_with_exclusions, summarize_exclusions  # noqa: F401
+from factor_evidence import default_factor_weight_policy, load_factor_weight_policy_safe
 from provider_readiness import load_provider_readiness_policy
 from reporting import print_results
-from ticker_utils import is_korean_index, is_korean_ticker
+from research_ranking import OBSERVED_FACTOR_SPEC_ID, RANKING_POLICY_ID, build_research_shortlist
+from ticker_utils import is_korean_index, is_korean_ticker, normalize_korean_ticker
+
+
+def research_factor_policy(evidence_path, market_scope, index, end_date):
+    """Legacy evidence remains auditable; the new observation/coverage rules require new PIT validation."""
+    policy = default_factor_weight_policy(config.FACTOR_WEIGHTS)
+    policy.update(factor_spec_id=OBSERVED_FACTOR_SPEC_ID, fallback_reason="observed_factor_pit_validation_pending")
+    if evidence_path:
+        legacy = load_factor_weight_policy_safe(
+            config.FACTOR_WEIGHTS, evidence_path, market_scope=market_scope, index=index, analysis_date=end_date
+        )
+        policy["submitted_evidence"] = {
+            key: legacy.get(key) for key in ("source", "mode", "validation_end", "fallback_reason", "evidence_error")
+        }
+        policy["submitted_evidence"]["applied_to_ranking"] = False
+    return policy
 
 
 def main():
@@ -101,8 +117,7 @@ def main():
     parser.add_argument(
         "--factor-evidence-json",
         help=(
-            "predict_factor_v1 point-in-time OOS 팩터 검증 JSON. "
-            "미지정 시 사전 가중치를 유지하되 미검증으로 표시"
+            "기존 PIT 팩터 근거의 호환성 감사. 새 순위는 새 입력 계약의 검증까지 prior_only 사용"
         ),
     )
     parser.add_argument(
@@ -114,6 +129,10 @@ def main():
     )
 
     args = parser.parse_args()
+    if any(value is not None and value <= 0 for value in (args.top, args.display, args.workers)):
+        parser.error("--top, --display, --workers는 양수여야 합니다.")
+    if args.tickers and args.index:
+        parser.error("--index와 --tickers 중 하나를 선택하세요.")
 
     # 캐시 관련 명령 처리
     if args.clear_cache:
@@ -135,7 +154,10 @@ def main():
 
     # 종목 리스트 결정
     if args.tickers:
-        tickers = [t.strip() for t in args.tickers.split(',')]
+        symbols = [t.strip().upper() for t in args.tickers.split(',') if t.strip()]
+        tickers = list(dict.fromkeys(normalize_korean_ticker(t) if is_korean_ticker(t) else t for t in symbols))
+        if not tickers:
+            parser.error("분석할 종목을 입력하세요.")
         universe_source, universe_may_be_stale = "explicit_tickers", False
         universe_size = len(tickers)
     elif args.index:
@@ -150,30 +172,42 @@ def main():
         sys.exit(1)
 
     # 시가총액 기준 정렬 (기본값: 활성화, --no-sort-by-cap으로 비활성화)
-    if args.sort_by_cap and tickers:
-        tickers = sort_tickers_by_market_cap(tickers, top_n=args.top if args.top else 0)
+    mixed = bool(args.tickers and len({is_korean_ticker(t) for t in tickers}) > 1)
+    is_kr = is_korean_index(args.index) if args.index else all(is_korean_ticker(t) for t in tickers)
+    selection = None
+    if mixed and args.sort_by_cap and args.top and args.top < len(tickers):
+        parser.error("혼합 통화 시가총액은 직접 비교할 수 없습니다. --top을 생략하거나 --no-sort-by-cap을 사용하세요.")
+    if args.sort_by_cap and args.top and args.top < len(tickers):
+        missing_caps = []
+        tickers = sort_tickers_by_market_cap(tickers, top_n=args.top, unavailable=missing_caps)
+        selection = {"limit": args.top, "eligible_count": universe_size - len(missing_caps),
+                     "missing_cap_tickers": sorted(missing_caps),
+                     "scope": "observed_caps_only" if missing_caps else "all_requested_caps"}
     elif args.top and len(tickers) > args.top:
         tickers = tickers[:args.top]
 
-    end_date = datetime.now().strftime("%Y-%m-%d")
+    end_date = datetime.now(UTC).date().isoformat()
     strategy_names = {"fundamental": "펀더멘털", "momentum": "모멘텀", "hybrid": "하이브리드"}
 
     # 데이터 소스 자동 감지
-    is_kr = (args.index and is_korean_index(args.index)) or (args.tickers and all(is_korean_ticker(t.strip()) for t in args.tickers.split(',')))
-    data_source = "DART + PyKRX" if is_kr else "Yahoo Finance"
+    data_source = ("DART / FDR / PyKRX 및 Yahoo Finance / financial-datasets" if mixed else
+                   "DART / FDR / PyKRX" if is_kr else "Yahoo Finance / financial-datasets")
     try:
-        factor_weight_policy = load_factor_weight_policy_safe(
-            config.FACTOR_WEIGHTS,
-            args.factor_evidence_json,
-            market_scope="krx" if is_kr else "us",
-            index=args.index or "custom",
-            analysis_date=end_date,
+        factor_weight_policy = research_factor_policy(
+            args.factor_evidence_json, "mixed" if mixed else "krx" if is_kr else "us", args.index or "custom", end_date
         )
-        provider_readiness_policy = load_provider_readiness_policy(
-            args.provider_readiness_json,
-            market_scope="krx" if is_kr else "sp500",
-            analysis_date=end_date,
-        )
+        markets = ["krx", "sp500"] if mixed else ["krx" if is_kr else "sp500"]
+        readiness = {market: load_provider_readiness_policy(args.provider_readiness_json, market_scope=market,
+                                                            analysis_date=end_date) for market in markets}
+        provider_readiness_policy = readiness[markets[0]]
+        if mixed:
+            all_ready = all(item["all_samples_ready"] for item in readiness.values())
+            provider_readiness_policy = {
+                "contract_id": "provider_readiness_v1", "market_scope": "mixed", "markets": readiness,
+                "mode": provider_readiness_policy["mode"], "all_samples_ready": all_ready,
+                "ranking_policy": "provider_ready_but_point_in_time_contract_still_required" if all_ready else
+                                  "missing_evidence_requires_prior_or_explanation_only",
+            }
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         parser.error(f"증거 JSON을 적용할 수 없습니다: {exc}")
     effective_factor_weights = factor_weight_policy["effective_weights"]
@@ -213,13 +247,14 @@ def main():
 
     # 파일 저장
     strategy_methods = {
-        "fundamental": "Ensemble multi-factor analysis (Value + Growth + Quality + Momentum + Safety)",
-        "momentum": "Enhanced momentum analysis (Short/Long momentum + RSI + Trend)",
-        "hybrid": "Hybrid analysis (70% Fundamental + 30% Enhanced Momentum, Lynch GARP bonus)",
+        "fundamental": "Within-universe observed financial and insider factor percentiles",
+        "momentum": "Price-only enhanced momentum (60 dated closes, RSI and trend)",
+        "hybrid": "Within-universe observed financial, insider and price momentum factor percentiles",
     }
     if args.output:
         output_data = {
             "analysis_date": end_date,
+            "available_at": datetime.now(UTC).isoformat(),
             "index": args.index or "custom",
             "evaluation_horizon": args.period,
             "return_estimate": {
@@ -228,6 +263,10 @@ def main():
                 "label": "점수 환산값(예상수익률 아님)",
             },
             "strategy": args.strategy,
+            "ranking_policy_id": RANKING_POLICY_ID,
+            "provider_routes": data_source,
+            "market_cap_selection": selection,
+            "research_shortlist": build_research_shortlist(results),
             "universe": {
                 "source": universe_source,
                 "may_be_stale": universe_may_be_stale,

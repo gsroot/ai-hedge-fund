@@ -7,6 +7,7 @@ import math
 import statistics
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from portfolio_decision import canonical_bytes, digest, load_snapshot, nonempty, number, safe_payload, timestamp
 
@@ -16,20 +17,32 @@ def _calendar(data, cutoff, end):
     nonempty(calendar["id"], "calendar.id")
     nonempty(calendar["provider"], "calendar.provider")
     nonempty(calendar["reference"], "calendar.reference")
+    known_zones = {"XNYS": "America/New_York", "XNAS": "America/New_York", "XKRX": "Asia/Seoul"}
+    zone_name = calendar.get("timezone", known_zones.get(calendar["id"]))
+    if calendar["id"] in known_zones and zone_name != known_zones[calendar["id"]]:
+        raise ValueError("calendar timezone disagrees with exchange")
+    try:
+        zone = ZoneInfo(zone_name) if zone_name else None
+    except (TypeError, ZoneInfoNotFoundError) as exc:
+        raise ValueError("invalid calendar timezone") from exc
     if timestamp(calendar["coverage_start"]) > cutoff or timestamp(calendar["coverage_end"]) < end:
         raise ValueError("calendar coverage must span formation and evaluation")
     sessions = []
     previous_close = None
+    previous_day = None
     for session in calendar["sessions"]:
         opening, close = timestamp(session["open_at"]), timestamp(session["close_at"])
+        day = datetime.strptime(session["date"], "%Y-%m-%d").date()
+        local_open = opening.astimezone(zone) if zone else datetime.fromisoformat(session["open_at"].replace("Z", "+00:00"))
+        local_close = close.astimezone(zone) if zone else datetime.fromisoformat(session["close_at"].replace("Z", "+00:00"))
+        if day != local_open.date() or day != local_close.date() or (previous_day is not None and day <= previous_day):
+            raise ValueError("session date must match ordered local exchange opens and closes")
+        previous_day = day
         if opening >= close or (previous_close is not None and opening <= previous_close):
             raise ValueError("calendar sessions must be ordered, unique and nonoverlapping")
         previous_close = close
         if opening > cutoff and close <= end:
-            sessions.append({"date": nonempty(session["date"], "session date"), "open": opening, "close": close})
-    dates = [s["date"] for s in sessions]
-    if len(dates) != len(set(dates)):
-        raise ValueError("duplicate calendar session date")
+            sessions.append({"date": day.isoformat(), "open": opening, "close": close})
     return sessions
 
 
@@ -38,8 +51,11 @@ def _observations(series, sessions, asof, label, fx=False):
         return None, f"{label}: unavailable"
     for field in ("provider", "reference", "currency"):
         nonempty(series[field], f"{label}.{field}")
-    if timestamp(series["retrieved_at"]) > asof:
+    retrieved = timestamp(series["retrieved_at"])
+    if retrieved > asof:
         raise ValueError(f"{label}: data retrieved after evaluation")
+    if retrieved < sessions[-1]["close"]:
+        return None, f"{label}: retrieved before final session close"
     if not fx and series["price_basis"] != "total_return_adjusted":
         raise ValueError("only total_return_adjusted OHLC supported; dividends already reinvested")
     bars = {}
@@ -61,12 +77,102 @@ def _observations(series, sessions, asof, label, fx=False):
     return result, None
 
 
+def _unit_growth(ticker, assets, doc, data, sessions, asof, exchange):
+    is_cash = ticker is None
+    asset = doc["cash"] if is_cash else assets[ticker]
+    if not is_cash and asset["calendar"] != data["calendar"]["id"]:
+        return None, None, "mixed calendars unsupported"
+    base_currency = doc["base_currency"]
+    currency = asset["currency"] if is_cash else asset["quote"]["currency"]
+    if currency not in exchange:
+        fx = data.get("fx", {}).get(currency)
+        if fx is not None and (fx.get("currency"), fx.get("base_currency")) != (currency, base_currency):
+            raise ValueError("FX currency pair mismatch; rates must be base units per foreign unit")
+        exchange[currency] = _observations(fx, sessions, asof, f"FX:{currency}", fx=True)
+    rates, issue = exchange[currency]
+    if issue:
+        return None, None, issue
+    if is_cash:
+        years = [(s["close"] - sessions[0]["open"]).total_seconds() / (365.25 * 86400) for s in sessions]
+        local_growth = [(1 + asset["annual_rate"]) ** elapsed for elapsed in years]
+    else:
+        series = data.get("series", {}).get(ticker)
+        if series is not None and (series.get("calendar"), series.get("currency")) != (asset["calendar"], currency):
+            raise ValueError(f"{ticker}: calendar/currency mismatch")
+        bars, issue = _observations(series, sessions, asof, ticker)
+        if issue:
+            return None, None, issue
+        local_growth = [bar["close"] / bars[0]["open"] for bar in bars]
+    rules = doc["evaluation"]
+    gross = [value * fx["close"] / rates[0]["open"] for value, fx in zip(local_growth, rates)]
+    fx_bps = rules["fx_cost_bps"] if currency != base_currency else 0
+    entry = (fx_bps + (0 if is_cash else rules["entry_cost_bps"])) / 10000
+    exit_cost = (fx_bps + (0 if is_cash else rules["exit_cost_bps"])) / 10000
+    fresh = [value / (1 + entry) for value in gross]
+    fresh[-1] *= 1 - exit_cost
+    return fresh, gross[-1], None
+
+
+def _unit_paths(tickers, doc, data, sessions, asof, *, isolate_errors):
+    """Price each instrument once. Alternative-only failures stay attributable."""
+    assets = {asset["ticker"]: asset for asset in doc["assets"]}
+    exchange = {doc["base_currency"]: ([{"open": 1.0, "close": 1.0} for _ in sessions], None)}
+    fresh, terminal_gross, issues = {}, {}, {}
+    for ticker in sorted(tickers, key=lambda item: (item is not None, item or "")):
+        try:
+            curve, gross, issue = _unit_growth(ticker, assets, doc, data, sessions, asof, exchange)
+        except (KeyError, TypeError, ValueError) as exc:
+            if not isolate_errors:
+                raise
+            issues[ticker] = f"{ticker}: invalid observation: {exc}"
+            continue
+        if issue:
+            issues[ticker] = issue
+        else:
+            fresh[ticker], terminal_gross[ticker] = curve, gross
+    return fresh, terminal_gross, issues
+
+
+def _alternative_outcomes(plans, paths, gross, issues):
+    outcomes = {}
+    for name, plan in plans.items():
+        row = {"formation_status": plan["status"]}
+        outcomes[name] = row
+        weights = plan["weights"]
+        if weights is None or plan["status"] == "unavailable":
+            row.update(status="unavailable", issues=plan.get("input_issues") or ["no usable frozen allocation"])
+            continue
+        positions = {None if t == "CASH" else t: w for t, w in weights.items() if w > 0}
+        errors = sorted({issues[t] for t in positions if t in issues})
+        if errors:
+            row.update(status="incomplete", issues=errors)
+            continue
+        fresh_nav = sum(w * paths[t][-1] for t, w in positions.items())
+        row.update(status="complete", fresh_capital_return=fresh_nav - 1, from_holdings_return=None)
+        transition = plan["transition"]
+        if transition["status"] == "estimated":
+            cost = number(transition["estimated_cost_weight"], "transition cost fraction", low=0, high=1)
+            row["from_holdings_return"] = (1 - cost) * sum(w * gross[t] for t, w in positions.items()) - 1
+        else:
+            row["transition_issue"] = transition.get("reason", "formation costs unknown")
+    chosen = outcomes["selected"]
+    for row in outcomes.values():
+        if row["status"] == "complete":
+            for field, diff in (("fresh_capital_return", "selected_minus_alternative_fresh"),
+                                ("from_holdings_return", "selected_minus_alternative_from_holdings")):
+                row[diff] = chosen[field] - row[field] if chosen.get(field) is not None and row[field] is not None else None
+    return outcomes
+
+
 def evaluate(result, data, as_of):
+    if result.get("preview"):
+        raise ValueError("only a frozen final decision can be evaluated")
     safe_payload(data)
     canonical_bytes(data)
     asof = timestamp(as_of)
     doc = result["decision"]
-    base = {"schema_version": "decision_evaluation_v1", "decision_id": result["decision_id"],
+    schema = "decision_evaluation_v2" if "portfolio_comparison" in result else "decision_evaluation_v1"
+    base = {"schema_version": schema, "decision_id": result["decision_id"],
             "as_of": as_of, "decision_sha256": digest(result), "data_sha256": digest(data),
             "method": "initial_weights_buy_and_hold", "issues": [], "thesis_reviews": {},
             "performance_evidence": "observed period only; not calibrated future alpha"}
@@ -86,68 +192,40 @@ def evaluate(result, data, as_of):
     sessions = _calendar(data, cutoff, end)
     if not sessions:
         return {**base, "status": "incomplete", "issues": ["no completed investable sessions"]}
-    assets = {a["ticker"]: a for a in doc["assets"]}
-    selected = list(dict.fromkeys([*result["weights"], doc["benchmark"]]))
-    calendar_id = data["calendar"]["id"]
-    if any(assets[t]["calendar"] != calendar_id for t in selected):
-        return {**base, "status": "incomplete", "issues": ["mixed calendars unsupported"]}
-    prices, fx_rates, issues = {}, {}, []
-    currencies = {assets[t]["quote"]["currency"] for t in selected}
-    if result["cash_weight"] > 0:
-        currencies.add(doc["cash"]["currency"])
-    for currency in currencies:
-        if currency == doc["base_currency"]:
-            fx_rates[currency] = [{"open": 1., "close": 1.} for _ in sessions]
-            continue
-        fx = data.get("fx", {}).get(currency)
-        if fx is not None and (fx.get("currency") != currency or fx.get("base_currency") != doc["base_currency"]):
-            raise ValueError("FX currency pair mismatch; rates must be base units per foreign unit")
-        values, issue = _observations(fx, sessions, asof, f"FX:{currency}", fx=True)
-        if issue:
-            issues.append(issue)
-        else:
-            fx_rates[currency] = values
-    for ticker in selected:
-        series = data.get("series", {}).get(ticker)
-        if series is not None and (series.get("calendar") != calendar_id or series.get("currency") != assets[ticker]["quote"]["currency"]):
-            raise ValueError(f"{ticker}: calendar/currency mismatch")
-        values, issue = _observations(series, sessions, asof, ticker)
-        if issue:
-            issues.append(issue)
-        else:
-            prices[ticker] = values
-    if issues:
-        return {**base, "status": "incomplete", "issues": issues, "start_session": sessions[0]["date"], "end_session": sessions[-1]["date"]}
-    rules = doc["evaluation"]
-
-    def cost(currency, exit=False):
-        return (rules["exit_cost_bps" if exit else "entry_cost_bps"] +
-                (rules["fx_cost_bps"] if currency != doc["base_currency"] else 0)) / 10000
-
-    def asset_curve(ticker, weight):
-        currency = assets[ticker]["quote"]["currency"]
-        bars, fx = prices[ticker], fx_rates[currency]
-        initial = bars[0]["open"] * fx[0]["open"]
-        values = [weight * bar["close"] * rates["close"] / initial / (1 + cost(currency)) for bar, rates in zip(bars, fx)]
-        values[-1] *= 1 - cost(currency, exit=True)
-        return values
-
-    curves = {ticker: asset_curve(ticker, weight) for ticker, weight in result["weights"].items()}
-    cash_currency = doc["cash"]["currency"]
-    cash_fx = fx_rates[cash_currency] if result["cash_weight"] > 0 else [{"open": 1., "close": 1.} for _ in sessions]
-    cash_fx_cost = rules["fx_cost_bps"] / 10000 if cash_currency != doc["base_currency"] else 0
-    cash_curve = [result["cash_weight"] * (1 + doc["cash"]["annual_rate"]) ** ((s["close"] - sessions[0]["open"]).total_seconds() / (365.25 * 86400))
-                  * f["close"] / cash_fx[0]["open"] / (1 + cash_fx_cost) for s, f in zip(sessions, cash_fx)]
-    cash_curve[-1] *= 1 - cash_fx_cost
-    nav = [cash_curve[i] + sum(values[i] for values in curves.values()) for i in range(len(sessions))]
-    benchmark = asset_curve(doc["benchmark"], 1)
+    selected = {**result["weights"]}
+    if result["cash_weight"]:
+        selected[None] = result["cash_weight"]
+    plans = result.get("portfolio_comparison", {}).get("portfolios", {})
+    tickers = set(selected) | {doc["benchmark"]}
+    for plan in plans.values():
+        if plan["status"] != "unavailable":
+            tickers.update(None if t == "CASH" else t for t, w in (plan["weights"] or {}).items() if w > 0)
+    paths, gross, issues = _unit_paths(tickers, doc, data, sessions, observed, isolate_errors=bool(plans))
+    base.update(start_session=sessions[0]["date"], end_session=sessions[-1]["date"])
+    if plans:
+        base["alternative_outcomes"] = _alternative_outcomes(plans, paths, gross, issues)
+        base["comparison_price_sources"] = {
+            t: {k: v for k, v in data["series"][t].items() if k != "bars"}
+            for t in sorted(paths.keys() - {None})
+        }
+        base["alternative_methods"] = {
+            "fresh_capital_return": "initial target weights; enter at first open; liquidate at last close",
+            "from_holdings_return": "frozen estimated transition costs deducted pro rata at entry; mark to market at last close",
+            "difference": "selected minus comparator, in the same base currency and cost convention",
+        }
+    required = set(selected) | {doc["benchmark"]}
+    missing = sorted({issues[t] for t in required if t in issues})
+    if missing:
+        return {**base, "status": "incomplete", "issues": missing}
+    nav = [sum(w * paths[t][i] for t, w in selected.items()) for i in range(len(sessions))]
+    benchmark = paths[doc["benchmark"]]
     daily = [nav[0] - 1] + [nav[i] / nav[i-1] - 1 for i in range(1, len(nav)) if nav[i-1] > 0]
     peak, drawdown = 1., 0.
     for value in nav:
         peak = max(peak, value)
         drawdown = min(drawdown, value / peak - 1)
-    contributions = {t: values[-1] - result["weights"][t] for t, values in curves.items()}
-    contributions["CASH"] = cash_curve[-1] - result["cash_weight"]
+    contributions = {t: w * (paths[t][-1] - 1) for t, w in selected.items() if t is not None}
+    contributions["CASH"] = selected[None] * (paths[None][-1] - 1) if None in selected else 0.0
     reviews = data.get("thesis_reviews", {})
     for ticker in result["weights"]:
         review = reviews.get(ticker)
@@ -164,13 +242,13 @@ def evaluate(result, data, as_of):
             base["thesis_reviews"][ticker] = review
     return {**base, "status": "complete", "start_session": sessions[0]["date"], "end_session": sessions[-1]["date"],
             "entry_at": sessions[0]["open"].isoformat(), "exit_at": sessions[-1]["close"].isoformat(),
-            "base_currency": doc["base_currency"], "conventions": rules,
+            "base_currency": doc["base_currency"], "conventions": doc["evaluation"],
             "portfolio_return": nav[-1] - 1, "benchmark_return": benchmark[-1] - 1,
             "relative_return": nav[-1] - benchmark[-1], "contributions": contributions,
             "max_drawdown": drawdown, "annualized_volatility": statistics.stdev(daily) * math.sqrt(252) if len(daily) > 1 else None,
             "observations": len(sessions), "short_sample": len(sessions) < 60,
             "nav": [{"date": s["date"], "portfolio": p, "benchmark": b} for s, p, b in zip(sessions, nav, benchmark)],
-            "price_provenance": {t: {k: v for k, v in data['series'][t].items() if k != 'bars'} for t in selected}}
+            "price_provenance": {t: {k: v for k, v in data['series'][t].items() if k != 'bars'} for t in sorted(required - {None})}}
 
 
 def save_evaluation(folder, evaluation, reason):

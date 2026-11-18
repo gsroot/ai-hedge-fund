@@ -12,14 +12,16 @@ Python 스크립트가 데이터 수집·점수 계산·제약 검사·보고서
 
 | 단계 | 역할 | 진입점 |
 |---|---|---|
-| predict | 후보의 상대 순위를 산정한다 | [predict](.agents/skills/predict/SKILL.md) |
+| predict | 관측된 팩터로 조사 순위를 매기고 상위권·섹터·팩터별 조사 후보를 남긴다 | [predict](.agents/skills/predict/SKILL.md) |
 | investor-analysis | 관점별로 후보를 독립 분석한다 | [investor-analysis](.agents/skills/investor-analysis/SKILL.md) |
-| risk snapshot | 같은 기준일의 가격으로 위험을 계산한다 | [build_risk_snapshot.py](.agents/skills/portfolio-report/scripts/build_risk_snapshot.py) |
-| portfolio-report | 종목·ETF·현금 비중을 판단하고 검증한다 | [portfolio-report](.agents/skills/portfolio-report/SKILL.md) |
+| risk snapshot | 실제 관측일이 겹치는 가격과 환율로 위험을 계산한다 | [build_risk_snapshot.py](.agents/skills/portfolio-report/scripts/build_risk_snapshot.py) |
+| portfolio-report | 제안한 비중을 준비금을 남긴 ETF안·현금·기존 보유 및 비중 축소안과 비교한다 | [portfolio-report](.agents/skills/portfolio-report/SKILL.md) |
 | backtesting | 과거 전략과 구성 이후 결정을 평가한다 | [backtesting](.agents/skills/backtesting/SKILL.md) |
 
 점수와 confidence는 예상 수익률이나 성공 확률이 아니다. 새 추천은 `--decision-json` 경로로
-선택 근거·가격 가정·대안·사용자 제약·재검토 조건을 보존한다. 기존 점수 배분 보고서는
+선택 근거·가격 가정·대안·사용자 제약·재검토 조건을 보존한다. `--preview`로 후보 비중을
+바꿔가며 하방·전환 비용·제약을 확인한 뒤 최종 비교표를 저장한다. 평가일에는 추천 당시
+고정한 대안 간의 실제 관측 기간 수익률 차이를 계산한다. 기존 점수 배분 보고서는
 [legacy 계약](.agents/skills/portfolio-report/references/legacy_allocation.md)으로 재현할 수 있다.
 
 ## GPT-6 Astra로 사용하기
@@ -82,12 +84,13 @@ uv run python .agents/skills/investor-analysis/scripts/data_fetcher.py --ticker 
 테스트는 unittest 기반이며 금융 provider 응답을 모의 처리한다.
 
 ```powershell
-uv run python -m unittest discover -s tests -p "test_*.py" -q
-openspec validate migrate-to-gpt-6-astra --strict
+$env:PYTHONUTF8 = "1"
+uv run --frozen python -m unittest discover -s tests -p "test_*.py" -q
+openspec validate redesign-portfolio-research --strict
 git diff --check
 ```
 
-검증 기록은 [OpenSpec verification](openspec/changes/migrate-to-gpt-6-astra/verification.md)에 있다.
+검증 기록은 [포트폴리오 재설계 검증](openspec/changes/redesign-portfolio-research/verification.md)에 있다.
 로컬 테스트 통과는 모델의 투자 판단 품질, 실제 provider 접근, OOS 초과성과를 입증하지 않는다.
 
 ## 레거시 웹앱

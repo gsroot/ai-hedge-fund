@@ -14,7 +14,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qsl, urlsplit
 
-VERSION = "portfolio_decision_v1"
+VERSION = "portfolio_decision_v2"
+PREVIOUS_VERSION = "portfolio_decision_v1"
 WORKFLOW = ["predict", "independent_investor_analysis", "risk_snapshot", "portfolio_report"]
 SOURCE_STATES = {"ok", "timeout", "credentials_missing", "auth", "quota", "stale", "revision", "schema", "unavailable"}
 SECRET_KEYS = {"api_key", "apikey", "access_token", "refresh_token", "password", "authorization", "secret", "token"}
@@ -137,12 +138,94 @@ def _thesis(asset, sources):
     return limitations
 
 
-def validate_decision(document, predict, analyses, risk, investors):
+class MissingAssetCap(ValueError):
+    """A concentrated fund has no defined position limit for this allocation."""
+
+
+def allocation_exposure(weights, assets, policy, sources):
+    """Apply the same asset, sector and look-through limits to any proposed basket."""
+    limitations, blocked, violations = [], [], []
+    stock_cap = number(policy.get("max_stock_weight", .15), "max_stock_weight", high=1)
+    etf_cap = number(policy.get("max_diversified_etf_weight", 1), "max_diversified_etf_weight", high=1)
+    sector_cap = number(policy.get("max_direct_sector_weight", .35), "max_direct_sector_weight", high=1)
+    nonempty(policy["rationale"], "constraints.rationale")
+    overrides = policy.get("asset_caps", {})
+    for key, value in overrides.items():
+        number(value, f"asset cap {key}", high=1)
+    issuers, sectors, direct_sectors = defaultdict(float), defaultdict(float), defaultdict(float)
+    coverage = 0.0
+    for ticker, weight in weights.items():
+        if not weight:
+            continue
+        asset = assets[ticker]
+        if asset["asset_type"] == "stock":
+            cap = overrides.get(ticker, stock_cap)
+            sector = nonempty(asset["sector"], "stock sector")
+            issuer = nonempty(asset["issuer"], "stock issuer")
+            direct_sectors[sector] += weight
+            issuers[issuer] += weight
+            sectors[sector] += weight
+            coverage += weight
+        else:
+            etf = asset["etf"]
+            for key in ("index", "concentration"):
+                nonempty(etf[key], f"etf.{key}")
+            number(etf["expense_ratio"], "expense_ratio", high=1)
+            leverage = number(etf["leverage"], "leverage", low=-10, high=10)
+            if not isinstance(etf["diversified"], bool) or not isinstance(etf["holdings_complete"], bool):
+                raise ValueError("ETF diversified/holdings_complete must be boolean")
+            if not etf["diversified"] or leverage != 1:
+                if ticker not in overrides:
+                    raise MissingAssetCap(f"concentrated/leveraged ETF needs explicit asset cap: {ticker}")
+            cap = overrides.get(ticker, etf_cap)
+            holdings_problems = _refs([etf["source_id"]], sources)
+            if timestamp(etf["holdings_as_of"]) != timestamp(sources[etf["source_id"]]["as_of"]):
+                raise ValueError("ETF holdings/source timestamp mismatch")
+            known_weight = 0.0
+            holding_tickers = set()
+            for holding in etf["holdings"]:
+                ht = nonempty(holding["ticker"], "holding ticker")
+                if ht in holding_tickers:
+                    raise ValueError("duplicate ETF holding")
+                holding_tickers.add(ht)
+                hw = number(holding["weight"], "holding weight", high=1)
+                known_weight += hw
+                issuer = nonempty(holding["issuer"], "holding issuer")
+                sector = nonempty(holding["sector"], "holding sector")
+                if not holdings_problems:
+                    issuers[issuer] += weight * hw
+                    sectors[sector] += weight * hw
+            if known_weight > 1 + 1e-8 or (etf["holdings_complete"] and not math.isclose(known_weight, 1, abs_tol=1e-8)):
+                raise ValueError("ETF holdings weights inconsistent with coverage")
+            if holdings_problems or not etf["holdings_complete"]:
+                limitations.append(f"{ticker}: incomplete ETF look-through")
+            if not holdings_problems:
+                coverage += weight * known_weight
+        if weight > cap + 1e-8:
+            violations.append(f"{ticker}: {weight} exceeds asset cap {cap}")
+    for ticker in set(overrides) - set(assets):
+        raise ValueError(f"asset cap references unknown ticker: {ticker}")
+    for sector, weight in direct_sectors.items():
+        if weight > sector_cap + 1e-8:
+            violations.append(f"direct sector {sector}: {weight} exceeds {sector_cap}")
+    invested = sum(weights.values())
+    for field, exposure in (("max_total_issuer_weight", issuers), ("max_total_sector_weight", sectors)):
+        if field in policy:
+            cap = number(policy[field], field, high=1)
+            if coverage + 1e-8 < invested:
+                blocked.append(f"{field}: incomplete look-through")
+            violations.extend(f"{field}/{key}: {value} exceeds {cap}" for key, value in exposure.items() if value > cap + 1e-8)
+    return {"violations": violations, "input_issues": blocked, "limitations": limitations,
+            "direct_sectors": dict(direct_sectors), "total_issuers": dict(issuers),
+            "total_sectors": dict(sectors), "lookthrough_coverage_weight": coverage}
+
+
+def validate_decision(document, predict, analyses, risk, investors, *, preview=False):
     """Return a reviewable result, retaining failed proposals without executable weights."""
     safe_payload(document)
     doc = copy.deepcopy(document)
     canonical_bytes(doc)  # rejects NaN even in optional fields
-    if doc["schema_version"] != VERSION:
+    if doc["schema_version"] not in {VERSION, PREVIOUS_VERSION}:
         raise ValueError("unsupported decision schema")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}", doc["decision_id"]):
         raise ValueError("invalid decision_id")
@@ -152,6 +235,13 @@ def validate_decision(document, predict, analyses, risk, investors):
     date = doc["analysis_date"]
     if date != cutoff.date().isoformat() or predict.get("analysis_date") != date or risk.get("analysis_date") != date:
         raise ValueError("predict, risk and decision dates must agree")
+    if doc["schema_version"] == VERSION:
+        for name, artifact, current in (
+            ("predict", predict, "research_shortlist" in predict),
+            ("risk", risk, risk.get("schema_version") == "portfolio_risk_v2"),
+        ):
+            if current and ("available_at" not in artifact or timestamp(artifact["available_at"]) > cutoff):
+                raise ValueError(f"{name}.available_at must be known and at or before input_cutoff")
     regime = risk["market_regime"]
     if regime.get("as_of_date", date) > date:
         raise ValueError("future market regime")
@@ -188,21 +278,14 @@ def validate_decision(document, predict, analyses, risk, investors):
     if user["liquidity_basis"] == "assumption":
         limitations.append("liquidity reserve is an assumption")
     policy = doc["constraints"]
-    stock_cap = number(policy.get("max_stock_weight", .15), "max_stock_weight", high=1)
-    etf_cap = number(policy.get("max_diversified_etf_weight", 1), "max_diversified_etf_weight", high=1)
-    sector_cap = number(policy.get("max_direct_sector_weight", .35), "max_direct_sector_weight", high=1)
-    nonempty(policy["rationale"], "constraints.rationale")
-    overrides = policy.get("asset_caps", {})
-    for key, value in overrides.items():
-        number(value, f"asset cap {key}", high=1)
     assets, weights, evidence = {}, {}, {}
-    issuers, sectors, direct_sectors = defaultdict(float), defaultdict(float), defaultdict(float)
-    coverage = 0.0
     ranking_tickers = {s["ticker"] for s in predict.get("rankings", [])}
     if not investors or len(set(investors)) != len(investors):
         raise ValueError("unique independent investor list required")
     for asset in doc["assets"]:
         ticker = nonempty(asset["ticker"], "ticker")
+        if doc["schema_version"] == VERSION and ticker == "CASH":
+            raise ValueError("CASH is reserved for cash balances; cannot represent a security named CASH")
         if ticker != ticker.upper() or ticker in assets:
             raise ValueError(f"duplicate or noncanonical ticker: {ticker}")
         if asset["asset_type"] not in {"stock", "etf"}:
@@ -250,56 +333,14 @@ def validate_decision(document, predict, analyses, risk, investors):
             opinion["analysis_source"] = "independent_investor_analysis"
             opinions[investor] = opinion
         vol = risk.get("annualized_volatility", {}).get(ticker)
+        price_history = risk.get("price_history", {}).get(ticker, {})
+        if doc["schema_version"] == VERSION and price_history.get("freshness") == "stale":
+            limitations.append(f"{ticker}: historical volatility sample ends {price_history.get('last_date')}")
         if vol is None:
             limitations.append(f"{ticker}: risk volatility unavailable; see missing_evidence_impact")
         else:
             number(vol, "volatility")
         evidence[ticker] = {"independent_analyses": opinions, "annualized_volatility": vol, "price_issues": quote_problems}
-        if asset["asset_type"] == "stock":
-            cap = overrides.get(ticker, stock_cap)
-            sector = nonempty(asset["sector"], "stock sector")
-            issuer = nonempty(asset["issuer"], "stock issuer")
-            direct_sectors[sector] += weight
-            issuers[issuer] += weight
-            sectors[sector] += weight
-            coverage += weight
-        else:
-            etf = asset["etf"]
-            for key in ("index", "concentration"):
-                nonempty(etf[key], f"etf.{key}")
-            number(etf["expense_ratio"], "expense_ratio", high=1)
-            leverage = number(etf["leverage"], "leverage", low=-10, high=10)
-            if not isinstance(etf["diversified"], bool) or not isinstance(etf["holdings_complete"], bool):
-                raise ValueError("ETF diversified/holdings_complete must be boolean")
-            if not etf["diversified"] or leverage != 1:
-                if ticker not in overrides:
-                    raise ValueError(f"concentrated/leveraged ETF needs explicit asset cap: {ticker}")
-            cap = overrides.get(ticker, etf_cap)
-            holdings_problems = _refs([etf["source_id"]], sources)
-            if timestamp(etf["holdings_as_of"]) != timestamp(sources[etf["source_id"]]["as_of"]):
-                raise ValueError("ETF holdings/source timestamp mismatch")
-            known_weight = 0.0
-            holding_tickers = set()
-            for holding in etf["holdings"]:
-                ht = nonempty(holding["ticker"], "holding ticker")
-                if ht in holding_tickers:
-                    raise ValueError("duplicate ETF holding")
-                holding_tickers.add(ht)
-                hw = number(holding["weight"], "holding weight", high=1)
-                known_weight += hw
-                issuer = nonempty(holding["issuer"], "holding issuer")
-                sector = nonempty(holding["sector"], "holding sector")
-                if not holdings_problems:
-                    issuers[issuer] += weight * hw
-                    sectors[sector] += weight * hw
-            if known_weight > 1 + 1e-8 or (etf["holdings_complete"] and not math.isclose(known_weight, 1, abs_tol=1e-8)):
-                raise ValueError("ETF holdings weights inconsistent with coverage")
-            if holdings_problems or not etf["holdings_complete"]:
-                limitations.append(f"{ticker}: incomplete ETF look-through")
-            if not holdings_problems:
-                coverage += weight * known_weight
-        if weight > cap + 1e-8:
-            violations.append(f"{ticker}: {weight} exceeds asset cap {cap}")
     if not assets or doc["benchmark"] not in assets:
         raise ValueError("comparison benchmark must be included in assets, even at zero weight")
     if isinstance(user["holdings"], dict):
@@ -308,18 +349,11 @@ def validate_decision(document, predict, analyses, risk, investors):
             raise ValueError(f"existing holdings need explicit review: {sorted(unreviewed)}")
     benchmark = assets[doc["benchmark"]]
     blocked.extend(f"benchmark: {p}" for p in _refs([benchmark["quote"]["source_id"]], sources))
-    for ticker in set(overrides) - set(assets):
-        raise ValueError(f"asset cap references unknown ticker: {ticker}")
-    for sector, weight in direct_sectors.items():
-        if weight > sector_cap + 1e-8:
-            violations.append(f"direct sector {sector}: {weight} exceeds {sector_cap}")
+    exposure = allocation_exposure(weights, assets, policy, sources)
+    violations.extend(exposure["violations"])
+    blocked.extend(exposure["input_issues"])
+    limitations.extend(exposure["limitations"])
     invested = sum(weights.values())
-    for field, exposure in (("max_total_issuer_weight", issuers), ("max_total_sector_weight", sectors)):
-        if field in policy:
-            cap = number(policy[field], field, high=1)
-            if coverage + 1e-8 < invested:
-                blocked.append(f"{field}: incomplete look-through")
-            violations.extend(f"{field}/{key}: {value} exceeds {cap}" for key, value in exposure.items() if value > cap + 1e-8)
     cash = doc["cash"]
     cash_weight = number(cash["weight"], "cash weight", high=1)
     for field in ("currency", "rationale", "opportunity_cost", "liquidity_reason", "strategic_reason", "market_regime_reason"):
@@ -348,10 +382,19 @@ def validate_decision(document, predict, analyses, risk, investors):
     # Do not let a declarative evidence label become a manufactured performance claim.
     performance = {"status": "prior_only", "scope": "current decision; prospective record required"}
     limitations.extend(f"{sid}: {','.join(src['problems'])}" for sid, src in sources.items() if src["problems"])
+    comparison = None
+    if doc["schema_version"] == VERSION:
+        from portfolio_comparison import build_comparison
+
+        comparison = build_comparison(doc, assets, sources, risk, blocked, violations, preview=preview)
+        selected = comparison["portfolios"]["selected"]
+        blocked = selected["input_issues"]
+        violations = selected["violations"]
+        limitations.extend(comparison["limitations"])
     status = "blocked_input" if blocked else "infeasible" if violations else "conditional" if limitations else "ready"
     actions = {}
     if status in {"ready", "conditional"}:
-        if user["holdings"] == "unknown":
+        if user["holdings"] == "unknown" or (comparison and comparison["portfolios"]["current"]["weights"] is None):
             actions = {ticker: {"action": "target_only", "target_weight": weight} for ticker, weight in weights.items()}
         else:
             for ticker in sorted((set(weights) | set(user["holdings"])) - {"CASH"}):
@@ -359,15 +402,17 @@ def validate_decision(document, predict, analyses, risk, investors):
                 action = "hold" if math.isclose(current, target, abs_tol=1e-8) else "exit" if target == 0 else "add" if target > current else "reduce"
                 actions[ticker] = {"action": action, "current_weight": current, "target_weight": target, "change_weight": target - current}
     return {
-        "schema_version": VERSION, "methodology": "explicit_investment_judgment_v1",
+        "schema_version": doc["schema_version"],
+        "methodology": "comparative_investment_judgment_v2" if comparison else "explicit_investment_judgment_v1",
+        **({"portfolio_comparison": comparison} if comparison else {}),
         "decision_id": doc["decision_id"], "analysis_date": date, "created_at": doc["created_at"],
         "status": status, "weights": weights if status in {"ready", "conditional"} else {},
         "cash_weight": cash_weight if status in {"ready", "conditional"} else None,
         "actions": actions,
         "decision": doc, "performance_evidence": performance,
+        **({"preview": True} if preview else {}),
         "constraint_checks": {"valid": not blocked and not violations, "violations": violations, "input_issues": blocked,
-                              "direct_sectors": dict(direct_sectors), "total_issuers": dict(issuers), "total_sectors": dict(sectors),
-                              "lookthrough_coverage_weight": coverage},
+                              **{key: exposure[key] for key in ("direct_sectors", "total_issuers", "total_sectors", "lookthrough_coverage_weight")}},
         "evidence": evidence, "limitations": sorted(set(limitations)),
         "market_regime": {**regime, "usage": "advisory", "cash_difference": cash_weight - market_cash},
         "risk_snapshot": copy.deepcopy(risk),
@@ -379,10 +424,12 @@ def validate_decision(document, predict, analyses, risk, investors):
 
 def save_snapshot(result, root):
     safe_payload(result)
+    if result.get("preview"):
+        raise ValueError("a preview cannot be saved as a final decision")
     decision_id = result["decision_id"]
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}", decision_id):
         raise ValueError("invalid decision_id")
-    if result["decision"]["decision_id"] != decision_id or result["schema_version"] != VERSION:
+    if result["decision"]["decision_id"] != decision_id or result["schema_version"] not in {VERSION, PREVIOUS_VERSION} or result["schema_version"] != result["decision"]["schema_version"]:
         raise ValueError("snapshot identity/schema mismatch")
     root = Path(root)
     previous = result["decision"].get("previous_decision_id")
@@ -395,7 +442,7 @@ def save_snapshot(result, root):
     body = canonical_bytes(result)
     (folder / "decision.json").write_bytes(body)
     (folder / "manifest.json").write_bytes(canonical_bytes({"decision_id": decision_id, "sha256": hashlib.sha256(body).hexdigest(),
-        "created_at": result["created_at"], "schema_version": VERSION, "previous_decision_id": previous,
+        "created_at": result["created_at"], "schema_version": result["schema_version"], "previous_decision_id": previous,
         "input_hashes": result["research_provenance"]["input_hashes"]}))
     return folder
 

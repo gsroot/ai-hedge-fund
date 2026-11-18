@@ -1694,7 +1694,7 @@ class AllocationConstraintTests(unittest.TestCase):
         self.assertGreater(scores["LOW"], scores["HIGH"])
 
     def test_risk_snapshot_is_point_in_time_and_complete(self):
-        dates = pd.bdate_range("2023-09-01", periods=100)
+        dates = pd.bdate_range(end="2024-02-02", periods=100)
 
         def price_rows(ticker, _start, _end):
             offset = 0.4 if ticker == "B" else 0.2
@@ -1715,7 +1715,7 @@ class AllocationConstraintTests(unittest.TestCase):
         self.assertEqual(snapshot["market_regime"]["benchmark"], "SPY")
 
     def test_risk_snapshot_accepts_korean_time_price_key(self):
-        dates = pd.bdate_range("2023-09-01", periods=100)
+        dates = pd.bdate_range(end="2024-02-02", periods=100)
 
         def price_rows(ticker, _start, _end):
             offset = 0.4 if ticker == "B" else 0.2

@@ -11,14 +11,14 @@
     "type": "Educational investment research and portfolio reporting system",
     "stage": "validation",
     "north_star": "사용자 제약 안에서 장기 복리 성과를 높일 최선의 종목·ETF·현금 배분을 현재 근거로 추천하고 사후 평가로 판단을 개선한다.",
-    "current_outcome": "Codex 금융 스킬의 GPT-6 Astra/xhigh 프로젝트 기본값과 실행 지침을 반영하고 설정·문서 및 기존 금융 회귀 104개를 로컬 검증했다. 기존 best-effort-portfolio-decisions의 판단·스냅샷·사후 평가 구현은 유지한다."
+    "current_outcome": "predict의 전략별 조사 후보를 portfolio-report의 대안별 비중·비용·하방 및 사후 평가와 연결했다. 두 플랫폼에서 적용한 재설계의 전체 회귀 177개와 합성 종단 실행을 검증했다."
   },
   "workflow": {
-    "work_id": "migrate-to-gpt-6-astra",
+    "work_id": "redesign-portfolio-research",
     "specification_system": "openspec",
     "spec_status": "verified",
-    "active_change": "migrate-to-gpt-6-astra",
-    "next_gate": "로컬 마이그레이션은 검증했다. 후속 실제 분석 시 신뢰된 새 Codex 세션의 Astra/xhigh 선택과 분석 품질을 확인한다. 이전 best-effort-portfolio-decisions의 최신 자료·사용자 자금 조건에 따른 새 추천 스냅샷 및 구성 후 평가는 유지한다. point-in-time-evidence-gates의 실증 작업은 미해결 상태다. 2026-09-14 Doctor 재확인에서 기존 registry drift 경고는 관측되지 않았다."
+    "active_change": "redesign-portfolio-research",
+    "next_gate": "후속 실제 분석에서 신뢰된 새 Codex 세션의 Astra/xhigh 선택과 분석 품질을 확인하고, 최신 자료·사용자 자금 조건으로 v2 추천 스냅샷을 생성해 구성 후 대안별 성과를 평가한다. point-in-time-evidence-gates 및 새 순위의 OOS 실증은 미해결이다."
   },
   "evidence": {
     "canonical_docs": [
@@ -35,7 +35,9 @@
       ".codex/config.toml",
       "docs/GPT_6_ASTRA_MIGRATION.md",
       "openspec/changes/migrate-to-gpt-6-astra/tasks.md",
-      "openspec/changes/migrate-to-gpt-6-astra/verification.md"
+      "openspec/changes/migrate-to-gpt-6-astra/verification.md",
+      "openspec/changes/redesign-portfolio-research/tasks.md",
+      "openspec/changes/redesign-portfolio-research/verification.md"
     ],
     "metrics": [
       "시점 일치 데이터 가용률",
@@ -43,7 +45,7 @@
       "뉴스 증거 게이트 통과율",
       "제약 위반 없는 포트폴리오 비율"
     ],
-    "release_state": "Astra 프로젝트 설정·지침의 로컬 마이그레이션 완료. 기존 best-effort-portfolio-decisions 구현과 검증은 보존했다. 실제 Astra 신규 분석·계정 API 접근·최신 provider 검증·포트폴리오 재구성·장기 성과 측정·외부 배포는 수행하지 않았다."
+    "release_state": "Codex·Claude 스킬 재설계의 로컬 검증과 미국 2종목·USD/KRW 공급자 표본을 확인했다. 실제 사용자 추천, 전체 공급자 준비도, 장기 성과 및 신규 Astra 세션 품질은 별도 검증 대상이다."
   },
   "risk": {
     "high_risk_surfaces": [
@@ -58,7 +60,8 @@
       "시장별 historical membership·vintage 7-factor point-in-time/OOS 재현",
       "뉴스 이벤트의 독립 gold label·미래 holdout·portfolio 검증",
       "기존 KRX/S&P snapshot의 새 provenance 계약 재생성",
-      "후속 새 Codex 세션에서 Astra/xhigh 실제 선택 및 대표 분석 품질 확인"
+      "후속 새 Codex 세션에서 Astra/xhigh 실제 선택 및 대표 분석 품질 확인",
+      "2026-11-18 Doctor의 CAPABILITY_REGISTRY_DRIFT 및 PLUGIN_CAPABILITY_REGISTRY_DRIFT 재조정"
     ]
   },
   "lifecycle": {
@@ -68,7 +71,8 @@
         "README.md",
         ".agents/skills/backtesting/references/factor_evidence_contract.md",
         "openspec/changes/best-effort-portfolio-decisions/proposal.md",
-        "openspec/changes/migrate-to-gpt-6-astra/proposal.md"
+        "openspec/changes/migrate-to-gpt-6-astra/proposal.md",
+        "openspec/changes/redesign-portfolio-research/proposal.md"
       ]
     },
     "implementation": {
@@ -77,7 +81,8 @@
         "openspec/changes/best-effort-portfolio-decisions/verification.md",
         "Git base 301dff4141c97678adf311ff569de477b746150e; implementation work_id best-effort-portfolio-decisions (revision tracked in Git history)",
         "openspec/changes/migrate-to-gpt-6-astra/verification.md",
-        "Git base 3f080c1; user-requested work_id migrate-to-gpt-6-astra; implementation revision tracked in Git history"
+        "Git base 3f080c1; user-requested work_id migrate-to-gpt-6-astra; implementation revision tracked in Git history",
+        "Git base 913c816b0e39c6dca3a38ea37025f08381ceb96d; user-requested work_id redesign-portfolio-research; local working tree"
       ]
     },
     "local_runtime": {
@@ -86,7 +91,9 @@
         "openspec/changes/best-effort-portfolio-decisions/verification.md",
         "95 deterministic tests; synthetic forward test; legacy stored-input replay (previous best-effort-portfolio-decisions evidence)",
         "openspec/changes/migrate-to-gpt-6-astra/verification.md",
-        "104 unittest tests passed; project TOML, skill mirrors, local links and CLI help verified; fresh Codex model execution not tested"
+        "104 unittest tests passed; project TOML, skill mirrors, local links and CLI help verified; fresh Codex model execution not tested",
+        "openspec/changes/redesign-portfolio-research/verification.md",
+        "177 unittest tests passed; synthetic v2 CLI and independent mandate exercise; public Yahoo equity and currency samples"
       ]
     },
     "device": {

@@ -1,6 +1,8 @@
 # 기존 점수 배분 재현
 
-`--decision-json` 없이 generate_portfolio_report.py를 실행하면 기존 경로다.
+저장된 옛 predict JSON은 `--decision-json` 없이 generate_portfolio_report.py를 실행하면
+기존 경로가 된다. 새 `research_shortlist`가 있는 입력은 재현 목적에 한해 `--legacy-replay`를
+명시한다. 저장된 v1 판단도 당시 형식으로 읽으며, 새 predict와 섞어 재현하려면 같은 옵션이 필요하다.
 predict/investor/risk JSON, --top, --investors, --xlsx, --portfolio-json,
 --output-dir 인자는 그대로 지원한다. JSON decision_mode는 legacy_score_allocation이다.
 

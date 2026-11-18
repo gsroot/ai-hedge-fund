@@ -5,6 +5,13 @@
 다양한 입력 형식(005930, 005930.KS, 005930.KQ)을 정규화합니다.
 """
 import re
+from datetime import UTC, date, datetime, timedelta, timezone
+
+
+def completed_korean_price_date(requested: str, now: datetime | None = None) -> str:
+    """Providers expose daily bars without a final-session flag. Wait for local midnight."""
+    korea_today = (now or datetime.now(UTC)).astimezone(timezone(timedelta(hours=9))).date()
+    return min(date.fromisoformat(requested), korea_today - timedelta(days=1)).isoformat()
 
 
 # 한국 종목코드 패턴: 6자리 숫자 (선택적으로 .KS/.KQ 접미사)
